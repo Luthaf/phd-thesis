@@ -1,0 +1,50 @@
+\documentclass[11pt, paper=a4, footinclude, headinclude]{scrbook}
+\usepackage[linedheaders, eulermath, dottedtoc, drafting]{./classicthesis}
+\usepackage{lipsum}
+\usepackage[osf]{libertine}
+\usepackage[backend=biber, bibencoding=utf8, defernumbers=true, maxnames=99, url=false,]{biblatex}
+
+% No Overfull hbox warning for less than 5pt
+\hfuzz=5pt
+
+\title{Molecular simulation technics for adsorption and intrusion in soft porous materials}
+\author{Guillaume Fraux}
+
+\addsectionbib{publications.bib}
+\bibliography{thesis, publications}
+
+\begin{document}
+    \maketitle
+
+    \begingroup
+        \hypersetup{hidelinks}
+        \tableofcontents
+        % \listoffigures
+        % \listoftables
+    \endgroup
+
+    % List of publications
+    \clearpage
+    \begin{refsection}[publications.bib]
+        \newrefcontext[sorting=ynt]
+        \DeclareFieldFormat{labelnumberwidth}{#1}
+        \nocite{*}
+
+        \addchap{List of publications}
+        \printbibliography[heading=subbibliography,title={Peer-reviewed Journals},type=article,resetnumbers=true]
+        \printbibliography[heading=subbibliography,title={Preprints},type=unpublished,resetnumbers=true]
+        \endrefcontext
+    \end{refsection}
+
+    \input{intro}
+    \input{chapter1}
+    \input{chapter2}
+    \input{chapter3}
+    \input{conclusion}
+
+    \appendix
+    \input{appendix1}
+
+    \printbibliography[heading=bibintoc]
+
+\end{document}
