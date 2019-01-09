@@ -1,13 +1,25 @@
-\documentclass[11pt, paper=a4, footinclude, headinclude]{scrbook}
-\usepackage[linedheaders, eulermath, dottedtoc, drafting]{./classicthesis}
-\usepackage{lipsum}
+\documentclass[11pt, a4paper]{book}
+\usepackage[linedheaders, eulermath, dottedtoc, drafting]{classicthesis}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage[osf]{libertine}
+\usepackage[version=4]{mhchem}
+\usepackage{subfiles}
+\usepackage{xspace}
 \usepackage[backend=biber, bibencoding=utf8, defernumbers=true, maxnames=99, url=false,]{biblatex}
 
 % No Overfull hbox warning for less than 5pt
 \hfuzz=5pt
 
-\title{Molecular simulation technics for adsorption and intrusion in soft porous materials}
+% Make hyperref produce the right links by adding a phantomsection before addcontentsline
+\let\OldAddcontentsline\addcontentsline
+\renewcommand{\addcontentsline}{\phantomsection\OldAddcontentsline}
+
+\def\ZIF8{\mbox{ZIF-8}}
+\newcommand{\abinitio}{\emph{ab initio}\xspace}
+\newcommand{\nonumchapter}[1]{\chapter*{#1}\addcontentsline{toc}{chapter}{#1}}
+
+\title{Molecular simulation of fluid adsorption in flexible nanoporous materials at multiple scales}
 \author{Guillaume Fraux}
 
 \addsectionbib{publications.bib}
@@ -19,8 +31,12 @@
     \begingroup
         \hypersetup{hidelinks}
         \tableofcontents
-        % \listoffigures
-        % \listoftables
+
+        \listoffigures
+        \addcontentsline{toc}{chapter}{List of Figures}
+
+        \listoftables
+        \addcontentsline{toc}{chapter}{List of Tables}
     \endgroup
 
     % List of publications
@@ -30,20 +46,22 @@
         \DeclareFieldFormat{labelnumberwidth}{#1}
         \nocite{*}
 
-        \addchap{List of publications}
+        \nonumchapter{List of Publications}
         \printbibliography[heading=subbibliography,title={Peer-reviewed Journals},type=article,resetnumbers=true]
         \printbibliography[heading=subbibliography,title={Preprints},type=unpublished,resetnumbers=true]
-        \endrefcontext
     \end{refsection}
 
-    \input{intro}
-    \input{chapter1}
-    \input{chapter2}
-    \input{chapter3}
-    \input{conclusion}
+    \include{intro}
+    \subfile{context}
+    \subfile{thermodynamics}
+    \subfile{ab-initio}
+    \subfile{classical-intrusion}
+    \subfile{hybrid-monte-carlo}
+    \include{conclusion}
 
     \appendix
-    \input{appendix1}
+    \subfile{softwares}
+    \subfile{electrostatics}
 
     \printbibliography[heading=bibintoc]
 
