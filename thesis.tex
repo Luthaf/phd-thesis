@@ -58,19 +58,14 @@
 \renewcommand{\addcontentsline}{\phantomsection\OldAddcontentsline}
 
 % An alternative to \chapter* that adds itself to the TOC
-\newcommand{\nonumchapter}[1]{\chapter*{#1}\addcontentsline{toc}{chapter}{#1}}
+\newcommand{\nonumchapter}[1]{\chapter*{#1}\addcontentsline{toc}{chapter}{#1}\markboth{#1}{#1}}
 \DeclareCiteCommand{\citenum}{}{\printfield{labelnumber}}{}{}
+% A bibheading using subsection*
+\defbibheading{subsectionbibheading}{\subsection*{#1}}
 
+% Use \[ and \] for all equations, and make all equations numbered
 \def\[{\begin{equation}}
 \def\]{\end{equation}}
-
-% Convenience macros
-\def\ZIF8{\mbox{ZIF-8}}
-\def\abinitio{\emph{ab initio}\xspace}
-\def\d{\text{d}}
-\def\Cudhbc{Cu(dhbc)$_\text{2}$(4,4$^\prime$-bpy)\xspace}
-\def\RPMZn{RPM3-Zn\xspace}
-\def\smallce#1{\ensuremath{\text{\tiny\ce{#1}}}}
 
 % Create a \subfilebibliography command that print bibliography when subfiles
 % are compiled alone, and nothing when they are part of the main document.
@@ -81,6 +76,14 @@
  \newcommand{\subfilebibliography}{}%
 }%
 \makeatother
+
+% Convenience macros
+\def\ZIF8{\mbox{ZIF-8}}
+\def\abinitio{\emph{ab initio}\xspace}
+\def\d{\text{d}}
+\def\Cudhbc{Cu(dhbc)$_\text{2}$(4,4$^\prime$-bpy)\xspace}
+\def\RPMZn{RPM3-Zn\xspace}
+\def\smallce#1{\ensuremath{\text{\tiny\ce{#1}}}}
 
 \title{Molecular simulation of fluid adsorption in flexible nanoporous materials at multiple scales}
 \author{Guillaume Fraux}
@@ -96,18 +99,6 @@
         \tableofcontents
     \endgroup
 
-    % List of publications
-    \clearpage
-    \begin{refsection}[publications.bib]
-        \newrefcontext[sorting=ynt]
-        \DeclareFieldFormat{labelnumberwidth}{#1}
-        \nocite{*}
-
-        \nonumchapter{List of Publications}
-        \printbibliography[heading=subbibliography,title={Peer-reviewed Journals},type=article,resetnumbers=true]
-        \printbibliography[heading=subbibliography,title={Preprints},type=unpublished,resetnumbers=true]
-    \end{refsection}
-
     \include{intro}
     \subfile{context}
     \subfile{thermodynamics}
@@ -119,6 +110,22 @@
     \appendix
     \subfile{softwares}
     \subfile{electrostatics}
+
+    % List of publications
+    \clearpage
+    \begin{refsection}[publications.bib]
+        \newrefcontext[sorting=ynt]
+        \DeclareFieldFormat{labelnumberwidth}{#1}
+        \nocite{*}
+
+        \nonumchapter{List of Publications}
+        \section*{Publications linked to my PhD work}
+        \printbibliography[heading=subsectionbibheading,title={Peer-reviewed Journals},type=article,resetnumbers=true,keyword={phd}]
+        \printbibliography[heading=subsectionbibheading,title={Preprints},type=unpublished,resetnumbers=true]
+
+        \section*{Publications linked to previous work}
+        \printbibliography[heading=none,type=article,resetnumbers=true,keyword={previous}]
+    \end{refsection}
 
     \printbibliography[heading=bibintoc]
 
