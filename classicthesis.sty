@@ -359,7 +359,7 @@
 % layout of the chapter-, section-, subsection-, subsubsection-,
 % paragraph and description-headings
 % ********************************************************************
-\RequirePackage[newparttoc]{titlesec} % newparttoc to write \part to .toc with \numberline
+\RequirePackage{titlesec}
 \ifthenelse{\boolean{ct@nochapters}}{\relax}{\titleclass{\chapter}{top}} % thanks to Javier Bezos of titlesec
 \def\ttl@addcontentsline#1#2{% this is from titlesec.sty
   \addcontentsline{toc}{#1}{\ifttl@toclabel\ttl@a\fi{#2}}% write titles as a group inside {}
@@ -411,208 +411,41 @@
 % ********************************************************************
 % layout of the TOC, LOF and LOT (LOL-workaround see next section)
 % ********************************************************************
-\PassOptionsToPackage{titles}{tocloft}
-\RequirePackage{tocloft}
-% avoid page numbers being right-aligned in fixed-size box
-\newlength{\newnumberwidth}
-\settowidth{\newnumberwidth}{999} % yields overfull hbox warnings for pages > 999
-\cftsetpnumwidth{\newnumberwidth}
+\RequirePackage{titletoc}
+\contentsmargin{1.5em}
+\titlecontents{chapter}[2.5em]{\addvspace{1em}\color{CTtitle}\normalfont}{\contentslabel{1.5em}}{\hspace*{-1.5em}}{\hfill\color{black}\contentspage}[]
+\titlecontents{section}[4.8em]{\addvspace{0.1em}}{\contentslabel{2.7em}}{\hspace*{-2.7em}}{\titlerule*[1pc]{.}\contentspage}[]
+\titlecontents{subsection}[8.0em]{}{\contentslabel{3.5em}}{\hspace*{-3.5em}}{\titlerule*[1pc]{.}\contentspage}[]
 
-% have the bib neatly positioned after the rest
-\newlength{\beforebibskip}
-\setlength{\beforebibskip}{0em}
-
-% space for more than nine chapters
-\newlength{\newchnumberwidth}
-\settowidth{\newchnumberwidth}{.} % <--- tweak here if more space required
-\ifthenelse{\boolean{ct@manychapters}}% <--- many chapters option
-{%
-    \addtolength{\cftchapnumwidth}{\newchnumberwidth}%
-    \addtolength{\cftsecnumwidth}{\newchnumberwidth}
-    \addtolength{\cftsecindent}{\newchnumberwidth}
-    \addtolength{\cftsubsecnumwidth}{\newchnumberwidth}
-    \addtolength{\cftsubsecindent}{2\newchnumberwidth}
-    \addtolength{\cftsubsubsecnumwidth}{\newchnumberwidth}
-}{\relax}%
-
-% pagenumbers right after the titles
-% parts
-% XXX(guillaume): remove part formating, and change chapter formating to
-% match previous part formatting
-%
-% \ifthenelse{\boolean{ct@parts}}%
-% {%
-%     \renewcommand{\thepart}{\roman{part}}%
-%     \renewcommand{\cftpartpresnum}{\scshape}%  \MakeTextLowercase
-%     \renewcommand{\cftpartaftersnum}{}%
-%     \renewcommand{\cftpartaftersnumb}{\spacedlowsmallcaps}%
-%     \setlength{\cftpartnumwidth}{\cftchapnumwidth}
-%     \renewcommand{\cftpartfont}{\color{CTtitle}\normalfont}%
-%     \cftpagenumbersoff{part}
-%     \renewcommand{\cftpartpagefont}{\normalfont}%
-%     \ifthenelse{\boolean{ct@dottedtoc}}{\relax}%
-%       {%
-%         \renewcommand{\cftpartleader}{\hspace{1.5em}}%
-%         \renewcommand{\cftpartafterpnum}{\cftparfillskip}%
-%       }%
-%     \setlength{\cftbeforepartskip}{1em}%
-%     \setlength{\cftbeforechapskip}{.1em}%
-%     \setlength{\beforebibskip}{1.5\cftbeforepartskip}%
-% }{\relax}
-% chapters
-% \ifthenelse{\boolean{ct@nochapters}}%
-%     {\relax}%
-%     {%
-%         \renewcommand{\cftchappresnum}{\spacedlowsmallcaps}%
-%         \renewcommand{\cftchapaftersnumb}{\spacedlowsmallcaps}%
-%         \renewcommand{\cftchapfont}{\normalfont}%
-%         \renewcommand{\cftchappagefont}{\normalfont}%
-%         \ifthenelse{\boolean{ct@dottedtoc}}{\relax}%
-%           {%
-%             \renewcommand{\cftchapleader}{\hspace{1.5em}}%
-%             \renewcommand{\cftchapafterpnum}{\cftparfillskip}%
-%           }
-%         %\setlength{\cftbeforechapskip}{.1em}%
-%     }
-
-\ifthenelse{\boolean{ct@nochapters}}%
-    {\relax}%
-    {%
-        \renewcommand{\cftchappresnum}{\scshape}%  \MakeTextLowercase
-        \renewcommand{\cftchapaftersnum}{}%
-        % \renewcommand{\cftchaptaftersnumb}{\spacedlowsmallcaps}%
-        \renewcommand{\cftchapfont}{\color{CTtitle}\normalfont}%
-        % \cftpagenumbersoff{chap}%
-        \renewcommand{\cftchappagefont}{\normalfont}%
-        \ifthenelse{\boolean{ct@dottedtoc}}{\relax}%
-          {%
-            \renewcommand{\cftchapleader}{\hspace{1.5em}}%
-            \renewcommand{\cftchapafterpnum}{\cftparfillskip}%
-          }%
-        \setlength{\cftbeforechapskip}{1em}%
-    }
-% XXX(guillaume): fin des modifications
-
-% sections
-\ifthenelse{\boolean{ct@nochapters}}%
-    {%
-        \setlength{\cftbeforesecskip}{.1em}%
-        \setlength{\beforebibskip}{1em}%
-    }%
-    {\relax}
-\renewcommand{\cftsecpresnum}{\scshape\MakeTextLowercase}%
-\renewcommand{\cftsecfont}{\normalfont}%
-\renewcommand{\cftsecpagefont}{\normalfont}%
-\ifthenelse{\boolean{ct@dottedtoc}}{\relax}%
-    {%
-        \renewcommand{\cftsecleader}{\hspace{1.5em}}%
-        \renewcommand{\cftsecafterpnum}{\cftparfillskip}%
-    }
-    \ifthenelse{\boolean{ct@tocaligned}}{\renewcommand{\cftsecindent}{0em}}{\relax}
-% subsections
-\renewcommand{\cftsubsecpresnum}{\scshape\MakeTextLowercase}%
-\renewcommand{\cftsubsecfont}{\normalfont}%
-\ifthenelse{\boolean{ct@dottedtoc}}{\relax}%
-{%
-    \renewcommand{\cftsubsecleader}{\hspace{1.5em}}%
-    \renewcommand{\cftsubsecafterpnum}{\cftparfillskip}%
-}
-\ifthenelse{\boolean{ct@tocaligned}}{\renewcommand{\cftsubsecindent}{0em}}{\relax}
-% subsubsections
-\renewcommand{\cftsubsubsecpresnum}{\scshape\MakeTextLowercase}%
-\renewcommand{\cftsubsubsecfont}{\normalfont}%
-\ifthenelse{\boolean{ct@dottedtoc}}{\relax}%
-{%
-    \renewcommand{\cftsubsubsecleader}{\hspace{1.5em}}%
-    \renewcommand{\cftsubsubsecafterpnum}{\cftparfillskip}%
-}
-\ifthenelse{\boolean{ct@tocaligned}}{\renewcommand{\cftsubsubsecindent}{0em}}{\relax}
-% figures
-\renewcommand{\cftfigpresnum}{\scshape\MakeTextLowercase}%
-\renewcommand{\cftfigfont}{\normalfont}%
-\ifthenelse{\boolean{ct@dottedtoc}}{\relax}%
-{%
-    \renewcommand{\cftfigleader}{\hspace{1.5em}}%
-    \renewcommand{\cftfigafterpnum}{\cftparfillskip}%
-}
-\renewcommand{\cftfigpresnum}{\figurename~}%Fig.~}
-\newlength{\figurelabelwidth}
-\settowidth{\figurelabelwidth}{\cftfigpresnum~999}
-\addtolength{\figurelabelwidth}{2.5em}
-\cftsetindents{figure}{0em}{\figurelabelwidth}
-% tables
-\renewcommand{\cfttabpresnum}{\scshape\MakeTextLowercase}%
-\renewcommand{\cfttabfont}{\normalfont}%
-\ifthenelse{\boolean{ct@dottedtoc}}{\relax}%
-{%
-    \renewcommand{\cfttableader}{\hspace{1.5em}}%
-    \renewcommand{\cfttabafterpnum}{\cftparfillskip}%
-}
-\renewcommand{\cfttabpresnum}{\tablename~}%Tab.~}
-\newlength{\tablelabelwidth}
-\settowidth{\tablelabelwidth}{\cfttabpresnum~999}
-\addtolength{\tablelabelwidth}{2.5em}
-%\cftsetindents{table}{0em}{\tablelabelwidth}
-\cftsetindents{table}{0em}{\figurelabelwidth}
-% listings
-\ifthenelse{\boolean{ct@listings}}%
-{%
-    \newlistof{listings}{lol}{\lstlistlistingname}%
-    \renewcommand{\cftlistingspresnum}{\scshape\MakeTextLowercase}%
-    \renewcommand{\cftlistingsfont}{\normalfont}%
-    \renewcommand{\cftlistingspresnum}{\lstlistingname~}%
-    \renewcommand{\cftlistingspagefont}{\normalfont}%
-    \ifthenelse{\boolean{ct@dottedtoc}}{\relax}%
-    {%
-        \renewcommand{\cftlistingsleader}{\hspace{1.5em}}%
-        \renewcommand{\cftlistingsafterpnum}{\cftparfillskip}%
-    }
-    \newlength{\listingslabelwidth}%
-    \settowidth{\listingslabelwidth}{\cftlistingspresnum~999}%
-    \addtolength{\listingslabelwidth}{2.5em}%
-    %\cftsetindents{listings}{0em}{\listingslabelwidth}%
-    \cftsetindents{listings}{0em}{\figurelabelwidth}%
-    \let\l@lstlisting\l@listings%
-    \let\lstlistoflistings\listoflistings%
-}{\relax}%
-
-% dirty work-around to get the spacing after the toc/lot/lof-titles right
-\ifthenelse{\boolean{ct@parts}}%
-{%
-    \AtBeginDocument{\addtocontents{toc}{\protect\vspace{-\cftbeforepartskip}}}
-}{%
-    \ifthenelse{\boolean{ct@nochapters}}%
-        {\relax}%
-        {\AtBeginDocument{\addtocontents{toc}{\protect\vspace{-\cftbeforechapskip}}}}
-}
+\AtBeginDocument{\addtocontents{toc}{\protect\vspace{-2.5em}}}
 
 \newcommand{\tocEntry}[1]{\protect\numberline {}{#1}}%
-
-%% remove the vertical space between lof/lot entries of different chapters
-\ifthenelse{\boolean{ct@listsseparated}}{%
-    \PackageWarningNoLine{classicthesis}{Option "listsseparated" deprecated as of version 2.9.}%
-}{\relax}
+%
+% %% remove the vertical space between lof/lot entries of different chapters
 % \ifthenelse{\boolean{ct@listsseparated}}{%
-%     \AtBeginDocument{%
-%         \addtocontents{lof}{\protect\vspace{-\cftbeforechapskip}}%
-%         \addtocontents{lot}{\protect\vspace{-\cftbeforechapskip}}%
-%         \ifthenelse{\boolean{ct@listings}}%
-%                {%
-%            \addtocontents{lol}{\protect\vspace{-\cftbeforechapskip}}%
-%         }{\relax}%
-%     }%
-% }{%
-
-\DeclareRobustCommand*{\deactivateaddvspace}{\let\addvspace\@gobble}%
-\AtBeginDocument{%
-    \addtocontents{lof}{\deactivateaddvspace}%
-    \addtocontents{lot}{\deactivateaddvspace}%
-            \ifthenelse{\boolean{ct@listings}}%
-            {%
-                \addtocontents{lol}{\deactivateaddvspace}%
-            }{\relax}%
-}%
-%    }
+%     \PackageWarningNoLine{classicthesis}{Option "listsseparated" deprecated as of version 2.9.}%
+% }{\relax}
+% % \ifthenelse{\boolean{ct@listsseparated}}{%
+% %     \AtBeginDocument{%
+% %         \addtocontents{lof}{\protect\vspace{-\cftbeforechapskip}}%
+% %         \addtocontents{lot}{\protect\vspace{-\cftbeforechapskip}}%
+% %         \ifthenelse{\boolean{ct@listings}}%
+% %                {%
+% %            \addtocontents{lol}{\protect\vspace{-\cftbeforechapskip}}%
+% %         }{\relax}%
+% %     }%
+% % }{%
+%
+% \DeclareRobustCommand*{\deactivateaddvspace}{\let\addvspace\@gobble}%
+% \AtBeginDocument{%
+%     \addtocontents{lof}{\deactivateaddvspace}%
+%     \addtocontents{lot}{\deactivateaddvspace}%
+%             \ifthenelse{\boolean{ct@listings}}%
+%             {%
+%                 \addtocontents{lol}{\deactivateaddvspace}%
+%             }{\relax}%
+% }%
+% %    }
 
 % ********************************************************************
 % Footnotes setup

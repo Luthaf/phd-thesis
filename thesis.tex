@@ -1,13 +1,14 @@
 \documentclass[11pt, a4paper]{book}
-\usepackage[linedheaders, dottedtoc, drafting, beramono=false]{classicthesis}
+\usepackage[linedheaders, drafting]{classicthesis}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[osf]{libertine}
 \usepackage{subfiles}
-\usepackage[draft]{graphicx}
+\usepackage[]{graphicx}
 \usepackage{tabularx}
 \usepackage{xspace}
 \usepackage{float}
+\usepackage{mdframed}
 \usepackage[
     backend=biber,
     bibencoding=utf8,
@@ -53,6 +54,10 @@
 
 \graphicspath{{./}{./figures/}}
 
+% Quotations with a markdown style
+\surroundwithmdframed[linewidth=2pt,topline=false,bottomline=false,rightline=false]{quote}
+\AtBeginEnvironment{quote}{\itshape}
+
 % Make hyperref produce the right links by adding a phantomsection before addcontentsline
 \let\OldAddcontentsline\addcontentsline
 \renewcommand{\addcontentsline}{\phantomsection\OldAddcontentsline}
@@ -67,15 +72,22 @@
 \def\[{\begin{equation}}
 \def\]{\end{equation}}
 
-% Create a \subfilebibliography command that print bibliography when subfiles
-% are compiled alone, and nothing when they are part of the main document.
+% Only expand the argument in a subfile
 \makeatletter
-\ifdef{\old@document@subfiles}{%
-  \newcommand{\subfilebibliography}{\printbibliography}%
-}{%
- \newcommand{\subfilebibliography}{}%
-}%
+\ifdef{\old@document@subfiles}%
+    {\def\OnlyInSubfile#1{#1}}%
+    {\def\OnlyInSubfile#1{#1}}
 \makeatother
+
+% Partial TOC formatting for chapters
+\newcommand{\printpartialtoc}{%
+    \begingroup
+        \hypersetup{hidelinks}
+        \hrule\vspace*{3pc}%
+        \printcontents[chapters]{}{1}{}%
+        \vspace*{0.8pc}\hrule
+    \endgroup
+}%
 
 % Convenience macros
 \def\ZIF8{\mbox{ZIF-8}}
@@ -84,6 +96,7 @@
 \def\Cudhbc{Cu(dhbc)$_\text{2}$(4,4$^\prime$-bpy)\xspace}
 \def\RPMZn{RPM3-Zn\xspace}
 \def\smallce#1{\ensuremath{\text{\tiny\ce{#1}}}}
+\def\ie{\emph{i.e.}\xspace}
 
 \title{Molecular simulation of fluid adsorption in flexible nanoporous materials at multiple scales}
 \author{Guillaume Fraux}
