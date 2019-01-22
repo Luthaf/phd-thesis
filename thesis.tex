@@ -68,6 +68,16 @@
 % A bibheading using subsection*
 \defbibheading{subsectionbibheading}{\subsection*{#1}}
 
+\DeclareCiteCommand{\citejournal}
+    {\usebibmacro{prenote}}
+    {%
+        \usebibmacro{journal}%
+        \setunit{\addspace(}%
+        {\printfield{year})\addspace}%
+    }
+    {\multicitedelim}
+    {\usebibmacro{postnote}}
+
 % Use \[ and \] for all equations, and make all equations numbered
 \def\[{\begin{equation}}
 \def\]{\end{equation}}
@@ -76,7 +86,7 @@
 \makeatletter
 \ifdef{\old@document@subfiles}%
     {\def\OnlyInSubfile#1{#1}}%
-    {\def\OnlyInSubfile#1{#1}}
+    {\def\OnlyInSubfile#1{}}
 \makeatother
 
 % Partial TOC formatting for chapters

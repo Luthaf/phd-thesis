@@ -126,12 +126,6 @@
 \ifthenelse{\NOT\isundefined{\part}\AND\boolean{ct@parts}}
     {\setboolean{ct@parts}{true}}{\setboolean{ct@parts}{false}}
 
-% use arsclassica style
-\provideboolean{ct@arsclassica}
-\ifthenelse{\equal{\ct@style}{arsclassica}}%
-    {%\setboolean{ct@eulerchapternumbers}{true}% for arsclassica only eulerchapternumbers
-    \setboolean{ct@arsclassica}{true}}{\setboolean{ct@arsclassica}{false}}
-
 % ********************************************************************
 % PDF and XeLaTeX Stuff
 % ********************************************************************
@@ -210,8 +204,6 @@
 
 
 \RequirePackage{microtype} % character protruding and other micro-typography stuff
-% [expansion=false]
-
 
 % ********************************************************************
 % Textblock size
@@ -268,37 +260,6 @@
 % Disable single lines at the end of a paragraph (Hurenkinder)
 \widowpenalty = 10000
 \displaywidowpenalty = 10000 % formulas
-
-% Graffiti as in GKP's book "Concrete Mathematics"
-% thanks to Lorenzo Pantieri and Enrico Gregorio
-\def\graffito@setup{%
-%   \slshape\footnotesize% this was due to \slhape in above book
-   \itshape\footnotesize\leavevmode\color{Black}%
-   \parindent=0pt \lineskip=0pt \lineskiplimit=0pt %
-   \tolerance=2000 \hyphenpenalty=300 \exhyphenpenalty=300%
-   \doublehyphendemerits=100000%
-   \finalhyphendemerits=\doublehyphendemerits}
-%\DeclareRobustCommand{\graffito}[1]{\marginpar%
-% [\graffito@setup\raggedleft\hspace{0pt}{#1}]%
-% {\graffito@setup\raggedright\hspace{0pt}{#1}}}
-
-\RequirePackage{mparhack} % get marginpar right
-
-\let\oldmarginpar\marginpar
-\renewcommand{\marginpar}[2][]{% always add optional parameter, make it empty by default
-   \if\relax\detokenize{#1}\relax% optional parameter empty, in all normal document calls
-      \oldmarginpar[\graffito@setup\raggedleft\hspace{0pt}{#2}]{\graffito@setup\raggedright\hspace{0pt}#2}%
-   \else%two parameters, let them use their styling
-      \oldmarginpar[{#1}]{#2}%
-   \fi%
-}
-
-
-% Enumeration environment with small caps
-\newenvironment{aenumerate}
-    {\def\theenumi{\textsc{\alph{enumi}}}%
-     \enumerate}
-    {\endenumerate}
 
 % ********************************************************************
 % Fancy Stuff
@@ -467,10 +428,6 @@
 % ********************************************************************
 \RequirePackage{scrtime} % time access
 \ifthenelse{\boolean{ct@drafting}}{%
-%    \RequirePackage{draftwatermark}%
-%       \SetWatermarkLightness{0.9}
-%           \SetWatermarkScale{.5}
-%           \SetWatermarkText{\today\ at \thistime}
         \PassOptionsToPackage{draft}{prelim2e}
         \RequirePackage{prelim2e}
         \renewcommand{\PrelimWords}{\relax}
@@ -478,56 +435,10 @@
 }{\relax}
 
 % ********************************************************************
-% Captions
-% ********************************************************************
-% \PassOptionsToPackage{font=small}{caption} % ,format=hang ,labelformat=smallcaps
-\RequirePackage{caption}
-\captionsetup{font=small}
-% Thanks to cgnieder and Claus Lahiri
-% http://tex.stackexchange.com/questions/69349/spacedlowsmallcaps-in-caption-label
-% [REMOVED DUE TO OTHER PROBLEMS, SEE ISSUE #82]
-%\DeclareCaptionLabelFormat{smallcaps}{\bothIfFirst{#1}{~}\MakeTextLowercase{\textsc{#2}}}
-
-% ********************************************************************
-% Caption numbering now w/o chapter number
-% ********************************************************************
-\ifthenelse{\boolean{ct@floatperchapter}}{%
-    \ifthenelse{\boolean{ct@listings}}{%
-        \lstset{numberbychapter=true}}{\relax}% numberbychapter works in listings>=1.4
-}{%
-    \ifthenelse{\boolean{ct@listings}}{%
-        \lstset{numberbychapter=false}}{\relax}%
-    \RequirePackage{remreset}%
-        \ifthenelse{\boolean{ct@nochapters}}%
-        {\relax}{%
-            \@removefromreset{table}{chapter}  % requires remreset package
-        }%
-        \renewcommand{\thetable}{\arabic{table}}%
-        \ifthenelse{\boolean{ct@nochapters}}%
-        {\relax}{%
-            \@removefromreset{figure}{chapter}  % requires remreset package
-        }%
-        \renewcommand{\thefigure}{\arabic{figure}}%
-        \ifthenelse{\boolean{ct@nochapters}}%
-        {\relax}{%
-            \@removefromreset{equation}{chapter}  % requires remreset package
-        }%
-        \renewcommand{\theequation}{\arabic{equation}}%
-}
-
-% ********************************************************************
-% arsclassica integration (experimental, dirty hack currently)
-% ********************************************************************
-\ifct@arsclassica
-\RequirePackage{classicthesis-arsclassica}
-\fi
-
-
-% ********************************************************************
 % hyperreferences, pdf outline
 % ********************************************************************
 \PassOptionsToPackage{hyperfootnotes=false}{hyperref}
 \RequirePackage{hyperref}
-    \pdfstringdefDisableCommands{\let\thepart=\relax} % no part numbers (i, ii, iii) in PDF outline   IVO
-   %\pdfstringdefDisableCommands{\renewcommand{\thepart}{\Roman{part}}} %%%IVO bring back Part numbers in PDF outline
-    \hypersetup{colorlinks=true,linktoc=all,breaklinks=true,urlcolor=CTurl,linkcolor=CTlink,citecolor=CTcitation}
+\pdfstringdefDisableCommands{\let\thepart=\relax} % no part numbers (i, ii, iii) in PDF outline   IVO
+%\pdfstringdefDisableCommands{\renewcommand{\thepart}{\Roman{part}}} %%%IVO bring back Part numbers in PDF outline
+\hypersetup{colorlinks=true,linktoc=all,breaklinks=true,urlcolor=CTurl,linkcolor=CTlink,citecolor=CTcitation}

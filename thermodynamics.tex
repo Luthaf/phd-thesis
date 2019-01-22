@@ -2,6 +2,8 @@
 
 \begin{document}
 
+\OnlyInSubfile{\setcounter{chapter}{1}}
+
 \chapter{Macroscopic methods}
 \startcontents[chapters]
 \printpartialtoc
@@ -112,11 +114,11 @@ isobaric-isothermal ensemble.
 Each of these ensembles have an associated thermodynamic potential. For the
 micro-canonical ensemble, we start with equation~\ref{eq:thermo-potentials}:
 \[\d \Phi = \d U + P \d V - \sum_i \mu_i \d N_i - T \d S.\]
-$\d U$ and $\d V$ will be zero as the energy and volume is constant. Additionaly
+$\d U$ and $\d V$ will be zero as the energy and volume is constant. Moreover
 as the system composition is fixed, $\d N_i = 0$. This gives
 \[\d \Phi = - T \d S \leq 0.\]
-The thermodynamic potential for the $NVE$ ensemble is the negentropy $-TS$,
-which will be minimal (and the entropy will be maximal) at equilibrium.
+The thermodynamic potential for the $NVE$ ensemble is the negentropy $N \equiv
+-TS$, which will be minimal (and the entropy will be maximal) at equilibrium.
 
 \vskip\baselineskip
 If we now allow the energy to change but fix the kinetic energy and thus the
@@ -170,7 +172,7 @@ of fluid mixtures, and adapted to multi-components phase equilibrium in
 As usual, $\d T$ and $\d P$ are null as the corresponding variable is fixed. In
 the sum over the $\mu_iN_i$ terms, only the adsorbed species quantities of
 matter are allowed to change. The osmotic potential is thus defined by
-\[\Omega = U - TS + PV - \sum_i \mu_i N_i \equiv F + PV - \sum_i \mu_i N_i \equiv G - \sum_i \mu_i N_i\]
+\[\Omega \equiv U - TS + PV - \sum_i \mu_i N_i \equiv F + PV - \sum_i \mu_i N_i \equiv G - \sum_i \mu_i N_i\]
 This potential will be the basis we use to predict co-adsorption in flexible
 porous media in the next section. The table~\ref{table:thermo-potential}
 presents a summary of all the thermodynamic ensembles discussed so far, as well
@@ -178,15 +180,15 @@ as the associated fixed quantities and thermodynamic potentials.
 
 \begin{table}[htp]
     \centering
-    % \renewcommand{\arraystretch}{1.2}
-    \newcolumntype{C}{>{\centering\arraybackslash}X}
-    \begin{tabularx}{0.8\textwidth}{c C c}
-        Thermodynamic potential & Fixed quantities                     & Ensemble \\ \hline
-                $-TS$           & $N$, $V$, $E$                        & Micro-canonical \\
-                $F$             & $N$, $V$, $T$                        & Canonical \\
-                $G$             & $N$, $P$, $T$                        & Isobaric-Isotherm \\
-                $\Psi$          & $\mu_i$, $V$, $T$                    & Grand-Canonical \\
-                $\Omega$        & $N_\text{host}$, $\mu_i$, $P$, $T$   & Osmotic \\
+    \renewcommand{\arraystretch}{1.3}
+    % \newcolumntype{C}{>{\centering\arraybackslash}X}
+    \begin{tabularx}{0.8\textwidth}{l c c c X}
+        Ensemble            & Fixed quantities                    & \multicolumn{3}{l}{Thermodynamic potential} \\ \hline
+        Micro-canonical     & $N$, $V$, $E$                       & \hskip1em $N$      & $\equiv$ & $-TS$       \\
+        Canonical           & $N$, $V$, $T$                       & \hskip1em $F$      & $\equiv$ & $U - TS$    \\
+        Isobaric-Isothermal & $N$, $P$, $T$                       & \hskip1em $G$      & $\equiv$ & $H - TS$    \\
+        Grand-Canonical     & $\mu_i$, $V$, $T$                   & \hskip1em $\Psi$   & $\equiv$ & $F - \sum_i \mu_i N_i $ \\
+        Osmotic             & $N_\text{host}$, $\mu_i$, $P$, $T$  & \hskip1em $\Omega$ & $\equiv$ & $G - \sum_i \mu_i N_i $ \\
     \end{tabularx}
     \caption{Thermodynamic ensembles and associated thermodynamic potentials}
     \label{table:thermo-potential}
@@ -201,10 +203,12 @@ are cryogenic distillation, mainly used for air separation, and differential
 adsorption. Adsorption-based processes for gas separation, which rely on
 microporous materials as an adsorber bed, are very versatile because of the
 large choice of materials available --- and the possibility to tune them for a
-specific system. Among the porous materials used commercially, one can list
-inorganic materials (such as zeolites and silica gels), carbon-based compounds
-(e.g., activated carbon), and hybrid organic--inorganic materials, including the
-topical family of metal--organic frameworks or porous coordination polymers.
+specific system.
+
+% Among the porous materials used commercially, one can list
+% inorganic materials (such as zeolites and silica gels), carbon-based compounds
+% (e.g., activated carbon), and hybrid organic--inorganic materials, including the
+% topical family of metal-organic frameworks or porous coordination polymers.
 
 Experimental characterization of the co-adsorption of a mixture of gases inside
 a porous adsorbent is typically done through multi-component gas adsorption
@@ -217,45 +221,49 @@ models for the prediction of mixture co-adsorption based on single-component
 adsorption data. The most commonly used method in the field is the Ideal
 Adsorbed Solution Theory (IAST),\cite{Myers1965} which is relatively simple to
 implement and robust, and allows the prediction of multi-component adsorption
-behavior from individual single-component isotherms. In particular, it is used
-to predict the potential selectivity of materials based on simple measurements
-of pure component isotherms.
+behavior from individual single-component isotherms.
 
 Materials which undergo large-scale reversible structural transitions impacting
 their total volume or internal pore volume appear to be particular common among
-metal--organic frameworks based on relatively weaker bonds (coordination bonds,
+metal-organic frameworks based on relatively weaker bonds (coordination bonds,
 $\pi$--$\pi$ stacking, hydrogen bonds, or some covalent bonds) compared to
 inorganic dense nanoporous materials (such as zeolites). In particular, some of
-these materials show transitions between an \emph{open} phase with large pore volume,
-and a \emph{condensed} or \emph{narrow pore} phase with smaller pore volume --- or, in
-some cases, no microporosity at all. Such transitions, known as \emph{gate
-opening}\cite{Kitaura2003, Tanaka2008, Li2015} or
+these materials show transitions between an \emph{open} phase with large pore
+volume, and a \emph{condensed} or \emph{narrow pore} phase with smaller pore
+volume --- or, in some cases, no microporosity at all. Such transitions, known
+as \emph{gate opening}\cite{Kitaura2003, Tanaka2008, Li2015} or
 \emph{breathing}\cite{Serre2002} depending on the order in which the phases
 occur upon adsorption, can lead to stepped adsorption isotherms.
 
-\fbox{introduce direct thermodynamics calculations}
-
 In the recent literature, many authors have relied on IAST predictions to
 predict that several such flexible MOFs would present very good selectivity for
-gas separation. For example \citeauthor{Nijem2012} \cite{Nijem2012} reported
-that \emph{"[their] work unveils unexpected hydrocarbon selectivity in a
-flexible metal--organic framework (MOF), based on differences in their gate
-opening pressure."} In some cases of the published literature, the authors
-explicitly used IAST to derive such predictions on flexible
-materials.\cite{Banerjee2014, Mukherjee2015, Foo2016, Li2016} In other cases,
-IAST was not used explicitly, but the assumptions made for the behavior of
-mixtures stem from the \emph{classical} understanding of selectivity rules in rigid
-materials, and would not necessarily be valid in flexible
-materials.\cite{Gucuyener2010, Inubushi2010, Nijem2012, Sanda2013, Joarder2014,
-Mukherjee2014} An alternative method, the Osmotic Framework Adsorbed Solution
-Theory (OFAST),\cite{Coudert2009} based on the Osmotic ensemble, should instead
-be used when structural transitions occur upon adsorption.
+gas separation. In some cases, the authors explicitly used IAST to derive such
+predictions on flexible materials.\cite{Banerjee2014, Mukherjee2015, Foo2016,
+Li2016} In other cases, IAST was not used explicitly, but the assumptions made
+for the behavior of mixtures stem from the \emph{classical} understanding of
+selectivity rules in rigid materials, and would not necessarily be valid in
+flexible materials.\cite{Gucuyener2010, Inubushi2010, Nijem2012, Sanda2013,
+Joarder2014, Mukherjee2014}
 
-I compared the results of IAST and OFAST on two sets of adsorption data from the
-published literature on gate-opening materials, and show that the IAST method
-gives unrealistic results: it does not reproduce the gate-opening behavior upon
-mixture adsorption, and overestimates the selectivity by up to two orders of
-magnitude.
+IAST is one of the available methods for direct macroscopic calculations and
+predictions, taking macroscopic data in the form of pure component adsorption
+isotherms and predicting macroscopic co-adsorption isotherms. In practice, using
+IAST is akin to working in the Grand-Canonical ensemble, but we showed in the
+previous section that when the adsorption host is flexible, one should use the
+Osmotic ensemble. Instead, an alternative method called the Osmotic Framework
+Adsorbed Solution Theory (OFAST),\cite{Coudert2009} based on the Osmotic
+ensemble, should be used when structural transitions occur during adsorption.
+
+% For example \citeauthor{Nijem2012} \cite{Nijem2012} reported
+% that \emph{"[their] work unveils unexpected hydrocarbon selectivity in a
+% flexible metal-organic framework (MOF), based on differences in their gate
+% opening pressure."}
+
+In this section, I will compare the results of IAST and OFAST on two sets of
+adsorption data from the published literature on gate-opening materials, and
+show that the IAST method gives unrealistic results: it does not reproduce the
+gate-opening behavior upon mixture adsorption, and overestimates the selectivity
+by up to two orders of magnitude.
 
 \subsection{Ideal Adsorbed Solution Theory}
 
@@ -288,22 +296,23 @@ the system composition. It can be done with either numerical integration of the
 isotherms, or by fitting the isotherms to a model, and then integrating the
 model analytically.
 
-The IAST model for the prediction of co-adsorption of mixtures in nanoporous
-materials is no panacea, and more involved theories have been developed for
-cases where ideality cannot be assumed: non-ideal adsorbed solution
-models\cite{Yang1987, Sweatman2002} the vacancy solution theory
-(VST),\cite{Suwanayuen1980} etc. However, IAST has been extensively studied and
-both its areas of validity and its weaknesses have been well assessed. In
-particular, it is known to be fairly reliable for adsorption of small gas
-molecules, or mixtures of apolar fluids of a similar chemical nature (such as
-mixtures of hydrocarbons). However, one limitation is that if there are big
-differences in the sorption capacity, extrapolations to high pressures are
-necessary and thus, the resulting mixture behavior predicted can be far off.
+% The IAST model for the prediction of co-adsorption of mixtures in nanoporous
+% materials is no panacea, and more involved theories have been developed for
+% cases where ideality cannot be assumed: non-ideal adsorbed solution
+% models\cite{Yang1987, Sweatman2002} the vacancy solution theory
+% (VST),\cite{Suwanayuen1980} etc. However, IAST has been extensively studied and
+% both its areas of validity and its weaknesses have been well assessed. In
+% particular, it is known to be fairly reliable for adsorption of small gas
+% molecules, or mixtures of apolar fluids of a similar chemical nature (such as
+% mixtures of hydrocarbons). However, one limitation is that if there are big
+% differences in the sorption capacity, extrapolations to high pressures are
+% necessary and thus, the resulting mixture behavior predicted can be far off.
 
 \subsection{IAST and flexible frameworks}
 
-The original derivation of the IAST equations\cite{Myers1965} highlights three
-hypotheses on the co-adsorption process, on which the model is built:
+The original derivation of the IAST equations\cite{Myers1965} by
+\citeauthor{Myers1965} highlights three hypotheses on the co-adsorption process,
+on which the model is built:
 \begin{description}
     \item[(h1)] The adsorbing framework is inert from a thermodynamic point of view;
     \item[(h2)] The adsorbing framework specific area is constant with respect to
@@ -312,23 +321,24 @@ hypotheses on the co-adsorption process, on which the model is built:
 \end{description}
 
 While the meaning of the last assumption \textbf{(H3)} has been diversely
-interpreted by different authors, \citeauthor{Myers1965} originally meant it to
-qualify the method by which the adsorption isotherms are measured. There is,
-however, consensus on the fact that absolute adsorption should be used in IAST
-calculations --- as opposed to excess or net adsorption.\cite{Myers2014,
-Brandani2016} This assumption thus applies equally to both rigid and flexible
-adsorbents. However, the first two hypothesis are not valid for flexible
-nanoporous materials. \textbf{(H2)} is clearly invalid, as modifications in both
-the host's volume and internal structure lead to variations of pore size and
-specific area upon structural transitions. We note here, in passing, that
-\textbf{(H2)} should already be ruled out for systems of pore size close to the
-adsorbate diameter, as well as gas mixtures of widely different size or shape.
-It should, for example, not apply to molecular sieves systems, yet those can
-often be described reasonably well by IAST in practice. Finally, \textbf{(H1)}
-is violated by all the systems that feature adsorption-induced deformation, and
-in particular by systems presenting a gate-opening or a breathing behavior. As a
-conclusion, IAST has no theoretical foundation for those systems and should not
-be used for co-adsorption prediction in flexible frameworks.
+interpreted by different authors, Myers\cite{Myers1965} originally meant and
+later confirmed\cite{Myers2014} it to qualify the method by which the adsorption
+isotherms are measured. There is, however, consensus on the fact that absolute
+adsorption should be used in IAST calculations --- as opposed to excess or net
+adsorption.\cite{Brandani2016} This assumption thus applies equally to both
+rigid and flexible adsorbents. However, the first two hypothesis are not valid
+for flexible nanoporous materials. \textbf{(H2)} is clearly invalid, as
+modifications in both the host's volume and internal structure lead to
+variations of pore size and specific area upon structural transitions. We note
+here, in passing, that \textbf{(H2)} should already be ruled out for systems of
+pore size close to the adsorbate diameter, as well as gas mixtures of widely
+different size or shape.  It should, for example, not apply to molecular sieves
+systems, yet those can often be described reasonably well by IAST in practice.
+Finally, \textbf{(H1)} is violated by all the systems that feature
+adsorption-induced deformation, and in particular by systems presenting a
+gate-opening or a breathing behavior. As a conclusion, IAST has no theoretical
+foundation for those systems and should not be used for co-adsorption prediction
+in flexible frameworks.
 
 \begin{figure}[htp]
     \centering
@@ -362,6 +372,16 @@ If these isotherms were encountered for a rigid host material, the selectivity
 would be extremely high in this range, with one guest adsorbing but not the
 other.
 
+\begin{figure}[htp]
+    \centering
+    \input{figures/open-close-isotherms.tex}
+    \caption{Generation of the total isotherm in gate-opening materials by the
+    combination of two single-phase isotherms: an \emph{open} pores isotherm,
+    and an \emph{closed} pores isotherm. The transition between the two host
+    phases occurs at $P_\text{trans}$.}
+    \label{fig:open-close-isotherms}
+\end{figure}
+
 Yet, the step in the isotherms here is not simply linked to host--guest
 interactions but indeed due to a change in the host structure. In particular,
 upon adsorption of a gas mixture in this gate-opening framework, a phase
@@ -376,16 +396,6 @@ possible for one component to adsorb inside the close phase framework while at
 the same time the other component adsorb inside the open phase of the framework.
 The framework is either in one phase or in the other, at any given time.
 
-\begin{figure}[htp]
-    \centering
-    \input{figures/open-close-isotherms.tex}
-    \caption{Generation of the total isotherm in gate-opening materials by the
-    combination of two single-phase isotherms: an \emph{open} pores isotherm,
-    and an \emph{closed} pores isotherm. The transition between the two host
-    phases occurs at $P_\text{trans}$.}
-    \label{fig:open-close-isotherms}
-\end{figure}
-
 The whole issue with using single-component isotherms to predict multi-component
 adsorption in frameworks with phase transition boils down to the origin of the
 stepped isotherms. The single-component isotherm (represented in
@@ -394,11 +404,10 @@ the first phase (the contracted pore phase), and one in the second phase (the
 open pore phase). Both phases --- and the thermodynamic equilibrium between them
 --- need to be taken in account to predict the multi-component adsorption.
 
-
 \subsection{Osmotic Framework Adsorbed Solution Theory}
 
-As I established it in section~\ref{sec:osmotic-ensemble}, the thermodynamic
-ensemble suited for the study of adsorption in flexible materials is the osmotic
+As established in section~\ref{sec:osmotic-ensemble}, the thermodynamic ensemble
+suited for the study of adsorption in flexible materials is the osmotic
 ensemble. Let's recall that in this ensemble, the thermodynamic potential
 $\Omega$ is a function of the mechanical pressure $P$, the temperature $T$, the
 number of atoms in a given host phase $\alpha$ and the adsorbed species chemical
@@ -462,7 +471,7 @@ properties (guest uptake and selectivity) using IAST in this most stable phase.
 
 \subsection{Comparing IAST and OFAST}
 
-I present here two examples of co-adsorption of gas mixtures in metal--organic
+I present here two examples of co-adsorption of gas mixtures in metal-organic
 frameworks with gate opening behavior, based on experimental data from the
 published literature, comparing the predictions of IAST with those of OFAST. The
 first example deals with the adsorption of $\ce{CO2}$, $\ce{CH4}$, and $\ce{O2}$
@@ -472,7 +481,7 @@ closely to the archetypal \emph{gate opening} scenario described above. The
 second example deals with linear alkanes (ethane, propane, and butane)
 adsorption in \RPMZn MOF\cite{Nijem2012}; figure~\ref{fig:rpm3-zn} presents the
 framework structure of \RPMZn and relevant experimental adsorption and
-desorption isotherms, from Ref.~\citenum{Nijem2012}.
+desorption isotherms.
 
 \subsubsection{Simple isotherms in \Cudhbc}
 
@@ -481,7 +490,7 @@ desorption isotherms, from Ref.~\citenum{Nijem2012}.
     \raisebox{-0.5\height}{\includegraphics[width=0.35\textwidth]{figures/cu-dhbc-structure}}
     \hfill
     \raisebox{-0.5\height}{\input{figures/cu-dhbc.tex}}
-    \caption{(left) \Cudhbc structure (from Ref.~\citenum{Kitaura2003}). (right)
+    \caption{(left) \Cudhbc structure (from reference.~\cite{Kitaura2003}). (right)
     Sorption isotherms and model isotherms fit at \SI{298}{K} in \Cudhbc for
     various gas compounds. Adsorption data are presented using filled symbols,
     and desorption data using empty symbols. Thick lines are Langmuir isotherms
@@ -587,7 +596,6 @@ closed for \ce{O2} while at the same time being open for \ce{CO2} at pressures
 lower than \SI{40}{atm}. I thus confirm by a quantitative study that IAST is not
 adapted for adsorption in flexible nanoporous materials.
 
-\clearpage
 \subsubsection{More complex isotherms: the case of \RPMZn}
 
 \begin{figure}[htp]
@@ -595,7 +603,7 @@ adapted for adsorption in flexible nanoporous materials.
     \raisebox{-0.5\height}{\includegraphics[width=0.35\textwidth]{figures/rpm3-zn-structure}}
     \hfill
     \raisebox{-0.5\height}{\input{figures/rpm3-zn.tex}}
-    \caption{(left) \RPMZn structure (from Ref.~\citenum{Lan2009}).
+    \caption{(left) \RPMZn structure (from reference~\cite{Lan2009}).
     (right) Sorption isotherms at \SI{298}{K} for short
     alkanes in \RPMZn. Blue circles are for \ce{C2H6}, red triangles for
     \ce{C3H8}, and green squares for \ce{C4H10}. Filled symbols for adsorption,
@@ -703,41 +711,55 @@ far off from reality, as seen in the case of \ce{C3H8}/\ce{C2H6}.
     \label{fig:rpm3-zn:iast-ofast:loadings}
 \end{figure}
 
-\subsection{Conclusion}
+\clearpage
+\subsection{Conclusions}
 
-\fbox{finish here}
+% Several published studies of fluid mixture co-adsorption in flexible nanoporous
+% material use the Ideal Adsorbed Solution Theory (IAST) method to predict the
+% co-adsorption behavior based on single-component adsorption isotherms. This is an
+% invalid application of IAST, which is not adapted to flexible frameworks, as its
+% very first hypothesis is that the framework is inert during adsorption --- as
+% clearly stated in the derivation of the method in the seminal IAST
+% paper.\cite{Myers1965} However, the IAST method can be adapted for frameworks
+% presenting phase transitions induced by adsorption by using the osmotic
+% thermodynamic ensemble. This extension of IAST to flexible materials is called
+% Osmotic Framework Adsorbed Solution Theory (OFAST).\cite{Coudert2010} It allows
+% the prediction of phases transitions upon co-adsorption, as well as the details
+% of the multi-component co-adsorption isotherms, and is available in commercial
+% software.\cite{VanAssche2016} Moreover, the use of OFAST with data at various
+% temperatures allows one to produce multi-dimensional {temperature, pressure,
+% mixture composition} phase diagrams for the flexible host.\cite{Ortiz2011}
+% Finally, while OFAST itself relies on the IAST to describe adsorption in each
+% phase of the host material, this method of accounting for flexibility is not
+% limited to IAST and can be used with other adsorbed solution models, such as
+% real adsorbed solution theory (RAST) or vacancy solution theory (VST).
 
-Several published studies of fluid mixture co-adsorption in flexible nanoporous
-material use the Ideal Adsorbed Solution Theory (IAST) method to predict the
-co-adsorption behavior based on single-component adsorption isotherms. This is an
-invalid application of IAST, which is not adapted to flexible frameworks, as its
-very first hypothesis is that the framework is inert during adsorption --- as
-clearly stated in the derivation of the method in the seminal IAST
-paper.\cite{Myers1965} However, the IAST method can be adapted for frameworks
-presenting phase transitions induced by adsorption by using the osmotic
-thermodynamic ensemble. This extension of IAST to flexible materials is called
-Osmotic Framework Adsorbed Solution Theory (OFAST).\cite{Coudert2010} It allows
-the prediction of phases transitions upon co-adsorption, as well as the details
-of the multi-component co-adsorption isotherms, and is available in commercial
-software.\cite{VanAssche2016} Moreover, the use of OFAST with data at various
-temperatures allows one to produce multi-dimensional {temperature, pressure,
-mixture composition} phase diagrams for the flexible host.\cite{Ortiz2011}
-Finally, while OFAST itself relies on the IAST to describe adsorption in each
-phase of the host material, this method of accounting for flexibility is not
-limited to IAST and can be used with other adsorbed solution models, such as
-real adsorbed solution theory (RAST) or vacancy solution theory (VST).
-
-In this paper, we compared the results given by the IAST and the OFAST method
-for co-adsorption of fluid mixtures in two different frameworks presenting a
-gate-opening behavior. In both cases, the selectivities derived by the IAST
-method are nonphysical and differ widely from the OFAST results, over- or
-under-estimate the selectivity, sometimes by up to two orders of magnitude.
-Moreover, we show that even without explicitly using IAST for calculations of
+In this chapter, I compared the IAST and OFAST macroscopic methods for the
+prediction of co-adsorption of fluid mixtures in two different frameworks
+presenting a gate-opening behavior. In both cases, the selectivities derived by
+the IAST method are nonphysical and differ widely from the OFAST results, over-
+or under-estimate the selectivity, sometimes by up to two orders of magnitude.
+Moreover, this show that even without explicitly using IAST for calculations of
 selectivity in flexible frameworks, one has to be cautious in comparing
 single-component isotherms of different guests. Differences in step pressure of
 stepped isotherms can lead to claims of strong selectivity using flexibility,
-when applying --- without noticing it --- concepts that are valid only for
-rigid host matrices.
+when applying --- without noticing it --- concepts that are valid only for rigid
+host matrices. All of this work is published in
+\citejournal{Fraux2018}\cite{Fraux2018}.
+
+Macroscopic methods such as the ones used here are only applicable under
+restrictive hypotheses; for example both OFAST and IAST assume an ideal mixture
+of perfect gases when deriving and solving the equations. Going past these
+hypotheses is possible but requires empirical models for the chemical
+potentials. Despite these limitations, they are very useful in the study of
+adsorption in flexible materials as they are orders of magnitude faster than
+fully atomistic methods and allow for a faster screening and estimations of the
+performance of different materials. If we want to overcome the limitations of
+such macroscopic methods, we can turn to atomistic simulations. Such simulations
+allow to explore non-ideal systems containing real gases without restricting
+ourselves to a specific expression for the chemical potentials. In the next
+chapter, I am going to present the framework of statistical thermodynamic that
+is used to link together atomistic and the macroscopic description of a system.
 
 \OnlyInSubfile{\printbibliography}
 
