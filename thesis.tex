@@ -9,6 +9,7 @@
 \usepackage{xspace}
 \usepackage{float}
 \usepackage{mdframed}
+\usepackage{placeins}
 \usepackage[
     backend=biber,
     bibencoding=utf8,
@@ -108,6 +109,8 @@
 \def\smallce#1{\ensuremath{\text{\tiny\ce{#1}}}}
 \def\ie{\emph{i.e.}\xspace}
 
+\def\TODO{\colorbox{red}{TODO}}
+
 \title{Molecular simulation of fluid adsorption in flexible nanoporous materials at multiple scales}
 \author{Guillaume Fraux}
 
@@ -124,10 +127,10 @@
 
     \include{intro}
     \subfile{context}
-    \subfile{thermodynamics}
+    \subfile{macroscopic}
     \subfile{ab-initio}
-    \subfile{classical-intrusion}
-    \subfile{hybrid-monte-carlo}
+    \subfile{classical}
+    \subfile{hybrid}
     \include{conclusion}
 
     \appendix

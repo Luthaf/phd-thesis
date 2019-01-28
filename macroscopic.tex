@@ -37,15 +37,16 @@ physical processes. It is  stated as follow:
 
 If we divide the total energy $E_\text{tot}$ of a system into its kinetic energy
 $E_\text{kin}$, potential energy $E_\text{pot}$ and internal energy $U$, and
-noting $W$ the work received by a system during a transformation and $Q$ the
+letting $W$ be the work received by a system during a transformation and $Q$ the
 heat transfer during the same transformation, the first law of thermodynamics
 can be written as
 \[\Delta E_\text{tot} = \Delta E_\text{kin} + \Delta E_\text{pot} + \Delta U = W + Q.\]
-If now we consider a system at rest, $E_\text{kin}$ and $E_\text{pot}$ are
-constant, and we find the usual formulation of the first law of thermodynamics:
+If now we consider a system at rest in a constant external potential field,
+$E_\text{kin}$ and $E_\text{pot}$ are constant, and we find the usual
+formulation of the first law of thermodynamics:
 \[\Delta U = W + Q.\]
 It is often interesting to use a differential formulation of this relation,
-considering infinitesimal transformations and changes in $U$, $W$, and $Q$:
+considering infinitesimal changes in $U$, $W$, and $Q$:
 \[\d U = \delta Q + \delta W.\]
 If the system composition is not constant, \ie if there are undergoing chemical
 reactions or if the system is open and exchanges particles with an external
@@ -84,7 +85,7 @@ linked to the heat transfer between the system and its surroundings by the
 Clausius relation:
 \[\Delta S = \frac Q T + S_\text{created}. \label{eq:clausius}\]
 The $Q/T$ term is homogeneous to an entropy and called the exchanged entropy,
-and is the entropy given to the system by its surroundings.  $S_\text{created}$
+and is the entropy given to the system by its surroundings. $S_\text{created}$
 is the entropy created during the transformation, and is a positive quantity by
 the second law of thermodynamics. When $S_\text{created}$ is null, the
 transformation is said to be \emph{reversible}.
@@ -181,7 +182,6 @@ as the associated fixed quantities and thermodynamic potentials.
 \begin{table}[htp]
     \centering
     \renewcommand{\arraystretch}{1.3}
-    % \newcolumntype{C}{>{\centering\arraybackslash}X}
     \begin{tabularx}{0.8\textwidth}{l c c c X}
         Ensemble            & Fixed quantities                    & \multicolumn{3}{l}{Thermodynamic potential} \\ \hline
         Micro-canonical     & $N$, $V$, $E$                       & \hskip1em $N$      & $\equiv$ & $-TS$       \\
@@ -423,23 +423,44 @@ isotherms for each component and $V^m_i(T,P)$ the molar volume for the species
 $i$ in the bulk phase. Supposing that the gases are ideal, the molar volume is
 given by $RT/P$, with $R$ the ideal gas constant.
 
-I have shown above that IAST cannot be used for the study of co-adsorption in
-frameworks with adsorption-induced phases transition, because the framework is
-not inert during adsorption. However, the IAST assumptions are still valid for
-each individual phase of the host matrix, if they are considered in the absence
-of a transition. As a consequence, it means that the IAST model can be used, for
-each possible host phase $\alpha$, to calculate the co-adsorption isotherms
-$n_{\alpha,i}(P,T)$ in this given phase. Then, the thermodynamic potential of
-each phase $\Omega_{\alpha}$ can be calculated from these isotherms through
-Equation~\ref{eq:osmotic-potential}, allowing to predict which phase is the more stable at
-a given gas phase pressure and composition --- and where the structural
-transition(s) occur. This method, extending the IAST theory in the osmotic
-ensemble to account for host flexibility, is called Osmotic Framework Adsorbed
-Solution Theory (OFAST).\cite{Coudert2009, Coudert2010} Although the
-amount of published data from direct experimental measurements of co-adsorption
-of gas mixtures in flexible MOFs is very limited, the OFAST method has been well
-validated in the past against experimental data.\cite{Ortiz2011, Hoffmann2011,
-Zang2011}
+I have shown previously that IAST cannot be used for the study of co-adsorption
+in frameworks with adsorption-induced phases transition, because the framework
+is not inert during adsorption. However, the IAST assumptions are still valid
+for each individual phase of the host matrix, if they are considered in the
+absence of a transition. As a consequence, it means that the IAST model can be
+used, for each possible host phase $\alpha$, to calculate the co-adsorption
+isotherms $n_{\alpha,i}(P,T)$ in this given phase. Then, the thermodynamic
+potential of each phase $\Omega_{\alpha}$ can be calculated from these isotherms
+through Equation~\ref{eq:osmotic-potential}, allowing to predict which phase is
+the more stable at a given gas phase pressure and composition --- and where the
+structural transition(s) occur. This method, extending the IAST theory in the
+osmotic ensemble to account for host flexibility, is called Osmotic Framework
+Adsorbed Solution Theory (OFAST).\cite{Coudert2009, Coudert2010}
+
+Although the amount of published data from direct experimental measurements of
+co-adsorption of gas mixtures in flexible MOFs is very limited, the OFAST method
+has been well validated in the past against experimental data.\cite{Ortiz2011,
+Hoffmann2011, Zang2011}. For example, \citeauthor{Ortiz2011}\cite{Ortiz2011}
+validated the method against experimental data for adsorption of
+\ce{CO2}/\ce{CH4} mixtures in the MIL-53(Al) MOF. MIL-53(Al) is the seminal
+example of material with a \emph{breathing} behavior: at low loadings, its most
+stable phase is the high porous volume open pores phases, at intermediate
+loadings it transition to a closed pores phase, and at high loading it goes back
+to the open pores structure. One of the very interesting thing that
+\citeauthor{Ortiz2011} predicted using OFAST is the increase of the stability
+domain of the closed pore phase when using mixtures with respect to pure
+component adsorption. The predicted phase diagrams of MIL-53(Al) is reproduced
+in figure~\ref{fig:ofast:ortiz}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/cited/ofast-phase-diagram-rotated}
+    \caption{Temperature–pressure phase diagram of MIL-53(Al) upon adsorption
+    of a \ce{CO2}/\ce{CH4} mixture, with increasing \ce{CO2} molar fraction.
+    Dashed lines correspond to pure component diagrams.
+    Reproduced from reference~\citenum{Ortiz2011} with authorization.\TODO}
+    \label{fig:ofast:ortiz}
+\end{figure}
 
 In practice, the use of OFAST follows the following steps. First, the host
 phases of interest are identified and the single-component adsorption isotherms
@@ -509,22 +530,22 @@ structure; and at low loading using a Henry isotherm model
 (equation~\ref{eq:henry-isotherm}) for the closed pores structure.
 
 \[N(p) = K_H \ p \label{eq:henry-isotherm}\]
-\[N(p) = N \ \frac{K_L \ p}{1 + K_L \ p} \label{eq:langmuir-isotherm}\]
+\[N(p) = N_L \ \frac{K_L \ p}{1 + K_L \ p} \label{eq:langmuir-isotherm}\]
 
 \begin{table}[htp]
     \centering
     \renewcommand{\arraystretch}{1.2}
     \newcolumntype{C}{>{\centering\arraybackslash}X}
     \begin{tabularx}{\textwidth}{c C c C c C}
-        \textbf{Gas} & $K_H$ / (mol/atm) & $N$ / mol & $K_L$ / atm & $P_\text{trans}$ / atm & $\Delta F$ / (kJ/mol)  \\ \hline
-        \ce{CH4}     &     0.0           & 2.86      & 0.134       &                5       & -3.56                  \\
-        \ce{CO2}     &     0.0           & 2.79      & 0.699       &                1       & -3.59                  \\
-        \ce{O2}      &     0.0           & 2.68      & 0.034       &               20       & -3.39                  \\
+        \textbf{Gas} & $K_H$ / (mol/atm) & $N_L$ / mol & $K_L$ / atm & $P_\text{trans}$ / atm & $\Delta F$ / (kJ/mol)  \\ \hline
+        \ce{CH4}     &     0.0           & 2.86      & 0.134         &                5       & -3.56                  \\
+        \ce{CO2}     &     0.0           & 2.79      & 0.699         &                1       & -3.59                  \\
+        \ce{O2}      &     0.0           & 2.68      & 0.034         &               20       & -3.39                  \\
     \end{tabularx}
     \caption{Fitted coefficients for the sorption isotherms and free energy
     difference between open and closed structures in \Cudhbc. See
     equations~\ref{eq:henry-isotherm} and \ref{eq:langmuir-isotherm} for the
-    definitions of $K_H$, $N$ and $K_L$.}
+    definitions of $K_H$, $N_L$ and $K_L$.}
     \label{table:cu-dhbc:fit}
 \end{table}
 
@@ -596,6 +617,7 @@ closed for \ce{O2} while at the same time being open for \ce{CO2} at pressures
 lower than \SI{40}{atm}. I thus confirm by a quantitative study that IAST is not
 adapted for adsorption in flexible nanoporous materials.
 
+\FloatBarrier
 \subsubsection{More complex isotherms: the case of \RPMZn}
 
 \begin{figure}[htp]
@@ -641,15 +663,15 @@ pressures higher than \SI{0.2}{atm}. \fbox{add the corresponding figures?}
     \renewcommand{\arraystretch}{1.3}
     \newcolumntype{C}{>{\centering\arraybackslash}X}
     \begin{tabularx}{\textwidth}{c C c C c C}
-        \textbf{Gas} & $K_H$ / (mol/bar) & $N$ / mol & $K_L$ / bar & $P_\text{trans}$ / bar & $\Delta F$ / (kJ/mol)  \\ \hline
-        \ce{C2H6}    & 0.905             & 4.82      & 1.74        &            /           &          /             \\
-        \ce{C3H8}    & 2.88              & 9.00      & 42.0        &           0.07         &        -30.1           \\
-        \ce{C4H10}   & 27.3              & 5.87      & 699         &           0.01         &        -29.8           \\
+        \textbf{Gas} & $K_H$ / (mol/bar) & $N_L$ / mol & $K_L$ / bar & $P_\text{trans}$ / bar & $\Delta F$ / (kJ/mol)  \\ \hline
+        \ce{C2H6}    & 0.905             & 4.82        & 1.74        &            /           &          /             \\
+        \ce{C3H8}    & 2.88              & 9.00        & 42.0        &           0.07         &        -30.1           \\
+        \ce{C4H10}   & 27.3              & 5.87        & 699         &           0.01         &        -29.8           \\
     \end{tabularx}
     \caption{Fitted coefficients for the sorption isotherms and free energy
     difference between open and closed structures in \RPMZn. See
     equations~\ref{eq:henry-isotherm} and \ref{eq:langmuir-isotherm} for the
-    definitions of $K_H$, $N$ and $K_L$.}
+    definitions of $K_H$, $N_L$ and $K_L$.}
     \label{table:rpm3-zn:fit}
 \end{table}
 
@@ -711,7 +733,7 @@ far off from reality, as seen in the case of \ce{C3H8}/\ce{C2H6}.
     \label{fig:rpm3-zn:iast-ofast:loadings}
 \end{figure}
 
-\clearpage
+\FloatBarrier
 \subsection{Conclusions}
 
 % Several published studies of fluid mixture co-adsorption in flexible nanoporous
@@ -744,8 +766,7 @@ selectivity in flexible frameworks, one has to be cautious in comparing
 single-component isotherms of different guests. Differences in step pressure of
 stepped isotherms can lead to claims of strong selectivity using flexibility,
 when applying --- without noticing it --- concepts that are valid only for rigid
-host matrices. All of this work is published in
-\citejournal{Fraux2018}\cite{Fraux2018}.
+host matrices. All of this work is published in \citejournal{Fraux2018}\cite{Fraux2018}.
 
 Macroscopic methods such as the ones used here are only applicable under
 restrictive hypotheses; for example both OFAST and IAST assume an ideal mixture
