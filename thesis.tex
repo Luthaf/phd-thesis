@@ -3,6 +3,9 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage[osf]{libertine}
+\usepackage[italic]{mathastext}
+\usepackage{mathtools}
+\usepackage{bm}
 \usepackage{subfiles}
 \usepackage[]{graphicx}
 \usepackage{tabularx}
@@ -10,6 +13,7 @@
 \usepackage{float}
 \usepackage{mdframed}
 \usepackage{placeins}
+\usepackage[parfill]{parskip}
 \usepackage[
     backend=biber,
     bibencoding=utf8,
@@ -95,19 +99,24 @@
     \begingroup
         \hypersetup{hidelinks}
         \hrule\vspace*{3pc}%
-        \printcontents[chapters]{}{1}{}%
+        \printcontents[chapters]{}{1}{\setlength\parskip{0pt}}%
         \vspace*{0.8pc}\hrule
     \endgroup
-}%
+}
 
 % Convenience macros
 \def\ZIF8{\mbox{ZIF-8}}
 \def\abinitio{\emph{ab initio}\xspace}
 \def\d{\text{d}}
+\def\r{\vec{r}}
 \def\Cudhbc{Cu(dhbc)$_\text{2}$(4,4$^\prime$-bpy)\xspace}
 \def\RPMZn{RPM3-Zn\xspace}
 \def\smallce#1{\ensuremath{\text{\tiny\ce{#1}}}}
 \def\ie{\emph{i.e.}\xspace}
+\def\etc{\emph{etc.}\xspace}
+\let\phi\varphi
+\let\epsilon\varepsilon
+\let\vec\bm
 
 \def\TODO{\colorbox{red}{TODO}}
 

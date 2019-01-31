@@ -2,26 +2,211 @@
 
 \begin{document}
 
+\OnlyInSubfile{\setcounter{chapter}{2}}
+
 \chapter{Quantum simulations}
 \startcontents[chapters]
 \printpartialtoc
 
-\section{Statistical physics: from single atoms to chemistry}
+\section{Statistical thermodynamics}
+
+% TODO: defined the Hamiltonian
+
+\subsection{Maxwell-Boltzmann statistic}
+
+\subsection{Partition function}
+
+\subsection{Observables and sampling}
+
+\section{From Schrödinger to Density Functional Theory}
+
+\subsection{Quantum chemistry and Schrödinger equation}
+
+If we want to be able to compute properties of an atomic system using the
+framework of statistical physics, we need to be able to compute the total energy
+of the system in a given configuration $U(r^N)$. The most generic way to do so
+is directly derived from the fundamental equation of quantum physics, the
+Schrödinger equation. In the quantum chemistry, the state of a system is
+represented by a complex-valued function of positions and time $\Psi(r, t)$. The
+Schrödinger equation describes the time evolution of the system given its
+Hamiltonian $\hat{\mathcal{H}}$:
+\[\hat{\mathcal{H}} \Psi(r, t) = i\hbar \frac{\partial}{\partial t} \Psi(r, t),\label{eq:time-schrodinger}\]
+where $i$ is the imaginary number, and $\hbar$ the reduced Plank's constant. The
+quantum Hamiltonian operator can be expressed as a sum of quantum kinetic energy
+and potential energy:
+\[\hat{\mathcal{H}} \Psi(r, t) = - \sum \frac{\hbar^2}{2m} \nabla^2 \Psi(r, t) + V(r^N)\Psi(r, t)\]
+where the $m$ are the masses of the particles in the system, $\nabla$ is the
+nabla operator, and $V(r)$ is the potential energy of the system. When the
+potential energy does not depend on time, we can look for solution with
+separated variables of the form $\Psi(r, t) = \psi(r) \times y(t)$. Replacing in
+equation~\eqref{eq:time-schrodinger}, and separating the spatial and time
+quantities, we get
+\[- \sum \frac{\hbar^2}{2m} \frac{1}{\psi(r)} \nabla^2 \psi(r) + V(r^N) = i\hbar \frac{1}{y(t)} \frac{\d y(t)}{\d t}.\]
+For this equation to stand for all $t$ and all $r$, there must exist a constant
+value $E$ such that:
+\[\begin{dcases}
+    E =& - \sum \frac{\hbar^2}{2m} \frac{1}{\psi(r)} \nabla^2 \psi(r) + V(r^N) \\
+    E =& i\hbar \frac{1}{y(t)} \frac{\d y(t)}{\d t} \\
+\end{dcases}\]
+
+Putting everything together, any solution of the general
+equation~\eqref{eq:time-schrodinger} can be written as a (potential infinite)
+linear combination of special solutions:
+\[\Psi(r, t) = \sum_i c_i \ \psi_i(r) \ e^{-i E_i t / \hbar},\]
+with $c_i$ being the complex coefficients of the combination; and the $(E_i\ ;\
+\psi_i)$ pairs are solutions of the \emph{time-independent} Schrödinger equation:
+\[\hat{\mathcal{H}} \psi(r) = E \psi(r).\label{eq:schrodinger}\]
+Because the time dependence of $\Psi$ have a wave-like form and because $\Psi$
+propagate through space and time, it is often called a \emph{wave function}.
+
+\subsection{Density Functional Theory}
+
+To compute the energy of an atomic system, we need to solve
+equation~\eqref{eq:schrodinger} for a collections of $N$ electrons carrying the
+negative charge $-e$ and $M$ nuclei carrying the positive charge $e Z_j$
+interacting though Coulombic potential. As the electrons are much more
+lightweight than the nuclei (an electron is 2000 time lighter than a single
+proton), it is customary to work under the Born-Oppenheimer approximation. In
+this approximation, the degrees of freedom of electrons and nuclei are
+decoupled, and the electrons move much faster than the nuclei. This effectively
+means that at a given point in time, the electrons evolve in a constant
+electrostatic potential from the fixed nuclei. The corresponding Hamiltonian
+(using atomic units, \ie $e^2 / 4\pi\epsilon_0 = 1$; $\hbar = 1$; and
+$m_\text{electron} = 1$) is:
+\[H\psi = \left[-\frac 1 2 \sum_i^N \nabla^2_i - \sum_i^N \sum_j^M \frac{Z_j}{|\r_i - \r_j|} + \sum_i^N \sum_{j>i}^N \frac{1}{|\r_i - \r_j|} \right] \psi\]
+We can rewrite this by defining the potential an electron feels due to the
+presence of all the nuclei $V_\text{ext}(r) = -\sum_{j} Z_j / |\r - \r_j|$, and
+the electron-electron interaction potential $U(r_i, r_j) = 1 / |\r_i -
+\r_j|$:
+\[\hat{\mathcal{H}}\psi = \left[-\frac 12\sum_{i=1}^N \nabla^2_i + \sum_{i=1}^N V_\text{ext}(\r_i) + \sum_{i=1}^N \sum_{j>i}^N U(\r_i, \r_j)\right] \psi\]
+\[\hat{\mathcal{H}}\psi = \left[\hat T + \hat V_\text{ext} + \hat V_{ee}\right] \psi \label{eq:electronic-hamiltonian}\]
+The three terms in the Hamiltonian are the kinetic energy $\hat T$, the total
+external potential $\hat V_\text{ext}$, and the electron-electron interaction
+potential $\hat V_{ee}$.
+
+The Density Functional Theory (DFT) is a strategy to solve the Schrödinger
+equation without having to explicitly determine the wave function $\psi$. It is
+based on the fact that the square of the norm of the wave function is the
+probability for the system to be in a given state. For a system of electrons
+evolving in the fixed potential created by the nuclei, the wave function
+$\psi(\{\vec x\}, \{s\})$ depends on the Cartesian coordinates of all the
+electrons $\{\vec x\}$ and their spins $\{s\}$. The electronic density $n(\vec
+r)$ is the probability to find an electron in small neighboring of $\r$. It
+is defined as:
+\[n(\r) = N \iiint |\psi(\r, s_1, \vec x_2, s2, \cdots, \vec x_N, s_N)|^2 \ \d \vec x_2 \cdots\d \vec x_N \ \d s_1 \cdots\d s_N \label{eq:electron-density}\]
+We also define the two electrons density $n_2(\r_1, \r_2)$, which is the
+probability for an electron to be in $\r_1$, while another electron is in
+$\r_2$:
+\[n_2(\r_1, \r_2) = N \iiint |\psi(\r_1, s_1, \r_2, s_2, \vec x_3, s3, \cdots, \vec x_N, s_N)|^2 \ \d \vec x_3 \cdots\d \vec x_N \ \d s_1 \cdots\d s_N\]
+
+Hohenberg and Kohn showed in 1964 that every electronic density correspond
+exactly to one and only one external potential $V_\text{ext}$, \ie the knowledge
+of the external potential or the density are equivalent. This also means that
+knowing the electronic density is equivalent to knowing the wave function of the
+system, as one can reconstruct it using equation~\eqref{eq:schrodinger}. As a
+consequence, all the observables of the system only depend on the electronic
+density, and can be written as functionals of this density: $E[n]$, $\Psi[n]$,
+\etc
+
+The second Hohenberg and Kohn theorem states that the ground state electronic
+density $n_0(\r)$ is the one that minimize the energy functional: $E[n] \geq
+E_0 = E[n_0]$. From the previous relations, the total energy functional contains
+three terms:
+\[E[n] = T[n] + V_\text{ext}[n] + V_{ee}[n];\]
+where the potential terms can be expressed as integrals of the one and two
+electrons density:
+\[ V_\text{ext}[n] = \int V_\text{ext}(\r) \ n(\r) \ \d \r;\]
+\[ V_{ee}[n] = \iint \frac{n_2(\r_1, \r_2)}{|\r_1 - \r_2|} \ \d \r_1 \d \r_2.\]
+While we can compute and minimize $V_\text{ext}[n]$ given the positions of the
+nuclei, the two other terms are harder to evaluate.
+
+Kohn and Sham reformulated the problem in 1965 by considering a set of
+\emph{non-interacting} electrons evolving in a specific external potential, such
+as the density arising from these electrons is the same as the one we look for.
+The new system of non-interacting electrons is described by a new set of
+independent orbitals $\phi_i$, such as the total electronic density of the system
+\[n(\r) = \sum_i^N \left| \phi_i(\r) \right|^2\]
+
+For these non interacting electrons, the kinetic energy $T_s[n]$ is known:
+\[T_s[n] = \sum_i^N \int \phi_i^*(\r) \left( -\frac 12 \nabla^2 \right) \phi_i(\r) \d \r\]
+We also know that most of the electron-electron interactions will arise from the
+classical Coulombic interaction --- the Hartree energy --- which we can compute
+from the electronic density:
+\[V_H[n] = \iint \frac{n(\r_1) n(\r_2)}{|\r_1 - \r_2|} \ \d \r_1 \d \r_2.\]
+The functional to minimize in order to find the electronic density is now
+\[E[n] = T_s[n] + V_\text{ext}[n] + V_H[n] + E_{xc}[n],\label{eq:energy-functional}\]
+in which we can compute all of the terms expect for the exchange-correlation
+contribution $E_{xc}[n]$.
+\[E_{xc}[n] = (T[n] - T_s[n]) + (V_{ee}[n] - V_H[n]).\]
+This contribution is generally unknown, and describe the quantum nature of
+electrons that are able to interact with themselves.\fbox{interpretation of
+exchange and correlation?} It can be shown that the minimizing the energy
+functional is equivalent to solving a set of differential equations:
+\[ \left[-\frac 12 \nabla^2 + V_\text{ext}(\r) + \frac{\partial V_H[n](\r)}{\partial n(\vec r)} + \frac{\partial E_{xc}[n](\r)}{\partial n(\vec r)} \right] \phi_i = \epsilon_i \phi_i \label{eq:kohn-sham}\]
+These are non-linear equations, as both $V_H[n]$ and $E_{xc}[n]$ depends on the
+$\phi_i$ through $n(\r)$. The usual algorithm to solve them is a self-consistent
+iterative algorithm. Starting from an initial guess for the Kohn-Sham orbitals
+$\phi_i^0$:
+\begin{enumerate}
+    \item Calculate the corresponding electron density at step $\alpha$, $n^\alpha(\r)$;
+    \item Calculate all the terms in the left hand side of equation~\eqref{eq:kohn-sham}:
+          kinetic, external, Hartree and exchange-correlation energies using this electron density;
+    \item Solve the Kohn-Sham equation to find new Kohn-Sham orbitals $\phi_i^{\alpha+1}$;
+    \item Compute the new energy using the energy functional~\eqref{eq:energy-functional}.
+          If this energy is the same as the one in the previous step, then we have found
+          the minimal energy and thus the ground state density. Else, go back to step
+          1 using the new Kohn-Sham orbitals as the initial guess.
+\end{enumerate}
+
+\subsection{Exchange, Correlation and dispersion}
+
+A good approximation for the exchange-correlation functional is required to
+solve the Kohn-Sham equations. There are number of approach routinely used in
+theoretical chemistry such as Local Density Approximation (LDA) where the
+exchange-correlation functional only depends on the local density; Generalized
+Gradient Approximation (GGA), where the functional also depends on the local
+gradient of the density, meta-GGA functional incorporating the second derivative
+of the density (the Laplacian of the density); or hybrid functional. Hybrid
+functionals mix exchange expressions from LDA or GGA with the more precise
+Hartree-Fock \fbox{introduce HF?} expressions, while using the LDA or GGA
+expressions for the correlation.
+
+Generally, the exchange-correlation functional only depends on the local
+density, and maybe some of its derivative. This means that the DFT method will
+have trouble reproducing the non-electrostatic long-range correlation effects
+such as the dispersion interaction. Fortunately, we have a simple analytic
+formulation for these interaction, which Grimme and coworkers\cite{Grimme2006}
+proposed to include when computing the total energy. This correction is added to
+the energy obtained by DFT, and does not directly modify the electronic density.
+\[E_\text{tot} = E_\text{DFT} + E_\text{disp}; \]
+This correction is added to the energy obtained by DFT, and does not directly
+modify the electronic density.
+\[\text{with}\quad E_\text{disp} = - s_6 \sum_i^M\sum_{j>i}^M\frac{\sqrt{C_6^i C_6^j}}{R_{ij}^6} f_{ij}(R_{ij}),\]
+where the sum is over all the pairs of atoms, $R_{ij}$ is the distance between
+the atoms, $s_6$ a parameter specifically adapted to the exchange-correlation
+functional one uses, the $C_6^i$ are parameters tabulated for each element and
+$f_{ij}$ is a damping function.
+\[f_{ij}(R_{ij}) =
+\begin{dcases}
+    \frac{1}{1 + \exp\left[-d \left(\frac{R_{ij}}{\sigma_i + \sigma_j} -1\right)\right]} &\text{for } R_{ij} < R_c \\
+    0 &\text{for } R_{ij} \geq R_c \\
+\end{dcases}\]
+In this expression, $d$ is a damping parameter, usually set to 20, $R_c$ a
+cutoff radius, and the $\sigma_i$ parameters are tabulated atomic van Der Waals
+radii.
 
 \section{Molecular dynamics}
 
-\section{From Schrödinger equation to Density Functional Theory}
-
-% 2 pages, Schrödinger => Khon-Sham => Exchange & Correlation => Grimme
+% We will assume that the atoms behave as classical point particles
 
 \section{Adsorption of \ce{N2} in \ZIF8 and derivatives}
 
-\subsection{The \ZIF8 familly}
-
-\subsection{Computational methods}
+\subsection{The \ZIF8 family of materials}
 
 \subsection{Deformation of \ZIF8 under adsorption}
 
-\section{Classical Force-fields parametrization from \abinitio data}
+\section{Classical Force-fields from \abinitio data}
+
+\OnlyInSubfile{\printbibliography}
 
 \end{document}

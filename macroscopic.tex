@@ -63,7 +63,7 @@ system. In this case,
 where $p_\text{ext}$ is the external pressure. If $p_\text{ext}$ is constant
 during the transformation, this can be written as $\delta W_\text{pressure} =
 -\d (p_\text{ext} V)$. We can then define the enthalpy $H$ as $H = U + PV$ ;
-which allow us to rewrite equation~\ref{eq:first-principle} as
+which allow us to rewrite equation~\eqref{eq:first-principle} as
 \[\d H = \delta Q + \delta W_\text{other} - \sum_i \mu_i \d N_i.\]
 Here, $\delta W_\text{other}$ is the work coming from all forces
 \emph{excluding} the forces of pressure.
@@ -90,8 +90,7 @@ is the entropy created during the transformation, and is a positive quantity by
 the second law of thermodynamics. When $S_\text{created}$ is null, the
 transformation is said to be \emph{reversible}.
 
-\vskip\baselineskip
-Using the relations~\ref{eq:first-principle} and~\ref{eq:clausius}; and
+Using the relations~\eqref{eq:first-principle} and~\eqref{eq:clausius}; and
 considering that only the pressure forces act on the system, we can extract an
 evolution principle for any transformation:
 \[T \d S = \delta Q + \d S_\text{created}\]
@@ -113,7 +112,7 @@ temperature: the $NVT$ or canonical ensemble, and the $NPT$ or
 isobaric-isothermal ensemble.
 
 Each of these ensembles have an associated thermodynamic potential. For the
-micro-canonical ensemble, we start with equation~\ref{eq:thermo-potentials}:
+micro-canonical ensemble, we start with equation~\eqref{eq:thermo-potentials}:
 \[\d \Phi = \d U + P \d V - \sum_i \mu_i \d N_i - T \d S.\]
 $\d U$ and $\d V$ will be zero as the energy and volume is constant. Moreover
 as the system composition is fixed, $\d N_i = 0$. This gives
@@ -121,10 +120,9 @@ as the system composition is fixed, $\d N_i = 0$. This gives
 The thermodynamic potential for the $NVE$ ensemble is the negentropy $N \equiv
 -TS$, which will be minimal (and the entropy will be maximal) at equilibrium.
 
-\vskip\baselineskip
 If we now allow the energy to change but fix the kinetic energy and thus the
 temperature by the mean of an external thermostat,
-equation~\ref{eq:thermo-potentials} becomes
+equation~\eqref{eq:thermo-potentials} becomes
 \[\d \Phi = \d U + P \d V - \sum_i \mu_i \d N_i - T \d S - (S \d T - S \d T) \]
 \[\d \Phi = \d U + P \d V - \sum_i \mu_i \d N_i - \d (TS) + S \d T. \]
 As the temperature, volume and composition are fixed, $\d T = \d V = d N_i = 0$,
@@ -133,10 +131,9 @@ which means that
 We can introduce the Helmholtz free energy $F \equiv U - TS$ (sometimes simply
 called free energy), which is the thermodynamic potential in the $NVT$ ensemble.
 
-\vskip\baselineskip
 If now we allow the volume to change in the system, while fixing the pressure
 with a barostat and keeping the temperature fixed,
-equation~\ref{eq:thermo-potentials} becomes
+equation~\eqref{eq:thermo-potentials} becomes
 \[\d \Phi = \d U + P \d V + (V\d P - V\d P) - T \d S - (S\d T - S\d T) - \sum_i \mu_i \d N_i\]
 \[\d \Phi = \d U + \d (PV) - \d(TS) - V\d P + S\d T - \sum_i \mu_i \d N_i\]
 Again, as the pressure, temperature and composition are fixed, this reduces to
@@ -154,21 +151,20 @@ is rigid, and do not deform under adsorption, then we can consider that the
 volume of the system is constant. The main difference with the previously
 defined ensembles is that the composition of the gas phase is not fixed:
 the number of gas molecules adsorbed in the system is allowed to change during
-adsorption. In this case, equation~\ref{eq:thermo-potentials} becomes
+adsorption. In this case, equation~\eqref{eq:thermo-potentials} becomes
 \[\d \Phi = \d U - \d(TS) + P\d V + S\d T - \sum_i \mu_i \d N_i\]
 Removing the null terms $\d V$ and $\d T$, we find the definition of the
 \emph{grand-canonical} thermodynamic potential $\Psi$, associated with the
 $\mu_iVT$ ensemble:
 \[\Psi \equiv U - TS - \sum_i \mu_i N_i \equiv F - \sum_i \mu_i N_i.\]
 
-\vskip\baselineskip
 If we now consider adsorption in a flexible host, the volume is no longer fixed.
 Instead, in most experimental setups, external pressure is fixed and set equal
 to the pressure of the adsorbed gases outside of the host. The thermodynamic
 ensemble suited for the study of adsorption in flexible materials is called the
 \emph{osmotic ensemble}, first introduced in 1994\cite{Mehta1994} for the study
 of fluid mixtures, and adapted to multi-components phase equilibrium in
-1998\cite{Escobedo1998}. Again, starting from equation~\ref{eq:thermo-potentials}
+1998\cite{Escobedo1998}. Again, starting from equation~\eqref{eq:thermo-potentials}
 \[\d \Phi = \d U - \d (PV) - \d(TS) - V\d P + S\d T - \sum_i \mu_i \d N_i.\]
 As usual, $\d T$ and $\d P$ are null as the corresponding variable is fixed. In
 the sum over the $\mu_iN_i$ terms, only the adsorbed species quantities of
@@ -431,7 +427,7 @@ absence of a transition. As a consequence, it means that the IAST model can be
 used, for each possible host phase $\alpha$, to calculate the co-adsorption
 isotherms $n_{\alpha,i}(P,T)$ in this given phase. Then, the thermodynamic
 potential of each phase $\Omega_{\alpha}$ can be calculated from these isotherms
-through Equation~\ref{eq:osmotic-potential}, allowing to predict which phase is
+through Equation~\eqref{eq:osmotic-potential}, allowing to predict which phase is
 the more stable at a given gas phase pressure and composition --- and where the
 structural transition(s) occur. This method, extending the IAST theory in the
 osmotic ensemble to account for host flexibility, is called Osmotic Framework
@@ -470,9 +466,9 @@ molecular simulation.
 
 Secondly, the relative free energies of the host phases (which reduces to a
 single $\Delta F_\text{host}$ in our case of two host phases) can be computed
-from equation~\ref{eq:osmotic-potential} and the experimental single-component
+from equation~\eqref{eq:osmotic-potential} and the experimental single-component
 stepped isotherm. For example, with two phases $\alpha$ and $\beta$, and
-considering ideal gas, we can express equation~\ref{eq:osmotic-potential} for
+considering ideal gas, we can express equation~\eqref{eq:osmotic-potential} for
 each phase:
 \[\Omega_\alpha(T, P, \mu_i) = F_\alpha + P V_\alpha - RT \sum_i \int_0^P \frac{n_{\alpha, i}(p)}{p} \ \d p\]
 \[\Omega_\beta(T, P, \mu_i) = F_\beta + P V_\beta - RT \sum_i \int_0^P \frac{n_{\beta, i}(p)}{p} \ \d p\]
@@ -525,9 +521,9 @@ single-component adsorption isotherms (reproduced in figure~\ref{fig:cu-dhbc})
 that clearly show the transition from a nonporous (at low gas pressure) to a
 microporous (at higher pressure) host phase. From the experimental
 data\cite{Kitaura2003} I fitted the isotherms at high loading using a Langmuir
-model (equation~\ref{eq:langmuir-isotherm}) for the isotherm in the open pores
+model (equation~\eqref{eq:langmuir-isotherm}) for the isotherm in the open pores
 structure; and at low loading using a Henry isotherm model
-(equation~\ref{eq:henry-isotherm}) for the closed pores structure.
+(equation~\eqref{eq:henry-isotherm}) for the closed pores structure.
 
 \[N(p) = K_H \ p \label{eq:henry-isotherm}\]
 \[N(p) = N_L \ \frac{K_L \ p}{1 + K_L \ p} \label{eq:langmuir-isotherm}\]
@@ -544,7 +540,7 @@ structure; and at low loading using a Henry isotherm model
     \end{tabularx}
     \caption{Fitted coefficients for the sorption isotherms and free energy
     difference between open and closed structures in \Cudhbc. See
-    equations~\ref{eq:henry-isotherm} and \ref{eq:langmuir-isotherm} for the
+    equations~\eqref{eq:henry-isotherm} and \eqref{eq:langmuir-isotherm} for the
     definitions of $K_H$, $N_L$ and $K_L$.}
     \label{table:cu-dhbc:fit}
 \end{table}
@@ -552,7 +548,7 @@ structure; and at low loading using a Henry isotherm model
 The resulting fit parameters are in table~\ref{table:cu-dhbc:fit}. In the
 closed-pores phase, I assumed that no adsorption takes place in the whole
 pressure range, this is why the $K_H$ coefficient is always zero. Using these
-parameters and equation~\ref{eq:ofast:delta-f}, I computed the free energy
+parameters and equation~\eqref{eq:ofast:delta-f}, I computed the free energy
 difference for all the isotherms. I took the value of $-3.5 \pm
 \SI{0.1}{kJ/mol}$ as the free energy difference between the phases.
 
@@ -597,7 +593,7 @@ of magnitude too high, with for example 2 000 instead of 20 for
 \ce{CO2}/\ce{O2}. Even at higher pressure --- above the gate opening pressure
 range --- the behavior is not identical to the OFAST calculations, because the
 incorrect behavior at low pressure affects IAST directly in the integration of
-the isotherms (equation~\ref{eq:iast}).
+the isotherms (equation~\eqref{eq:iast}).
 
 \begin{figure}[htp]
     \centering
@@ -670,7 +666,7 @@ pressures higher than \SI{0.2}{atm}. \fbox{add the corresponding figures?}
     \end{tabularx}
     \caption{Fitted coefficients for the sorption isotherms and free energy
     difference between open and closed structures in \RPMZn. See
-    equations~\ref{eq:henry-isotherm} and \ref{eq:langmuir-isotherm} for the
+    equations~\eqref{eq:henry-isotherm} and \eqref{eq:langmuir-isotherm} for the
     definitions of $K_H$, $N_L$ and $K_L$.}
     \label{table:rpm3-zn:fit}
 \end{table}
