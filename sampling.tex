@@ -10,31 +10,171 @@
 
 \section{Statistical thermodynamics}
 
-% TODO: defined the Hamiltonian
+Macroscopic methods such as the one I discussed in chapter~\ref{sec:macroscopic}
+can provide understanding and allow us to predict behavior in some cases; they
+are not always sufficiently precise to gain a complete understanding of the
+phenomenon at play. In particular, as these methods describe the systems at the
+macroscopic level, they don't take into account the individual atoms, and the
+interactions between them. Put another way, they don't describe the
+\emph{chemistry} of the system. Statistical thermodynamic is a tool that we can
+use to bring together the microscopic description of matter and the macroscopic
+behavior and characteristics of the system (pressure, temperature, \dots).
 
-\subsection{Maxwell-Boltzmann statistic}
+In this chapter, I will derive and recall some concepts from statistical
+thermodynamics I used during my PhD. For a more in depth description of
+statistical mechanics, I recommend the books of
+\citeauthor{Tuckerman2010}\cite{Tuckerman2010}, or (in french)
+\citeauthor{Diu1996}\cite{Diu1996}.
 
-\subsection{Partition function}
+\subsection{Maxwell-Boltzmann statistics in canonical ensemble}
 
-\subsection{Observables and sampling}
+We will consider a molecular system containing $N$ individual atoms behaving as
+classical particles with individual positions $\r_i$, masses $m_i$ and momentum
+$\p_i$. Supposing that these particles are in some container of fixed volume
+$V$, and at thermal equilibrium with a thermostat at temperature $T$, they
+evolve in the canonical or $NVT$ ensemble. Finally, we will also assume that the
+atoms in the system follow the Maxwell-Boltzmann statistics, \ie that the
+probability that the system is in a state of internal energy $E_i$ is given by:
+\[\mathcal{P}_i = \frac 1 Z e^{-\beta E_i}, \label{eq:maxwell-boltzmann}\]
+where $\beta = 1 / k_B T$ with $k_B$ the Boltzmann constant and $Z$ is a
+normalization constant called the \emph{partition function}. To be more precise,
+particles would either follow Bose–Einstein statistics for Bosons (particles
+with an integer spin, such as photons) or the Fermi–Dirac statistics for
+Fermions (particles with half-integer spin, such as electrons or protons). But
+as both Bose-Einstein and Fermi-Dirac statistics reduce to the Maxwell-Boltzmann
+distribution when temperature is high enough, we will use this distribution
+instead.
+
+We define the state of a system by the values taken by all the positions $\r_i$
+and all the momentum $\p_i$ of all the $N$ atoms in the system. The state of the
+system is then defined by $6N$ variables, or a point in a vector space of $6N$
+dimensions called the \emph{phase space}. In order to compute the energy of a
+state, we will describe the interactions between the atoms by a potential energy
+$V(\r^N)$, independent of time. Then, we can compute the total energy of a state
+using the classical Hamiltonian of the system:
+\[H(\r^N, \p^N) = \sum_i^N \frac{\p_i^2}{2 m_i} + V(\r^N);\]
+where I use $\r^N$ and $\p^N$ as shorthand for the set of all positions
+$\{\r_i\}$ and momentum $\{\p_i\}$ respectively.
+
+The last element in equation~\eqref{eq:maxwell-boltzmann} we need to compute is
+the partition function $Z$. In order to do so, we can note that the probability
+for the system to be anywhere in the phase space $\Phi$ should be 1.
+\[\iiint_\Phi \mathcal{P}_i = 1\]
+\[Z = \iiint_\Phi e^{-\beta H(\r^N, \p^N)} \ \d\r^N \d\p^N \label{eq:partition-function}\]
+
+\subsubsection{Partition function}
+
+It is possible to use the knowledge of the partition function to compute some
+of the macroscopic properties of our system. For examples, the internal energy
+is the average value of the Hamiltonian:
+\[U = \frac{1}{Z} \iiint_\Phi H e^{-\beta H} \]
+If we express $H e^{-\beta H}$ as the partial derivative of $e^{-\beta H}$ with
+respect to $\beta$ we get
+\[U = \frac{1}{Z} \iiint_\Phi -\frac{\partial}{\partial \beta} e^{-\beta H} \]
+\[U = \frac{-1}{Z} \frac{\partial}{\partial \beta} \iiint_\Phi e^{-\beta H} \]
+\[U = \frac{-1}{Z} \frac{\partial Z}{\partial \beta}\]
+Or equivalently
+\[U = \frac{\partial \ln Z}{\partial \beta}\]
+
+Using the same ideas, we can derive expressions\cite{Tuckerman2010} for the
+entropy $S$ and the free energy $F$ using the partition function:
+\[F = - \frac 1 \beta \ln Z\]
+\[S = k_B \left[\ln Z + \beta \frac{\partial \ln Z}{\partial \beta} \right]\]
+
+\subsubsection{Observables}
+
+The probability for the system to be in a given state gives us the missing link
+between microscopic and macroscopic properties of the system. We can express a
+macroscopic observable property $A$ that we can also compute or measure at a
+microscopic level using the the Maxwell-Boltzmann statistics:
+\[A = \braket{A} = \iiint_\Phi P_i A_i.\]
+The value of $A$ at a macroscopic level is the same value as the ensemble
+average $\braket{A}$, which depends on both the value of the property in a given
+macroscopic state $A_i$, and the probability of the system to be in this state.
+Using equations~\eqref{eq:maxwell-boltzmann} and~\eqref{eq:partition-function}
+together, we can express the average value for any observable property in the
+canonical ensemble:
+\[\braket{A} = \frac{\iiint_\Phi \d\r^N \d\p^N \; A(\r^N, \p^N) \ e^{-\beta H(\r^N, \p^N)}}{\iiint_\Phi \d\r^N \d\p^N \; e^{-\beta H(\r^N, \p^N)}}. \label{eq:observable-micro-macro}\]
+
+\subsubsection{Sampling}
+
+This theoretical approach to define macroscopic properties from microscopic data
+is useless unless we can compute the integrals over the whole phase space $\Phi$
+in~\eqref{eq:observable-micro-macro}. But computing this integral explicitly in
+all but the simplest cases will prove difficult, as the phase space is a $6N$
+dimensional vector space; and values for $N$ range from a few hundred all the
+way up to Avogadro number. But in general a lot of states in the phase space are
+not relevant when computing the integral, mainly because they have a too high
+energy. So instead of computing the whole integral, we resort to only use a
+finite number of samples in the phase space, which we try to pick as the most
+relevant. In a semi-formal manner, we try to generate a set of points $\phi$
+inside the phase space, such as
+\[\braket{A} \approx \frac{\sum_\phi A(\r^N, \p^N) e^{-\beta H(\r^N, \p^N)}}{\sum_\phi e^{-\beta H(\r^N, \p^N)}}.\]
+
+There are a few algorithms we can use to do this sampling and generate the set
+$\phi$ of points we will use to compute a given property. I will discuss two of
+them below: the Metropolis Monte Carlo (MC) method, and Molecular Dynamics (MD).
+If we can get these algorithms to generate a set of states in the phase space
+according to the Maxwell-Boltzmann probability, with the same state appearing
+possibly more than once in the set, we can simplify the calculation of ensemble
+average of observables even further. For a set of $m$ states indexed by
+$\alpha$, the average reads as:
+\[\braket{A} \approx \frac 1 m \sum_\alpha^m A(\r_\alpha^N, \p_\alpha^N).\]
+
+\subsection{Other thermodynamic ensembles}
+
+It is possible to show that in other thermodynamic ensembles there is a similar
+probability distributions for the phase space, and the associated partition
+function is also defined by the normalization of these probability distributions.
+
+\subsubsection{Isothermal-isobaric ensemble}
+
+In the $NPT$ ensemble, the probability for the system to be in a state is given
+by:
+\[ \mathcal{P}_{NPT} = \frac{1}{\Delta} e^{-\beta \left[H(\r^N, \p^N) \ + \ PV\right]} \]
+\[ \Delta = \int \d V \iiint_\Phi \d\r^N \d\p^N \; e^{-\beta \left[H(\r^N, \p^N) \ + \ PV\right]} \]
+
+And the free energy is given by:
+\[G = - \frac 1 \beta \ln \Delta.\]
+
+\subsubsection{Grand canonical ensemble}
+
+In the $\mu VT$ ensemble, the probability for the system to be in a state is
+given by:
+\[ \mathcal{P}_{\mu VT} = \frac{1}{\Theta} e^{-\beta \left[H(\r^N, \p^N) \ - \ \sum_i \mu_i n_i \right]} \]
+\[ \Theta = \iint \d n_i \iiint_\Phi \d\r^N \d\p^N \; e^{-\beta \left[H(\r^N, \p^N) \ - \ \sum_i \mu_i n_i \right]} \]
+
+\subsubsection{Osmotic ensemble}
+
+In the osmotic ($N_\text{host} \ \mu \ PT$) ensemble, the probability for the system to be in
+a state is given by:
+\[ \mathcal{P}_{\mu VT} = \frac{1}{\zeta} e^{-\beta \left[H(\r^N, \p^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
+\[ \zeta = \int \d V \iint \d n_i \iiint_\Phi \d\r^N \d\p^N \; e^{-\beta \left[H(\r^N, \p^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
 
 \section{Metropolis Monte Carlo}
+~
 
 \subsection{Direct sampling of ensembles}
+~
 
 \subsection{Monte Carlo moves}
+~
 
 \subsection{Computing energy: some tricks of the trade}
+~
 
 \section{Molecular dynamics}
+~
 % We will assume that the atoms behave as classical point particles
 
 \subsection{Integrators}
+~
 
 \subsection{Sampling other ensembles}
+~
 
 \section{Free energy methods}
-
+~
 
 \OnlyInSubfile{\printbibliography}
 

@@ -2,10 +2,9 @@
 \usepackage[linedheaders, drafting]{classicthesis}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[osf]{libertine}
-\usepackage[italic]{mathastext}
+\usepackage{libertine}
 \usepackage{mathtools}
-\usepackage{bm}
+\usepackage[italic]{mathastext}
 \usepackage{subfiles}
 \usepackage[]{graphicx}
 \usepackage{tabularx}
@@ -19,10 +18,12 @@
     bibencoding=utf8,
     defernumbers=true,
     maxbibnames=99,
+    maxcitenames=1,
     url=false
 ]{biblatex}
 
 \usepackage[version=4]{mhchem}
+\usepackage{braket}
 \usepackage{siunitx}
 
 % No Overfull hbox warning for less than 10pt
@@ -109,15 +110,16 @@
 \def\abinitio{\emph{ab initio}\xspace}
 \def\d{\text{d}}
 \def\r{\vec{r}}
+\def\p{\vec{p}}
 \def\Cudhbc{Cu(dhbc)$_\text{2}$(4,4$^\prime$-bpy)\xspace}
 \def\RPMZn{RPM3-Zn\xspace}
 \def\smallce#1{\ensuremath{\text{\tiny\ce{#1}}}}
 \def\ie{\emph{i.e.}\xspace}
 \def\etc{\emph{etc.}\xspace}
-\def\vdW{van der Waals}
+\def\vdW{van der Waals\xspace}
 \let\phi\varphi
 \let\epsilon\varepsilon
-\let\vec\bm
+\let\vec\mathnormalbold
 
 \def\TODO{\colorbox{red}{TODO}}
 

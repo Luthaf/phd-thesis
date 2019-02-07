@@ -10,32 +10,41 @@
 
 \section{From Schrödinger equation to Density Functional Theory}
 
-\subsection{Quantum chemistry and Schrödinger equation}
-
 If we want to be able to compute properties of an atomic system using the
 framework of statistical physics, we need to be able to compute the total energy
-of the system in a given configuration $U(r^N)$. The most generic way to do so
-is directly derived from the fundamental equation of quantum physics, the
-Schrödinger equation. In the quantum chemistry, the state of a system is
-represented by a complex-valued function of positions and time $\Psi(r, t)$. The
-Schrödinger equation describes the time evolution of the system given its
-Hamiltonian $\hat{\mathcal{H}}$:
-\[\hat{\mathcal{H}} \Psi(r, t) = i\hbar \frac{\partial}{\partial t} \Psi(r, t),\label{eq:time-schrodinger}\]
+of this system in a given configuration. It is possible to do so by considering
+the quantum nature of the atoms, and solving the the Schrödinger equation for
+this system. While solving the Schrödinger equation is relatively costly ---
+even with the methods presented here --- it present the advantage that no
+additional hypothesis has to be done on the system, and the functional form of
+the interaction potential $V(\r)$. In this chapter, I will present the Density
+Functional Theory approach to solving the Schrödinger equation, and use it in
+conjunction with molecular dynamics to study deformations of \ZIF8 under \ce{N2}
+adsorption.
+
+\subsection{Quantum chemistry and Schrödinger equation}
+
+In the quantum chemistry, the state of a system is represented by a
+complex-valued function of positions and time $\Psi(\r, t)$.  The Schrödinger
+equation describes the time evolution of this function given the Hamiltonian
+$\hat{\mathcal{H}}$ of the system:
+\[\hat{\mathcal{H}} \Psi(\r, t) = i\hbar \frac{\partial}{\partial t} \Psi(\r, t),\label{eq:time-schrodinger}\]
 where $i$ is the imaginary number, and $\hbar$ the reduced Plank's constant. The
 quantum Hamiltonian operator can be expressed as a sum of quantum kinetic energy
 and potential energy:
-\[\hat{\mathcal{H}} \Psi(r, t) = - \sum \frac{\hbar^2}{2m} \nabla^2 \Psi(r, t) + V(r^N)\Psi(r, t)\]
+\[\hat{\mathcal{H}} = \sum_i \frac{- \hbar^2}{2m_i} \nabla_i^2 + V(\r)\]
 where the $m$ are the masses of the particles in the system, $\nabla$ is the
-nabla operator, and $V(r)$ is the potential energy of the system. When the
+nabla operator, and $V(\r)$ is the potential energy of the system. When the
 potential energy does not depend on time, we can look for solution with
-separated variables of the form $\Psi(r, t) = \psi(r) \times y(t)$. Replacing in
-equation~\eqref{eq:time-schrodinger}, and separating the spatial and time
-quantities, we get
-\[- \sum \frac{\hbar^2}{2m} \frac{1}{\psi(r)} \nabla^2 \psi(r) + V(r^N) = i\hbar \frac{1}{y(t)} \frac{\d y(t)}{\d t}.\]
+separated variables of the form:
+\[\Psi(\r, t) = \psi(\r) \times y(t).\]
+Replacing in equation~\eqref{eq:time-schrodinger}, and separating the spatial
+and time quantities, we get
+\[- \sum \frac{\hbar^2}{2m} \frac{1}{\psi(\r)} \nabla^2 \psi(\r) + V(\r) = i\hbar \frac{1}{y(t)} \frac{\d y(t)}{\d t}.\]
 For this equation to stand for all $t$ and all $r$, there must exist a constant
 value $E$ such that:
 \[\begin{dcases}
-    E =& - \sum \frac{\hbar^2}{2m} \frac{1}{\psi(r)} \nabla^2 \psi(r) + V(r^N) \\
+    E =& - \sum \frac{\hbar^2}{2m} \frac{1}{\psi(\r)} \nabla^2 \psi(\r) + V(\r) \\
     E =& i\hbar \frac{1}{y(t)} \frac{\d y(t)}{\d t} \\
 \end{dcases}\]
 
@@ -63,13 +72,13 @@ means that at a given point in time, the electrons evolve in a constant
 electrostatic potential from the fixed nuclei. The corresponding Hamiltonian
 (using atomic units, \ie $e^2 / 4\pi\epsilon_0 = 1$; $\hbar = 1$; and
 $m_\text{electron} = 1$) is:
-\[H\psi = \left[-\frac 1 2 \sum_i^N \nabla^2_i - \sum_i^N \sum_j^M \frac{Z_j}{|\r_i - \r_j|} + \sum_i^N \sum_{j>i}^N \frac{1}{|\r_i - \r_j|} \right] \psi\]
+\[\hat{\mathcal{H}} = \left[-\frac 1 2 \sum_i^N \nabla^2_i - \sum_i^N \sum_j^M \frac{Z_j}{|\r_i - \r_j|} + \sum_i^N \sum_{j>i}^N \frac{1}{|\r_i - \r_j|} \right]\]
 We can rewrite this by defining the potential an electron feels due to the
 presence of all the nuclei $V_\text{ext}(r) = -\sum_{j} Z_j / |\r - \r_j|$, and
 the electron-electron interaction potential $U(r_i, r_j) = 1 / |\r_i -
 \r_j|$:
-\[\hat{\mathcal{H}}\psi = \left[-\frac 12\sum_{i=1}^N \nabla^2_i + \sum_{i=1}^N V_\text{ext}(\r_i) + \sum_{i=1}^N \sum_{j>i}^N U(\r_i, \r_j)\right] \psi\]
-\[\hat{\mathcal{H}}\psi = \left[\hat T + \hat V_\text{ext} + \hat V_{ee}\right] \psi \label{eq:electronic-hamiltonian}\]
+\[\hat{\mathcal{H}} = \left[-\frac 12\sum_{i=1}^N \nabla^2_i + \sum_{i=1}^N V_\text{ext}(\r_i) + \sum_{i=1}^N \sum_{j>i}^N U(\r_i, \r_j)\right] \]
+\[\hat{\mathcal{H}} = \hat T + \hat V_\text{ext} + \hat V_{ee} \label{eq:electronic-hamiltonian}\]
 The three terms in the Hamiltonian are the kinetic energy $\hat T$, the total
 external potential $\hat V_\text{ext}$, and the electron-electron interaction
 potential $\hat V_{ee}$.
@@ -178,7 +187,7 @@ functional one uses, the $C_6^i$ are parameters tabulated for each element and
 $f_{ij}$ is a damping function.
 \[f_{ij}(R_{ij}) =
 \begin{dcases}
-    \frac{1}{1 + \exp\left[-d \left(\frac{R_{ij}}{\sigma_i + \sigma_j} -1\right)\right]} &\text{for } R_{ij} < R_c \\
+    \frac{1}{1 + \exp\left[-d \left(R_{ij} / (\sigma_i + \sigma_j) -1\right)\right]} &\text{for } R_{ij} < R_c \\
     0 &\text{for } R_{ij} \geq R_c \\
 \end{dcases}\]
 In this expression, $d$ is a damping parameter, usually set to 20, $R_c$ a
