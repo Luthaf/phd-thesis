@@ -4,7 +4,7 @@
 
 \OnlyInSubfile{\setcounter{chapter}{2}}
 
-\chapter{Simulating chemical systems}
+\chapter{Molecular simulations}
 \startcontents[chapters]
 \printpartialtoc
 
@@ -50,9 +50,9 @@ and all the momentum $\p_i$ of all the $N$ atoms in the system. The state of the
 system is then defined by $6N$ variables, or a point in a vector space of $6N$
 dimensions called the \emph{phase space}. In order to compute the energy of a
 state, we will describe the interactions between the atoms by a potential energy
-$V(\r^N)$, independent of time. Then, we can compute the total energy of a state
-using the classical Hamiltonian of the system:
-\[H(\r^N, \p^N) = \sum_i^N \frac{\p_i^2}{2 m_i} + V(\r^N);\]
+$\mathcal{V}(\r^N)$, independent of time. Then, we can compute the total energy
+of a state using the classical Hamiltonian of the system:
+\[H(\r^N, \p^N) = \sum_i^N \frac{\p_i^2}{2 m_i} + \mathcal{V}(\r^N);\]
 where I use $\r^N$ and $\p^N$ as shorthand for the set of all positions
 $\{\r_i\}$ and momentum $\{\p_i\}$ respectively.
 
@@ -60,9 +60,25 @@ The last element in equation~\eqref{eq:maxwell-boltzmann} we need to compute is
 the partition function $Z$. In order to do so, we can note that the probability
 for the system to be anywhere in the phase space $\Phi$ should be 1.
 \[\iiint_\Phi \mathcal{P}_i = 1\]
-\[Z = \iiint_\Phi e^{-\beta H(\r^N, \p^N)} \ \d\r^N \d\p^N \label{eq:partition-function}\]
+\[Z = \frac{1}{h^{3N}} \iiint_\Phi e^{-\beta H(\r^N, \p^N)} \ \d\r^N \d\p^N\]
+where the Planck constant $h$ is used as a normalization factor used to make
+sure that $Z$ has the right dimension.
 
-\subsubsection{Partition function}
+We can already compute at least a part of this integral by separating the
+kinetic and potential energy terms in the Hamiltonian:
+\[Z = \frac{1}{h^{3N}} \prod_i^{3N} \int e^{-\beta \frac{p_i^2}{2 m_i}} \ \d p_i \iiint_V e^{-\beta \mathcal{V}(\r^N)} \ \d\r^N \]
+where the potential energy integral is over all the accessible volume. The
+kinetic energy term is a product of Gaussian integrals, and gives us the
+following expression for the partition function:
+\[Z = \prod_i^{3N} \sqrt{\frac{2\pi m_i}{\beta h^2}} \iiint_V e^{-\beta \mathcal{V}(\r^N)} \ \d\r^N\]
+$\lambda_i = \sqrt{\frac{\beta h^2}{2\pi m_i}}$ is the de Broglie thermal
+wavelength for a particle with mass $m_i$, and is homogeneous to a distance. In
+the following, I will be using $\Lambda^N$ for the product over all particles
+$\prod_i^N \lambda_i^3$. This gives the final expression for the partition
+function:
+\[Z = \frac{1}{\Lambda^N} \iiint_V e^{-\beta \mathcal{V}(\r^N)} \ \d\r^N \label{eq:partition-function}\]
+
+\subsubsection{Thermodynamic quantities from the partition function}
 
 It is possible to use the knowledge of the partition function to compute some
 of the macroscopic properties of our system. For examples, the internal energy
@@ -132,7 +148,7 @@ function is also defined by the normalization of these probability distributions
 In the $NPT$ ensemble, the probability for the system to be in a state is given
 by:
 \[ \mathcal{P}_{NPT} = \frac{1}{\Delta} e^{-\beta \left[H(\r^N, \p^N) \ + \ PV\right]} \]
-\[ \Delta = \int \d V \iiint_\Phi \d\r^N \d\p^N \; e^{-\beta \left[H(\r^N, \p^N) \ + \ PV\right]} \]
+\[ \Delta = \frac{1}{\Lambda^N} \int \d V \iiint_V \d\r^N \; e^{-\beta \left[\mathcal{V}(\r^N) \ + \ PV\right]} \]
 
 And the free energy is given by:
 \[G = - \frac 1 \beta \ln \Delta.\]
@@ -142,14 +158,14 @@ And the free energy is given by:
 In the $\mu VT$ ensemble, the probability for the system to be in a state is
 given by:
 \[ \mathcal{P}_{\mu VT} = \frac{1}{\Theta} e^{-\beta \left[H(\r^N, \p^N) \ - \ \sum_i \mu_i n_i \right]} \]
-\[ \Theta = \iint \d n_i \iiint_\Phi \d\r^N \d\p^N \; e^{-\beta \left[H(\r^N, \p^N) \ - \ \sum_i \mu_i n_i \right]} \]
+\[ \Theta = \frac{1}{\Lambda^N} \iint \d n_i \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[\mathcal{V}(\r^N) \ - \ \sum_i \mu_i n_i \right]} \]
 
 \subsubsection{Osmotic ensemble}
 
 In the osmotic ($N_\text{host} \ \mu \ PT$) ensemble, the probability for the system to be in
 a state is given by:
 \[ \mathcal{P}_{\mu VT} = \frac{1}{\zeta} e^{-\beta \left[H(\r^N, \p^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
-\[ \zeta = \int \d V \iint \d n_i \iiint_\Phi \d\r^N \d\p^N \; e^{-\beta \left[H(\r^N, \p^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
+\[ \zeta = \frac{1}{\Lambda^N} \int \d V \iint \d n_i \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[\mathcal{V}(\r^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
 
 \section{Metropolis Monte Carlo}
 ~

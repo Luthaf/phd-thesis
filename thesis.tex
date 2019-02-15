@@ -16,10 +16,11 @@
 \usepackage[
     backend=biber,
     bibencoding=utf8,
-    defernumbers=true,
     maxbibnames=99,
     maxcitenames=1,
-    url=false
+    url=false,
+    sorting=none,
+    citestyle=numeric-comp,
 ]{biblatex}
 
 \usepackage[version=4]{mhchem}
@@ -84,6 +85,20 @@
     {\multicitedelim}
     {\usebibmacro{postnote}}
 
+% An enumerate like environement for the publication list
+\newcounter{pubcount}
+\setcounter{pubcount}{0}
+\defbibenvironment{publist}
+    {
+        \begin{enumerate}
+        \setcounter{enumi}{\thepubcount}
+    }
+    {
+        \setcounter{pubcount}{\theenumi}
+        \end{enumerate}
+    }
+    {\item}
+
 % Use \[ and \] for all equations, and make all equations numbered
 \def\[{\begin{equation}}
 \def\]{\end{equation}}
@@ -107,8 +122,12 @@
 
 % Convenience macros
 \def\ZIF8{\mbox{ZIF-8}}
+\def\ZIFCl{\ZIF8(Cl)\xspace}
+\def\ZIFBr{\ZIF8(Br)\xspace}
 \def\abinitio{\emph{ab initio}\xspace}
 \def\d{\text{d}}
+\let\oldring\r
+\def\AA{\text{\oldring{A}}}
 \def\r{\vec{r}}
 \def\p{\vec{p}}
 \def\Cudhbc{Cu(dhbc)$_\text{2}$(4,4$^\prime$-bpy)\xspace}
@@ -159,11 +178,11 @@
 
         \nonumchapter{List of Publications}
         \section*{Publications linked to my PhD work}
-        \printbibliography[heading=subsectionbibheading,title={Peer-reviewed Journals},type=article,resetnumbers=true,keyword={phd}]
-        \printbibliography[heading=subsectionbibheading,title={Preprints},type=unpublished,resetnumbers=true]
+        \printbibliography[heading=subsectionbibheading,title={Peer-reviewed Journals},type=article,env=publist,keyword={phd}]
+        \printbibliography[heading=subsectionbibheading,title={Preprints},type=unpublished,env=publist]
 
         \section*{Publications linked to previous work}
-        \printbibliography[heading=none,type=article,resetnumbers=true,keyword={previous}]
+        \printbibliography[heading=none,type=article,env=publist,keyword={previous}]
     \end{refsection}
 
     \printbibliography[heading=bibintoc]
