@@ -14,7 +14,7 @@ set ylabel "\\scriptsize pore size distribution (log scale)" offset -1
 set logscale y
 
 set multiplot layout 1,3
-    set title "\\ZIF8"
+    set title "\\ZIFCH3"
     plot    "data/zif8x/ZIF-CH3.psd.dat" w l lw 4 lc 2 t"\\scriptsize 0 \\ce{N2}", \
          "data/zif8x/ZIF-CH3-10.psd.dat" w l lw 4 lc 6 t"\\scriptsize 10 \\ce{N2}", \
          "data/zif8x/ZIF-CH3-25.psd.dat" w l lw 4 lc 1 t"\\scriptsize 25 \\ce{N2}", \

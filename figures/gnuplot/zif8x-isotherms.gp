@@ -17,7 +17,7 @@ set ylabel "uptake (\\si{cm^3/cm^3} STP)"
 
 set key at graph 0.95,0.5 samplen 2
 
-plot "data/zif8x/zif8-ch3-adsorption.csv" u 1:4 w lp lc 8 pt 7 ps 0.5 lw 3 title "\\footnotesize\\ZIF8\\hspace{1.5em}", \
+plot "data/zif8x/zif8-ch3-adsorption.csv" u 1:4 w lp lc 8 pt 7 ps 0.5 lw 3 title "\\footnotesize\\ZIFCH3", \
      "data/zif8x/zif8-ch3-desorption.csv" u 1:4 w lp lc 8 pt 6 ps 0.5 lw 3 title "", \
      "data/zif8x/zif8-cl-adsorption.csv" u 1:4 w lp lc 2 pt 7 ps 0.5 lw 3 title "\\footnotesize\\ZIFCl", \
      "data/zif8x/zif8-cl-desorption.csv" u 1:4 w lp lc 2 pt 6 ps 0.5 lw 3 title "", \
