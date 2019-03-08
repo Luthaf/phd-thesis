@@ -13,6 +13,7 @@
 \usepackage{mdframed}
 \usepackage{placeins}
 \usepackage[parfill]{parskip}
+\usepackage[autostyle=false, style=english]{csquotes}
 \usepackage[
     backend=biber,
     bibencoding=utf8,
@@ -26,6 +27,8 @@
 \usepackage[version=4]{mhchem}
 \usepackage{braket}
 \usepackage{siunitx}
+
+\MakeOuterQuote{"}
 
 % No Overfull hbox warning for less than 10pt
 \hfuzz=10pt
@@ -80,7 +83,7 @@
     {%
         \usebibmacro{journal}%
         \setunit{\addspace(}%
-        {\printfield{year})\addspace}%
+        {\printfield{year})\xspace}%
     }
     {\multicitedelim}
     {\usebibmacro{postnote}}

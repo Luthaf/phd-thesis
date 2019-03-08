@@ -143,8 +143,7 @@ It is possible to show that in other thermodynamic ensembles there is a similar
 probability distributions for the phase space, and the associated partition
 function is also defined by the normalization of these probability distributions.
 
-\subsubsection{Isothermal-isobaric ensemble}
-
+\paragraph{Isothermal-isobaric ensemble}
 In the $NPT$ ensemble, the probability for the system to be in a state is given
 by:
 \[ \mathcal{P}_{NPT} = \frac{1}{\Delta} e^{-\beta \left[H(\r^N, \p^N) \ + \ PV\right]} \]
@@ -153,19 +152,133 @@ by:
 And the free energy is given by:
 \[G = - \frac 1 \beta \ln \Delta.\]
 
-\subsubsection{Grand canonical ensemble}
-
+\paragraph{Grand canonical ensemble}
 In the $\mu VT$ ensemble, the probability for the system to be in a state is
 given by:
 \[ \mathcal{P}_{\mu VT} = \frac{1}{\Theta} e^{-\beta \left[H(\r^N, \p^N) \ - \ \sum_i \mu_i n_i \right]} \]
 \[ \Theta = \frac{1}{\Lambda^N} \iint \d n_i \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[\mathcal{V}(\r^N) \ - \ \sum_i \mu_i n_i \right]} \]
 
-\subsubsection{Osmotic ensemble}
-
+\paragraph{Osmotic ensemble}
 In the osmotic ($N_\text{host} \ \mu \ PT$) ensemble, the probability for the system to be in
 a state is given by:
 \[ \mathcal{P}_{\mu VT} = \frac{1}{\zeta} e^{-\beta \left[H(\r^N, \p^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
 \[ \zeta = \frac{1}{\Lambda^N} \int \d V \iint \d n_i \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[\mathcal{V}(\r^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
+
+\section{Computing energy of a molecular system}
+
+\subsection{Quantum calculations}
+
+In order to be able to use statistical thermodynamics we must compute the energy
+$\mathcal{V}(\r^N)$ associated with a given configuration. The most generic way
+to do so it to solve the Schrödinger equation for the system.
+
+\fbox{MC quantique}
+\fbox{HF}
+\fbox{DFT}
+
+But solving the Schrödinger equation is costly in term of computing time, and
+thus impose a limit on both the time and length scale of systems we can study.
+As of 2019, we can used DFT to study systems containing up to 1000 atoms on a
+time scale of up to \SI{100}{ps}. While these numbers increased a lot in the
+recent years due to improvements in software used for DFT and in computing
+hardware, they are still many systems of interest that we can not study with
+DFT. If the electronic density does no vary much across the subspace of phase
+space we are interested in --- \ie no bond creation or breakage; no charge
+transfer --- then using classical potentials or force fields can be a good
+approximation of the real energy.
+
+\subsection{Classical calculations: force fields}
+
+\TODO: pros and cons of this
+
+If I had to define it, I would say that a force field is an educated guess on
+the functional form of the energy of a system, decomposed as a sum of simple
+terms. The usual decomposition is the following:
+\[V(\r) = \sum_i \sum_j V_\text{pairs}^{ij} + \sum_\alpha V_\text{molecular}^\alpha + V_\text{coulomb} \]
+where $V_\text{coulomb}$ is the Coulombic interaction between charged atoms,
+$V_\text{molecular}$ represent the internal molecular energy and
+$V_\text{pairs}$ represent the non-bonded pairs interactions. These terms are
+often broken down even further. For example, the simplest form possible for
+$V_\text{coulomb}$ is to use fixed point charges attributed to each atom during
+the force field parametrization. If this is not enough to reproduce the
+properties of the system of interest, we can use diffuse Gaussian charges
+instead, or add atomic polarization. $V_\text{pairs}$ is used to reproduce both
+the dispersion interaction and the Pauli repulsion between atoms at short
+distance; and $V_\text{molecular}$ is usually decomposed over bonded
+coefficients:
+\[V_\text{molecular} = \sum_\text{bonds} V_\text{bond}(r) + \sum_\text{angles} V_\text{angle}(\theta) + \sum_\text{dihedrals} V_\text{dihedral}(\phi)\]
+Each energy term only depends on the type of bonded atoms, and a single
+parameter: the distance between the two atoms for bonds contributions; the
+3-body angle for angles contributions; and the 4-body dihedral angle or out of
+plane distance for dihedral angles contributions. These parameters are
+illustrated in figure~\ref{fig:force-fields:molecular}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=.6\textwidth]{figures/images/molecular-ff}
+    \caption{Definition of the parameters used to compute the energy of a
+    molecular system with classical force field. (a) bond terms; (b) angle
+    terms; (c) dihedral angles; (d) improper dihedrals/out of plane distance.}
+    \label{fig:force-fields:molecular}
+\end{figure}
+
+\subsubsection{Typical functional forms used in force fields}
+
+Their is no strict rule regarding which functional form can or can not be used
+in a force field, so when creating a new force field we usually rely on
+chemical sense as well as few physical laws to pick them. Here are a few well
+known and widely used contributions in force fields.
+
+\paragraph{Charges} If we choose to model atomic partial charges as point
+charges, we can directly use the expression for Coulombic interactions, as a sum
+over all pairs of charged atoms in the system:
+\[ V(r_{ij}) = \frac{q_i q_j}{4 \pi \epsilon_0 r_{ij}}\]
+
+\paragraph{Non-bonded pairs interactions} As we have seen, we use non-bonded
+pairs interactions to reproduce both the Pauli repulsion between atoms at short
+distances, and the dispersion attractive interaction at long distances. It can
+be shown\cite{London1930} that the dispersion interaction can be developed in
+the long distances approximation as:
+\[ V_\text{dispersion} = -\frac{C_6}{r^6} + \frac{C_8}{r^8} - \frac{C_{10}}{r^{10}} + {\scriptstyle\mathcal{O}}\left(\frac{1}{r^{12}}\right) \]
+where the $C_i$ coefficients have positive values. Most of the time, only the
+term in $1/r^6$ is used, as it will have the largest contribution to the
+resulting energy. There is however no simple mathematical expression for the
+Pauli repulsion, so various schemes have been used.
+
+The most prevalent one is the Lennard-Jones potential, which uses a repulsive
+term proportional to $1/r^{12}$. In the early day of molecular simulation, this
+allowed to save some computing time by squaring the already computed $1/r^6$ term.
+\[V_\text{Lennard-Jones}(r) = 4 \ \epsilon \left[\left(\frac{\sigma}{r}\right)^{12} - \left(\frac{\sigma}{r}\right)^6\right]\]
+Another commonly used form is the Buckingham potential, using an exponential
+function for the repulsion:
+\[V_\text{Buckingham}(r) = A \ e^{-B r} - \frac{C}{r^6}\]
+
+\paragraph{Molecular interactions} The most common strategy for describing bonds
+and angles is to consider only vibration of the bond length or the angle around
+the equilibrium, and represent the energy of the bond/angle using the harmonic
+approximation:
+\[V_\text{harmonic}(r) = \frac 12 k \ (r - r_0)^2  \qquad\text{or}\qquad V_\text{harmonic}(\theta) = \frac 12 k \ (\theta - \theta_0)^2 \]
+
+For dihedral angles, we often want to be able to reproduce the periodicity of
+the associated energy, which leads to the following definition of the energy:
+\[V_\text{torsion}(\phi) = \frac 12 E \left[1 + \cos(n \phi + \delta)\right] \]
+
+\subsection{Energy evaluation tricks}
+
+\fbox{cutoff? => Ewald}
+
+\fbox{Restrictions}
+
+\subsection{Force field parametrization}
+
+All these functional forms have some kind of adjustable parameters that depends
+on the types of the atoms participating in the pair; bond; or angle. For
+example, when using Coulombic interactions, the charge carried by an atom is the
+adjustable parameter.
+
+=> parametrization
+\subsubsection{The "no free lunch" theorem}
+
 
 \section{Metropolis Monte Carlo}
 ~
@@ -176,7 +289,7 @@ a state is given by:
 \subsection{Monte Carlo moves}
 ~
 
-\subsection{Computing energy: some tricks of the trade}
+\subsection{Computing energy in Monte Carlo simulations}
 ~
 
 \section{Molecular dynamics}
@@ -191,6 +304,11 @@ a state is given by:
 
 \section{Free energy methods}
 ~
+
+\subsection{Umbrella sampling}
+~
+
+% WHAM
 
 \OnlyInSubfile{\printbibliography}
 

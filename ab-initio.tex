@@ -27,7 +27,7 @@
 % \subsection{Quantum chemistry and Schrödinger equation}
 %
 % In the quantum chemistry, the state of a system is represented by a
-% complex-valued function of positions and time $\Psi(\r, t)$.  The Schrödinger
+% complex-valued function of positions and time $\Psi(\r, t)$. The Schrödinger
 % equation describes the time evolution of this function given the Hamiltonian
 % $\hat{\mathcal{H}}$ of the system:
 % \[\hat{\mathcal{H}} \Psi(\r, t) = i\hbar \frac{\partial}{\partial t} \Psi(\r, t),\label{eq:time-schrodinger}\]
@@ -203,295 +203,360 @@
 % \end{dcases}\]
 % In this expression, $d$ is a damping parameter, usually set to 20, $R_c$ a
 % cutoff radius, and the $\sigma_i$ parameters are tabulated atomic \vdW radii.
+%
+% \clearpage
+% \section{Adsorption of \ce{N2} in \ZIF8 and derivatives}
+%
+% In this section, I will show an example of how the use of \abinitio molecular
+% dynamics enable precise description of the adsorbed phase in flexible porous
+% materials. The corresponding study have been published in
+% \citejournal{Chaplais2018}\cite{Chaplais2018}.
+%
+% \subsection{\ZIF8 and its cousins}
+%
+% The flexible porous material used in this study is \ZIF8. \ZIF8 is a MOF in the
+% Zeolitic Imidazolate Framework (ZIF) family. ZIFs are built around tetravalent
+% metal centers such as Fe, Co, Zn or Cu; linked together by imidazolate linkers.
+% They also present the same topology as zeolites, with Metal-(imidazolate)$_2$
+% building blocks taking the role of \ce{SiO2}. The first ZIFs (ZIF-1 to ZIF-12)
+% were synthesized in 2006\cite{Park2006}, and found to be water and thermally
+% resistant, which made them interesting MOF for commercial applications. \ZIF8
+% --- represented in figure~\ref{fig:zif8-ch3:structure} --- have a sodalite (SOD)
+% topology, and is composed of methyl-imidazolate linkers around Zinc metallic
+% centers.
+%
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=0.35\textwidth]{figures/images/ZIF8-100}
+%     \hspace{2em}
+%     \includegraphics[width=0.35\textwidth]{figures/images/ZIF8-111}
+%     \caption{Structure of the methyl-imidazolate \ZIF8. On the left, the
+%     front-most opening is the 4-member ring window (the structure is represented
+%     along the 001 axis); and on the right the front-most opening is the 6-member
+%     ring window (the structure is represented along the 111 axis). The atomic
+%     color code is green for Zinc, blue for Nitrogen, gray for Carbon and white
+%     for Hydrogen.}
+%     \label{fig:zif8-ch3:structure}
+% \end{figure}
+%
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=0.35\textwidth]{figures/images/ZIF8-Cl}
+%     \hspace{2em}
+%     \includegraphics[width=0.35\textwidth]{figures/images/ZIF8-Br}
+%     \caption{Structure of the chloro-imidazolate \ZIFCl on the left and the
+%     bromo-imidazolate \ZIFBr on the right. The atomic color code is the same
+%     as in figure~\ref{fig:zif8-ch3:structure}, with a bright green for Chlorine
+%     atoms and dark red for Bromide atoms.}
+%     \label{fig:zif8-x:structures}
+% \end{figure}
+%
+% Two analogs to \ZIF8 using chloro- and bromo- substituted imidazolate instead of
+% the original methyl-imidazolate in \ZIF8 have first synthesized by
+% \citeauthor{Li2009}\cite{Li2009}. These two new materials that we will call
+% \ZIFCl and \ZIFBr are represented in figure~\ref{fig:zif8-x:structures}.
+%
+% As we will see in this chapter, these simple changes of linker are followed by
+% complex changes in behavior; showing in this specific example the versatility
+% MOFs can achieve through organic chemistry.
+%
+% \FloatBarrier
+% \subsubsection{Adsorption isotherms of nitrogen in \ZIF8, \ZIFCl, and \ZIFBr}
+%
+% \ZIF8 is known for it relatively high surface area of \SI{1.947}{m^2/g} and
+% large cavity with a diameter of \SI{11.6}{\AA}\cite{Park2006}. It is also
+% commercially available and have excellent performance at the lab scale for the
+% separation of gas mixtures such as \ce{C2}/\ce{C3} hydrocarbons,
+% \ce{CO2}/\ce{CH4}, or \ce{CO2}/\ce{N2}\cite{Li2009,Bux2011}. It also present an
+% interesting behavior with respect to flexibility of the structure during
+% nitrogen adsorption. The nitrogen adsorption isotherms at \SI{77}{K} in \ZIF8,
+% \ZIFCl and \ZIFBr, are presented in figure~\ref{fig:zif8x:isotherms}
+%
+% \begin{figure}[ht]
+%     \centering
+%     \input{figures/zif8x-isotherms.tex}
+%     \caption{Adsorption isotherms in \ZIF8 (black) and the chloro (green) and
+%     bromo (red) derivatives. Full circles are used for the adsorption branch,
+%     and empty ones for the desorption branch. Experimental data acquired by
+%     \citeauthor{Chaplais2018}\cite{Chaplais2018}}
+%     \label{fig:zif8x:isotherms}
+% \end{figure}
+%
+% Looking at these isotherms, we first notice that for \ZIF8, there are two jumps
+% in loading: a first one corresponding to the initial filling of the pores up
+% until around \SI{300}{cm^3/cm^3}, and the a second one up until
+% \SI{400}{cm^3/cm^3}. \ZIFCl shows the same behavior with a two stepped isotherm,
+% while \ZIFBr does not. The adsorption of nitrogen molecules at low temperature
+% in \ZIF8 has already been studied extensively, both experimentally and by
+% computational means. Early work demonstrated that the structure of \ZIF8 goes
+% through at least two phases during the adsorption: an ambient pressure phase
+% named AP, and a high pressure phase named HP. These phases mainly differ by the
+% orientation of the linkers around the 4 and 6-member
+% windows.\cite{FairenJimenez2011} A recent, more detailed characterization of the
+% structural evolution upon adsorption showed that the transition from AP to HP is
+% linked to a continuous swing (rotation) of the methyl-imidazolate linker, which
+% can be followed as the dihedral angle Zn-Zn-C-CH3 goes from an equilibrium value
+% of 7° in AP phase to an equilibrium value of 35° in HP phase.\cite{Coudert2017}
+% All this seems to indicate that the second jump in the isotherm is related to
+% the changes in the structure.
+%
+% \subsubsection{\emph{Ab initio} molecular dynamics study}
+% \label{sec:zif8x:methods}
+%
+% In order to gain better understanding of the relation between the structure
+% changes and the adsorbed molecules, I used molecular dynamics (MD) simulations.
+% To describe fully the flexibility of the frameworks without any assumption, I
+% favored \abinitio MD over force field-based MD --- as there are currently no
+% force fields available for the \ZIF8 variants studied here. For each framework
+% (\ZIFCH3, \ZIFCl, \ZIFBr), I ran five simulations corresponding to different
+% number of nitrogen molecules inside the porous space, going from empty framework
+% ($N = 0$) to the fully loaded host material. The maximal loading was determined
+% from the experimental isotherms to be close to $N = 50$ molecules per unit cell
+% for \ZIFCH3 and \ZIFCl and $N = 40$ molecules per unit cell for \ZIFBr.
+%
+% To create the starting configurations, I started from the energy-minimized
+% configuration of the empty frameworks, and randomly placed the selected number
+% of nitrogen molecules in the unit cell using the packmol
+% software\cite{Martnez2009}. The whole \{ZIF, adsorbate\} system was then
+% minimized again before starting the molecular dynamics simulations. I used the
+% Quickstep module\cite{VandeVondele2005} of the CP2K software package (version
+% 2.5.1, available online at http://www.cp2k.org/) for all the simulations. I used
+% a PBE exchange-correlation functional with D3 dispersion corrections, a double
+% zeta polarizable valence (DZVP) basis set, and an energetic cutoff of 600 Ry.
+% All the systems were simulated with a \SI{1}{fs} timestep giving a total of 12
+% to \SI{22}{ps} of simulation. Temperature was held constant at 77 K with a CVSR
+% thermostat, using a thermostat time constant of \SI{1000}{fs}. I used the last
+% \SI{5}{ps} of simulation for analysis, leaving 7 to \SI{17}{ps} to the system to
+% reach equilibrium.
+%
+% \subsection{Deformation under adsorption}
+%
+% The first indicator of deformation of the framework is the \ce{Zn-Zn-Zn-X}
+% dihedral angle, where \ce{X} is the group on the imidazolate linkers: methyl,
+% chlorine or bromide. This angle --- represented on
+% figure~\ref{fig:zif8x:swing-angle} --- is also called the swing angle.
+%
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=0.3\textwidth]{figures/images/swing-angle}
+%     \caption{Representation of the swing \ce{Zn-Zn-Zn-X} dihedral angle for \ZIF8.}
+%     \label{fig:zif8x:swing-angle}
+% \end{figure}
+%
+% \begin{figure}[ht]
+%     \centering
+%     \input{figures/zif8x-dihedrals}
+%     \caption{Distribution of linker swing angle (\ce{Zn-Zn-Zn-X} dihedral angle,
+%     where \ce{X} stands for \ce{CH3}, \ce{Cl} or \ce{Br} for \ZIF8, \ZIFCl or
+%     \ZIFBr, respectively) at various values of nitrogen loading.}
+%     \label{fig:zif8x:dihedrals}
+% \end{figure}
+%
+% Following the evolution of the distributions of angles as the number of nitrogen
+% molecules increases allow to understand the deformations of the three framework
+% under adsorption. This evolution is represented on
+% figure~\ref{fig:zif8x:dihedrals}, where we observe a gradual increase of the
+% mean angle value as loading increases while the distribution stays Gaussian.
+%
+% These results are consistent with the already published ones for
+% \ZIF8\cite{Coudert2017}. Interestingly, the two other frameworks behave
+% differently. For \ZIFCl, no change is noticed in the distribution profile upon
+% adsorption until the highest value of loading (\ie, $N = 50$). In this case, the
+% distribution shifts and the profile is no longer Gaussian type, but instead
+% looks like the sum of two Gaussian distribution, one centered around 25°, and
+% the other one around 10°. It indicates that some of the linkers do not rotate
+% (swing) even at high loading. This non-zero value of the distribution at $\phi =
+% 0\text{°}$ contrasts with the case of \ZIF8. Finally, for \ZIFBr, no change
+% occurs for the dihedral angle distribution as the loading increases.
+%
+% Although this behavior is correlated with the presence or absence of the
+% adsorption step in the isotherms, it is not however sufficient to explain it.
+% One hypothesis often formulated for \ZIF8 is that the swinging motion leads to
+% an increase of the accessible porous volume in the structure, thereby increasing
+% nitrogen uptake. In order to check whether this is or not the case, I computed
+% the pore size distribution (see figure~\ref{fig:zif8x:pores-sizes}) and the
+% accessible porous volume (see figure~\ref{fig:zif8x:porous-volume}) from the MD
+% trajectories using Zeo++\cite{Willems2012} version 0.3. In order to compute
+% these values, I first emptied the structure of all the nitrogen molecules, and
+% then computed the pores sizes distribution and accessible volume using the
+% remaining frameworks.
+%
+% \begin{figure}[ht]
+%     \centering
+%     \input{figures/zif8x-pores-sizes}
+%     \caption{Pore size distribution (no unit) under increasing loading for the
+%     three structures.}
+%     \label{fig:zif8x:pores-sizes}
+% \end{figure}
+%
+% \begin{figure}[ht]
+%     \centering
+%     \input{figures/zif8x-porous-volume}
+%     \caption{Accessible porous volume changes in the three isoreticular
+%     structures during adsorption. The numbers on top of the columns are the
+%     number of adsorbed \ce{N2} molecules.}
+%     \label{fig:zif8x:porous-volume}
+% \end{figure}
+%
+% The results presented in figure~\ref{fig:zif8x:pores-sizes} highlight that the
+% pore size distribution (PSD) remains constant in all cases as the loading
+% increase and the linkers swing. The PSDs present two cavities: a small one
+% corresponding to the 6 member windows around \SI{10.3}{\AA} for \ZIF8 and a
+% second one, with a much larger contribution to the overall porous volume around
+% \SI{11.2}{\AA} in \ZIF8. The three PSDs are very similar, only changing the size
+% of pores in the order $\text{\ZIF8} > \text{\ZIFCl} > \text{\ZIFBr}$. This is
+% also reflected in the accessible volume figure~\ref{fig:zif8x:porous-volume}
+% which remains roughly constant as the loading increase and the linkers swing.
+%
+% \subsection{Changes in the adsorbed phase}
+%
+% In order to understand the origin of the step in the nitrogen adsorption
+% isotherms, we need to take a look at the other chemical specie participating in
+% adsorption: the nitrogen fluid. Another hypothesis used to explain the stepped
+% isotherm is that nitrogen molecules undergoes a reordering or repacking in the
+% cavity, thereby leading to an increase of adsorbed molecules in the same total
+% pore volume as well as the swing of the linkers aiming to accommodate the new
+% packing. This hypothesis had been already proposed by
+% \citeauthor{Ania2012}\cite{Ania2012}, but the intermediate adsorption regime was
+% then not probed or interpreted.
+%
+% In order to visualize this packing, I have projected the positions of all
+% adsorbed nitrogen atoms in the $xy$ plane and created a density map of the
+% adsorbed phase. This density map is shown figure~\ref{fig:zif8x:density} both at
+% various loadings and for the three frameworks.
+%
+% \begin{figure}[ht]
+%     \centering
+%     \input{figures/zif8x-density}
+%     \caption{2D density maps of the adsorbed nitrogen atoms positions in the $xy$
+%     plane at various loadings in \ZIF8 (top), \ZIFCl (middle), and \ZIFBr
+%     (bottom). The loading increases from left to right.}
+%     \label{fig:zif8x:density}
+% \end{figure}
+%
+% For \ZIF8, two different molecular packing are encountered according to the
+% loading. With 10 or 25 molecules in the unit cell, the density maps show clear
+% delimited positions on a cubic-like arrangement, whereas with 40 and 50
+% molecules, they show a tetragonal-like arrangement of the molecules. This
+% reordering of the adsorbed nitrogen molecules from a cubic-like phase to a
+% tetragonal-like phase is at the origin of the steep uptake at low relative
+% pressure. For \ZIFCl, the behavior is roughly similar: the molecules first pack
+% in a cubic-like fashion in the cases of 10, 25 and 40 molecules per unit cell,
+% before a reordering toward a tetragonal-like arrangement at 50 molecules per
+% unit cell. This is consistent with the dihedral angles distributions as shown in
+% figure~\ref{fig:zif8x:dihedrals} and evidences that the molecular packing
+% rearrangement happens conjointly with the swing of the linkers. It is
+% interesting to note that some disorder in the tetragonal arrangement remains for
+% a loading of 50 molecules per unit cell as the molecules positions are not as
+% well defined as the one in \ZIF8. Again, this is coherent with the dihedral
+% angles distribution at 50 molecules per unit cell for \ZIFCl which is not of a
+% single Gaussian type, indicating that this disorder can also be found in the
+% framework structure. For \ZIFBr, the behavior is different. A same cubic-like
+% arrangement is found at the lower loadings of 8 and 20 molecules per unit cell,
+% whereas the arrangement at the higher loadings of 40 and 50 molecules per cell
+% differ from the tetragonal-like one seen for \ZIF8 and \ZIFCl. Indeed, the
+% latter appears as a mix of the cubic and the tetragonal organization as the
+% molecules are mostly distributed on a cube with additional molecules in the
+% [111] channels on the diagonals of the cube. Consequently, because of the
+% absence of a neat reordering of adsorbed nitrogen molecules in \ZIFBr, its
+% sorption isotherm does not display the S-shaped adsorption step.
+%
+% \begin{figure}[ht]
+%     \centering
+%     \input{figures/zif8x-rdf}
+%     \caption{Radial distribution function of nitrogen atoms in the three
+%     frameworks for various nitrogen loading. This represent the number of atoms
+%     at a given distance from the center of the cavity.}
+%     \label{fig:zif8x:rdf}
+% \end{figure}
+%
+% This repacking of nitrogen molecules is also visible on the radial distribution
+% of nitrogen atoms (not to be confused with the pairs radial distribution
+% function $g(r)$) in figure~\ref{fig:zif8x:rdf}. The radial distribution counts
+% how many nitrogen atoms are at a given distance of the center of the sodalite
+% cage. On the graphs for the \ZIF8 framework, we can see the change from the
+% initial packing at $N = 10$ and $N = 25$ with a main peak at \SI{5}{\AA} and a
+% secondary peak at \SI{1}{\AA}; the final packing at $N = 50$ with three well
+% defined peaks at \SI{2.5}{\AA}, \SI{4.5}{\AA}, and \SI{5.5}{\AA}; and the $N =
+% 40$ distribution which present characteristics of both extremes. Again, for
+% \ZIFCl, we observe the first bi-modal distribution for $N = 10$, 25 and 40; and
+% the tri-modal distribution for $N = 50$. And in \ZIFBr we never see the
+% tri-modal distribution: instead at high loadings ($N = 40$ and $N = 50$) the
+% curve is not well defined in the 3 to \SI{6}{\AA} range, as already seen in
+% figure~\ref{fig:zif8x:density}.
+%
+% \subsection{Mechanism of nitrogen adsorption in \ZIF8}
+%
+% To summarize this section, the proposed mechanism of nitrogen adsorption in the
+% three isoreticular \ZIF8 frameworks is illustrated in a schematic way in
+% figure~\ref{fig:zif8x:summary}. When the pores are empty, the linkers are at
+% their equilibrium position, around 0°. As the loading increases, the pores start
+% to fill in a given, cubic-like arrangement. Then, as loading continues to
+% increase, in \ZIFCH3 and \ZIFCl the nitrogen molecules arrangement changes to a
+% tetragonal-like arrangement and the linkers rotate to accommodate for this
+% repacking. In \ZIFBr, the nitrogen molecules do not repack and the linkers do
+% not rotate.
+%
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics[width=0.5\textwidth]{figures/images/zif8x-summary}
+%     \caption{Schematic overview of the adsorption process in the three \ZIF8
+%     frameworks. Blue is \ZIFCH3, green is \ZIFCl and red is \ZIFBr; loading
+%     increases from left to right.}
+%     \label{fig:zif8x:summary}
+% \end{figure}
+%
+% Given that the change in functional group from methyl to chloro and bromo, does
+% not significantly impact partial atomic charges or the strength of the \ce{Zn-N}
+% coordination bond; I do no think the origin of the different soprtion feature
+% between the three \ZIF8 derivatives comes from a difference in flexibility or
+% stiffness of the linkers rotation. This is confirmed by the dihedral angles
+% distribution in figure~\ref{fig:zif8x:dihedrals}, where all the Gaussian
+% distributions have the same width, which means that all the linkers rotation
+% have the same stiffness.
+%
+% Instead, I think that the differences in the adsorption isotherms comes from the
+% differences in pore size and shape, the pores in \ZIFBr being smaller than in
+% \ZIFCl and \ZIFCH3, thus preventing a molecular reordering to occur.
 
 \clearpage
-\section{Adsorption of \ce{N2} in \ZIF8 and derivatives}
+\section{Classical force fields from \abinitio data}
 
-In this section, I will show an example of how the use of \abinitio molecular
-dynamics enable precise description of the adsorbed phase in flexible porous
-materials.
+As mentioned in section~\ref{sec:zif8x:methods}, I used \abinitio molecular
+dynamics to study the adsorption in the three \ZIF8 derivatives to be able to
+describe the full flexibility of the frameworks without making any other
+assumptions; and because there was no available force field for the material
+studied.
 
-\subsection{\ZIF8 and its cousins}
+\subsection{Ye old way of setting parameters}
 
-The flexible porous material used in this study is \ZIF8. \ZIF8 is a MOF in the
-Zeolitic Imidazolate Framework (ZIF) family. ZIFs are built around tetravalent
-metal centers such as Fe, Co, Zn or Cu; linked together by imidazolate linkers.
-They also present the same topology as zeolites, with Metal-(imidazolate)$_2$
-building blocks taking the role of \ce{SiO2}. The first ZIFs (ZIF-1 to ZIF-12)
-were synthesized in 2006\cite{Park2006}, and found to be water and thermally
-resistant, which made them interesting MOF for commercial applications. \ZIF8
---- represented in figure~\ref{fig:zif8-ch3:structure} --- have a sodalite (SOD)
-topology, and is composed of methyl-imidazolate linkers around Zinc metallic
-centers.
+Ad hoc, manual setting of parameters from physical constants (X ray, IR)
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.35\textwidth]{figures/images/ZIF8-100}
-    \hspace{2em}
-    \includegraphics[width=0.35\textwidth]{figures/images/ZIF8-111}
-    \caption{Structure of the methyl-imidazolate \ZIF8. On the left, the
-    front-most opening is the 4-member ring window (the structure is represented
-    along the 001 axis); and on the right the front-most opening is the 6-member
-    ring window (the structure is represented along the 111 axis). The atomic
-    color code is green for Zinc, blue for Nitrogen, gray for Carbon and white
-    for Hydrogen.}
-    \label{fig:zif8-ch3:structure}
-\end{figure}
+\paragraph{No free lunch, sorry}
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.35\textwidth]{figures/images/ZIF8-Cl}
-    \hspace{2em}
-    \includegraphics[width=0.35\textwidth]{figures/images/ZIF8-Br}
-    \caption{Structure of the chloro-imidazolate \ZIFCl on the left and the
-    bromo-imidazolate \ZIFBr on the right. The atomic color code is the same
-    as in figure~\ref{fig:zif8-ch3:structure}, with a bright green for Chlorine
-    atoms and dark red for Bromide atoms.}
-    \label{fig:zif8-x:structures}
-\end{figure}
+\subsection{MOF-FF}
 
-Two analogs to \ZIF8 using chloro- and bromo- substituted imidazolate instead of
-the original methyl-imidazolate in \ZIF8 have first synthesized by
-\citeauthor{Li2009}\cite{Li2009}. These two new materials that we will call
-\ZIFCl and \ZIFBr are represented in figure~\ref{fig:zif8-x:structures}.
+Consistent and reproducible parametrization. (same input => same output)
 
-As we will see in this chapter, these simple changes of linker are followed by
-complex changes in behavior; showing in this specific example the versatility
-MOFs can achieve through organic chemistry.
+Periodic input data
 
-\FloatBarrier
-\subsubsection{Adsorption isotherms of nitrogen in \ZIF8, \ZIFCl, and \ZIFBr}
+CMA-ES (Covariance Matrix Adaptation Evolution Strategy) (black box optimizer
+for continuous variables)
 
-\ZIF8 is known for it relatively high surface area of \SI{1.947}{m^2/g} and
-large cavity with a diameter of \SI{11.6}{\AA}\cite{Park2006}. It is also
-commercially available and have excellent performance at the lab scale for the
-separation of gas mixtures such as \ce{C2}/\ce{C3} hydrocarbons,
-\ce{CO2}/\ce{CH4}, or \ce{CO2}/\ce{N2}\cite{Li2009,Bux2011}. It also present an
-interesting behavior with respect to flexibility of the structure during
-nitrogen adsorption. The nitrogen adsorption isotherms at \SI{77}{K} in \ZIF8,
-\ZIFCl and \ZIFBr, are presented in figure~\ref{fig:zif8x:isotherms}
+Input = Minimized structure + Hessian + (Charges + MM3-VdW parameters)
+Output = bonded terms
 
-\begin{figure}[ht]
-    \centering
-    \input{figures/zif8x-isotherms.tex}
-    \caption{Adsorption isotherms in \ZIF8 (black) and the chloro (green) and
-    bromo (red) derivatives. Full circles are used for the adsorption branch,
-    and empty ones for the desorption branch. Experimental data acquired by
-    \citeauthor{Chaplais2018}\cite{Chaplais2018}}
-    \label{fig:zif8x:isotherms}
-\end{figure}
+Take an initial guess => compute corresponding structure + Hessian => Evaluate score function
 
-Looking at these isotherms, we first notice that for \ZIF8, there are two jumps
-in loading: a first one corresponding to the initial filling of the pores up
-until around \SI{300}{cm^3/cm^3}, and the a second one up until
-\SI{400}{cm^3/cm^3}. \ZIFCl shows the same behavior with a two stepped isotherm,
-while \ZIFBr does not. The adsorption of nitrogen molecules at low temperature
-in \ZIF8 has already been studied extensively, both experimentally and by
-computational means. Early work demonstrated that the structure of \ZIF8 goes
-through at least two phases during the adsorption: an ambient pressure phase
-named AP, and a high pressure phase named HP. These phases mainly differ by the
-orientation of the linkers around the 4 and 6-member
-windows.\cite{FairenJimenez2011} A recent, more detailed characterization of the
-structural evolution upon adsorption showed that the transition from AP to HP is
-linked to a continuous swing (rotation) of the methyl-imidazolate linker, which
-can be followed as the dihedral angle Zn-Zn-C-CH3 goes from an equilibrium value
-of 7° in AP phase to an equilibrium value of 35° in HP phase.\cite{Coudert2017}
-All this seems to indicate that the second jump in the isotherm is related to
-the changes in the structure.
+Score = sum of mean square deviation for all bonds/angles/... + stress
 
-In order to gain better understanding of the relation between the structure
-changes and the adsorbed molecules, I used molecular dynamics (MD) simulations.
-To describe fully the flexibility of the frameworks without any assumption, I
-favored \abinitio MD over force field-based MD --- as there are currently no
-force fields available for the \ZIF8 variants studied here. For each framework
-(\ZIFCH3, \ZIFCl, \ZIFBr), I ran five simulations corresponding to different
-number of nitrogen molecules inside the porous space, going from empty framework
-($N = 0$) to the fully loaded host material. The maximal loading was determined
-from the experimental isotherms to be close to $N = 50$ molecules per unit cell
-for \ZIFCH3 and \ZIFCl and $N = 40$ molecules per unit cell for \ZIFBr.
+\subsection{Checking the generated force-field}
 
-To create the starting configurations, I started from the energy-minimized
-configuration of the empty frameworks, and randomly placed the selected number
-of nitrogen molecules in the unit cell using the packmol
-software\cite{Martnez2009}.  The whole \{ZIF, adsorbate\} system was then
-minimized again before starting the molecular dynamics simulations. I used the
-Quickstep module\cite{VandeVondele2005} of the CP2K software package (version
-2.5.1, available online at http://www.cp2k.org/) for all the simulations. I used
-a PBE exchange-correlation functional with D3 dispersion corrections, a double
-zeta polarizable valence (DZVP) basis set, and an energetic cutoff of 600 Ry.
-All the systems were simulated with a \SI{1}{fs} timestep giving a total of 12
-to \SI{22}{ps} of simulation. Temperature was held constant at 77 K with a CVSR
-thermostat, using a thermostat time constant of \SI{1000}{fs}. I used the last
-\SI{5}{ps} of simulation for analysis, leaving 7 to \SI{17}{ps} to the system to
-reach equilibrium.
+Structural parameters
 
-\subsection{Deformation under adsorption}
+Elastic constants
 
-The first indicator of deformation of the framework is the \ce{Zn-Zn-Zn-X}
-dihedral angle, where \ce{X} is the group on the imidazolate linkers: methyl,
-chlorine or bromide. This angle --- represented on
-figure~\ref{fig:zif8x:swing-angle} --- is also called the swing angle.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.3\textwidth]{figures/images/swing-angle}
-    \caption{Representation of the swing \ce{Zn-Zn-Zn-X} dihedral angle for \ZIF8.}
-    \label{fig:zif8x:swing-angle}
-\end{figure}
-
-\begin{figure}[ht]
-    \centering
-    \input{figures/zif8x-dihedrals}
-    \caption{Distribution of linker swing angle (\ce{Zn-Zn-Zn-X} dihedral angle,
-    where \ce{X} stands for \ce{CH3}, \ce{Cl} or \ce{Br} for \ZIF8, \ZIFCl or
-    \ZIFBr, respectively) at various values of nitrogen loading.}
-    \label{fig:zif8x:dihedrals}
-\end{figure}
-
-Following the evolution of the distributions of angles as the number of nitrogen
-molecules increases allow to understand the deformations of the three framework
-under adsorption. This evolution is represented on
-figure~\ref{fig:zif8x:dihedrals}, where we observe a gradual increase of the
-mean angle value as loading increases while the distribution stays Gaussian.
-
-These results are consistent with the already published ones for
-\ZIF8\cite{Coudert2017}. Interestingly, the two other frameworks behave
-differently. For \ZIFCl, no change is noticed in the distribution profile upon
-adsorption until the highest value of loading (\ie, $N = 50$). In this case, the
-distribution shifts and the profile is no longer Gaussian type, but instead
-looks like the sum of two Gaussian distribution, one centered around 25°, and
-the other one around 10°. It indicates that some of the linkers do not rotate
-(swing) even at high loading. This non-zero value of the distribution at $\phi =
-0\text{°}$ contrasts with the case of \ZIF8. Finally, for \ZIFBr, no change
-occurs for the dihedral angle distribution as the loading increases.
-
-Although this behavior is correlated with the presence or absence of the
-adsorption step in the isotherms, it is not however sufficient to explain it.
-One hypothesis often formulated for \ZIF8 is that the swinging motion leads to
-an increase of the accessible porous volume in the structure, thereby increasing
-nitrogen uptake. In order to check whether this is or not the case, I computed
-the pore size distribution (see figure~\ref{fig:zif8x:pores-sizes}) and the
-accessible porous volume (see figure~\ref{fig:zif8x:porous-volume}) from the MD
-trajectories using Zeo++\cite{Willems2012} version 0.3. In order to compute
-these values, I first emptied the structure of all the nitrogen molecules, and
-then computed the pores sizes distribution and accessible volume using the
-remaining frameworks.
-
-\begin{figure}[ht]
-    \centering
-    \input{figures/zif8x-pores-sizes}
-    \caption{Pore size distribution (no unit) under increasing loading for the
-    three structures.}
-    \label{fig:zif8x:pores-sizes}
-\end{figure}
-
-\begin{figure}[ht]
-    \centering
-    \input{figures/zif8x-porous-volume}
-    \caption{Accessible porous volume changes in the three isoreticular
-    structures during adsorption. The numbers on top of the columns are the
-    number of adsorbed \ce{N2} molecules.}
-    \label{fig:zif8x:porous-volume}
-\end{figure}
-
-The results presented in figure~\ref{fig:zif8x:pores-sizes} highlight that the
-pore size distribution (PSD) remains constant in all cases as the loading
-increase and the linkers swing. The PSDs present two cavities: a small one
-corresponding to the 6 member windows around \SI{10.3}{\AA} for \ZIF8 and a
-second one, with a much larger contribution to the overall porous volume around
-\SI{11.2}{\AA} in \ZIF8. The three PSDs are very similar, only changing the size
-of pores in the order $\text{\ZIF8} > \text{\ZIFCl} > \text{\ZIFBr}$. This is
-also reflected in the accessible volume figure~\ref{fig:zif8x:porous-volume}
-which remains roughly constant as the loading increase and the linkers swing.
-
-\subsection{Changes in the adsorbed phase}
-
-In order to understand the origin of the step in the nitrogen adsorption
-isotherms, we need to take a look at the other chemical specie participating in
-adsorption: the nitrogen fluid. Another hypothesis used to explain the stepped
-isotherm is that nitrogen molecules undergoes a reordering or repacking in the
-cavity, thereby leading to an increase of adsorbed molecules in the same total
-pore volume as well as the swing of the linkers aiming to accommodate the new
-packing. This hypothesis had been already proposed by
-\citeauthor{Ania2012}\cite{Ania2012}, but the intermediate adsorption regime was
-then not probed or interpreted.
-
-In order to visualize this packing, I have projected the positions of all
-adsorbed nitrogen atoms in the $xy$ plane and created a density map of the
-adsorbed phase. This density map is shown figure~\ref{fig:zif8x:density} both at
-various loadings and for the three frameworks.
-
-\begin{figure}[ht]
-    \centering
-    \input{figures/zif8x-density}
-    \caption{2D density maps of the adsorbed nitrogen atoms positions in the $xy$
-    plane at various loadings in \ZIF8 (top), \ZIFCl (middle), and \ZIFBr
-    (bottom). The loading increases from left to right.}
-    \label{fig:zif8x:density}
-\end{figure}
-
-For \ZIF8, two different molecular packing are encountered according to the
-loading. With 10 or 25 molecules in the unit cell, the density maps show clear
-delimited positions on a cubic-like arrangement, whereas with 40 and 50
-molecules, they show a tetragonal-like arrangement of the molecules. This
-reordering of the adsorbed nitrogen molecules from a cubic-like phase to a
-tetragonal-like phase is at the origin of the steep uptake at low relative
-pressure. For \ZIFCl, the behavior is roughly similar: the molecules first pack
-in a cubic-like fashion in the cases of 10, 25 and 40 molecules per unit cell,
-before a reordering toward a tetragonal-like arrangement at 50 molecules per
-unit cell. This is consistent with the dihedral angles distributions as shown in
-figure~\ref{fig:zif8x:dihedrals} and evidences that the molecular packing
-rearrangement happens conjointly with the swing of the linkers. It is
-interesting to note that some disorder in the tetragonal arrangement remains for
-a loading of 50 molecules per unit cell as the molecules positions are not as
-well defined as the one in \ZIF8. Again, this is coherent with the dihedral
-angles distribution at 50 molecules per unit cell for \ZIFCl which is not of a
-single Gaussian type, indicating that this disorder can also be found in the
-framework structure. For \ZIFBr, the behavior is different. A same cubic-like
-arrangement is found at the lower loadings of 8 and 20 molecules per unit cell,
-whereas the arrangement at the higher loadings of 40 and 50 molecules per cell
-differ from the tetragonal-like one seen for \ZIF8 and \ZIFCl. Indeed, the
-latter appears as a mix of the cubic and the tetragonal organization as the
-molecules are mostly distributed on a cube with additional molecules in the
-[111] channels on the diagonals of the cube. Consequently, because of the
-absence of a neat reordering of adsorbed nitrogen molecules in \ZIFBr, its
-sorption isotherm does not display the S-shaped adsorption step.
-
-\begin{figure}[ht]
-    \centering
-    \input{figures/zif8x-rdf}
-    \caption{Radial distribution function of nitrogen atoms in the three
-    frameworks for various nitrogen loading. This represent the number of atoms
-    at a given distance from the center of the cavity.}
-    \label{fig:zif8x:rdf}
-\end{figure}
-
-This repacking of nitrogen molecules is also visible on the radial distribution
-of nitrogen atoms (not to be confused with the pairs radial distribution
-function $g(r)$) in figure~\ref{fig:zif8x:rdf}. The radial distribution counts
-how many nitrogen atoms are at a given distance of the center of the sodalite
-cage. On the graphs for the \ZIF8 framework, we can see the change from the
-initial packing at $N = 10$ and $N = 25$ with a main peak at \SI{5}{\AA} and a
-secondary peak at \SI{1}{\AA}; the final packing at $N = 50$ with three well
-defined peaks at \SI{2.5}{\AA}, \SI{4.5}{\AA}, and \SI{5.5}{\AA}; and the $N =
-40$ distribution which present characteristics of both extremes. Again, for
-\ZIFCl, we observe the first bi-modal distribution for $N = 10$, 25 and 40; and
-the tri-modal distribution for $N = 50$. And in \ZIFBr we never see the
-tri-modal distribution: instead at high loadings ($N = 40$ and $N = 50$) the
-curve is not well defined in the 3 to \SI{6}{\AA} range, as already seen in
-figure~\ref{fig:zif8x:density}.
-
-\subsection{Mechanism of nitrogen adsorption in \ZIF8}
-
-Given that the change in functional group, and thus in partial atomic charges,
-does not significantly impact the strength of the Zn-N coordination bond, we
-ascribe the origin of this different sorption feature between the three ZIF-8
-derivatives to the difference pore size and shape, the pores in \ZIFBr being
-too small to enable a molecular reordering to occur.
-
-\TODO
-
-\section{Parametrization of classical force-fields from \abinitio data}
+Dynamic parameters constants
 
 \OnlyInSubfile{\printbibliography}
 
