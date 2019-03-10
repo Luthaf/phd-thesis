@@ -521,18 +521,43 @@
 
 \clearpage
 \section{Classical force fields from \abinitio data}
+\label{sec:classical-ff-parametrize}
 
 As mentioned in section~\ref{sec:zif8x:methods}, I used \abinitio molecular
 dynamics to study the adsorption in the three \ZIF8 derivatives to be able to
 describe the full flexibility of the frameworks without making any other
 assumptions; and because there was no available force field for the material
-studied.
+studied. During my PhD, I also worked with Johannes P. Dürholt and Rochus Schmid
+to parametrize a classical force field for \ZIFCH3, \ZIFCl and \ZIFBr using data
+from the \abinitio simulations presented previously.
 
-\subsection{Ye old way of setting parameters}
+\subsection{Fitting a force field}
 
-Ad hoc, manual setting of parameters from physical constants (X ray, IR)
+Classical force fields are fully defined by the choice of functional forms used
+to represent the different terms (\emph{e.g.} using Lennard-Jones, Buckingham or
+another form for non-bonded pair interactions); and the atom-dependent
+parameters used in these functional forms ($\epsilon$ and $\sigma$ for
+Lennard-Jones). See section~\ref{sec:classical-ff} for a more complete
+description of force fields. The process of optimizing the parameters of a
+force-field is called the parametrization of the force field. The idea is to use
+some reference data, either from experimental properties or \abinitio
+computation, and optimize the parameters to reproduce the reference in the best
+possible way. Both static properties such as crystalline structure from X-ray
+diffraction, and dynamic ones such as vibrations frequencies as given by
+infrared spectroscopy can be used as reference data when fitting a force field.
 
-\paragraph{No free lunch, sorry}
+Historically, optimizing the parameters of a force-field has been a manual and
+\emph{ad hoc} process. First, we would start by setting the parameters to an
+initial value by making an educated guess, then we would run a few static or
+dynamic calculations with these parameters, compute and compare the properties
+of interest with the reference value, and finally we would adjust the parameters
+and start over, until some convergence was achieved. Convergence is measured by
+a cost function that we try to minimize when changing the parameters. Creating a
+force field this way is a hard and long task.
+
+\paragraph{Transferable or precise? There is no free lunch.}
+
+=> Multiple FF: from generic ones (UFF, AMBER) to custom made and in-between
 
 \subsection{MOF-FF}
 

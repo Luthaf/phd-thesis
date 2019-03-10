@@ -1,3 +1,4 @@
 build/
-/*.synctex.gz
-/*.pdf
+*.synctex.gz
+*.pdf
+!figures/**.pdf
