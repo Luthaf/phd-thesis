@@ -1,4 +1,14 @@
 build/
 *.synctex.gz
-*.pdf
-!figures/**.pdf
+/ab-initio.pdf
+/classical.pdf
+/conclusion.pdf
+/context.pdf
+/electrostatics.pdf
+/hybrid.pdf
+/intro.pdf
+/macroscopic.pdf
+/resume-fr.pdf
+/sampling.pdf
+/softwares.pdf
+/thesis.pdf
