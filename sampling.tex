@@ -22,11 +22,10 @@ behavior and characteristics of the system (pressure, temperature, \dots).
 
 In this chapter, I will derive and recall some concepts from statistical
 thermodynamics I used during my PhD. For a more in depth description of
-statistical mechanics, I recommend the books of
-\citeauthor{Tuckerman2010}\cite{Tuckerman2010}, or (in french)
-\citeauthor{Diu1996}\cite{Diu1996}.
+statistical mechanics, I recommend the book of
+\citeauthor{Tuckerman2010}\cite{Tuckerman2010}.
 
-\subsection{Maxwell-Boltzmann statistics in canonical ensemble}
+\subsection{Maxwell-Boltzmann statistics}
 
 We will consider a molecular system containing $N$ individual atoms behaving as
 classical particles with individual positions $\r_i$, masses $m_i$ and momentum
@@ -137,7 +136,7 @@ average of observables even further. For a set of $m$ states indexed by
 $\alpha$, the average reads as:
 \[\braket{A} \approx \frac 1 m \sum_\alpha^m A(\r_\alpha^N, \p_\alpha^N).\]
 
-\subsection{Other thermodynamic ensembles}
+\subsection{Thermodynamic ensembles}
 
 It is possible to show that in other thermodynamic ensembles there is a similar
 probability distributions for the phase space, and the associated partition
@@ -170,24 +169,35 @@ a state is given by:
 
 In order to be able to use statistical thermodynamics we must compute the energy
 $\mathcal{V}(\r^N)$ associated with a given configuration. The most generic way
-to do so it to solve the Schrödinger equation for the system.
+to do so it to solve the Schrödinger equation for the $N$ electrons in the
+system evolving in the potential created by the $M$ nuclei; given here in atomic
+units:
+\[\left[-\frac 1 2 \sum_i^N \nabla^2_i - \sum_i^N \sum_j^M \frac{Z_j}{|\r_i - \r_j|} + \sum_i^N \sum_{j>i}^N \frac{1}{|\r_i - \r_j|} \right] \psi(r) = E \psi(r)\]
+There is no analytic solution for this equation, and the high dimensionality of
+the solution space ($\approx 3 N$) make numeric resolution very difficult.
+Instead, we use approximated methods to solve the equation, such as Quantum
+Monte Carlo, Hartree-Fock and post Hartree-Fock methods, or the Density
+Functional Theory (DFT). Of these methods I will only present DFT, as it is the
+most widely used today, and the only one making it possible to study systems
+with hundreds of atoms and periodic boundary conditions. The central idea of DFT
+is to solve these equations in terms of the total electronic density $n(\r)$,
+and then write the total energy of the system as a functional of the density
+$E[n]$. I will present this method with more details in chapter~\ref{sec:dft};
+in particular how it relates to the Schrödinger equation, and how minimizing the
+energy functional gives us the system energy in the ground state.
 
-\fbox{QMC}
-\fbox{HF}
-\fbox{DFT}
+Even when using DFT, solving the Schrödinger equation is costly in term of
+computing time, and imposes a limit on both the time and length scale of systems
+we can study.  As of 2019, we can used DFT to study systems containing up to
+1000 atoms on a time scale of up to \SI{100}{ps}. While these numbers increased
+a lot in the recent years due to improvements in software used for DFT and in
+computing hardware, they are still many systems of interest that we can not
+study with DFT. If the electronic density does no vary much across the subspace
+of phase space we are interested in --- \ie no bond creation or breakage; no
+charge transfer --- then using classical potentials or force fields can be a
+good approximation of the real energy.
 
-But solving the Schrödinger equation is costly in term of computing time, and
-thus impose a limit on both the time and length scale of systems we can study.
-As of 2019, we can used DFT to study systems containing up to 1000 atoms on a
-time scale of up to \SI{100}{ps}. While these numbers increased a lot in the
-recent years due to improvements in software used for DFT and in computing
-hardware, they are still many systems of interest that we can not study with
-DFT. If the electronic density does no vary much across the subspace of phase
-space we are interested in --- \ie no bond creation or breakage; no charge
-transfer --- then using classical potentials or force fields can be a good
-approximation of the real energy.
-
-\subsection{Classical calculations: force fields}
+\subsection{Classical force fields}
 \label{sec:classical-ff}
 
 \TODO: pros and cons of this
@@ -244,7 +254,7 @@ the long distances approximation as:
 where the $C_i$ coefficients have positive values. Most of the time, only the
 term in $1/r^6$ is used, as it will have the largest contribution to the
 resulting energy. There is however no simple mathematical expression for the
-Pauli repulsion, so various schemes have been used.
+Pauli repulsion, so various schemes have been used to approximate it.
 
 The most prevalent one is the Lennard-Jones potential, which uses a repulsive
 term proportional to $1/r^{12}$. In the early day of molecular simulation, this
@@ -264,39 +274,39 @@ For dihedral angles, we often want to be able to reproduce the periodicity of
 the associated energy, which leads to the following definition of the energy:
 \[V_\text{torsion}(\phi) = \frac 12 E \left[1 + \cos(n \phi + \delta)\right] \]
 
-\subsection{Energy evaluation tricks}
-
-\fbox{cutoff? => Ewald}
-
-\fbox{Restrictions}
-
-\subsection{Force field parametrization}
+\subsubsection{Force field parametrization}
 
 All these functional forms have some kind of adjustable parameters that depends
 on the types of the atoms participating in the pair; bond; or angle. For
 example, when using Coulombic interactions, the charge carried by an atom is the
-adjustable parameter. Both the equilibrium distance and the strength of the
-spring depend on the two bonded atoms types in an harmonic bond.
+adjustable parameter; when using a Lennard-Jones potential both the value of
+$\sigma$ and $\epsilon$ are adjustable.
 
-=> parametrization, cf \ref{sec:classical-ff-parametrize}
+The act of adjusting these parameters to make sure the force field produces the
+correct energy and physical properties of the system is called the
+parametrization of a force field. I will discuss it with more depth in the next
+chapter, section~\ref{sec:classical-ff-parametrize}.
 
 \section{Metropolis Monte Carlo}
 ~
 
-\subsection{Direct sampling of ensembles}
+% Direct sampling of ensembles
+
+\subsection{Markov chains}
 ~
 
 \subsection{Monte Carlo moves}
-~
-
-\subsection{Computing energy in Monte Carlo simulations}
 ~
 
 \section{Molecular dynamics}
 ~
 % We will assume that the atoms behave as classical point particles
 
-\subsection{Integrators}
+% Ergodic hypothesis
+
+% Only fixed number of atoms
+
+\subsection{Constant energy integration }
 ~
 
 \subsection{Sampling other ensembles}
@@ -309,6 +319,17 @@ spring depend on the two bonded atoms types in an harmonic bond.
 ~
 
 % WHAM
+
+\section{Speeding up energy computation in classical simulations}
+
+\subsection{Evaluation tricks}
+
+\fbox{cutoff? => Ewald}
+
+\fbox{Restrictions}
+
+\subsection{Monte Carlo energy caching}
+
 
 \OnlyInSubfile{\printbibliography}
 

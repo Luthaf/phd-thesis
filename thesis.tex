@@ -6,7 +6,7 @@
 \usepackage{mathtools}
 \usepackage[italic]{mathastext}
 \usepackage{subfiles}
-\usepackage[]{graphicx}
+\usepackage[draft]{graphicx}
 \usepackage{tabularx}
 \usepackage{xspace}
 \usepackage{float}
@@ -87,6 +87,14 @@
     }
     {\multicitedelim}
     {\usebibmacro{postnote}}
+
+\DeclareFieldFormat{doi}{%
+    \color{CTurl}\small%
+    \mkbibacro{DOI}\addcolon\space%
+    \ifhyperref%
+        {\href{https://doi.org/#1}{\nolinkurl{#1}}}%
+        {\nolinkurl{#1}}%
+}
 
 % An enumerate like environement for the publication list
 \newcounter{pubcount}

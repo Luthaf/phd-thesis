@@ -1,4 +1,4 @@
-set terminal cairolatex pdf colortext size 13cm,5cm font ",9pt"
+set terminal cairolatex pdf colortext size 13.7cm,5.5cm font ",9pt"
 set tics nomirror
 
 OUTPUT = "../" . system("echo ". ARG0 . " | cut -d '.' -f1 " ) . ".tex"

@@ -19,9 +19,9 @@ set multiplot layout 2,2
     set ytics 0.2
     set ylabel "\\footnotesize MOF-FF bond lengths ($\\AA$)" offset -1
     plot x w l lw 3 lc "grey" t"", \
-         "data/mof-ff/bonds-CH3.dat" u 2:3 w p lc "#a4c3dc" pt 7 t "\\ZIFCH3", \
+         "data/mof-ff/bonds-CH3.dat" u 2:3 w p lc "#324A79" pt 7 t "\\ZIFCH3", \
          "data/mof-ff/bonds-Cl.dat"  u 2:3 w p lc "#6ca798" pt 9 t "\\ZIFCl", \
-         "data/mof-ff/bonds-Br.dat"  u 2:3 w p lc "#ca8b7b" pt 15 t "\\ZIFBr"
+         "data/mof-ff/bonds-Br.dat"  u 2:3 w p lc "#8B3129" pt 15 t "\\ZIFBr"
 
 
     set label 1 "(b)"
@@ -32,9 +32,9 @@ set multiplot layout 2,2
     set ytics 10
     set ylabel "\\footnotesize MOF-FF angles (°)"
     plot x w l lw 3 lc "grey" t"", \
-         "data/mof-ff/angles-CH3.dat" u 2:3 w p lc "#a4c3dc" pt 7 t "", \
+         "data/mof-ff/angles-CH3.dat" u 2:3 w p lc "#324A79" pt 7 t "", \
          "data/mof-ff/angles-Cl.dat"  u 2:3 w p lc "#6ca798" pt 9 t "", \
-         "data/mof-ff/angles-Br.dat"  u 2:3 w p lc "#ca8b7b" pt 15 t ""
+         "data/mof-ff/angles-Br.dat"  u 2:3 w p lc "#8B3129" pt 15 t ""
 
 
     set label 1 "(c)"
@@ -45,20 +45,20 @@ set multiplot layout 2,2
     set ytics 100
     set ylabel "\\footnotesize MOF-FF dihedral angles (°)"
     plot x w l lw 3 lc "grey" t"", \
-         "data/mof-ff/dihedrals-CH3.dat" u 2:3 w p lc "#a4c3dc" pt 7 t "", \
+         "data/mof-ff/dihedrals-CH3.dat" u 2:3 w p lc "#324A79" pt 7 t "", \
          "data/mof-ff/dihedrals-Cl.dat"  u 2:3 w p lc "#6ca798" pt 9 t "", \
-         "data/mof-ff/dihedrals-Br.dat"  u 2:3 w p lc "#ca8b7b" pt 15 t ""
+         "data/mof-ff/dihedrals-Br.dat"  u 2:3 w p lc "#8B3129" pt 15 t ""
 
     set label 1 "(d)"
     set xrange [0:2000]
     set xtics 500
-    set xlabel "\\footnotesize DFT vibrations ($cm^{-1}$)"
+    set xlabel "\\footnotesize DFT vibrations (\\si{cm^{-1}})"
     set yrange [0:2000]
     set ytics 500
-    set ylabel "\\footnotesize MOF-FF vibrations ($cm^{-1}$)"
+    set ylabel "\\footnotesize MOF-FF vibrations (\\si{cm^{-1}})"
     plot x w l lw 3 lc "grey" t"", \
-         "data/mof-ff/vibrations-CH3.dat" u 2:3 w p lc "#a4c3dc" pt 7 t "", \
+         "data/mof-ff/vibrations-CH3.dat" u 2:3 w p lc "#324A79" pt 7 t "", \
          "data/mof-ff/vibrations-Cl.dat"  u 2:3 w p lc "#6ca798" pt 9 t "", \
-         "data/mof-ff/vibrations-Br.dat"  u 2:3 w p lc "#ca8b7b" pt 15 t ""
+         "data/mof-ff/vibrations-Br.dat"  u 2:3 w p lc "#8B3129" pt 15 t ""
 
 unset multiplot
