@@ -95,7 +95,11 @@ and the electron-electron interaction potential $U(r_i, r_j) = 1 / |\r_i -
 \[\hat{\mathcal{H}} = \hat T + \hat V_\text{ext} + \hat V_{ee} \label{eq:electronic-hamiltonian}\]
 The three terms in the Hamiltonian are the kinetic energy $\hat T$, the total
 external potential $\hat V_\text{ext}$, and the electron-electron interaction
-potential $\hat V_{ee}$.
+potential $\hat V_{ee}$. This electron-electron interaction makes the state of
+any electron depend on the state of all other electrons; and the wave function
+depends on $3N$ coupled variables. Looking directly for analytic or numerical
+solutions of the Schrödinger equation is hard because the search space is huge:
+even for small systems, they are already thousands of electrons interacting.
 
 The Density Functional Theory (DFT) is a strategy to solve the Schrödinger
 equation without having to explicitly determine the wave function $\psi$. It is
@@ -104,8 +108,11 @@ probability for the system to be in a given state. For a system of electrons
 evolving in the fixed potential created by the nuclei, the wave function
 $\psi(\{\vec x\})$ depends on the Cartesian coordinates of all the electrons
 $\{\vec x\}$. The electronic density $n(\r)$ is the probability to find an
-electron in small neighboring of $\r$. It is defined as:
+electron in small neighboring of $\r$, defined as:
 \[n(\r) = N \iiint |\psi(\r, \vec x_2, \cdots, \vec x_N)|^2 \ \d \vec x_2 \cdots\d \vec x_N \label{eq:electron-density}\]
+The whole idea of DFT is to transform the problem so that we can look for
+a solution of the Schrödinger equation as a function of 3 variables $n(\r)$
+instead of a function of $3N$ variables $\psi$.
 
 Hohenberg and Kohn showed in 1964\cite{Hohenberg1964} that every electronic
 density correspond exactly to one and only one external potential
@@ -213,12 +220,11 @@ Generally, the exchange-correlation functional only depends on the local
 density, and maybe some of its derivatives. This means that DFT calculations
 will have trouble reproducing non-electrostatic long-range correlation effects,
 such as the dispersion interaction. Fortunately, we have a simple analytic
-formulation for these interaction, which Grimme and coworkers\cite{Grimme2006, Grimme2010}
-proposed to include when computing the total energy. This correction is added to
-the energy obtained by DFT, and does not directly modify the electronic density.
+formulation for these interaction, which Grimme and coworkers\cite{Grimme2006,
+Grimme2010} proposed to include when computing the total energy. This empirical
+correction is added to the energy obtained by DFT, and does not directly modify
+the electronic density.
 \[E_\text{tot} = E_\text{DFT} + E_\text{disp}; \]
-This empirical correction is added to the energy obtained by DFT, and does not
-directly modify the electronic density.
 
 I used the DFT-D3 version of this correction, with zero damping\cite{Grimme2010}
 and only the two body term. The correction to the energy is expressed as:
@@ -238,14 +244,24 @@ $\sigma_8 = 1.0$. $\alpha_6$ is always set to 14, and $\alpha_8$ to 16.
 
 \subsection{Ab initio molecular dynamics}
 
-\TODO
+DFT can be used to compute the energy and forces acting on the atoms during an
+\abinitio molecular dynamics (AIMD) simulation. Different types of dynamics can
+be used for the nuclei depending on the time precision needed, I only used the
+Born-Oppenheimer dynamic. In this framework, the nuclei are supposed to behave
+as classical particles, and DFT is used to optimize the electronic density at
+each step of the dynamic. All the algorithms devised for molecular dynamics (see
+section~\ref{sec:molecular-dynamics}) can be used. In particular, it is possible
+to use AIMD to sample the $NVE$, $NVT$ and $NPT$ ensembles; although $NPT$
+ensemble is more costly than $NVT$, because the proper calculation of the
+pressure requires more precise atomic forces, and a stricter convergence
+criterion in the SCF cycles.
 
 \newpage
 \section{Adsorption of \ce{N2} in \ZIF8 and its derivatives}
 
-In this section, I will show an example of how the use of \abinitio molecular
-dynamics enables a precise description of the adsorbed phase in flexible porous
-materials. The corresponding study has been published in
+In this section, I will show an example of how the use of AIMD enables a precise
+description of the adsorbed phase in flexible porous materials. The
+corresponding study has been published in
 \citejournal{Chaplais2018}\cite{Chaplais2018}.
 
 \subsection{\ZIF8 and its cousins}
@@ -257,7 +273,7 @@ topology of \ZIF8 is represented in figure~\ref{fig:zif8-ch3:structure}.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.45\textwidth]{figures/images/ZIF8-100}
+    \includegraphics[width=0.45\textwidth]{figures/images/swing-angle}
     \hfill
     \includegraphics[width=0.45\textwidth]{figures/images/ZIF8-111}
     \caption{Structure of the methyl-imidazolate \ZIF8. On the left, the
@@ -265,26 +281,62 @@ topology of \ZIF8 is represented in figure~\ref{fig:zif8-ch3:structure}.
     along the 001 axis); and on the right the front-most opening is the 6-member
     ring window (the structure is represented along the 111 axis). The atomic
     color code is green for zinc, blue for nitrogen, gray for carbon and white
-    for hydrogen.}
+    for hydrogen. The red line connects the atoms of the \emph{swing}
+    \ce{Zn-Zn-Zn-X} dihedral angle.}
     \label{fig:zif8-ch3:structure}
 \end{figure}
 
 \ZIF8 is known for it relatively high surface area of \SI{1.947}{m^2/g} and
-large cavity with a diameter of \SI{11.6}{\AA}\cite{Park2006}. It is also
+large cavity with a diameter of \SI{11.6}{\AA}\cite{Park2006}, separated by
+6-ring windows of small diameter ($\approx$ \SI{3.4}{\AA}). It is also
 commercially available and have excellent performance at the lab scale for the
 separation of gas mixtures such as \ce{C2}/\ce{C3} hydrocarbons,
-\ce{CO2}/\ce{CH4}, or \ce{CO2}/\ce{N2}\cite{Li2009,Bux2011}. It also present an
-interesting behavior with respect to flexibility of the structure during
-nitrogen adsorption. \TODO
+\ce{CO2}/\ce{CH4}, or \ce{CO2}/\ce{N2}\cite{Li2009, Bux2011}.
+
+It exhibits some flexibility of its framework through torsional rotation of the
+linkers around the plane defined by the 6-member ring windows. The first
+evidence of such flexibility came from the fact that molecules bigger than the
+window aperture can diffuse through the structure. When a molecule bigger than
+the geometric window size tries to go through the window, the linkers will
+rotate, effectively increasing the apparent windows size. In particular, it has
+been shown that we need to account for the flexibility of the structure to be
+able to properly reproduce experimental diffusion coefficients of small
+hydrocarbons\cite{Verploegh2015}.
+
+Moreover, there is evidence of a structural transition occurring in \ZIF8 upon
+loading, from an ambient pressure or AP phase to a high pressure or HP phase.
+This was demonstrated using \emph{in situ} X-ray diffraction both during
+methanol/ethanol intrusion at \SI{1,47}{GPa}\cite{Moggach2009}; and during the
+adsorption of \ce{N2} at \SI{77}{K}\cite{FairenJimenez2011}. In the latter case,
+the authors also demonstrated that the stepped isotherm (see
+figure~\ref{fig:zif8x:isotherms}) could not be reproduced by Grand Canonical
+Monte Carlo (GCMC) simulations in the rigid AP structure. Instead, they showed
+that the lower pressure regime is reproduced by GCMC simulations in the rigid AP
+structure, while the higher regime correspond to GCMC simulations in the rigid
+HP structure.
+
+The AP and HP phases have the same space group ($I\bar{4}3m$), and mainly differ
+by the orientation of the linkers around the 4 and 6-member windows. This
+orientation is defined by the dihedral angle \ce{Zn-Zn-C-CH3}, also called the
+\emph{swing angle}; which goes from an average value of 7° in the AP phase to an
+average value of 35° in the HP phase.\cite{FairenJimenez2011} This angle is
+represented in figure~\ref{fig:zif8-ch3:structure}. A recent, more detailed
+characterization of the structural evolution upon adsorption showed that the
+transition from AP to HP is a continuous rotation of the linkers, and not an
+abrupt change.\cite{Coudert2017}.
+
+Other studies\cite{FairenJimenez2012, Ania2012} showed that the adsorption
+isotherms of \ce{CO}, \ce{O2} and \ce{Ar} at \SI{77}{K} and \SI{90}{K} all
+present similar stepped isotherm and hysteresis loop in the high pressure
+regime. Again, these isotherms could not be fully described by GCMC simulations
+in the AP structure only, instead we also need to account for the HP phase.
+
+\subsubsection{Nitrogen adsorption isotherms in \ZIF8, \ZIFCl, and \ZIFBr}
 
 Two analogs to \ZIF8 using chloro- and bromo-substituted imidazolate linkers
 instead of the original methyl-imidazolate in \ZIF8 have first synthesized by
 \citeauthor{Li2009}\cite{Li2009}. These two new materials that we will call
-\ZIFCl and \ZIFBr are represented in figure~\ref{fig:zif8-x:structures}.
-
-As we will see in this chapter, these simple changes of linker are followed by
-complex changes in behavior; showing in this specific example the versatility
-MOFs can achieve through organic chemistry.
+\ZIFCl and \ZIFBr are represented in figure~\ref{fig:zif8x:structures}.
 
 \begin{figure}[ht]
     \centering
@@ -295,16 +347,13 @@ MOFs can achieve through organic chemistry.
     bromo-imidazolate \ZIFBr on the right. The atomic color code is the same
     as in figure~\ref{fig:zif8-ch3:structure}, with a bright green for chlorine
     atoms and dark red for bromide atoms.}
-    \label{fig:zif8-x:structures}
+    \label{fig:zif8x:structures}
 \end{figure}
-
-\FloatBarrier
-\subsubsection{Nitrogen adsorption isotherms in \ZIF8, \ZIFCl, and \ZIFBr}
 
 The nitrogen adsorption isotherms at \SI{77}{K} in \ZIF8, \ZIFCl and \ZIFBr, are
 presented in figure~\ref{fig:zif8x:isotherms}. They were measured as part of
-collaboration by the experimental IS2M laboratory in Université de Haute Alsace,
-in Mulhouse, France.
+collaboration by the experimental team IS2M laboratory in Université de
+Haute Alsace, France.
 
 \begin{figure}[ht]
     \centering
@@ -319,28 +368,20 @@ in Mulhouse, France.
 Looking at these isotherms, we first notice that for \ZIF8, there are two jumps
 in loading: a first one corresponding to the initial filling of the pores up
 until around \SI{300}{cm^3/cm^3}, and the a second one up until
-\SI{400}{cm^3/cm^3}. \ZIFCl shows the same behavior with a two stepped isotherm,
-while \ZIFBr does not. The adsorption of nitrogen molecules at low temperature
-in \ZIF8 has already been studied extensively, both experimentally and by
-computational means. Early work demonstrated that the structure of \ZIF8 goes
-through at least two phases during the adsorption: an ambient pressure phase
-named AP, and a high pressure phase named HP. These phases mainly differ by the
-orientation of the linkers around the 4 and 6-member
-windows.\cite{FairenJimenez2011} A recent, more detailed characterization of the
-structural evolution upon adsorption showed that the transition from AP to HP is
-linked to a continuous swing (rotation) of the methyl-imidazolate linker, which
-can be followed as the dihedral angle \ce{Zn-Zn-C-CH3} goes from an equilibrium
-value of 7° in AP phase to an equilibrium value of 35° in HP
-phase.\cite{Coudert2017} This angle is represented in
-figure~\ref{fig:zif8x:swing-angle}. All this seems to indicate that the second
-jump in the isotherm is related to the changes in the structure.
+\SI{400}{cm^3/cm^3}. This shape of isotherm is known as a type IV isotherm in
+the International Union of Pure and Applied Chemistry (IUPAC)
+classification\cite{Sing1985}. Type IV isotherms usually appear when two kind of
+porosity exist, and the second, larger kind is filled at higher pressures; for
+example when there are both micropores and mesoscopic pores in the material. In
+the case of \ZIF8, there is no evidence for the existence of such mesoscopic
+pores, and instead the step in the isotherm is attributed to the phase
+transition between the AP and HP phases.
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.5\textwidth]{figures/images/swing-angle}
-    \caption{Representation of the swing \ce{Zn-Zn-Zn-X} dihedral angle for \ZIF8.}
-    \label{fig:zif8x:swing-angle}
-\end{figure}
+Concerning the two new materials, \ZIFCl shows the same behavior with a stepped,
+type IV adsorption isotherm. \ZIFBr however presents a different isotherm shape,
+without the second jump in loading, known as a type I isotherm in the IUPAC
+classification. This kind of isotherm usually occurs in materials where there is
+a single kind of micropores.
 
 \subsubsection{\emph{Ab initio} molecular dynamics study}
 \label{sec:zif8x:methods}
@@ -375,16 +416,18 @@ We used constant volume ($NVT$) simulations instead of constant pressure ($NPT$)
 simulations because $NPT$ AIMD simulations require a higher computation time to
 correctly converge the calculation of forces. In general, when global
 deformations are expected in the system, one should use $NPT$ simulation. In
-this case, I was able to use $NVT$ simulations because the volume changes
-between the different phases of \ZIF8 is very small \TODO: how much?.
+this case, I was able to use $NVT$ simulations because the volume change between
+the different phases of \ZIFCH3 is very small. The low pressure phase unit cell
+volume is \SI{4900.5}{\AA^3}, while the high pressure phase volume is
+\SI{4974.8}{\AA^3}, the difference is less than 2\%.
 
 \subsection{Deformation under adsorption}
 \label{sec:zif8x:swing}
 
 The first indicator of deformation of the framework is the \ce{Zn-Zn-Zn-X}
 dihedral angle, where \ce{X} is the group on the imidazolate linkers: methyl,
-chlorine or bromide. This angle --- represented on
-figure~\ref{fig:zif8x:swing-angle} --- is also called the swing angle, noted
+chlorine or bromide. This angle --- presented on
+figure~\ref{fig:zif8-ch3:structure} --- is also called the swing angle, noted
 $\phi$. The swing angle represent the rotation of the linker around the 6-member
 window plane, with 0° being the point where the linker is completely in this
 plane.
@@ -407,27 +450,16 @@ Gaussian-like.
 
 These results are consistent with the already published ones for
 \ZIFCH3\cite{Coudert2017}, but using a different functional (PBE here instead of
-BLYP). Interestingly, the two other frameworks behave differently. For \ZIFCl,
-almost no change is noticed in the distribution profile upon adsorption until
-the highest value of loading (\ie, $N = 50$). In this case, the distribution
-shifts and the profile is no longer of Gaussian type, but instead looks like the
-sum of two Gaussian distribution, one centered around 25°, and the other one
-around 10°. It indicates that some of the linkers do not rotate (swing) even at
-high loading. This non-zero value of the distribution at $\phi = 0\text{°}$
-contrasts with the case of \ZIFCH3. Finally, for \ZIFBr, no significant change
-occurs for the dihedral angle distribution as the loading increases.
-
-Although this behavior appears to be correlated with the presence or absence of the
-adsorption step in the isotherms, it is not however sufficient to explain it.
-One hypothesis often formulated for \ZIFCH3 is that the swinging motion leads to
-an increase of the accessible porous volume in the structure, thereby increasing
-nitrogen uptake. In order to check whether this is or not the case, I computed
-the pore size distribution (see figure~\ref{fig:zif8x:pores-sizes}) and the
-accessible porous volume (see figure~\ref{fig:zif8x:porous-volume}) from the MD
-trajectories using Zeo++\cite{Willems2012} version 0.3. In order to compute
-these values, I first emptied the structure of all the nitrogen molecules, and
-then computed the pores sizes distribution and accessible volume using the
-remaining frameworks.
+BLYP in ref~\cite{Coudert2017}). Interestingly, the two other frameworks behave
+differently. For \ZIFCl, almost no change is noticed in the distribution profile
+upon adsorption until the highest value of loading (\ie, $N = 50$). In this
+case, the distribution shifts and the profile is no longer of Gaussian type, but
+instead looks like the sum of two Gaussian distribution, one centered around
+25°, and the other one around 10°. It indicates that some of the linkers do not
+rotate (swing) even at high loading. This non-zero value of the distribution at
+$\phi = 0\text{°}$ contrasts with the case of \ZIFCH3. Finally, for \ZIFBr, no
+significant change occurs for the dihedral angle distribution as the loading
+increases.
 
 \begin{figure}[ht]
     \centering
@@ -436,6 +468,26 @@ remaining frameworks.
     three structures.}
     \label{fig:zif8x:pores-sizes}
 \end{figure}
+
+Although this behavior appears to be correlated with the presence or absence of
+the adsorption step in the isotherms, it is not however sufficient to explain
+it. A first hypothesis to understand the link between linkers swing and the
+isotherms step is that the swinging motion could leads to an increase of the
+accessible porous volume in the structure, thereby increasing nitrogen uptake.
+In order to check whether this is or not the case, I computed the pore size
+distribution (see figure~\ref{fig:zif8x:pores-sizes}) and the accessible porous
+volume (see figure~\ref{fig:zif8x:porous-volume}) from the MD trajectories using
+Zeo++\cite{Willems2012} version 0.3. In order to compute these values, I first
+emptied the structure of all the nitrogen molecules, and then computed the pores
+sizes distribution and accessible volume using the remaining frameworks. The
+algorithm used by Zeo++ starts by computing the Voronoï decomposition of the
+framework, which provides a representation of the void space in the structure.
+Then, it uses Monte Carlo sampling of the Voronoï network to extract the volume
+accessible to a probe molecule of a given radius and the pore size distribution.
+I used the standard probe radius of \SI{1.2}{\AA}, corresponding to an Helium
+atom.
+
+% Nitrogen radius is 1.6
 
 \begin{figure}[ht]
     \centering
@@ -459,15 +511,16 @@ remains roughly constant as the loading increase and the linkers swing.
 
 \subsection{Changes in the adsorbed phase}
 
-In order to understand the origin of the step seen in the nitrogen adsorption
-isotherms at \SI{77}{K}, we need to take a look at the other chemical species
-participating in adsorption: the nitrogen fluid. Another hypothesis used to
-explain the stepped isotherm is that nitrogen molecules undergoes a reordering
-or repacking in the cavity, thereby leading to an increase in adsorbed molecules
-in the same total pore volume as well as the swing of the linkers aiming to
-accommodate the new packing. This hypothesis had been already proposed by
+The hypothesis that the linkers swing leads to an increase of the accessible
+porous volume in the structure does not seems to be able to explain the stepped
+adsorption isotherm. We need now to take a look at the other chemical species
+participating in adsorption: the nitrogen fluid. Another hypothesis we can
+formulate to explain the stepped isotherm is that nitrogen molecules undergoes a
+reordering or repacking in the cavity, thereby leading to an increase in
+adsorbed molecules in the same total pore volume as well as the swing of the
+linkers aiming to accommodate the new packing. This has already been proposed by
 \citeauthor{Ania2012}\cite{Ania2012}, but the intermediate adsorption regime was
-then not probed or interpreted.
+not probed or interpreted.
 
 In order to visualize this packing, I have projected the positions of all
 adsorbed nitrogen atoms in the $xy$ plane and created a density map of the
@@ -483,7 +536,7 @@ various loadings and for the three frameworks.
     \label{fig:zif8x:density}
 \end{figure}
 
-For \ZIF8, two different molecular packing are encountered according to the
+For \ZIFCH3, two different molecular packing are encountered according to the
 loading. With 10 or 25 molecules in the unit cell, the density maps show clear
 delimited positions on a cubic-like arrangement, whereas with 40 and 50
 molecules, they show a tetragonal-like arrangement of the molecules. This
@@ -536,6 +589,15 @@ figure~\ref{fig:zif8x:density}.
 
 \subsection{Mechanism of nitrogen adsorption in \ZIF8}
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/images/zif8x-summary}
+    \caption{Schematic overview of the adsorption process in the three \ZIF8
+    frameworks. Blue is \ZIFCH3, green is \ZIFCl and red is \ZIFBr; loading
+    increases from left to right.}
+    \label{fig:zif8x:summary}
+\end{figure}
+
 To summarize this section, the proposed mechanism of nitrogen adsorption in the
 three \ZIF8 frameworks with different functionalization is illustrated in a
 schematic way in figure~\ref{fig:zif8x:summary}. When the pores are empty, the
@@ -545,15 +607,6 @@ continues to increase, in \ZIFCH3 and \ZIFCl the nitrogen molecules arrangement
 changes to a tetragonal-like arrangement and the linkers rotate to accommodate
 for this repacking. In \ZIFBr, the nitrogen molecules do not repack and the
 linkers do not rotate.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.5\textwidth]{figures/images/zif8x-summary}
-    \caption{Schematic overview of the adsorption process in the three \ZIF8
-    frameworks. Blue is \ZIFCH3, green is \ZIFCl and red is \ZIFBr; loading
-    increases from left to right.}
-    \label{fig:zif8x:summary}
-\end{figure}
 
 Given that the change in functional group from methyl to chloro and bromo, does
 not significantly impact partial atomic charges or the strength of the \ce{Zn-N}
@@ -573,9 +626,9 @@ occur.
 As mentioned in section~\ref{sec:zif8x:methods}, I used \abinitio molecular
 dynamics to study the adsorption in the three \ZIF8 derivatives to be able to
 describe the full flexibility of the frameworks without making any other
-assumptions; and because there was no available force field for the material
-studied. During my PhD, I have also started a collaboration with Johannes P.
-Dürholt and Pr. Rochus Schmid from the Ruhr Universität in Bochum, Germany to
+assumptions; and because there was no available force field for the studied
+materials. During my PhD, I have also started a collaboration with Johannes
+Dürholt and Rochus Schmid from the Ruhr Universität in Bochum, Germany to
 parametrize a classical force field for \ZIFCH3, \ZIFCl and \ZIFBr using data
 from the \abinitio simulations presented above.
 
@@ -586,14 +639,15 @@ functional forms used to represent the different terms (\emph{e.g.} using
 Lennard-Jones, Buckingham or another form for non-bonded pair interactions); (2)
 the atom-dependent parameters used in these functional forms (like the
 $\epsilon$ and $\sigma$ parameters for Lennard-Jones). See
-chapter~\ref{sec:classical-ff} for a more complete description of force fields.
-The process of optimizing the parameters of a force-field is called the
-parametrization of the force field. The idea is to use some reference data,
-either from experimental properties or \abinitio computations, and optimize the
-parameters to reproduce the reference data in the best possible way. Both static
-properties such as crystalline structure from X-ray diffraction, and dynamic
-ones such as vibrations frequencies as given by infrared spectroscopy can be
-used as reference data when fitting a force field.
+chapter~\ref{sec:classical-ff} for a more complete description of force fields
+and their use in computational chemistry.  The process of optimizing the
+parameters of a force-field is called the parametrization of the force field.
+The idea is to use some reference data, either from experimental properties or
+\abinitio computations, and optimize the parameters to reproduce the reference
+data in the best possible way. Both static properties such as crystalline
+structure from X-ray diffraction, and dynamic ones such as vibrations
+frequencies as given by infrared spectroscopy can be used as reference data when
+fitting a force field.
 
 The force field created can then be evaluated by checking how well it can
 reproduce physical properties that were not used for creating it --- for example
@@ -636,6 +690,15 @@ on \emph{fragments}. For example methanoic acid \ce{HCO2H} would contain
 same fragments would also be used in ethanoic acid \ce{CH3CO2H}, or any other
 carboxylic acid.
 
+Existing generic force fields are not always optimal for simulating MOFs, mainly
+because of the coordination bonds existing between the metallic centers and the
+organic linkers. As metal centers are relatively rare in bio-molecules, the
+interactions between them and organic molecules are not well described by
+existing force fields such as the ones in AMBER family. There also have been
+adaptations of UFF for MOFs\cite{Addicoat2014, Coupry2016}, that are able to
+reproduce static properties within 10\% for most of the structures. However,
+reproducing dynamics properties and specially the flexibility of MOFs is harder.
+
 \subsection{Systematic parametrization of force fields}
 
 One way to overcome the previously mentioned issues (long parametrization time,
@@ -649,22 +712,29 @@ specifically fitted for it --- while still allowing comparison between different
 systems because they would share the functional form and kind of input data with
 all the others systems.
 
-MOF-FF\cite{Bureekaew2013} is one of the algorithm proposed for systematic
-parametrization of force fields. It uses \abinitio reference data, specifically
-the optimized geometry of the system, and the Hessian matrix at this optimized
-geometry, decomposed on a base on internal coordinates. The Hessian matrix $H$
-contains the second derivatives of the energy with respect to two internal
-coordinates. To optimized the parameters, it uses a genetic algorithm: starting
-from a population of randomly created parameter sets, it evaluate the cost for
-function for all of them. Then --- mimicking evolution and natural selection ---
-the weakest sets (the ones with the highest cost) are eliminated, and the
-remaining sets are combined to create a new generation of parameters set. New
-generations are created until the cost function is minimal over the whole
-generation. In this last generation, the best parameter set is the new force
-field.
+Several approaches have been developed to generate new force fields for MOFs,
+such as Quick-FF\cite{Vanduyfhuys2015} and MOF-FF\cite{Bureekaew2013}. Both uses
+uses \abinitio reference data, such as the optimized geometry of the system, and
+the Hessian matrix at this optimized geometry; usually represented on a base on
+internal coordinates. The Hessian matrix $H$ contains the second derivatives of
+the energy with respect to two internal coordinates. To optimized the
+parameters, they use machine learning algorithms, such as genetic algorithms.
+Genetic algorithms start from a population of randomly created parameter sets,
+evaluate a cost function to rank them all. Then --- mimicking evolution
+and natural selection --- the weakest sets (the ones with the highest cost) are
+eliminated, and the remaining sets are combined to create a new generation of
+parameters set. New generations are created until the cost function is minimal
+over the whole generation. In this last generation, the best parameter set is
+set to be the new force field.
 
-The score function used when optimizing the parameters is defined for a
-parameter set $P$ as:
+MOF-FF is based on the MM3 functional form\cite{Allinger1989}, and some of the
+parameters are fixed before starting the optimization. In particular, atomic
+charges are computed directly from the \abinitio reference and represented as
+atom-centered spherical Gaussians, while the dispersion interaction is modeled
+with a Buckingham potential, using the tabulated parameters for
+MM3\cite{Allinger1994}. The remaining intra-molecular parameter are optimized in
+order to make sure the overall potential reproduces the reference data. The
+score function used for optimization is defined for a parameter set $P$ as:
 \[
 \begin{aligned}
     Z(P) &= \alpha_\text{bonds} \sum_\text{bonds} w_i \ \left[r_i\,(P) - r_i^{ref}\right]^2 \\
@@ -689,21 +759,17 @@ system around equilibrium. The last term contains the unit cell matrix $C$, the
 stress $S$ and the unit cell volume $V$, and is used to minimize the resulting
 total stress on the periodic system.
 
-MOF-FF is based on the MM3 functional form\cite{Allinger1989}, and some of the
-parameters are fixed before starting the optimization. In particular, atomic
-charges are computed directly from the \abinitio reference and represented as
-atom-centered spherical Gaussians, while the dispersion interaction is modeled
-with a Buckingham potential, using the tabulated parameters for
-MM3\cite{Allinger1994}. The remaining intra-molecular parameter are optimized in
-order to make sure the overall potential reproduces the reference data.
-
-We used MOF-FF to generate new force fields for \ZIFCH3, \ZIFCl, and \ZIFBr,
-using data from the simulations previously described for parametrization and
-validation. At the same time, we improved the fitting strategy to use periodic
-boundary condition in the \abinitio input data; and CMA-ES (Covariance Matrix
-Adaptation Evolution Strategy) as the genetic algorithm for optimization.
-Interested reader should refer to the corresponding article\cite{DuerholtXXXX}
-for more information and the force field parameters.
+Johannes Dürholt used MOF-FF to generate new force fields for \ZIFCH3, \ZIFCl,
+and \ZIFBr from \abinitio input data. I contributed to this work by providing
+the previously described simulations of empty ZIFs; and by helping to run
+analysis on the trajectories in order to validate the force field. Previous
+versions of MOF-FF used finite representative clusters in vacuum to parametrize
+the force field. During this work, the fitting strategy was improved to allow
+the use of periodic boundary conditions in the reference data. This removes the
+need to find representative and charge neutral finite clusters, which is not
+always possible depending on the MOF topology. Interested reader should refer to
+the corresponding article\cite{DuerholtXXXX} for more information and the force
+field parameters.
 
 \subsection{Validating the generated force-fields}
 
@@ -716,8 +782,8 @@ for more information and the force field parameters.
     \label{fig:fig:mof-ff:validation}
 \end{figure}
 
-After generating the force field, we multiple classical simulations to validate
-it. We first checked the equilibrium properties, starting from an
+After generating the force field, we ran multiple classical simulations to
+validate it. We first checked the equilibrium properties, starting from an
 energy-minimized structure. We could then extract geometric parameters such as
 bonds lengths, or angles and dihedral angles equilibrium value; as well as
 vibrational normal modes. We computed vibrational normal modes by using finite
