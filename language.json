@@ -149,6 +149,8 @@
 		"!GPa",
 		"!IUPAC",
 		"micropores",
-		"mesoscopic"
+		"mesoscopic",
+		"functionalized",
+		"priori"
 	]
 }
