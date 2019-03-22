@@ -207,14 +207,16 @@ interest.
 
 A good approximation for the exchange-correlation functional is required to
 solve the Kohn-Sham equations. There are number of approach routinely used in
-theoretical chemistry such as Local Density Approximation (LDA) where the
-exchange-correlation functional only depends on the local density; Generalized
-Gradient Approximation (GGA), where the functional also depends on the local
-gradient of the density, meta-GGA functionals incorporating the second
-derivative of the density (the Laplacian of the density); or hybrid functionals.
-Hybrid functionals mix exchange expressions from LDA or GGA with exact exchange
-term coming from other methods for solving the Schrödinger equation, such as
-Hartree-Fock methods.
+theoretical chemistry, usually classified along the so called Perdew's
+ladder\cite{Perdew2001} from less precises and cheaper to compute to more
+precise and expensive to compute. Going up the ladder, we encounter in this
+order Local Density Approximation (LDA) where the exchange-correlation
+functional only depends on the local density; Generalized Gradient Approximation
+(GGA), where the functional also depends on the local gradient of the density,
+meta-GGA functionals incorporating the second derivative of the density (the
+Laplacian of the density); or hybrid functionals. Hybrid functionals mix
+exchange expressions from LDA or GGA with exact exchange term coming from other
+methods for solving the Schrödinger equation, such as Hartree-Fock methods.
 
 Generally, the exchange-correlation functional only depends on the local
 density, and maybe some of its derivatives. This means that DFT calculations
@@ -390,12 +392,13 @@ In order to gain better understanding of the relation between the structure
 changes and the adsorbed molecules, I used molecular dynamics (MD) simulations.
 To describe fully the flexibility of the frameworks without any assumption, I
 favored \abinitio MD over force field-based MD --- as there are currently no
-force fields available for the \ZIF8 variants studied here. For each framework
-(\ZIFCH3, \ZIFCl, \ZIFBr), I ran five simulations corresponding to different
-number of nitrogen molecules inside the porous space, going from empty framework
-($N = 0$) to the fully loaded host material. The maximal loading was determined
-from the experimental isotherms to be close to $N = 50$ molecules per unit cell
-for \ZIFCH3 and \ZIFCl and $N = 40$ molecules per unit cell for \ZIFBr.
+force fields available for the \ZIF8 variants studied here, and existing force
+fields for \ZIFCH3 have questionable accuracy. For each framework (\ZIFCH3,
+\ZIFCl, \ZIFBr), I ran five simulations corresponding to different number of
+nitrogen molecules inside the porous space, going from empty framework ($N = 0$)
+to the fully loaded host material. The maximal loading was determined from the
+experimental isotherms to be close to $N = 50$ molecules per unit cell for
+\ZIFCH3 and \ZIFCl and $N = 40$ molecules per unit cell for \ZIFBr.
 
 To create the starting configurations, I started from the energy-minimized
 configuration of the empty frameworks, and randomly placed the selected number
