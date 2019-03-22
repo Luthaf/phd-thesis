@@ -464,12 +464,21 @@ $\phi = 0\text{°}$ contrasts with the case of \ZIFCH3. Finally, for \ZIFBr, no
 significant change occurs for the dihedral angle distribution as the loading
 increases.
 
-\begin{figure}[ht]
+\begin{figure}[t]
     \centering
     \input{figures/zif8x-pores-sizes}
     \caption{Pore size distribution (no unit) under increasing loading for the
     three structures.}
     \label{fig:zif8x:pores-sizes}
+\end{figure}
+
+\begin{figure}[b]
+    \centering
+    \input{figures/zif8x-porous-volume}
+    \caption{Accessible porous volume changes in the three isoreticular
+    structures during adsorption. The numbers on top of the columns are the
+    number of adsorbed \ce{N2} molecules.}
+    \label{fig:zif8x:porous-volume}
 \end{figure}
 
 Although this behavior appears to be correlated with the presence or absence of
@@ -492,15 +501,6 @@ atom.
 
 % Nitrogen radius is 1.6
 
-\begin{figure}[ht]
-    \centering
-    \input{figures/zif8x-porous-volume}
-    \caption{Accessible porous volume changes in the three isoreticular
-    structures during adsorption. The numbers on top of the columns are the
-    number of adsorbed \ce{N2} molecules.}
-    \label{fig:zif8x:porous-volume}
-\end{figure}
-
 The results presented in figure~\ref{fig:zif8x:pores-sizes} highlight that the
 pore size distribution (PSD) remains largely unchanged in all cases as the
 loading increase and the linkers swing. The PSDs present two peaks,
@@ -514,6 +514,15 @@ remains roughly constant as the loading increase and the linkers swing.
 
 \subsection{Changes in the adsorbed phase}
 
+\begin{figure}[ht]
+    \centering
+    \input{figures/zif8x-density}
+    \caption{2D density maps of the adsorbed nitrogen atoms positions in the $xy$
+    plane at various loadings in \ZIF8 (top), \ZIFCl (middle), and \ZIFBr
+    (bottom). The loading increases from left to right.}
+    \label{fig:zif8x:density}
+\end{figure}
+
 The hypothesis that the linkers swing leads to an increase of the accessible
 porous volume in the structure does not seems to be able to explain the stepped
 adsorption isotherm. We need now to take a look at the other chemical species
@@ -525,19 +534,19 @@ linkers aiming to accommodate the new packing. This has already been proposed by
 \citeauthor{Ania2012}\cite{Ania2012}, but the intermediate adsorption regime was
 not probed or interpreted.
 
+\begin{figure}[t]
+    \centering
+    \input{figures/zif8x-rdf}
+    \caption{Radial distribution function of nitrogen atoms in the three
+    frameworks for various nitrogen loading. This represent the number of atoms
+    at a given distance from the center of the cavity.}
+    \label{fig:zif8x:rdf}
+\end{figure}
+
 In order to visualize this packing, I have projected the positions of all
 adsorbed nitrogen atoms in the $xy$ plane and created a density map of the
 adsorbed phase. This density map is shown figure~\ref{fig:zif8x:density} both at
 various loadings and for the three frameworks.
-
-\begin{figure}[ht]
-    \centering
-    \input{figures/zif8x-density}
-    \caption{2D density maps of the adsorbed nitrogen atoms positions in the $xy$
-    plane at various loadings in \ZIF8 (top), \ZIFCl (middle), and \ZIFBr
-    (bottom). The loading increases from left to right.}
-    \label{fig:zif8x:density}
-\end{figure}
 
 For \ZIFCH3, two different molecular packing are encountered according to the
 loading. With 10 or 25 molecules in the unit cell, the density maps show clear
@@ -565,15 +574,6 @@ molecules are mostly distributed on a cube with additional molecules in the
 [111] channels on the diagonals of the cube. Consequently, because of the
 absence of a clear reordering of adsorbed nitrogen molecules in \ZIFBr, its
 sorption isotherm does not display the S-shaped adsorption step.
-
-\begin{figure}[ht]
-    \centering
-    \input{figures/zif8x-rdf}
-    \caption{Radial distribution function of nitrogen atoms in the three
-    frameworks for various nitrogen loading. This represent the number of atoms
-    at a given distance from the center of the cavity.}
-    \label{fig:zif8x:rdf}
-\end{figure}
 
 This repacking of nitrogen molecules is also visible on the radial distribution
 of nitrogen atoms (not to be confused with the pairs radial distribution
@@ -776,7 +776,63 @@ field parameters.
 
 \subsection{Validating the generated force-fields}
 
-\begin{figure}[t]
+After generating the force field, we ran multiple classical simulations to
+validate it. We first checked the static properties of an energy-minimized
+structure, starting with the unit cell lattice parameters, reported in
+table~\ref{tab:mof-ff:unit-cell}. MOF-FF is able to reproduce very well the DFT
+reference used to parametrize it. Since we did not use lattice parameters when
+optimizing MOF-FF, this was not guaranteed.
+
+\begin{table}[ht]
+    \caption{Unit cell lattice parameters for the three \ZIF8-based frameworks,
+    comparing the experimental values to DFT and MOF-FF.}
+    \label{tab:mof-ff:unit-cell}
+    \vskip0.5\baselineskip
+    \centering
+    \newcolumntype{C}{>{\centering\arraybackslash}X}
+    \begin{tabularx}{0.8\textwidth}{l X C C}
+        \toprule
+                &                        & $a, b, c \ (\AA)$ & $\alpha, \beta, \gamma \text{(°)}$ \\
+        \midrule
+                & exp\cite{Park2006}     &     16.99         &  90.00   \\
+        \ZIFCH3 & DFT                    &     17.03         &  90.00   \\
+                & MOF-FF                 &     17.08         &  90.00   \\
+        \midrule
+                & exp\cite{Chaplais2018} &     17.04         &  90.00   \\
+        \ZIFCl  & DFT                    &     17.20         &  90.00   \\
+                & MOF-FF                 &     17.21         &  90.00   \\
+        \midrule
+                & exp\cite{Chaplais2018} &     17.08         &  90.00   \\
+        \ZIFBr  & DFT                    &     17.25         &  90.00   \\
+                & MOF-FF                 &     17.25         &  90.00   \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\begin{table}[b]
+    \caption{Elastic constants for the three \ZIF8-based frameworks, comparing
+    the values computed by MOF-FF and DFT.}
+    \label{tab:mof-ff:elastic}
+    \vskip0.5\baselineskip
+    \centering
+    \newcolumntype{C}{>{\centering\arraybackslash}X}
+    \begin{tabularx}{0.8\textwidth}{l X C C C}
+        \toprule
+                &                     & $C_{11}$ (GPa) & $C_{12}$ (GPa) & $C_{44}$ (GPa) \\
+        \midrule
+        \ZIFCH3 & DFT\cite{Tan2012}   &     11.04      &  8.32          &  0.94          \\
+                & MOF-FF              &     8.54       &  6.55          &  0.62          \\
+        \midrule
+        \ZIFCl  & DFT                 &     9.23       &  7.35          &  0.86          \\
+                & MOF-FF              &     9.92       &  7.84          &  0.46          \\
+        \midrule
+        \ZIFBr  & DFT                 &     10.33      &  8.31          &  0.88          \\
+                & MOF-FF              &     10.51      &  8.65          &  0.19          \\
+        \bottomrule
+    \end{tabularx}
+\end{table}
+
+\begin{figure}[ht]
     \centering
     \input{figures/mof-ff-validation}
     \caption{Comparisons of (a), (b) and (c): geometric parameters and (d):
@@ -785,13 +841,11 @@ field parameters.
     \label{fig:fig:mof-ff:validation}
 \end{figure}
 
-After generating the force field, we ran multiple classical simulations to
-validate it. We first checked the equilibrium properties, starting from an
-energy-minimized structure. We could then extract geometric parameters such as
-bonds lengths, or angles and dihedral angles equilibrium value; as well as
-vibrational normal modes. We computed vibrational normal modes by using finite
-differences to compute the full system Hessian in Cartesian coordinates; and
-then diagonalizing the mass-weighted Hessian to extract normal modes
+We also extracted geometric parameters such as bonds lengths, or angles and
+dihedral angles equilibrium value; as well as vibrational normal modes from the
+same energy-minimized structures. We computed vibrational normal modes by using
+finite differences to compute the full system Hessian in Cartesian coordinates;
+and then diagonalizing the mass-weighted Hessian to extract normal modes
 frequencies. These properties are compared to DFT calculations in
 figure~\ref{fig:fig:mof-ff:validation}; and overall the new MOF-FF force field
 is able to reproduce all of them very well. It over estimate the frequency of
@@ -800,6 +854,15 @@ involve distortions of the linkers aromatic rings, which are not explicitly
 described in the force field. A way to improve the description of these modes
 would be to incorporate cross-terms (terms coupling multiples geometric
 parameters, \ie a bond length and an angle, \dots) in the force field.
+
+We then computed elastic constants of the frameworks with both DFT and MOF-FF,
+the values are presented in table~\ref{tab:mof-ff:elastic}.
+\citeauthor{Zheng2017} predicted recently the elastic constants of differently
+functionalized ZIFs in the sod topology\cite{Zheng2017}. They found that
+electron withdrawing groups improve the mechanical stiffness of the materials
+(\ZIFCH3 < \ZIFCl < \ZIFBr). Although the absolute numbers of our DFT
+calculations differ up to a few \si{GPa}, this trend is reproduced both by our
+DFT and force field calculations.
 
 \begin{figure}[ht]
     \centering
@@ -820,6 +883,8 @@ value of the Gaussians is shifted by 5° for \ZIFCl and \ZIFBr; and by 10° for
 \ZIFCH3. However, these differences are of the same order of magnitude as the
 differences between the distributions generated by using a different DFT
 functional such as BLYP\cite{Coudert2017}.
+
+\section*{Conclusion}
 
 \OnlyInSubfile{\printbibliography}
 
