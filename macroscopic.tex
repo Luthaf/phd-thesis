@@ -36,23 +36,23 @@ physical processes. It is  stated as follow:
 \vskip0.8ex
 
 If we divide the total energy $E_\text{tot}$ of a system into its kinetic energy
-$E_\text{kin}$, potential energy $E_\text{pot}$ and internal energy $U$, and
-letting $W$ be the work received by a system during a transformation and $Q$ the
-heat transfer during the same transformation, the first law of thermodynamics
-can be written as
-\[\Delta E_\text{tot} = \Delta E_\text{kin} + \Delta E_\text{pot} + \Delta U = W + Q.\]
+$E_\text{kin}$, potential energy $E_\text{pot}$ and internal energy
+$\mathcal{U}$, and letting $W$ be the work received by a system during a
+transformation and $Q$ the heat transfer during the same transformation, the
+first law of thermodynamics can be written as
+\[\Delta E_\text{tot} = \Delta E_\text{kin} + \Delta E_\text{pot} + \Delta \mathcal{U} = W + Q.\]
 If now we consider a system at rest in a constant external potential field,
 $E_\text{kin}$ and $E_\text{pot}$ are constant, and we find the usual
 formulation of the first law of thermodynamics:
-\[\Delta U = W + Q.\]
+\[\Delta \mathcal{U} = W + Q.\]
 It is often interesting to use a differential formulation of this relation,
-considering infinitesimal changes in $U$, $W$, and $Q$:
-\[\d U = \delta Q + \delta W.\]
+considering infinitesimal changes in $\mathcal{U}$, $W$, and $Q$:
+\[\d \mathcal{U} = \delta Q + \delta W.\]
 If the system composition is not constant, \ie if there are undergoing chemical
 reactions or if the system is open and exchanges particles with an external
 reservoir, we need to add another term depending on the quantity of mater for
 each chemical species in the system $\{N_i\}$:
-\[\d U = \delta Q + \delta W - \sum_i \mu_i \d N_i.\label{eq:first-principle}\]
+\[\d \mathcal{U} = \delta Q + \delta W - \sum_i \mu_i \d N_i.\label{eq:first-principle}\]
 In this formulation, the $\mu_i$ are called the \emph{chemical potentials} of
 the species. They represent the relative stability of the different chemical
 species in the system.
@@ -62,8 +62,8 @@ system. In this case,
 \[\delta W_\text{pressure} = -p_\text{ext} \d V \ ;\]
 where $p_\text{ext}$ is the external pressure. If $p_\text{ext}$ is constant
 during the transformation, this can be written as $\delta W_\text{pressure} =
--\d (p_\text{ext} V)$. We can then define the enthalpy $H$ as $H = U + PV$ ;
-which allow us to rewrite equation~\eqref{eq:first-principle} as
+-\d (p_\text{ext} V)$. We can then define the enthalpy $H$ as $H = \mathcal{U} +
+PV$ ; which allow us to rewrite equation~\eqref{eq:first-principle} as
 \[\d H = \delta Q + \delta W_\text{other} - \sum_i \mu_i \d N_i.\]
 Here, $\delta W_\text{other}$ is the work coming from all forces
 \emph{excluding} the forces of pressure.
@@ -94,13 +94,13 @@ Using the relations~\eqref{eq:first-principle} and~\eqref{eq:clausius}; and
 considering that only the pressure forces act on the system, we can extract an
 evolution principle for any transformation:
 \[T \d S = \delta Q + \d S_\text{created}\]
-\[T \d S = (\d U - \delta W - \sum_i \mu_i \d N_i) + \d S_\text{created}\]
-\[\d U + P \d V  - \sum_i \mu_i \d N_i - T \d S = -T\delta S_\text{created}.\label{eq:thermo-potentials}\]
-If there is a function $\Phi$ such as $\d \Phi = \d U + P \d V - \sum_i \mu_i
+\[T \d S = (\d \mathcal{U} - \delta W - \sum_i \mu_i \d N_i) + \d S_\text{created}\]
+\[\d \mathcal{U} + P \d V  - \sum_i \mu_i \d N_i - T \d S = -T\delta S_\text{created}.\label{eq:thermo-potentials}\]
+If there is a function $\Phi$ such as $\d \Phi = \d \mathcal{U} + P \d V - \sum_i \mu_i
 N_i - T \d S$, then for any transformation of a closed system, $\d \Phi =
 -T\delta S_\text{created} \leq 0$. This means that $\Phi$ is a decreasing
 function of time, and it will be minimal in the equilibrium state. In this case,
-$\Phi$ is called the \emph{Thermodynamic Potential}.
+$\Phi$ is called the \emph{thermodynamic potential}.
 
 \subsection{Thermodynamic ensembles}
 
@@ -113,9 +113,9 @@ isobaric-isothermal ensemble.
 
 Each of these ensembles have an associated thermodynamic potential. For the
 micro-canonical ensemble, we start with equation~\eqref{eq:thermo-potentials}:
-\[\d \Phi = \d U + P \d V - \sum_i \mu_i \d N_i - T \d S.\]
-$\d U$ and $\d V$ will be zero as the energy and volume is constant. Moreover
-as the system composition is fixed, $\d N_i = 0$. This gives
+\[\d \Phi = \d \mathcal{U} + P \d V - \sum_i \mu_i \d N_i - T \d S.\]
+$\d \mathcal{U}$ and $\d V$ will be zero as the energy and volume is constant.
+Moreover as the system composition is fixed, $\d N_i = 0$. This gives
 \[\d \Phi = - T \d S \leq 0.\]
 The thermodynamic potential for the $NVE$ ensemble is the negentropy $N \equiv
 -TS$, which will be minimal (and the entropy will be maximal) at equilibrium.
@@ -123,22 +123,23 @@ The thermodynamic potential for the $NVE$ ensemble is the negentropy $N \equiv
 If we now allow the energy to change but fix the kinetic energy and thus the
 temperature by the mean of an external thermostat,
 equation~\eqref{eq:thermo-potentials} becomes
-\[\d \Phi = \d U + P \d V - \sum_i \mu_i \d N_i - T \d S - (S \d T - S \d T) \]
-\[\d \Phi = \d U + P \d V - \sum_i \mu_i \d N_i - \d (TS) + S \d T. \]
+\[\d \Phi = \d \mathcal{U} + P \d V - \sum_i \mu_i \d N_i - T \d S - (S \d T - S \d T) \]
+\[\d \Phi = \d \mathcal{U} + P \d V - \sum_i \mu_i \d N_i - \d (TS) + S \d T. \]
 As the temperature, volume and composition are fixed, $\d T = \d V = d N_i = 0$,
 which means that
-\[\d \Phi = \d (U - TS).\]
-We can introduce the Helmholtz free energy $F \equiv U - TS$ (sometimes simply
-called free energy), which is the thermodynamic potential in the $NVT$ ensemble.
+\[\d \Phi = \d (\mathcal{U} - TS).\]
+We can introduce the Helmholtz free energy $F \equiv \mathcal{U} - TS$
+(sometimes simply called free energy), which is the thermodynamic potential in
+the $NVT$ ensemble.
 
 If now we allow the volume to change in the system, while fixing the pressure
 with a barostat and keeping the temperature fixed,
 equation~\eqref{eq:thermo-potentials} becomes
-\[\d \Phi = \d U + P \d V + (V\d P - V\d P) - T \d S - (S\d T - S\d T) - \sum_i \mu_i \d N_i\]
-\[\d \Phi = \d U + \d (PV) - \d(TS) - V\d P + S\d T - \sum_i \mu_i \d N_i\]
+\[\d \Phi = \d \mathcal{U} + P \d V + (V\d P - V\d P) - T \d S - (S\d T - S\d T) - \sum_i \mu_i \d N_i\]
+\[\d \Phi = \d \mathcal{U} + \d (PV) - \d(TS) - V\d P + S\d T - \sum_i \mu_i \d N_i\]
 Again, as the pressure, temperature and composition are fixed, this reduces to
-\[\d \Phi = \d U + \d (PV) - \d(TS).\]
-We define the Gibbs free energy $G$ as $G \equiv U + PV - TS \equiv F + PV
+\[\d \Phi = \d \mathcal{U} + \d (PV) - \d(TS).\]
+We define the Gibbs free energy $G$ as $G \equiv \mathcal{U} + PV - TS \equiv F + PV
 \equiv H - TS$, which is the thermodynamic potential in the $NPT$ ensemble.
 
 \subsection{Ensembles for adsorption processes}
@@ -152,11 +153,11 @@ volume of the system is constant. The main difference with the previously
 defined ensembles is that the composition of the gas phase is not fixed:
 the number of gas molecules adsorbed in the system is allowed to change during
 adsorption. In this case, equation~\eqref{eq:thermo-potentials} becomes
-\[\d \Phi = \d U - \d(TS) + P\d V + S\d T - \sum_i \mu_i \d N_i\]
+\[\d \Phi = \d \mathcal{U} - \d(TS) + P\d V + S\d T - \sum_i \mu_i \d N_i\]
 Removing the null terms $\d V$ and $\d T$, we find the definition of the
 \emph{grand-canonical} thermodynamic potential $\Psi$, associated with the
 $\mu_iVT$ ensemble:
-\[\Psi \equiv U - TS - \sum_i \mu_i N_i \equiv F - \sum_i \mu_i N_i.\]
+\[\Psi \equiv \mathcal{U} - TS - \sum_i \mu_i N_i \equiv F - \sum_i \mu_i N_i.\]
 
 If we now consider adsorption in a flexible host, the volume is no longer fixed.
 Instead, in most experimental setups, external pressure is fixed and set equal
@@ -165,11 +166,11 @@ ensemble suited for the study of adsorption in flexible materials is called the
 \emph{osmotic ensemble}, first introduced in 1994\cite{Mehta1994} for the study
 of fluid mixtures, and adapted to multi-components phase equilibrium in
 1998\cite{Escobedo1998}. Again, starting from equation~\eqref{eq:thermo-potentials}
-\[\d \Phi = \d U - \d (PV) - \d(TS) - V\d P + S\d T - \sum_i \mu_i \d N_i.\]
+\[\d \Phi = \d \mathcal{U} - \d (PV) - \d(TS) - V\d P + S\d T - \sum_i \mu_i \d N_i.\]
 As usual, $\d T$ and $\d P$ are null as the corresponding variable is fixed. In
 the sum over the $\mu_iN_i$ terms, only the adsorbed species quantities of
 matter are allowed to change. The osmotic potential is thus defined by
-\[\Omega \equiv U - TS + PV - \sum_i \mu_i N_i \equiv F + PV - \sum_i \mu_i N_i \equiv G - \sum_i \mu_i N_i\]
+\[\Omega \equiv \mathcal{U} - TS + PV - \sum_i \mu_i N_i \equiv F + PV - \sum_i \mu_i N_i \equiv G - \sum_i \mu_i N_i\]
 This potential will be the basis we use to predict co-adsorption in flexible
 porous media in the next section. The table~\ref{table:thermo-potential}
 presents a summary of all the thermodynamic ensembles discussed so far, as well
@@ -180,9 +181,9 @@ as the associated fixed quantities and thermodynamic potentials.
     \renewcommand{\arraystretch}{1.3}
     \begin{tabularx}{0.8\textwidth}{l c c c X}
         Ensemble            & Fixed quantities                    & \multicolumn{3}{l}{Thermodynamic potential} \\ \hline
-        Micro-canonical     & $N$, $V$, $E$                       & \hskip1em $N$      & $\equiv$ & $-TS$       \\
-        Canonical           & $N$, $V$, $T$                       & \hskip1em $F$      & $\equiv$ & $U - TS$    \\
-        Isobaric-Isothermal & $N$, $P$, $T$                       & \hskip1em $G$      & $\equiv$ & $H - TS$    \\
+        Micro-canonical     & $N$, $V$, $E$                       & \hskip1em $N$      & $\equiv$ & $-TS$                   \\
+        Canonical           & $N$, $V$, $T$                       & \hskip1em $F$      & $\equiv$ & $\mathcal{U} - TS$      \\
+        Isobaric-Isothermal & $N$, $P$, $T$                       & \hskip1em $G$      & $\equiv$ & $H - TS$                \\
         Grand-Canonical     & $\mu_i$, $V$, $T$                   & \hskip1em $\Psi$   & $\equiv$ & $F - \sum_i \mu_i N_i $ \\
         Osmotic             & $N_\text{host}$, $\mu_i$, $P$, $T$  & \hskip1em $\Omega$ & $\equiv$ & $G - \sum_i \mu_i N_i $ \\
     \end{tabularx}
@@ -201,11 +202,6 @@ microporous materials as an adsorber bed, are very versatile because of the
 large choice of materials available --- and the possibility to tune them for a
 specific system.
 
-% Among the porous materials used commercially, one can list
-% inorganic materials (such as zeolites and silica gels), carbon-based compounds
-% (e.g., activated carbon), and hybrid organic--inorganic materials, including the
-% topical family of metal-organic frameworks or porous coordination polymers.
-
 Experimental characterization of the co-adsorption of a mixture of gases inside
 a porous adsorbent is typically done through multi-component gas adsorption
 studies. This problem is inherently high-dimensional, e.g., for a ternary
@@ -215,7 +211,7 @@ studies of co-adsorption equilibrium thermodynamics are typically long and
 expensive, there has been a great expense of literature devoted to theoretical
 models for the prediction of mixture co-adsorption based on single-component
 adsorption data. The most commonly used method in the field is the Ideal
-Adsorbed Solution Theory (IAST),\cite{Myers1965} which is relatively simple to
+Adsorbed Solution Theory (IAST)\cite{Myers1965}, which is relatively simple to
 implement and robust, and allows the prediction of multi-component adsorption
 behavior from individual single-component isotherms.
 
@@ -234,12 +230,12 @@ occur upon adsorption, can lead to stepped adsorption isotherms.
 In the recent literature, many authors have relied on IAST predictions to
 predict that several such flexible MOFs would present very good selectivity for
 gas separation. In some cases, the authors explicitly used IAST to derive such
-predictions on flexible materials.\cite{Banerjee2014, Mukherjee2015, Foo2016,
-Li2016} In other cases, IAST was not used explicitly, but the assumptions made
+predictions on flexible materials\cite{Banerjee2014, Mukherjee2015, Foo2016,
+Li2016}. In other cases, IAST was not used explicitly, but the assumptions made
 for the behavior of mixtures stem from the \emph{classical} understanding of
 selectivity rules in rigid materials, and would not necessarily be valid in
-flexible materials.\cite{Gucuyener2010, Inubushi2010, Nijem2012, Sanda2013,
-Joarder2014, Mukherjee2014}
+flexible materials\cite{Gucuyener2010, Inubushi2010, Nijem2012, Sanda2013,
+Joarder2014, Mukherjee2014}.
 
 IAST is one of the available methods for direct macroscopic calculations and
 predictions, taking macroscopic data in the form of pure component adsorption
@@ -247,7 +243,7 @@ isotherms and predicting macroscopic co-adsorption isotherms. In practice, using
 IAST is akin to working in the Grand-Canonical ensemble, but we showed in the
 previous section that when the adsorption host is flexible, one should use the
 Osmotic ensemble. Instead, an alternative method called the Osmotic Framework
-Adsorbed Solution Theory (OFAST),\cite{Coudert2009} based on the Osmotic
+Adsorbed Solution Theory (OFAST)\cite{Coudert2009}, based on the Osmotic
 ensemble, should be used when structural transitions occur during adsorption.
 
 % For example \citeauthor{Nijem2012} \cite{Nijem2012} reported
@@ -259,7 +255,8 @@ In this section, I will compare the results of IAST and OFAST on two sets of
 adsorption data from the published literature on gate-opening materials, and
 show that the IAST method gives unrealistic results: it does not reproduce the
 gate-opening behavior upon mixture adsorption, and overestimates the selectivity
-by up to two orders of magnitude.
+by up to two orders of magnitude. All of this work is published in
+\citejournal{Fraux2018}\cite{Fraux2018}.
 
 \subsection{Ideal Adsorbed Solution Theory}
 
@@ -321,7 +318,7 @@ interpreted by different authors, Myers\cite{Myers1965} originally meant and
 later confirmed\cite{Myers2014} it to qualify the method by which the adsorption
 isotherms are measured. There is, however, consensus on the fact that absolute
 adsorption should be used in IAST calculations --- as opposed to excess or net
-adsorption.\cite{Brandani2016} This assumption thus applies equally to both
+adsorption\cite{Brandani2016}. This assumption thus applies equally to both
 rigid and flexible adsorbents. However, the first two hypothesis are not valid
 for flexible nanoporous materials. \textbf{(H2)} is clearly invalid, as
 modifications in both the host's volume and internal structure lead to
@@ -431,7 +428,7 @@ through Equation~\eqref{eq:osmotic-potential}, allowing to predict which phase i
 the more stable at a given gas phase pressure and composition --- and where the
 structural transition(s) occur. This method, extending the IAST theory in the
 osmotic ensemble to account for host flexibility, is called Osmotic Framework
-Adsorbed Solution Theory (OFAST).\cite{Coudert2009, Coudert2010}
+Adsorbed Solution Theory (OFAST)\cite{Coudert2009, Coudert2010}.
 
 Although the amount of published data from direct experimental measurements of
 co-adsorption of gas mixtures in flexible MOFs is very limited, the OFAST method
@@ -565,7 +562,7 @@ difference for all the isotherms. I took the value of $-3.5 \pm
 
 I performed OFAST calculations using Wolfram Mathematica, the corresponding code
 is available in the lab's GitHub repository\cite{fx-citable-data}. I used the
-PyIAST Python package for the  pure IAST calculations.\cite{Simon2016} For these
+PyIAST Python package for the  pure IAST calculations\cite{Simon2016}. For these
 IAST calculations, I did not fit the isotherms to a specific model, but rather
 the solved the IAST equations by numerical integration and interpolation between
 experimental data points. At partial pressures higher than the last point in the
@@ -738,15 +735,15 @@ far off from reality, as seen in the case of \ce{C3H8}/\ce{C2H6}.
 % invalid application of IAST, which is not adapted to flexible frameworks, as its
 % very first hypothesis is that the framework is inert during adsorption --- as
 % clearly stated in the derivation of the method in the seminal IAST
-% paper.\cite{Myers1965} However, the IAST method can be adapted for frameworks
+% paper\cite{Myers1965}. However, the IAST method can be adapted for frameworks
 % presenting phase transitions induced by adsorption by using the osmotic
 % thermodynamic ensemble. This extension of IAST to flexible materials is called
-% Osmotic Framework Adsorbed Solution Theory (OFAST).\cite{Coudert2010} It allows
+% Osmotic Framework Adsorbed Solution Theory (OFAST)\cite{Coudert2010}. It allows
 % the prediction of phases transitions upon co-adsorption, as well as the details
 % of the multi-component co-adsorption isotherms, and is available in commercial
-% software.\cite{VanAssche2016} Moreover, the use of OFAST with data at various
+% software\cite{VanAssche2016}. Moreover, the use of OFAST with data at various
 % temperatures allows one to produce multi-dimensional {temperature, pressure,
-% mixture composition} phase diagrams for the flexible host.\cite{Ortiz2011}
+% mixture composition} phase diagrams for the flexible host\cite{Ortiz2011}.
 % Finally, while OFAST itself relies on the IAST to describe adsorption in each
 % phase of the host material, this method of accounting for flexibility is not
 % limited to IAST and can be used with other adsorbed solution models, such as
@@ -762,7 +759,7 @@ selectivity in flexible frameworks, one has to be cautious in comparing
 single-component isotherms of different guests. Differences in step pressure of
 stepped isotherms can lead to claims of strong selectivity using flexibility,
 when applying --- without noticing it --- concepts that are valid only for rigid
-host matrices. All of this work is published in \citejournal{Fraux2018}\cite{Fraux2018}.
+host matrices.
 
 Macroscopic methods such as the ones used here are only applicable under
 restrictive hypotheses; for example both OFAST and IAST assume an ideal mixture
