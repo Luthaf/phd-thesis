@@ -161,6 +161,22 @@
 		"resize",
 		"equilibration",
 		"fugacity",
-		"alchemical"
+		"alchemical",
+		"!Ewald",
+		"discretize",
+		"discretization",
+		"!Birkhoff",
+		"symplectic",
+		"timesteps",
+		"!RESPA",
+		"!Verlet",
+		"integrators",
+		"!Runge",
+		"!Kutta",
+		"!Berendsen",
+		"metadynamics",
+		"conformational",
+		"thermostating",
+		"rescale"
 	]
 }

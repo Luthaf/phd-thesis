@@ -4,7 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage{libertine}
 \usepackage{mathtools}
-\usepackage[italic]{mathastext}
+\usepackage[frenchmath]{mathastext}
 \usepackage{subfiles}
 \usepackage[]{graphicx}
 \usepackage{tabularx}
@@ -137,25 +137,29 @@
 \hyphenation{Chem-Phys-Chem}
 
 % Convenience macros
+%% Math stuff
+\let\phi\varphi
+\let\epsilon\varepsilon
+\let\vec\mathnormalbold
+\def\d{\text{d}}
+\let\oldring\r
+\def\r{\vec{r}}
+\def\p{\vec{p}}
+\def\v{\vec{v}}
+\def\smallo{{\scriptstyle\mathcal{O}}}
+%ù Text stuff
+\def\AA{\text{\oldring{A}}}
 \def\ZIF8{\mbox{ZIF-8}}
 \def\ZIFCH3{\ZIF8(\ce{CH3})\xspace}
 \def\ZIFCl{\ZIF8(Cl)\xspace}
 \def\ZIFBr{\ZIF8(Br)\xspace}
 \def\abinitio{\emph{ab initio}\xspace}
-\def\d{\text{d}}
-\let\oldring\r
-\def\AA{\text{\oldring{A}}}
-\def\r{\vec{r}}
-\def\p{\vec{p}}
 \def\Cudhbc{Cu(dhbc)$_\text{2}$(4,4$^\prime$-bpy)\xspace}
 \def\RPMZn{RPM3-Zn\xspace}
 \def\smallce#1{\ensuremath{\text{\tiny\ce{#1}}}}
 \def\ie{\emph{i.e.}\xspace}
 \def\etc{\emph{etc.}\xspace}
 \def\vdW{van der Waals\xspace}
-\let\phi\varphi
-\let\epsilon\varepsilon
-\let\vec\mathnormalbold
 
 \def\TODO{\colorbox{red}{TODO}}
 

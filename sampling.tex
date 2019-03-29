@@ -8,15 +8,14 @@
 \startcontents[chapters]
 \printpartialtoc
 
-Macroscopic methods such as the one I discussed in the previous chapter can
-provide understanding and allow us to predict behavior in some cases; they are
-not always sufficiently precise to gain a complete understanding of the
-phenomenon at play. In particular, as these methods describe the systems at the
-macroscopic level, they don't take into account the individual atoms, and the
-interactions between them. Put another way, they don't describe the
-\emph{chemistry} of the system. Statistical thermodynamic is a tool that we can
-use to bring together the microscopic description of matter and the macroscopic
-behavior and characteristics of the system (pressure, temperature, \dots).
+Macroscopic methods such as the one I discussed in the previous chapter are not
+always sufficiently precise to gain a complete understanding of the phenomenon
+at play. In particular, as these methods describe the systems at the macroscopic
+level, they don't take into account the individual atoms, and the interactions
+between them: they don't describe the \emph{chemistry} of the system.
+Statistical thermodynamic is a tool that we can use to bring together the
+microscopic description of matter and the macroscopic behavior and
+characteristics of the system (pressure, temperature, \dots).
 
 In this chapter, I will derive and recall some concepts from statistical
 thermodynamics I used during my PhD. For a more in depth description of
@@ -34,8 +33,8 @@ $\p_i$. Supposing that these particles are in some container of fixed volume
 $V$, and at thermal equilibrium with a thermostat at temperature $T$, they
 evolve in the canonical or $NVT$ ensemble. Finally, we will also assume that the
 atoms in the system follow the Maxwell-Boltzmann statistics, \ie that the
-probability that the system is in a state of internal energy $E_i$ is given by:
-\[\mathcal{P}_i = \frac{N! \ h^{3N}}{Z} e^{-\beta E_i}, \label{eq:maxwell-boltzmann}\]
+probability that the system is in a state of internal energy $U_i$ is given by:
+\[\mathcal{P}_i = \frac{N! \ h^{3N}}{Z} e^{-\beta\, U_i}, \label{eq:maxwell-boltzmann}\]
 where $\beta = 1 / k_B T$ with $k_B$ the Boltzmann constant and $N! h^{3N} / Z$
 is a normalization constant. To be more precise, particles would either follow
 Bose–Einstein statistics for Bosons (particles with a full integer spin, such as
@@ -60,47 +59,45 @@ the so-called \emph{partition function} $Z$. We note that the probability for
 the system to be anywhere in the phase space $\Phi$ should be 1, which gives us:
 \[\iiint_\Phi \mathcal{P}_i \; \d\r^N \d\p^N = 1.\]
 And finally:
-\[Z = \frac{1}{N!\ h^{3N}} \iiint_\Phi e^{-\beta H(\r^N, \p^N)} \ \d\r^N \d\p^N\]
+\[Z = \frac{1}{N!\ h^{3N}} \iiint_\Phi e^{-\beta\, H(\r^N, \p^N)} \ \d\r^N \d\p^N\]
 where the Planck constant $h$ is used as a normalization factor used to make
 sure that $Z$ has the right dimension; and the $N!$ factor comes from the fact
 that particles are not distinguishable one from another.
 
 We can already compute at least a part of this integral by separating the
 kinetic and potential energy terms in the Hamiltonian:
-\[Z = \frac{1}{N!\ h^{3N}} \prod_i^{3N} \int e^{-\beta \frac{p_i^2}{2 m_i}} \ \d p_i \iiint_V e^{-\beta U(\r^N)} \ \d\r^N \]
+\[Z = \frac{1}{N!\ h^{3N}} \prod_i^{3N} \int e^{-\beta\, \p_i^2 / 2 m_i} \ \d \p_i \iiint_V e^{-\beta\, U(\r^N)} \ \d\r^N \]
 where the potential energy integral is over all the accessible volume. The
 kinetic energy term is a product of Gaussian integrals, and gives us the
 following expression for the partition function:
-\[Z = \frac{1}{N!} \prod_i^{3N} \sqrt{\frac{2\pi m_i}{\beta h^2}} \iiint_V e^{-\beta U(\r^N)} \ \d\r^N\]
+\[Z = \frac{1}{N!} \prod_i^{3N} \sqrt{\frac{2\pi m_i}{\beta h^2}} \iiint_V e^{-\beta\, U(\r^N)} \ \d\r^N\]
 $\lambda_i = \sqrt{\frac{\beta h^2}{2\pi m_i}}$ is the de Broglie thermal
 wavelength for a particle with mass $m_i$, and is homogeneous to a distance. In
 the following, I will be using $\Lambda^{3N}$ for the product over all particles
 $\prod_i^N \lambda_i^3$. This gives the final expression for the partition
 function:
-\[Z = \frac{1}{N!\ \Lambda^{3N}} \iiint_V e^{-\beta U(\r^N)} \ \d\r^N \label{eq:partition-function}\]
+\[Z = \frac{1}{N!\ \Lambda^{3N}} \iiint_V e^{-\beta\, U(\r^N)} \ \d\r^N \label{eq:partition-function}\]
 And the corresponding probability for the system to be in a given conformation
 without constrains on the kinetic energy:
-\[\mathcal{P}_i = \frac{N!\ \Lambda^{3N}}{Z} e^{-\beta U(\r^N)}\]
+\[\mathcal{P}_i = \frac{N!\ \Lambda^{3N}}{Z} e^{-\beta\, U(\r^N)}\]
 
 \subsubsection{Thermodynamic quantities from the partition function}
 
 It is possible to use the knowledge of the partition function to compute some
 of the macroscopic properties of our system. For examples, the internal energy
 is the average value of the Hamiltonian:
-\[U = \frac{1}{Z} \iiint_\Phi H \ e^{-\beta H} \]
-If we express $H e^{-\beta H}$ as the partial derivative of $e^{-\beta H}$ with
+\[ \mathcal{U} = \frac{1}{Z} \iiint_\Phi H \ e^{-\beta\, H} \]
+If we express $H e^{-\beta\, H}$ as the partial derivative of $e^{-\beta\, H}$ with
 respect to $\beta$ we get
-\[U = \frac{1}{Z} \iiint_\Phi -\frac{\partial}{\partial \beta} e^{-\beta H} \]
-\[U = - \frac{1}{Z} \frac{\partial}{\partial \beta} \iiint_\Phi e^{-\beta H} \]
-\[U = - \frac{1}{Z} \frac{\partial Z}{\partial \beta}\]
-Or equivalently
-\[U = \frac{\partial \ln Z}{\partial \beta}\]
+\[\mathcal{U} = - \frac{1}{Z} \frac{\partial}{\partial \beta} \iiint_\Phi e^{-\beta\, H} \]
+\[\mathcal{U} = - \frac{1}{Z} \frac{\partial Z}{\partial \beta}\]
 
 Using the same ideas, we can derive expressions for the entropy $S$ and the free
-energy $F$ using the partition function:
+energy $F$ using the canonical partition function:
 \[F = - \frac 1 \beta \ln Z\]
 \[S = k_B \left[\ln Z + \beta \frac{\partial \ln Z}{\partial \beta} \right]\]
 
+\newpage
 \subsubsection{Observables}
 
 The probability for the system to be in a given state gives us the missing link
@@ -114,7 +111,7 @@ macroscopic state $A_i$, and the probability of the system to be in this state.
 Using equations~\eqref{eq:maxwell-boltzmann} and~\eqref{eq:partition-function}
 together, we can express the average value for any observable property in the
 canonical ensemble:
-\[\braket{A} = \frac{\iiint_\Phi \d\r^N \d\p^N \; A(\r^N, \p^N) \ e^{-\beta H(\r^N, \p^N)}}{\iiint_\Phi \d\r^N \d\p^N \; e^{-\beta H(\r^N, \p^N)}}. \label{eq:observable}\]
+\[\braket{A} = \frac{\iiint_\Phi \d\r^N \d\p^N \; A(\r^N, \p^N) \ e^{-\beta\, H(\r^N, \p^N)}}{\iiint_\Phi \d\r^N \d\p^N \; e^{-\beta\, H(\r^N, \p^N)}}. \label{eq:observable}\]
 
 \subsubsection{Sampling}
 
@@ -129,7 +126,7 @@ energy. So instead of computing the whole integral, we resort to only use a
 finite number of samples in the phase space, which we try to pick as the most
 relevant. In a semi-formal manner, we try to generate a set of points $\phi$
 inside the phase space, such as
-\[\braket{A} \approx \frac{\sum_\phi A(\r^N, \p^N) e^{-\beta H(\r^N, \p^N)}}{\sum_\phi e^{-\beta H(\r^N, \p^N)}}.\]
+\[\braket{A} \approx \frac{\sum_\phi A(\r^N, \p^N) e^{-\beta\, H(\r^N, \p^N)}}{\sum_\phi e^{-\beta\, H(\r^N, \p^N)}}.\]
 
 There are a few algorithms we can use to do this sampling and generate the set
 $\phi$ of points we will use to compute a given property. I will discuss two of
@@ -266,7 +263,7 @@ pairs interactions to reproduce both the Pauli repulsion between atoms at short
 distances, and the dispersion attractive interaction at long distances. It can
 be shown\cite{London1930} that the dispersion interaction can be developed in
 the long distances approximation as:
-\[ V_\text{dispersion} = -\frac{C_6}{r^6} + \frac{C_8}{r^8} - \frac{C_{10}}{r^{10}} + {\scriptstyle\mathcal{O}}\left(\frac{1}{r^{12}}\right) \]
+\[ V_\text{dispersion} = -\frac{C_6}{r^6} + \frac{C_8}{r^8} - \frac{C_{10}}{r^{10}} + \smallo\left(\frac{1}{r^{12}}\right) \]
 where the $C_i$ coefficients have positive values. Most of the time, only the
 term in $1/r^6$ is used, as it will have the largest contribution to the
 resulting energy. There is however no simple mathematical expression for the
@@ -303,6 +300,7 @@ correct energy and physical properties of the system is called the
 parametrization of a force field. I will discuss it with more depth in the next
 chapter, section~\ref{sec:classical-ff-parametrize}.
 
+\newpage
 \section{Metropolis Monte Carlo}
 
 Now that we know how to compute the energy of a configuration, our goal of
@@ -320,6 +318,16 @@ configuration of the system. This means that we can directly sample the ensemble
 of interest.
 
 \subsection{The basic algorithm}
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/images/mc-chain}
+    \caption{Illustration of a Markov chain in Metropolis Monte Carlo.
+    Configuration are numbered from 1 to 4, and letters from (a) to (e) are used
+    for tentative moves. Step 2 appears twice in the chain, as the tentative
+    move (b) was rejected.}
+    \label{fig:mc:chain}
+\end{figure}
 
 Metropolis Monte Carlo is part of the family of Markov Chain Monte Carlo
 algorithms. A Markov chain is set of configurations such as the probability of
@@ -340,16 +348,6 @@ Boltzmann distribution. The same reasoning also works in other statistical
 ensembles following different distributions.
 
 \subsubsection{Micro-reversibility}
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/images/mc-chain}
-    \caption{Illustration of a Markov chain in Metropolis Monte Carlo.
-    Configuration are numbered from 1 to 4, and letters from (a) to (e) are used
-    for tentative moves. Step 2 appears twice in the chain, as the tentative
-    move (b) was rejected.}
-    \label{fig:mc:chain}
-\end{figure}
 
 The usual way to ensure we have an ergodic Markov chain is to impose that this
 chain is \emph{micro-reversible}. Although this is not a required condition to
@@ -390,7 +388,7 @@ and accept the new configuration if $r < e^{-\beta \Delta U}$.
 When working in ensembles that are not the canonical ensemble, we can still
 apply the same procedure, simply changing the acceptance probability to agree
 with the required distribution. For example, in the $NPT$ ensemble, the
-probability to be in a state is proportional to $e^{-\beta U(\r) \; - \; \beta PV}$.
+probability to be in a state is proportional to $e^{-\beta\, U(\r) \; - \; \beta PV}$.
 This changes the acceptance probability to
 \[\text{acc}^{NPT}(i \to j) = \min\left[1, \exp\left(-\beta \Delta U - \beta P \Delta V \right)\right]\label{eq:mc:acceptance:npt}\]
 
@@ -490,7 +488,7 @@ for GCMC simulations:
 \[ \text{acc}(N \to N + 1) = \min\left[1, \frac{\beta V f}{N + 1} \exp\left(- \beta \Delta U \right)\right] \]
 \[ \text{acc}(N \to N - 1) = \min\left[1, \frac{N}{\beta V f} \exp\left(- \beta \Delta U \right)\right] \]
 
-\subsection{Caveats of Monte Carlo simulations}
+\subsection{Monte Carlo caveats}
 
 Monte Carlo simulations are very powerful, as they allow to directly sample the
 ensemble of interest; and does not require that the moves used to generate a new
@@ -507,42 +505,305 @@ the transformations. Both of these caveats can be solved by using molecular
 dynamics instead to generate the states used to evaluate
 equation~\eqref{eq:observable}.
 
+\begin{figure}[ht]
+    \centering
+    \vskip5em
+    \includegraphics[width=\textwidth]{figures/images/mc-vs-md}
+    \caption{Representation of the way the potential energy surface is explored
+    by molecular dynamics (red line) and Monte Carlo (colored circles)
+    simulations.}
+    \label{fig:mc-vs-md}
+\end{figure}
+
+\newpage
 \section{Molecular dynamics}
 \label{sec:molecular-dynamics}
-~
-% We will assume that the atoms behave as classical point particles
 
-% Ergodic hypothesis
+The fundamental idea of molecular dynamics is to use Newton's laws of motion to
+integrate the positions and velocities of the atoms in the system as function of
+time. In this work, I will consider that the atoms in the system behave as
+classical point particles. There are multiple methods to go beyond this
+approximation and incorporate the quantum nature of atoms, mostly based on
+Feynman path integrals\cite{Craig2004}.
 
-\subsection{Constant energy integration }
-~
+Newton's laws give us differential equation on the time evolution of positions
+and velocities ($\p_i = m_i \v_i$):
+\[\frac{\partial \r_i}{\partial t} = \v_i; \qquad\text{and}\qquad m_i \frac{\partial \v_i}{\partial t} = - \frac{\partial U(\r)}{\partial \r_i}. \]
+We can discretize time in these equations by considering a succession of
+instants separated by the \emph{time step} $\Delta t$. If we then replace the
+derivatives with first order finite differences, we get the Euler integrator
+equations:
+\[ \r_i(t + \Delta t) = \r_i(t) + \v_i(t) \Delta t + \smallo(\Delta t^2)\]
+\[ \v_i(t + \Delta t) = \v_i(t) + \frac{1}{m_i} \vec f_i(t) \Delta t + \smallo(\Delta t^2) \]
+where $\vec f_i = - \partial U(\r) / \partial \r_i$ is the force acting on atom
+$i$. The Euler integration scheme presented here have a high discretization
+error and is not used in actual simulations, but helps understanding molecular
+dynamics. Better integration schemes will be presented below.
+
+Starting from an initial configuration defined by the positions and velocities
+of each atom at time $t$, these equations allow to compute the positions and
+velocities at the next time point $t + \Delta t$. For this discretization to be
+valid, the time step $\Delta t$ has to be small enough so that both the
+$\smallo(\Delta t^2)$ term is negligible; and the forces acting on the atom are
+constant between $t$ and $t + \Delta t$. Depending on the system, typical values
+for the time step fall between \SI{0.1}{fs} and \SI{2}{fs}.
+
+Time integration of positions and velocities follows the usual rules of
+classical mechanics, and in particular the conservation of energy. This means
+that by default, molecular dynamics trajectory evolve in the micro-canonical
+$NVE$ ensemble. There however is no \emph{a priori} guarantees that a molecular
+dynamics trajectory will generate new configurations following the
+micro-canonical distribution. We rely on the \emph{ergodic} hypothesis to assume
+that the trajectory does sample the $NVE$ ensemble. In the most intuitive form,
+this hypothesis is be formulated as:
+
+\vskip0.8ex
+\begin{quote}
+    At equilibrium, the ensemble average of a property is the same as the
+    average of the values of this property taken over a high number of
+    measurements in different points in time.
+\end{quote}
+\vskip0.8ex
+
+The ergodic hypothesis links together the statistical physics view of the world,
+and what can effectively be measured at the macroscopic level. Mathematically
+speaking, the ergodic hypothesis is a property of the Hamiltonian system: a
+system is said to be ergodic if the point representing this system in the phase
+space can approach every point in the phase space as closely as desired. In this
+case, Birkhoff ergodic theorem proves that the time average and ensemble average
+are the same almost everywhere. This condition has been verified for some
+systems; and is usually assumed to hold when working with statistical
+thermodynamics.
+
+\subsection{Integration schemes}
+
+\subsubsection{Desirable properties}
+
+We want the integration scheme used for a molecular dynamics simulation to
+enforce the symmetry and conservation properties of a real mechanical system;
+namely the time reversal symmetry, conservation of energy, linear momentum,
+angular momentum and phase space volume. Conservation of phase space volume
+means that if we consider a set of initial condition inside a closed and bounded
+region of phase space and propagate them for a given time; the resulting points
+in phase space will still be a closed and bounded region of phase space with the
+same volume as the initial region --- this is illustrated in
+figure~\ref{fig:symplectic-integrator}. An integrator conserving the phase space
+volume is said to be \emph{symplectic}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/images/symplectic-integrator}
+    \caption{Illustration of a set of trajectories (in red) in a 2 dimensional
+    phase space. For a symplectic integrator, the initial volume (in blue) will
+    be the same as the final volume (in green).}
+    \label{fig:symplectic-integrator}
+\end{figure}
+
+Because we are approximating the equations of motion by evaluating them on
+discrete time step the energy might not be fully conserved, and an energy drift
+might appear. The amplitude of this drift will depend on time step; a bigger
+time step introducing a bigger error. A good integrator will allow us to use
+bigger time steps while keeping the energy constant. This will make the overall
+simulation more efficient by reducing the number of steps needed to simulate
+long processes. Another way to make the simulation more efficient is to only
+evaluate the forces acting on the atoms as rarely as possible. This is for
+example the case in multi-timesteps methods such as reversible Reference System
+Propagator Algorithms\cite{Tuckerman1992} (r-RESPA) where forces are separated
+by the time scale of their variations; and evaluated only when needed instead of
+on all steps.
+
+\subsubsection{Some examples of integration scheme}
+
+One of the simplest integrator respecting all of the above defined constrains
+(symplectic, time-reversible, energy conservation) is the Leap Frog integrator.
+The corresponding algorithm is reproduced below, using $\r(n)$ for $\r(n \times
+\Delta t)$, and $\vec f(n)$ for the forces computed from the positions at step
+$n$.
+\[\begin{aligned}
+    \vec a(n)   &= \frac{1}{m}\ \vec f(n), \\
+    \v(n + 1/2) &= \v(n - 1/2) + \vec a(n) \,\Delta t, \\
+    \r(n + 1)   &= \r(n) + \v(n + 1/2)\,\Delta t,
+\end{aligned}\]
+
+Evaluation of the forces is made clear by the $a = f / m$ line, to ensure it
+only occurs once. The Leap Frog integrator is more stable than the previously
+mentioned Euler integrator. Unfortunately, it computes the positions and
+velocities at interleaved instants, staggered in such a way that they jump over
+each other in a frog-like fashion.
+
+Velocity-Verlet integrator fixes this issue while keeping the symplectic and
+time reversible nature of Leap Frog. The algorithm works as follow:
+\[\begin{aligned}
+    \v(n + 1/2)   &= \v(n) + \frac 12 \vec a(n)\,\Delta t, \\
+    \r(n + 1)     &= \r(n) + \v(n + 1/2)\,\Delta t, \\
+    \vec a(n + 1) &= \frac{1}{m}\ \vec f(n + 1), \\
+    \v(n + 1)     &= \v(n + 1/2) + \frac 12 \vec a(n + 1)\,\Delta t,
+\end{aligned}\]
+Here, velocities are updated twice by a half step, but the forces are still
+computed only once. This algorithm also yield the positions and velocities on a
+full time steps, allowing them to be used together when computing properties of
+the system.
+
+Both integrators presented here have a $\smallo (\Delta t^2)$ error, but they
+are other integration scheme with a smaller error, called higher order
+integrators. The most famous ones are the Runge–Kutta methods, that can be
+derived for any even order, starting with $\smallo (\Delta t^4)$. These methods
+are not used as often as the Velocity-Verlet or Leap Frog integrators, as they
+are more expensive to use and are not time-reversible.
 
 \subsection{Sampling other ensembles}
-~
+
+By default, molecular dynamics samples the $NVE$ ensemble. To sample other
+ensembles, we need a way to change the conjugated variables from this ensemble.
+For example, going from $NVE$ to $NVT$, we want to change the energy of the
+system as $E$ and $T$ are conjugated variables. Similarly, going from $NVT$ to
+$NPT$ requires changes to the volume.
+
+\subsubsection{Thermostats}
+
+Algorithm that control the temperature by changing the energy of the system are
+called \emph{thermostating} algorithms, or just \emph{thermostats}. Thermostats
+work by changing the kinetic energy of the system, or more generally by changing
+the velocities. If we want to change the system temperature from $T_0$ to $T_1$,
+we need to multiply all velocities by $\sqrt{T_1 / T_0}$. As the system evolve,
+temperature needs to be updated again, as kinetic energy is transferred into
+potential energy and reciprocally.
+
+One of the easiest way to control temperature is to rescale the velocities at
+every step back to the target temperature, after updating the positions and
+velocities with the standard
+
+
+Berendsen => bad
+
+exponential relaxation with time constant $\tau_T$
+
+\[\frac{\d T(t)}{\d t} = \frac{T_0 - T(t)}{\tau_T}\]
+\[\alpha = \sqrt{1 + \frac{\Delta t}{\tau_T} \left(\frac{T_0}{T(t)} - 1\right) }\]
+
+Nose-Hoover => good
+
+CSVR => better
+
+\subsubsection{Barostats}
+
+Berendsen => bad
+
+Nose-Hoover => good
+
+\subsubsection{Can osmostats exist? Grand canonical molecular dynamics}
+
 
 \subsection{Molecular dynamics caveats}
 
-Only fixed number of atoms
+The main advantage of molecular dynamics simulations is the explicit description
+of time. This allow to study time-dependent phenomenon, and make the simulation
+trajectories easier to interpret as they form a "movie" of what is happening in
+the system.
 
-Harder to ensure sampling of the right ensemble.
+But these simulations also have a few caveats. As they are based on Hamiltonian
+dynamics, they can only sample ensembles with a constant number of particles.
+At the same time, it is harder to ensure that the trajectory is sampling of the
+right ensemble compared to Monte Carlo simulations. Having the right average
+value --- for example when using a Berendsen thermostat -- is not enough; and
+one must check that the full distribution is reproduced.
 
+\TODO compare to MC and ref figure~\ref{fig:mc-vs-md}
+
+\newpage
 \section{Free energy methods}
-~
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/images/free-energy-profile}
+    \caption{Representation of a free energy profile along a reaction
+    coordinate $x$ on the example of proton exchange in water.}
+    \label{fig:free-energy-profile}
+\end{figure}
+
+Sometimes, the knowledge and sampling of the whole phase space is not necessary
+to acquire insight on the system of interest. For example, a reaction occurring
+in a water solution will only involve a few degrees of liberty (the distance
+between the reacting molecules) among the thousands of degrees of liberty
+composing the phase space -- this is illustrated in
+figure~\ref{fig:free-energy-profile} where. In these cases, it can be more
+efficient to only consider these degrees of freedom and extract the
+corresponding free energy surface. This is what free energy methods are designed
+to do. The idea is to bias the system to sample preferentially the degrees of
+freedoms of interest, and extract the real free energy from the resulting
+trajectory.
+
+Another application of free energy methods is the study of rare events, \ie any
+event with a high free energy barrier. If we were to leave the simulation evolve
+by itself, very long simulation time would be needed to obtain correct sampling
+of the phase space. This is true of both molecular dynamics where the barrier
+crossing is explicit, and Monte Carlo where even if a move can "jump" over the
+barrier, moves approaching the barrier have a higher chance of being rejected.
+In both cases, biased free energy methods can help to overcome the issue.
+
+It is important to note that free energy methods do not allow to compute
+absolute free energies, only free energy differences. This is because in
+statistical thermodynamics, free energy is defined as a function pf the
+partition function:
+\[ F = -\frac 1 \beta \ln \left( \iiint_\Phi \d\r^N \d\p^N \; e^{-\beta\, H(\r^N, \p^N)} \right)\]
+which can not be computed as an ensemble average using
+equation~\ref{eq:observable}. It is however possible to express free energy
+differences as quantities based on ensemble average.
+
+I will focus here on the Umbrella Sampling method which is the main method I
+used during my work. Other methods to extract free energy from a simulation
+include Thermodynamic Integration, Metadynamics, Blue Moon ensemble simulations,
+Adaptive Biased Force, Wang Landau Monte Carlo, and many other.
 
 \subsection{Umbrella sampling}
-~
 
-% WHAM
+Umbrella sampling is a method to extract the free energy profile along a
+reaction coordinate $x$. The idea is to constrain the system at specific
+positions $x_i$ with an harmonic potential, such that the total potential energy
+is:
+\[ U_i(\r^N) = U(\r^N) + \frac 12 k\ (x - x_i)^2 \]
+With this energy, the probability that the system is in a state described by $x$
+is given by
+\[ \mathcal{P}_i(x) = \frac1{Z_i} \iiint_V \d \r^N\ \exp[-\beta\, U_i(\r^N)] \ \delta(x - x(\r^N)).\]
+The above expression uses $x(\r^N)$ as the value of the collective variable $x$
+for a given conformation; and the $\delta$ function to filter out a specific
+value of $x$. $Z_i$ is the modified conformational partition function:
+\[ Z_i = \iiint_V \d \r^N\ \exp[-\beta\, U_i(\r^N)].\]
 
-\section{Faster energy computation in classical simulations}
+The unbiased system is described by a distribution probability $\mathcal{P}_0$:
+\[ \mathcal{P}_0(x) = \frac1{Z_0} \iiint_V \d \r^N\ \exp[-\beta\, U(\r^N)] \ \delta(x - x(\r^N)).\]
+\[ Z_0 = \iiint_V \d \r^N\ \exp[-\beta\, U(\r^N)].\]
+And the overall goal of the method is to evaluate the free energy of the system
+as a function of $x$, using
+\[F = -k_B T \ln\left( \mathcal{P}_0(x) \right)\]
 
-\subsection{Evaluation tricks}
+Umbrella sampling rely running multiple simulations for different values of
+$x_i$, and approximating $\mathcal{P}_i(x)$ by counting the number of time the
+system has a value of $x$. In theory, it is then be possible to reconstruct
+$\mathcal{P}_0$ from every histogram:
+\[ \mathcal{P}_0(x) = \exp\left(\beta \frac 12 k\ (x - x_i)^2\right) \frac{Z_i}{Z_0} \mathcal{P}_i(x) \]
+In practice, this requires having very good statistics in regions where
+$\mathcal{P}_i$ is near zero, and thus prohibitively long simulation time.
+Instead, we try to reconstruct $\mathcal{P}_0$ as a linear combination of such
+estimates:
+\[ \mathcal{P}_0(x) = \sum_i w_i(x) \exp\left(\beta \frac 12 k\ (x - x_i)^2\right) \frac{Z_i}{Z_0} \mathcal{P}_i(x) \]
+where the $w_i(x)$ are weight functions to be determined, normalized such that:
+\[ \forall x, \quad \sum_i w_i(x) = 1\]
 
-\fbox{cutoff? => Ewald}
+It is then possible to solve these equations for $w_i(x)$ and $Z_i/Z_0$ using a
+self-consistent approach, as expressions for $w_i(x)$ depend on $Z_i/Z_0$ and
+\emph{vice versa}. This approach is called the weighted histogram analysis
+method, or WHAM.
 
-\fbox{Restrictions}
-
-\subsection{Monte Carlo energy caching}
+% \section{Faster energy computation in classical simulations}
+%
+% \subsection{Evaluation tricks}
+%
+% \fbox{cutoff => Ewald}
+%
+% \fbox{Restrictions}
+%
+% \subsection{Monte Carlo energy caching}
 
 
 \OnlyInSubfile{\printbibliography}
