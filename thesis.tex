@@ -74,8 +74,10 @@
 \let\OldAddcontentsline\addcontentsline
 \renewcommand{\addcontentsline}{\phantomsection\OldAddcontentsline}
 
-% An alternative to \chapter* that adds itself to the TOC
+% Alternatives to \chapter*/\section* that adds themselves to the TOC
 \newcommand{\nonumchapter}[1]{\chapter*{#1}\addcontentsline{toc}{chapter}{#1}\markboth{#1}{#1}}
+\newcommand{\nonumsection}[1]{\section*{#1}\addcontentsline{toc}{section}{#1}\markboth{#1}{#1}}
+
 \DeclareCiteCommand{\citenum}{}{\printfield{labelnumber}}{}{}
 % A bibheading using subsection*
 \defbibheading{subsectionbibheading}{\subsection*{#1}}
@@ -223,7 +225,7 @@
         \nocite{*}
 
         \nonumchapter{List of Publications}
-        \section*{Publications linked to my PhD work}
+        \section*{Publications related to this work}
         \printbibliography[heading=subsectionbibheading,title={Peer-reviewed Journals},type=article,env=publist,keyword={phd}]
         \printbibliography[heading=subsectionbibheading,title={Preprints},type=unpublished,env=publist]
 

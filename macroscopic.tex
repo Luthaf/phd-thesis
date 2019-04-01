@@ -4,7 +4,7 @@
 
 \OnlyInSubfile{\setcounter{chapter}{1}}
 
-\chapter{Macroscopic methods} \label{sec:macroscopic}
+\chapter{Macroscopic studies} \label{sec:macroscopic}
 \startcontents[chapters]
 \printpartialtoc
 
@@ -698,6 +698,15 @@ adsorption-based processes. However, we can see that because IAST is using
 numerical integration, it is much more sensitive to details in the
 single-component isotherms than the OFAST method, which is based on fits.
 
+\begin{figure}[htp]
+    \centering
+    \input{figures/rpm3-zn-loadings.tex}
+    \caption{Total (full lines) and partial (dashed lines) loading as function
+    of pressure in \RPMZn for all the gas combination. Left is OFAST results,
+    and right correspond to IAST results.}
+    \label{fig:rpm3-zn:iast-ofast:loadings}
+\end{figure}
+
 OFAST correctly describes the occurrence of gate opening, at a pressure which
 depends on mixture composition but is in the range of the pure component gating
 pressures. After gate opening, the selectivity jumps to its value in the open
@@ -717,17 +726,8 @@ agreement and make no physical sense, featuring non-monotonic evolution as a
 function of pressure and composition. Even their high-pressure limit is often
 far off from reality, as seen in the case of \ce{C3H8}/\ce{C2H6}.
 
-\begin{figure}[htp]
-    \centering
-    \input{figures/rpm3-zn-loadings.tex}
-    \caption{Total (full lines) and partial (dashed lines) loading as function
-    of pressure in \RPMZn for all the gas combination. Left is OFAST results,
-    and right correspond to IAST results.}
-    \label{fig:rpm3-zn:iast-ofast:loadings}
-\end{figure}
-
 \FloatBarrier
-\subsection*{Conclusions}
+\nonumsection{Conclusions}
 
 % Several published studies of fluid mixture co-adsorption in flexible nanoporous
 % material use the Ideal Adsorbed Solution Theory (IAST) method to predict the
