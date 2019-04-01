@@ -17,7 +17,6 @@
 		"!CMA",
 		"!CO2",
 		"!CP2K",
-		"!CVSR",
 		"!D3",
 		"!DFT",
 		"!DL",
@@ -177,6 +176,16 @@
 		"metadynamics",
 		"conformational",
 		"thermostating",
-		"rescale"
+		"rescale",
+		"rescaling",
+		"!Nosé",
+		"!CSVR",
+		"!Perdew's",
+		"rescales",
+		"compressibility",
+		"resized",
+		"resizes",
+		"barostats",
+		"osmostats"
 	]
 }

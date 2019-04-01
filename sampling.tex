@@ -197,7 +197,7 @@ most widely used today, and the only one making it possible to study systems
 with hundreds of atoms and periodic boundary conditions. The central idea of DFT
 is to solve these equations in terms of the total electronic density $n(\r)$,
 and then write the total energy of the system as a functional of the density
-$E[n]$. I will explain in chapter~\ref{sec:dft} how DFT relates to the
+$E[n]$. I will explain in section~\ref{sec:dft} how DFT relates to the
 Schrödinger equation, and how minimizing the energy functional gives us the
 energy of the system in the ground state.
 
@@ -507,7 +507,7 @@ equation~\eqref{eq:observable}.
 
 \begin{figure}[ht]
     \centering
-    \vskip5em
+    \vskip8em
     \includegraphics[width=\textwidth]{figures/images/mc-vs-md}
     \caption{Representation of the way the potential energy surface is explored
     by molecular dynamics (red line) and Monte Carlo (colored circles)
@@ -653,11 +653,11 @@ are more expensive to use and are not time-reversible.
 
 \subsection{Sampling other ensembles}
 
-By default, molecular dynamics samples the $NVE$ ensemble. To sample other
-ensembles, we need a way to change the conjugated variables from this ensemble.
-For example, going from $NVE$ to $NVT$, we want to change the energy of the
-system as $E$ and $T$ are conjugated variables. Similarly, going from $NVT$ to
-$NPT$ requires changes to the volume.
+By default, molecular dynamics samples the $NVE$ ensemble. To sample an other
+ensemble, we need a way to control the variable that changes from this ensemble
+to the $NVE$ ensemble. For example, going from $NVE$ to $NVT$, we want to
+change the energy of the system as $E$ and $T$ are conjugated variables.
+Similarly, going from $NVT$ to $NPT$ requires changes to the volume.
 
 \subsubsection{Thermostats}
 
@@ -671,28 +671,134 @@ potential energy and reciprocally.
 
 One of the easiest way to control temperature is to rescale the velocities at
 every step back to the target temperature, after updating the positions and
-velocities with the standard
+velocities with an integrator such as Velocity-Verlet. This approach is
+sometimes called a \emph{rescaling} thermostat. While this algorithm does fix
+the system temperature to the target value, the integrator is no longer
+time-reversible and symplectic, and introduces a lot of non-physical artifacts
+in the dynamics. One example of such non-physical effect is the so-called
+\emph{flying ice cube}; where all the thermal energy of the system is
+transferred into the global translation velocity, while removing all vibrational
+energy from the atoms, resulting in a simulation of flying frozen atoms.
 
+The \emph{weak coupling} or Berendsen\cite{Berendsen1984} thermostat is a
+slightly better version of the rescaling thermostat that imposes a first-order
+(exponential) relaxation of the temperature such that
+\[\frac{\d T(t)}{\d t} = \frac{T_0 - T(t)}{\tau_T};\]
+where $T(t)$ is the instantaneous system temperature, $T_0$ the target external
+temperature, and $\tau_T$ the relaxation time constant. This is implemented by
+rescaling the velocities at each time step by
+\[\alpha = \sqrt{1 + \frac{\Delta t}{\tau_T} \left(\frac{T_0}{T(t)} - 1\right) }.\]
+The Berendsen thermostat models a system weakly coupled to an heat bath at
+temperature $T_0$. In order to sample the canonical ensembles, we need an
+algorithm that is able to reproduce both the average value of the temperature
+and the fluctuations around the equilibrium of this temperature. Because is
+suppresses fluctuations of the kinetic energy of the system, the Berendsen
+thermostat is unable to produce trajectories in the canonical $NVT$ ensemble. It
+is still useful for the equilibration phase of a simulation, where one wants
+the system to reach approximate equilibrium as fast as possible.
 
-Berendsen => bad
+To probe the correct canonical ensemble, we can instead use a
+Nosé-Hoover\cite{Nose1984,Hoover1985} thermostat. In this approach, the
+Lagrangian (and thus the Hamiltonian) of the system is modified to include an
+additional variable $s$ controlling the temperature of the system by changing
+the time scale of the extended system such that $\Delta t' = s\, \Delta t$. This
+new variable is coupled to the system by changing all the velocities to $\v' =
+s^{-1}\ \d \r / \d t$. It can be shown that sampling the extended system in the
+micro-canonical ensemble is equivalent to sampling the real system in the
+canonical ensemble, including the fluctuations. The intensity of the coupling is
+can be tuned by changing the fictitious mass associated with $s$. The extended
+Lagrangian can be propagated though time with any existing time-reversible and
+symplectic integrators.
 
-exponential relaxation with time constant $\tau_T$
-
-\[\frac{\d T(t)}{\d t} = \frac{T_0 - T(t)}{\tau_T}\]
-\[\alpha = \sqrt{1 + \frac{\Delta t}{\tau_T} \left(\frac{T_0}{T(t)} - 1\right) }\]
-
-Nose-Hoover => good
-
-CSVR => better
+Instead of using such extended Lagrangian methods, it is also possible to modify
+the rescaling methods to sample canonical ensemble. This is the basis of the
+Canonical Sampling through Velocity Rescaling\cite{Bussi2007} (CSVR) thermostat
+I also used during my PhD. The main idea is to replace the $\alpha$ scaling
+parameter from Berendsen thermostat by a parameter picked randomly using the
+expected distribution for the fluctuations of kinetic energy. Then, by
+construction, the trajectory will explore the canonical ensemble.
 
 \subsubsection{Barostats}
 
-Berendsen => bad
+Controlling the pressure can be done with the same approaches as the temperature
+to generate the $NPT$ ensemble. For example, the Berendsen barostat rescales the
+system volume at every step to ensure a first-order relaxation to the target
+pressure. For a cubic unit cell subject to isotropic pressure, this means
+multiplying the cell volume by
+\[ \eta(t) = 1 - \frac{\beta\,\Delta t}{\tau_P} \left(P_0 - P(t)\right);\]
+where $P_0$ is the target pressure, $P(t)$ the instantaneous system pressure,
+$\tau_P$ the pressure relaxation time constant and $\beta$ the compressibility
+of the system; often approximated by the compressibility of liquid water. We
+then multiply the atomic positions by $\sqrt[3]{\eta}$. If the system is subject
+to an anisotropic stress tensor $\underline{S}_0$, then the unit cell matrix
+should be resized by:
+\[ \underline{\eta} = \mathds{1} - \frac{\beta\,\Delta t}{\tau_P} \left(\underline{S}_0 - \underline{S}(t)\right). \]
 
-Nose-Hoover => good
+As for thermostats, the Berendsen barostat does not sample the actual
+isothermal-isobaric ensemble, as it can no reproduce volume fluctuations. It is
+still very useful for system equilibration when starting a simulation. The
+Nosé-Hoover barostat is based on an extended Lagrangian, and can sample the real
+$NPT$ ensemble. To my knowledge, there is no equivalent to the CSVR thermostat
+for controlling the pressure.
+
+When using both a thermostat and a barostat to control the system pressure and
+temperature, one must take care that both control algorithms have sufficient
+time to react to changes. In particular, every-time the barostat resizes the
+simulation cell, the thermostat must change the velocities to adapt the kinetic
+energy to the new potential energy. This means that the time step used for the
+barostat should be higher than the one used by the thermostat. In my
+simulations, I found that setting $\tau_P = 10 \times \tau_T = 1000 \times \Delta
+t$ works well.
 
 \subsubsection{Can osmostats exist? Grand canonical molecular dynamics}
 
+As we have seen, it is possible to go from an ensemble to an other by
+controlling the conjugated variables: change $E$ to control $T$, $V$ to control
+$P$. It is then natural to consider whether it is possible to control the
+chemical potential of a system to sample the grand canonical $\mu V T$
+potential. The obvious way to do so is to change the number of particles in the
+system. Multiple versions of such \emph{Grand Canonical Molecular Dynamics} have
+been presented over the years, either using an extended Hamiltonian
+approach\cite{Cagin1991,Lo1995,Eslami2007}, or a mixture of Monte Carlo moves
+and molecular dynamics integration in the same
+trajectory\cite{Heffelfinger1994,Cracknell1995,Boinepalli2003}.
+
+The latter methods --- mixing Monte Carlo moves with molecular dynamics
+integration --- have not been proven, to my knowledge, to generate any specific
+statistical ensemble. While Monte Carlo simulations and molecular dynamics are
+proven to do so under certain hypothesis, we lack such mathematical proofs for
+the generic hybrid case. It is possible to mix molecular dynamics and Monte
+Carlo under the framework of Hybrid Monte Carlo simulations, which I will
+discuss in more details in chapter~\ref{sec:hmc}. The main idea here is to use
+short Molecular Dynamics simulations as a new Monte Carlo move, and under some
+conditions on the molecular dynamics integrator; the resulting Markov chain is
+proven to be ergodic. Contrary to most grand canonical molecular dynamics
+methods, the driver of the simulation is the Metropolis Monte Carlo algorithm;
+with all associated caveats; and not a dynamic integrator producing a trajectory
+in time.
+
+In the former case, the general idea is to have one or more \emph{fractional}
+particles in the system, represented by a parameter $\lambda$ going from 0 to 1.
+The interactions of this particle with the system are scaled down by $\lambda$,
+and the value of $\lambda$ evolves through time. When it reaches 1, the particle
+is converted to a full particle and a new one is inserted with a small
+$\lambda$; and when it reaches 0, the particle is removed and a new one is
+picked to have the value of $\lambda$ change. This approach first has an issue
+with the fact that time-reversibility is broken when $\lambda$ reaches 0 or 1.
+
+Finally, Liouville's theorem (the fact that the phase-space distribution
+function is constant along the trajectories of the system) is only proven for a
+constant number of atoms, and might not be valid in the grand canonical
+ensemble\cite{DelleSite2016}. This can be understood intuitively: in both $NVE$,
+$NVT$ and $NPT$ simulations, the system explores a certain sub-space of the
+phase space, the hyper-surfaces at a constant energy/temperature, or the
+hyper-volume at constant pressure respectively. In the grand canonical ensemble,
+the underlying number of dimension of the ensemble would change depending on the
+position in the extended phase space. As all of our current theory and
+understanding of Hamiltonian dynamics is based on a constant number of
+particles, using molecular dynamics to sample the grand canonical ensemble might
+not be possible. Fortunately, we can still use Grand Canonical Monte Carlo for
+this.
 
 \subsection{Molecular dynamics caveats}
 
@@ -708,7 +814,14 @@ right ensemble compared to Monte Carlo simulations. Having the right average
 value --- for example when using a Berendsen thermostat -- is not enough; and
 one must check that the full distribution is reproduced.
 
-\TODO compare to MC and ref figure~\ref{fig:mc-vs-md}
+In general, Monte Carlo and molecular dynamics simulations complete each other,
+one having strengths where the other is weaker, or harder to use. The main
+difference between them remains the way they explore the phase space,
+represented figure~\ref{fig:mc-vs-md}. Molecular dynamics will generate a smooth
+trajectory in the phase space, while Monte Carlo trajectories will exhibit jumps
+and discontinuities. This ability of using non-physical moves (such as a change
+in the number of particles in the system) make Monte Carlo simulations a more
+versatile tool for molecular simulations.
 
 \newpage
 \section{Free energy methods}
