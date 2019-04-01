@@ -141,7 +141,8 @@
 \definecolor{CTsemi}{gray}{0.55} % chapter numbers will be semi transparent .5 .55 .6 .0
 \definecolor{CTcitation}{rgb}{0,0.5,0} % WebGreen
 \definecolor{CTurl}{named}{Maroon} % Maroon
-\definecolor{CTtitle}{named}{Maroon} % Maroon {cmyk}{0, 0.87, 0.68, 0.32}
+% \definecolor{CTtitle}{named}{Maroon} % Maroon {cmyk}{0, 0.87, 0.68, 0.32}
+\definecolor{CTtitle}{RGB}{36, 56, 141}
 \definecolor{CTlink}{named}{RoyalBlue} % RoyalBlue {cmyk}{1, 0.50, 0, 0}
 \definecolor{halfgray}{gray}{0.55} % chapter numbers will be semi transparent .5 .55 .6 .0
 \definecolor{webgreen}{rgb}{0,0.5,0}
@@ -375,7 +376,7 @@
 % ********************************************************************
 \RequirePackage{titletoc}
 \contentsmargin{1.5em}
-\titlecontents{chapter}[2.5em]{\addvspace{1em}\color{CTtitle}\normalfont}{\contentslabel{1.5em}}{\hspace*{-1.5em}}{\hfill\color{black}\contentspage}[]
+\titlecontents{chapter}[2.5em]{\addvspace{1em}\color{CTtitle}\bfseries}{\contentslabel{1.5em}}{\hspace*{-1.5em}}{\hfill\color{black}\contentspage}[]
 \titlecontents{section}[4.8em]{\addvspace{0.1em}}{\contentslabel{2.7em}}{\hspace*{-2.7em}}{\titlerule*[1pc]{.}\contentspage}[]
 \titlecontents{subsection}[8.0em]{}{\contentslabel{3.5em}}{\hspace*{-3.5em}}{\titlerule*[1pc]{.}\contentspage}[]
 
