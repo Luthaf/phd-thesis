@@ -1,7 +1,7 @@
 all: thesis.pdf
 
 %.pdf: %.tex .FORCE
-	latexmk -pdf -output-directory=build -silent -file-line-error -shell-escape -synctex=1 $<
+	latexmk -pdf -output-directory=build -silent -shell-escape -synctex=1 $<
 	cp build/$*.{pdf,synctex.gz} .
 
 archive: thesis.pdf

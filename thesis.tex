@@ -1,13 +1,14 @@
 \documentclass[11pt, a4paper]{book}
-\usepackage[linedheaders, drafting]{classicthesis}
+\usepackage[drafting]{classicthesis}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
+\usepackage{etoolbox}
 \usepackage{libertine}
 \usepackage{mathtools}
 \usepackage[frenchmath]{mathastext}
 \usepackage{dsfont}
 \usepackage{subfiles}
-\usepackage[]{graphicx}
+\usepackage[draft]{graphicx}
 \usepackage{tabularx}
 \usepackage{xspace}
 \usepackage{float}
@@ -71,13 +72,22 @@
 \surroundwithmdframed[linewidth=2pt,topline=false,bottomline=false,rightline=false]{quote}
 \AtBeginEnvironment{quote}{\itshape}
 
-% Make hyperref produce the right links by adding a phantomsection before addcontentsline
-\let\OldAddcontentsline\addcontentsline
-\renewcommand{\addcontentsline}{\phantomsection\OldAddcontentsline}
+\makeatletter
+% Ensure hyperref produce the right links by adding a phantomsection before addcontentsline
+\let\@oldaddcontentsline\addcontentsline
+\renewcommand{\addcontentsline}{\phantomsection\@oldaddcontentsline}
 
-% Alternatives to \chapter*/\section* that adds themselves to the TOC
-\newcommand{\nonumchapter}[1]{\chapter*{#1}\addcontentsline{toc}{chapter}{#1}\markboth{#1}{#1}}
-\newcommand{\nonumsection}[1]{\section*{#1}\addcontentsline{toc}{section}{#1}\markboth{#1}{#1}}
+\let\@oldchapter\chapter
+\newcommand{\@chapterstar}[1]{\@oldchapter*{#1}}
+% Skip at least one page before chapter (OnlyInMainfile), and print toc after
+\newcommand{\@chapternostar}[1]{
+    \OnlyInMainfile{\clearpage\pagestyle{empty}\null}%
+    \@oldchapter{#1}%
+    \startcontents[chapters]\printpartialtoc%
+    \pagestyle{fancy}
+}
+\renewcommand{\chapter}{\@ifstar{\@chapterstar}{\@chapternostar}}
+\makeatother
 
 \DeclareCiteCommand{\citenum}{}{\printfield{labelnumber}}{}{}
 % A bibheading using subsection*
@@ -119,11 +129,11 @@
 \def\[{\begin{equation}}
 \def\]{\end{equation}}
 
-% Only expand the argument in a subfile
+% Only expand the argument in a subfile/not in a subfile
 \makeatletter
 \ifdef{\old@document@subfiles}%
-    {\def\OnlyInSubfile#1{#1}}%
-    {\def\OnlyInSubfile#1{}}
+    {\def\OnlyInSubfile#1{#1}\def\OnlyInMainfile#1{}}%
+    {\def\OnlyInSubfile#1{}\def\OnlyInMainfile#1{#1}}
 \makeatother
 
 % Partial TOC formatting for chapters
@@ -208,7 +218,7 @@
     \include{intro}
     \subfile{context}
     \subfile{macroscopic}
-    \subfile{sampling}
+    \subfile{molsim}
     \subfile{ab-initio}
     \subfile{classical}
     \subfile{hybrid}
@@ -225,7 +235,7 @@
         \DeclareFieldFormat{labelnumberwidth}{#1}
         \nocite{*}
 
-        \nonumchapter{List of Publications}
+        \chapter*{List of Publications}
         \section*{Publications related to this work}
         \printbibliography[heading=subsectionbibheading,title={Peer-reviewed Journals},type=article,env=publist,keyword={phd}]
         \printbibliography[heading=subsectionbibheading,title={Preprints},type=unpublished,env=publist]
