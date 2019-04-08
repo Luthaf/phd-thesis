@@ -238,6 +238,11 @@
 		"!Al2O3SiOH",
 		"tetrahedra",
 		"!Scalfi",
-		"monoclinic"
+		"monoclinic",
+		"chemfiles",
+		"cfiles",
+		"softwares",
+		"!macOS",
+		"!Fortran"
 	]
 }

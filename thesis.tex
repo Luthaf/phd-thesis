@@ -5,6 +5,7 @@
 \usepackage{etoolbox}
 \usepackage{libertine}
 \usepackage{mathtools}
+\usepackage{amssymb}
 \usepackage[frenchmath]{mathastext}
 \usepackage{dsfont}
 \usepackage{subfiles}
@@ -78,12 +79,16 @@
 \renewcommand{\addcontentsline}{\phantomsection\@oldaddcontentsline}
 
 \let\@oldchapter\chapter
-\newcommand{\@chapterstar}[1]{\@oldchapter*{#1}}
 % Skip at least one page before chapter (OnlyInMainfile), and print toc after
+\newcommand{\@chapterstar}[1]{
+    \OnlyInMainfile{\clearpage\pagestyle{empty}\null}%
+    \@oldchapter*{#1}%
+    \pagestyle{fancy}%
+}
 \newcommand{\@chapternostar}[1]{
     \OnlyInMainfile{\clearpage\pagestyle{empty}\null}%
     \@oldchapter{#1}%
-    \startcontents[chapters]\printpartialtoc%
+    \startcontents[chapters]\printpartialtoc% only print TOC for numbered chapters
     \pagestyle{fancy}
 }
 \renewcommand{\chapter}{\@ifstar{\@chapterstar}{\@chapternostar}}
@@ -177,7 +182,7 @@
 \def\TODO{\colorbox{red}{TODO}}
 
 % PSL cover page
-\usepackage[nomaketitle]{psl-cover}
+\usepackage{psl-cover}
 \pslassetspath{figures/psl}
 
 \title{Simulation moleculaire multi-échelles de l'adsorption de fluides dans les matériaux nanoporeux flexibles}
@@ -190,7 +195,7 @@
 \bibliography{thesis, publications}
 
 \begin{document}
-    \pslcover
+    \maketitle
 
     \begingroup
         \hypersetup{hidelinks}
@@ -207,9 +212,9 @@
     \include{conclusion}
 
     \appendix
-    \subfile{softwares}
     \subfile{electrostatics}
-
+    \subfile{domino}
+    \subfile{chemfiles}
     % List of publications
     \clearpage
     \begin{refsection}[publications.bib]
@@ -218,6 +223,7 @@
         \nocite{*}
 
         \chapter*{List of Publications}
+        \startcontents[chapters]
         \section*{Publications related to this work}
         \printbibliography[heading=subsectionbibheading,title={Peer-reviewed Journals},type=article,env=publist,keyword={phd}]
         \printbibliography[heading=subsectionbibheading,title={Preprints},type=unpublished,env=publist]

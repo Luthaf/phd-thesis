@@ -1,0 +1,53 @@
+\documentclass[thesis]{subfiles}
+
+\begin{document}
+
+\def\cxx{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.3ex}{\footnotesize ++}}\xspace}
+
+\chapter{Domino: extensible molecular simulations engine}
+
+\cxx, scientific software.
+
+\cxx11 => common, can make it fast, simple subset
+
+Assume basic \cxx and object-oriented knowledge from reader
+
+\subsection{Goals and architecture}
+
+=> extensible, mixed MC/MD
+
+=> classical only
+
+=> simple
+
+Pure virtual classes, no deep hierarchy
+
+Inherit and implement as an extension strategy
+
+Library vs framework
+
+Example for MD NPT and MC uVT
+
+\subsection{Fast energy computation in classical simulations}
+
+\subsubsection{Evaluation tricks}
+
+cutoff => Ewald
+
+Restrictions
+
+\subsubsection{Monte Carlo energy caching}
+
+Pairs + Ewald
+
+All moves
+
+\subsection{Mixed Monte Carlo and Molecular Dynamics engine}
+
+=> on demand computation of forces + energy
+
+\subsubsection{Computing temperature}
+
+\subsubsection{Computing pressure}
+
+\end{document}
