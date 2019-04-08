@@ -31,7 +31,7 @@
 		"!Frenkel",
 		"!Freundlich",
 		"!Gaussians",
-		"!GCMC",
+		"gcmc",
 		"!Gérald",
 		"!GGA",
 		"!GitHub",
@@ -243,6 +243,22 @@
 		"cfiles",
 		"softwares",
 		"!macOS",
-		"!Fortran"
+		"!Fortran",
+		"!TIP4P",
+		"gravimetric",
+		"!kPa",
+		"acceptor",
+		"nanotube's",
+		"!SiOH",
+		"atoms'",
+		"anisotropy",
+		"orientational",
+		"lability",
+		"geminal",
+		"myoglobin",
+		"vicinal",
+		"!Bernal",
+		"configurational",
+		"curvilinear"
 	]
 }
