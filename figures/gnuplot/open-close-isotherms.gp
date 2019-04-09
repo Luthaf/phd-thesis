@@ -21,6 +21,6 @@ henry(x) = 3e-2 * x
 lf(N, b, v, x) = N * b * x**v / (1 + b * x**v) + henry(x)
 langmuir(N, K, x) = N * K * x / (1 + K * x)
 
-plot lf(0.86, 1e-7, 30, x) w l lw 4 lc 8 t "total", \
+plot lf(0.86, 1e-7, 30, x) w l lw 4 lc 8 t "flexible", \
      langmuir(1.03, 4.0, x) w l lw 4 lc 7 dt 2 t "open", \
      henry(x) w l lw 8 lc 6 dt 3 t "closed"
