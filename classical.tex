@@ -5,7 +5,20 @@
 \OnlyInSubfile{\setcounter{chapter}{4}}
 \chapter{Classical simulations}
 
-\TODO: general intro
+\vskip2\baselineskip
+First principles simulations allow us to describe and simulate any system while
+making a minimal number of hypothesis on the shape of the potential energy
+surface. Unfortunately, they are limited by the computing power available to
+systems containing less than a few hundred atoms, and to time scale of a few
+hundred picoseconds. If we want to study larger systems --- up to a hundred of
+thousands of atoms and a few microseconds --- we can use classical simulations.
+
+During my PhD, I used classical simulations --- both classical molecular
+dynamics and classical Monte Carlo --- to study water and electrolyte solutions
+confined in porous materials. In the first part of this chapter, I will present
+the intrusion of water-based electrolytes liquids in \ZIF8, from static, dynamic
+and thermodynamic points of view. In the second part, I will discuss the
+adsorption of water in alumino-silicate nanotubes called imogolite.
 
 \newpage
 \section{Intrusion of electrolyte in ZIF-8}
@@ -370,20 +383,32 @@ discussion on hydrogen bonds dynamics.
 %     \label{fig:licl-zif:rotcf:fit:pressure}
 % \end{figure}
 
+First, we can see on figure~\ref{fig:licl-zif:hbonds:fit:pressure} that the
+pressure has a relatively small influence on the hydrogen bonds dynamics.
+Pressure could be expected to have an impact on the dynamics through excluded
+volume effects\cite{Fogarty2014}: a molecule needs to rotate and temporarly
+occupy "more space"  when creating and destroying hydrogen bonds. This
+additional space might not be available under high pressure. The small impact of
+pressure on hydrogen bonds dynamics here has to be related with the relatively
+small volume changes as the pressure increases seen in
+figure~\ref{fig:licl-zif:pv}: they are too small for excluded volume effect to
+have significant impacts.
+
 In the bulk liquid, the shortest lifetime is almost constant around \SI{3}{ps}
 as the concentration increases, but the weight of this fast process ($A_1$)
 decreases. This suggests that this fastest lifetime is associated with hydrogen
 bonds between water molecules surrounded only by other water molecules. As more
 and more ions are added in the system, water molecules are less likely to be
 surrounded only by other water molecules --- as is indicated by the results I
-presented in section~\ref{sec:licl-zifliquid-structure}. This lifetime is smaller in the
-confined liquid than it is in the bulk phase, which has already been shown for
-water at interfaces: \citeauthor{Fogarty2014}\cite{Fogarty2014} showed that it
-is linked to the librational motions of the Ohydrogen bonds, and the dynamics of these
-\emph{dangling} OH groups at interfaces is faster than bulk\cite{Scatena2001}.
-On the other hand, the second lifetime, associated to the slowest process,
-increases with concentration, as well as the corresponding weight ($A_2$). This
-points to hydrogen bonds between water molecules bounded to ions.
+presented in section~\ref{sec:licl-zifliquid-structure}. This lifetime is
+smaller in the confined liquid than it is in the bulk phase, which has already
+been shown for water at interfaces: \citeauthor{Fogarty2014}\cite{Fogarty2014}
+showed that it is linked to the librational motions of the \ce{O-H} bonds, and
+the dynamics of these \emph{dangling} OH groups at interfaces is faster than
+bulk\cite{Scatena2001}. On the other hand, the second lifetime, associated to
+the slowest process, increases with concentration, as well as the corresponding
+weight ($A_2$). This points to hydrogen bonds between water molecules bounded to
+ions.
 
 In the confined liquid, weights still evolve in the same way with respect to the
 concentration, which point to them being associated with the same kind of
@@ -535,6 +560,20 @@ potential energy of the bulk electrolyte with the same number of particles as
 the confined one. Every quantity is expressed for one unit cell of \ZIF8, plus
 the confined liquid inside.
 
+From these values, I can extract a few thermodynamic quantities of interest,
+presented in table~\ref{table:thermo}:
+\[\begin{aligned}
+    \Delta E_\text{ZIF} (c)  &= E_\text{ZIF}(c) - E_\text{ZIF}^\text{empty};\\
+    \Delta E_\text{LiCl} (c) &= E_\text{LiCl}(c) - E_\text{LiCl}^\text{bulk}(c);\\
+    \Delta H_\text{intr} (c) &= E_\text{total}(c) - E_\text{LiCl}^\text{bulk}(c) - E_\text{ZIF}^\text{empty}.\\
+\end{aligned}\]
+$\Delta E_\text{ZIF}$ is the energetic change in \ZIF8 during intrusion; $\Delta
+E_\text{LiCl}$ is the energetic change in the electrolyte during intrusion; and
+$\Delta H_\text{intr}$ is the intrusion enthalpy, \emph{\ie} the enthalpy
+change during the \mbox{\ZIF8 + liquid $\rightarrow$ liquid $\in$
+\ZIF8} process. The sign convention is taken so that all of these energies are
+negative when the confined state is more stable.
+
 \begin{table}[ht]
     \caption{Average interaction energy in kcal/mol per unit cell for various
     sub-systems. See the text for the definition of each sub-system.
@@ -557,20 +596,6 @@ the confined liquid inside.
         \bottomrule
     \end{tabular}
 \end{table}
-
-From these values, I can extract a few thermodynamic quantities of interest,
-presented in table~\ref{table:thermo}:
-\[\begin{aligned}
-    \Delta E_\text{ZIF} (c)  &= E_\text{ZIF}(c) - E_\text{ZIF}^\text{empty};\\
-    \Delta E_\text{LiCl} (c) &= E_\text{LiCl}(c) - E_\text{LiCl}^\text{bulk}(c);\\
-    \Delta H_\text{intr} (c) &= E_\text{total}(c) - E_\text{LiCl}^\text{bulk}(c) - E_\text{ZIF}^\text{empty}.\\
-\end{aligned}\]
-$\Delta E_\text{ZIF}$ is the energetic change in \ZIF8 during intrusion; $\Delta
-E_\text{LiCl}$ is the energetic change in the electrolyte during intrusion; and
-$\Delta H_\text{intr}$ is the intrusion enthalpy, \emph{\ie} the enthalpy
-change during the \mbox{\ZIF8 + liquid $\rightarrow$ liquid $\in$
-\ZIF8} process. The sign convention is taken so that all of these energies are
-negative when the confined state is more stable.
 
 \begin{table}[ht]
     \caption{Derived thermodynamic quantities in kcal/mol per unit cell. See
@@ -757,9 +782,9 @@ phase, will surely also manifest itself in the liquid-phase intrusion processes.
 \newpage
 \section{Adsorption of water in imogolites}
 
-During my PhD, I worked with Laura Scalfi during her master internship in the
-group to study water adsorption, confinement and structuration in
-alumino-silicate nanotubes called imogolites. This study is published in
+I worked with Laura Scalfi during her master internship in the group to study
+water adsorption, confinement and structuration in alumino-silicate nanotubes
+called imogolites. This study is published in
 \citejournal{Scalfi2018}\cite{Scalfi2018}.
 
 Imogolite is an alumino-silicate material, with formula \ce{Al2SiO3(OH)4}, that
