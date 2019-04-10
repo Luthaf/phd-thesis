@@ -5,20 +5,20 @@
 \OnlyInSubfile{\setcounter{chapter}{2}}
 \chapter{Molecular simulations}
 
-Macroscopic methods such as the one I discussed in the previous chapter are not
-always sufficiently precise to gain a complete understanding of the phenomenon
-at play. In particular, as these methods describe the systems at the macroscopic
-level, they don't take into account the individual atoms, and the interactions
-between them: they don't describe the \emph{chemistry} of the system.
-Statistical thermodynamic is a tool that we can use to bring together the
-microscopic description of matter and the macroscopic behavior and
+Macroscopic modeling methods such as the ones I discussed in the previous
+chapter are not always sufficiently precise to gain a complete understanding of
+the phenomenon at play. In particular, as these methods describe the systems at
+the macroscopic level, they don't take into account the individual atoms, and
+the interactions between them: they don't describe the \emph{chemistry} of the
+system.  Statistical thermodynamic is a tool that we can use to bring together
+the microscopic description of matter and the macroscopic behavior and
 characteristics of the system (pressure, temperature, \dots).
 
 In this chapter, I will derive and recall some concepts from statistical
 thermodynamics I used during my PhD. For a more in depth description of
 statistical mechanics, I recommend the book of Tuckerman\cite{Tuckerman2010}. I
-will then present some methods used to sample thermodynamic ensembles in
-practice. On this section, I recommend the book of Frenkel and
+will then present the molecular simulation methods used to sample thermodynamic
+ensembles in practice. On this section, I recommend the book of Frenkel and
 Smit\cite{Frenkel1997}.
 
 \section{Statistical thermodynamics}
@@ -27,17 +27,18 @@ Smit\cite{Frenkel1997}.
 \subsection{Maxwell-Boltzmann statistics}
 
 We will consider a molecular system containing $N$ individual atoms behaving as
-classical particles with individual positions $\r_i$, masses $m_i$ and momentum
-$\p_i$. Supposing that these particles are in some container of fixed volume
-$V$, and at thermal equilibrium with a thermostat at temperature $T$, they
-evolve in the canonical or $NVT$ ensemble. Finally, we will also assume that the
-atoms in the system follow the Maxwell-Boltzmann statistics, \ie that the
-probability that the system is in a state of internal energy $U_i$ is given by:
-\[\mathcal{P}_i = \frac{N! \ h^{3N}}{Z} e^{-\beta\, U_i}, \label{eq:maxwell-boltzmann}\]
-where $\beta = 1 / k_B T$ with $k_B$ the Boltzmann constant and $N! h^{3N} / Z$
+classical particles with individual positions $\r_i$, identical masses $m$ and
+momentum $\p_i$. Supposing that these particles are in some container of fixed
+volume $V$, and at thermal equilibrium with a thermostat at temperature $T$,
+they evolve in the canonical or $NVT$ ensemble. Finally, we will also assume
+that the atoms in the system follow the Maxwell-Boltzmann statistics, \ie that
+the probability density of finding the system in a state of internal energy
+$E_i$ is given by:
+\[\mathcal{P}_i = \frac{1}{N!\ h^{3N}\ Z} e^{-\beta\, E_i}, \label{eq:maxwell-boltzmann}\]
+where $\beta = 1 / k_B T$ with $k_B$ the Boltzmann constant and $N!\ h^{3N}\ Z$
 is a normalization constant. To be more precise, particles would either follow
-Bose–Einstein statistics for Bosons (particles with a full integer spin, such as
-photons) or the Fermi–Dirac statistics for Fermions (particles with half-integer
+Bose–Einstein statistics for bosons (particles with a full integer spin, such as
+photons) or the Fermi–Dirac statistics for fermions (particles with half-integer
 spin, such as electrons or protons). But as both Bose-Einstein and Fermi-Dirac
 statistics reduce to the Maxwell-Boltzmann distribution when temperature is high
 enough, we will use this distribution instead.
@@ -47,38 +48,36 @@ and all the momentum $\p_i$ of all the $N$ atoms in the system. The state of the
 system is then defined by $6N$ variables, or a point in a vector space of $6N$
 dimensions called the \emph{phase space}. In order to compute the energy of a
 state, we will describe the interactions between the atoms by a potential energy
-$U(\r^N)$, independent of time. Then, we can compute the total energy
-of a state using the classical Hamiltonian of the system:
-\[H(\r^N, \p^N) = \sum_i^N \frac{\p_i^2}{2 m_i} + U(\r^N);\]
+$U(\r^N)$, with no explicit dependency on time. Then, we can compute the total
+energy of a state using the classical Hamiltonian of the system:
+\[H(\r^N, \p^N) = \sum_i^N \frac{\p_i^2}{2 m} + U(\r^N);\]
 where I use $\r^N$ and $\p^N$ as shorthand for the set of all positions
 $\{\r_i\}$ and momentum $\{\p_i\}$ respectively.
 
 The last element in equation~\eqref{eq:maxwell-boltzmann} we need to compute is
 the so-called \emph{partition function} $Z$. We note that the probability for
 the system to be anywhere in the phase space $\Phi$ should be 1, which gives us:
-\[\iiint_\Phi \mathcal{P}_i \; \d\r^N \d\p^N = 1.\]
+\[\iint_\Phi \mathcal{P}_i \; \d\r^N \d\p^N = 1.\]
 And finally:
-\[Z = \frac{1}{N!\ h^{3N}} \iiint_\Phi e^{-\beta\, H(\r^N, \p^N)} \ \d\r^N \d\p^N\]
+\[Z = \frac{1}{N!\ h^{3N}} \iint_\Phi e^{-\beta\, H(\r^N, \p^N)} \ \d\r^N \d\p^N\]
 where the Planck constant $h$ is used as a normalization factor used to make
 sure that $Z$ has the right dimension; and the $N!$ factor comes from the fact
 that particles are not distinguishable one from another.
 
 We can already compute at least a part of this integral by separating the
 kinetic and potential energy terms in the Hamiltonian:
-\[Z = \frac{1}{N!\ h^{3N}} \prod_i^{3N} \int e^{-\beta\, \p_i^2 / 2 m_i} \ \d \p_i \iiint_V e^{-\beta\, U(\r^N)} \ \d\r^N \]
+\[Z = \frac{1}{N!\ h^{3N}} \left(\prod_i^{3N} \int e^{-\beta\, \p_i^2 / 2 m} \ \d \p_i \right) \left(\iiint_V e^{-\beta\, U(\r^N)} \ \d\r^N \right) \]
 where the potential energy integral is over all the accessible volume. The
 kinetic energy term is a product of Gaussian integrals, and gives us the
 following expression for the partition function:
-\[Z = \frac{1}{N!} \prod_i^{3N} \sqrt{\frac{2\pi m_i}{\beta h^2}} \iiint_V e^{-\beta\, U(\r^N)} \ \d\r^N\]
-$\lambda_i = \sqrt{\frac{\beta h^2}{2\pi m_i}}$ is the de Broglie thermal
-wavelength for a particle with mass $m_i$, and is homogeneous to a distance. In
-the following, I will be using $\Lambda^{3N}$ for the product over all particles
-$\prod_i^N \lambda_i^3$. This gives the final expression for the partition
-function:
+\[Z = \frac{1}{N!} \prod_i^{3N} \sqrt{\frac{2\pi m}{\beta h^2}} \iiint_V e^{-\beta\, U(\r^N)} \ \d\r^N\]
+$\Lambda = \sqrt{\beta h^2 / 2\pi m}$ is the de Broglie thermal wavelength for a
+particle with mass $m$, and is homogeneous to a distance. This gives the final
+expression for the partition function:
 \[Z = \frac{1}{N!\ \Lambda^{3N}} \iiint_V e^{-\beta\, U(\r^N)} \ \d\r^N \label{eq:partition-function}\]
 And the corresponding probability for the system to be in a given conformation
 without constrains on the kinetic energy:
-\[\mathcal{P}_i = \frac{N!\ \Lambda^{3N}}{Z} e^{-\beta\, U(\r^N)}\]
+\[\mathcal{P}_i = \frac{1}{N!\ \Lambda^{3N}\ Z}\ e^{-\beta\, U(\r^N)}\]
 
 \subsubsection{Thermodynamic quantities from the partition function}
 
@@ -91,10 +90,17 @@ respect to $\beta$ we get
 \[\mathcal{U} = - \frac{1}{Z} \frac{\partial}{\partial \beta} \iiint_\Phi e^{-\beta\, H} \]
 \[\mathcal{U} = - \frac{1}{Z} \frac{\partial Z}{\partial \beta}\]
 
-Using the same ideas, we can derive expressions for the entropy $S$ and the free
-energy $F$ using the canonical partition function:
+The entropy of a system can be computed from the probability density
+$\mathcal{P}$, using the relation:
+\[S = -k_B \iint_\Phi \mathcal{P} \ln \mathcal{P}, \]
+which reduces after some calculations to
+\[S = k_B \left[\ln Z - \frac{\beta}{Z} \frac{\partial Z}{\partial \beta} \right].\]
+The free energy definition $F = \mathcal{U} - TS$ the gives us:
 \[F = - \frac 1 \beta \ln Z\]
-\[S = k_B \left[\ln Z + \beta \frac{\partial \ln Z}{\partial \beta} \right]\]
+
+Knowing the free energy, we can use all the results from classical
+thermodynamics to compute some other properties of the system:
+\[P = - \frac{\partial F}{\partial V} \qquad \qquad \mu = - \frac{\partial F}{\partial n}\]
 
 \newpage
 \subsubsection{Observables}
@@ -102,8 +108,8 @@ energy $F$ using the canonical partition function:
 The probability for the system to be in a given state gives us the missing link
 between microscopic and macroscopic properties of the system. We can express a
 macroscopic observable property $A$ that we can also compute or measure at a
-microscopic level using the the Maxwell-Boltzmann statistics:
-\[A = \braket{A} = \iiint_\Phi P_i A_i.\]
+microscopic level using Maxwell-Boltzmann statistics:
+\[A = \braket{A} = \iiint_\Phi \mathcal{P}_i \ A_i.\]
 The value of $A$ at a macroscopic level is the same value as the ensemble
 average $\braket{A}$, which depends on both the value of the property in a given
 macroscopic state $A_i$, and the probability of the system to be in this state.
@@ -119,22 +125,24 @@ is useless unless we can compute the integrals over the whole phase space $\Phi$
 in~\eqref{eq:observable}. But computing this integral explicitly in all but the
 simplest cases will prove difficult, as the phase space is a $6N$ dimensional
 vector space; and values for $N$ range from a few hundred all the way up to
-Avogadro number. But in general a lot of states in the phase space are not
-relevant when computing the integral, mainly because they have a too high
-energy. So instead of computing the whole integral, we resort to only use a
-finite number of samples in the phase space, which we try to pick as the most
-relevant. In a semi-formal manner, we try to generate a set of points $\phi$
-inside the phase space, such as
+Avogadro number. But in general, a lot of states in the phase space are not
+relevant when computing the integral, mainly because their energy is too high
+and their probability becomes negligible. So instead of computing the whole
+integral, we resort to only using a finite number of samples in the phase space,
+which we try to pick as the most relevant. In a semi-formal manner, we try to
+generate a set of points $\phi$ inside the phase space, such that
 \[\braket{A} \approx \frac{\sum_\phi A(\r^N, \p^N) e^{-\beta\, H(\r^N, \p^N)}}{\sum_\phi e^{-\beta\, H(\r^N, \p^N)}}.\]
 
-There are a few algorithms we can use to do this sampling and generate the set
-$\phi$ of points we will use to compute a given property. I will discuss two of
-them below: the Metropolis Monte Carlo (MC) method, and Molecular Dynamics (MD).
-If we can get these algorithms to generate a set of states in the phase space
-according to the Maxwell-Boltzmann probability, with the same state appearing
-possibly more than once in the set, we can simplify the calculation of ensemble
-average of observables even further. For a set of $m$ states indexed by
-$\alpha$, the average reads as:
+This is the underlying idea of molecular simulation, \ie the numerical sampling
+of phase space based on the knowledge of a way to calculate the energy of each
+state. There are a few algorithms we can use to do this sampling and generate
+the set $\phi$ of points we will use to compute a given property. I will discuss
+two of them below: the Metropolis Monte Carlo (MC) method, and Molecular
+Dynamics (MD).  If we can get these algorithms to generate a set of states in
+the phase space according to the Maxwell-Boltzmann probability, with the same
+state appearing possibly more than once in the set, we can simplify the
+calculation of ensemble average of observables even further. For a set of $m$
+physically representative states indexed by $\alpha$, the average reads as:
 \[\braket{A} \approx \frac 1 m \sum_\alpha^m A(\r_\alpha^N, \p_\alpha^N). \label{eq:observable:r-only}\]
 
 \newpage
@@ -142,15 +150,15 @@ $\alpha$, the average reads as:
 
 Until now, all the calculations were done in the canonical or $NVT$ ensemble,
 following the Maxwell-Boltzmann distribution. It is possible to show that in
-other thermodynamic ensembles there is a similar probability distributions for
-the phase space. The partition function defined by the normalization of these
-probability distributions can be used to compute all of the properties of the
-system, and in particular the associated thermodynamic potential.
+other thermodynamic ensembles one can write a similar probability distribution
+for the phase space. The partition function defined by the normalization of
+these probability distributions can be used to compute all of the properties of
+the system, and in particular the associated thermodynamic potential.
 
-\subsubsection{Isothermal-isobaric ensemble}
-In the $NPT$ ensemble, the probability for the system to be in a state is given
-by:
-\[ \mathcal{P}_{NPT} = \frac{N!\ h^{3N}}{\Delta} e^{-\beta \left[H(\r^N, \p^N) \ + \ PV\right]} \]
+\subsubsection{Isothermal-isobaric ensemble} In the $NPT$ ensemble, the volume
+$V$ is a free variable, and the probability for the system to be in a given
+configuration is:
+\[ \mathcal{P}_{NPT} = \frac{1}{N!\ \Lambda^{3N}\ \Delta} \kern1em e^{-\beta \left[U(\r^N) \ + \ PV\right]} \]
 \[ \Delta = \frac{1}{N!\ \Lambda^{3N}} \int \d V \iiint_V \d\r^N \; e^{-\beta \left[U(\r^N) \ + \ PV\right]} \]
 
 And the free energy is given by:
@@ -158,17 +166,20 @@ And the free energy is given by:
 
 \subsubsection{Grand canonical ensemble}
 
-In the $\mu VT$ ensemble, the probability for the system to be in a state is
-given by:
-\[ \mathcal{P}_{\mu VT} = \frac{N!\ h^{3N}}{\Theta} e^{-\beta \left[H(\r^N, \p^N) \ - \ \sum_i \mu_i n_i \right]} \label{eq:uVT-probability} \]
-\[ \Theta = \sum_{N=n_1+n_2+\dots}^\infty \frac{1}{N!\ \Lambda^{3N}} \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[U(\r^N) \ - \ \sum_i \mu_i n_i \right]} \]
+In the $\mu VT$ ensemble, the number of atoms $n_i$ can vary while the
+associated chemical potential $\mu_i$ is fixed. The probability for the system
+to be in a state is given by:
+\[ \mathcal{P}_{\mu VT} = \frac{1}{N!\ \Lambda^{3N}\ \Theta} \kern1em e^{-\beta \left[U(\r^N) \ - \ \sum_i \mu_i n_i \right]} \label{eq:uVT-probability} \]
+\[ \Theta = \kern-2.5em \sum_{\substack{N=0 \\[0.5ex] \kern2.75em N=n_1+n_2+\dots}}^\infty \kern-2em \frac{1}{N!\ \Lambda^{3N}} \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[U(\r^N) \ - \ \sum_i \mu_i n_i \right]} \]
 
 \subsubsection{Osmotic ensemble}
 
-In the osmotic ($N_\text{host} \ \mu \ PT$) ensemble, the probability for the system to be in
-a state is given by:
-\[ \mathcal{P}_{\mu VT} = \frac{N!\ h^{3N}}{\zeta} e^{-\beta \left[H(\r^N, \p^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
-\[ \zeta = \sum_{N=n_1+n_2+\dots}^\infty \frac{1}{N!\ \Lambda^{3N}} \int \d V \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[U(\r^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
+In the osmotic ($N_\text{host} \ \mu \ PT$) ensemble, the number of atoms $n_i$
+of guest molecules and the volume $V$ can vary while the associated chemical
+potential and pressure are constants. The probability for the system to be in a
+state is given by:
+\[ \mathcal{P}_{\mu VT} = \frac{1}{N!\ \Lambda^{3N}\ \zeta} \kern1em e^{-\beta \left[H(\r^N, \p^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
+\[ \zeta = \kern-2.5em \sum_{\substack{\kern1.2em N=N_\text{host} \\[0.5ex] \kern2.6em N=n_1+n_2+\dots}}^\infty \kern-1em \frac{1}{N!\ \Lambda^{3N}} \int \d V \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[U(\r^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
 Here, $N$ is the total number of atoms in the system, counting both the fixed
 host atoms and the varying atoms of the guest. The $\sum_i \mu_i n_i$ sum only
 run on the guest species.
@@ -179,7 +190,7 @@ run on the guest species.
 Before we can compute properties of a system using
 equation~\eqref{eq:observable:r-only}, we need to be able to compute the energy
 $U(\r^N)$ associated with any configuration of the system. I will describe the
-two main approaches use to do so in this section.
+two main approaches used to do so in this section.
 
 \subsection{Quantum calculations}
 
@@ -192,31 +203,33 @@ the solution space ($\approx 3 N$) make numeric resolution very difficult.
 Instead, we use approximated methods to solve the equation, such as Quantum
 Monte Carlo, Hartree-Fock and post Hartree-Fock methods, or the Density
 Functional Theory (DFT). Of these methods I will only present DFT, as it is the
-most widely used today, and the only one making it possible to study systems
-with hundreds of atoms and periodic boundary conditions. The central idea of DFT
-is to solve these equations in terms of the total electronic density $n(\r)$,
-and then write the total energy of the system as a functional of the density
-$E[n]$. I will explain in section~\ref{sec:dft} how DFT relates to the
+most widely used today, and particularly suitable for the study of systems with
+hundreds of atoms and periodic boundary conditions. The central idea of DFT is
+to solve these equations in terms of the total electronic density $n(\r)$, and
+then write the total energy of the system as a functional of the density $E[n]$.
+I will explain in more details in section~\ref{sec:dft} how DFT relates to the
 Schrödinger equation, and how minimizing the energy functional gives us the
 energy of the system in the ground state.
 
 Even when using DFT, solving the Schrödinger equation is costly in term of
 computing time, and imposes a limit on both the time and length scale of systems
-we can study.  As of 2019, we can used DFT to study systems containing up to
-1000 atoms on a time scale of up to \SI{100}{ps}. While these numbers increased
-a lot in the recent years due to improvements in software used for DFT and in
-computing hardware, they are still many systems of interest that we can not
-study with DFT. If the electronic density does no vary much across the subspace
-of phase space we are interested in --- \ie no bond creation or breakage; no
-charge transfer --- then using classical potentials or force fields can be a
-good approximation of the real energy.
+we can study. As of 2019, using standard high performance computing cluster, we
+can used DFT to study systems containing up to 1000 atoms on a time scale of up
+to \SI{100}{ps}. While these numbers increased a lot in the recent years due to
+improvements in software used for DFT and in computing hardware, they are still
+many systems of interest that we can not study with DFT. If the electronic
+density does no vary much across the subspace of phase space we are interested
+in --- \ie no bond creation or breakage; no charge transfer --- then using
+classical potentials or force fields can be a good approximation of the real
+energy.
 
 \subsection{Classical force fields}
 \label{sec:classical-ff}
 
 A force field is an educated guess on the functional form of the energy of a
-system, decomposed as a sum of simple terms. The usual decomposition is the
-following:
+system, decomposed as a sum of simple terms with physical meaning. It is a
+classical and empirical approximation of the real, quantum potential energy
+surface. The usual decomposition is the following:
 \[V(\r) = \sum_i \sum_j V_\text{pairs}^{ij} + \sum_\alpha V_\text{molecular}^\alpha + V_\text{coulomb} \]
 where $V_\text{coulomb}$ is the Coulombic interaction between charged atoms,
 $V_\text{molecular}$ represent the internal molecular energy and
@@ -225,16 +238,16 @@ often broken down even further. For example, the simplest form possible for
 $V_\text{coulomb}$ is to use fixed point charges attributed to each atom during
 the force field parametrization. If this is not enough to reproduce the
 properties of the system of interest, we can use diffuse Gaussian charges
-instead, or add atomic polarization. $V_\text{pairs}$ is used to reproduce both
-the dispersion interaction and the Pauli repulsion between atoms at short
-distance; and $V_\text{molecular}$ is usually decomposed over bonded
-coefficients:
+instead, or add a term describing atomic polarization. $V_\text{pairs}$ is used
+to reproduce both the dispersion interactions and the Pauli repulsion between
+atoms at short distance. $V_\text{molecular}$ represent the intra-molecular
+interactions, and is usually decomposed over bonded coefficients:
 \[V_\text{molecular} = \sum_\text{bonds} V_\text{bond}(r) + \sum_\text{angles} V_\text{angle}(\theta) + \sum_\text{dihedrals} V_\text{dihedral}(\phi)\]
-Each energy term only depends on the type of bonded atoms, and a single
-parameter: the distance between the two atoms for bonds contributions; the
-3-body angle for angles contributions; and the 4-body dihedral angle or out of
-plane distance for dihedral angles contributions. These parameters are
-illustrated in figure~\ref{fig:force-fields:molecular}.
+Each energy term only depends on the type of bonded atoms, and a single scalar
+variable: the distance $r$ between the two atoms for bonds contributions; the
+3-body angle $\theta$ for angles contributions; and the 4-body dihedral angle
+$\phi$ or out of plane distance $d$ for dihedral angles contributions. These
+variables are illustrated in figure~\ref{fig:force-fields:molecular}.
 
 \begin{figure}[ht]
     \centering
@@ -247,39 +260,53 @@ illustrated in figure~\ref{fig:force-fields:molecular}.
 
 \subsubsection{Typical functional forms used in force fields}
 
-Their is no strict rule regarding which functional form can or can not be used
-in a force field, so when creating a new force field we usually rely on
-chemical sense as well as few physical laws to pick them. Here are a few well
-known and widely used contributions in force fields.
+There is no strict rule regarding which functional form can or cannot be used in
+a force field, so when creating a new force field we usually rely on chemical
+sense as well as few physical laws to pick them. Bellow, I describe a few
+well-known terms used in most force fields.
 
-\paragraph{Charges} If we choose to model atomic partial charges as point
-charges, we can directly use the expression for Coulombic interactions, as a sum
-over all pairs of charged atoms in the system:
+\textsc{Charges}\\[0.1\baselineskip]
+If we choose to model atomic partial charges as point charges, we can directly
+use the expression for Coulombic interactions, as a sum over all pairs of
+charged atoms in the system:
 \[ V(r_{ij}) = \frac{q_i q_j}{4 \pi \epsilon_0 r_{ij}}\]
 
-\paragraph{Non-bonded pairs interactions} As we have seen, we use non-bonded
-pairs interactions to reproduce both the Pauli repulsion between atoms at short
-distances, and the dispersion attractive interaction at long distances. It can
-be shown\cite{London1930} that the dispersion interaction can be developed in
-the long distances approximation as:
+It is also possible to use Gaussian charges distributions on each atom, where
+the charge density around an atom is defined by a width parameter $\alpha_i$:
+\[\rho_i = q_i \left(\frac{\alpha_i}{\sqrt\pi}\right)^3 e^{-\alpha_i^2 \ r_i^2}\]
+In that case, the interaction between two atoms is given by --- using erf for
+the error function:
+\[ V(r_{ij}) = \frac{q_i q_j}{4 \pi \epsilon_0 r_{ij}}\ \text{erf}\left(\sqrt\frac{\alpha_i^2\alpha_j^2}{\alpha_i^2 + \alpha_j^2} \ r_{ij}\right)\]
+
+I will discuss the issues that arise from using these type of potentials with
+periodic boundary conditions, and the possible way to fix them such as Ewald
+summation in section~\ref{sec:ewald}.
+
+\textsc{Non-bonded pairs interactions}\\[0.1\baselineskip]
+As we have seen, we use non-bonded pairs interactions to reproduce both the
+Pauli repulsion between atoms at short distances, and the dispersion attractive
+interaction at long distances. It can be shown\cite{London1930} that the
+dispersion interaction can be developed in the long distances approximation as:
 \[ V_\text{dispersion} = -\frac{C_6}{r^6} + \frac{C_8}{r^8} - \frac{C_{10}}{r^{10}} + \smallo\left(\frac{1}{r^{12}}\right) \]
 where the $C_i$ coefficients have positive values. Most of the time, only the
 term in $1/r^6$ is used, as it will have the largest contribution to the
-resulting energy. There is however no simple mathematical expression for the
-Pauli repulsion, so various schemes have been used to approximate it.
+resulting energy.
 
-The most prevalent one is the Lennard-Jones potential, which uses a repulsive
-term proportional to $1/r^{12}$. In the early day of molecular simulation, this
-allowed to save some computing time by squaring the already computed $1/r^6$ term.
+There is however no simple mathematical expression for the Pauli repulsion at
+short distances, so various schemes have been used to approximate it. The most
+prevalent one is the Lennard-Jones potential, which uses a repulsive term
+proportional to $1/r^{12}$. In the early day of molecular simulation, this
+allowed to save some computing time by squaring the already-computed $1/r^6$
+term.
 \[V_\text{Lennard-Jones}(r) = 4 \ \epsilon \left[\left(\frac{\sigma}{r}\right)^{12} - \left(\frac{\sigma}{r}\right)^6\right]\]
 Another commonly used form is the Buckingham potential, using an exponential
 function for the repulsion:
 \[V_\text{Buckingham}(r) = A \ e^{-B r} - \frac{C}{r^6}\]
 
-\paragraph{Molecular interactions} The most common strategy for describing bonds
-and angles is to consider only vibration of the bond length or the angle around
-the equilibrium, and represent the energy of the bond/angle using the harmonic
-approximation:
+\textsc{Molecular interactions}\\[0.1\baselineskip]
+The most common strategy for describing bonds and angles is to consider only
+vibration of the bond length or the angle around the equilibrium, and represent
+the energy of the bond/angle using the harmonic approximation:
 \[V_\text{harmonic}(r) = \frac 12 k \ (r - r_0)^2  \qquad\text{or}\qquad V_\text{harmonic}(\theta) = \frac 12 k \ (\theta - \theta_0)^2 \]
 
 For dihedral angles, we often want to be able to reproduce the periodicity of
@@ -288,16 +315,19 @@ the associated energy, which leads to the following definition of the energy:
 
 \subsubsection{Force field parametrization}
 
-All these functional forms have some kind of adjustable parameters that depends
+All these functional forms have one or more adjustable parameters, that depends
 on the types of the atoms participating in the pair; bond; or angle. For
 example, when using Coulombic interactions, the charge carried by an atom is the
-adjustable parameter; when using a Lennard-Jones potential both the value of
+adjustable parameter; when using a Lennard-Jones potential both the values of
 $\sigma$ and $\epsilon$ are adjustable.
 
-The act of adjusting these parameters to make sure the force field produces the
-correct energy and physical properties of the system is called the
-parametrization of a force field. I will discuss it with more depth in the next
-chapter, section~\ref{sec:classical-ff-parametrize}.
+The process of adjusting these parameters to make sure the force field produces
+the correct energy and physical properties of the system is called the
+parametrization of a force field. It usually involve a trade-off between
+accuracy --- \ie how well the force field can reproduce the potential energy
+surface --- and transferability. A force field is said to be transferable if we
+can use the same set of parameters for different systems. I will discuss it with
+more depth in the next chapter, section~\ref{sec:classical-ff-parametrize}.
 
 \newpage
 \section{Metropolis Monte Carlo}
@@ -810,7 +840,7 @@ But these simulations also have a few caveats. As they are based on Hamiltonian
 dynamics, they can only sample ensembles with a constant number of particles.
 At the same time, it is harder to ensure that the trajectory is sampling of the
 right ensemble compared to Monte Carlo simulations. Having the right average
-value --- for example when using a Berendsen thermostat -- is not enough; and
+value --- for example when using a Berendsen thermostat --- is not enough; and
 one must check that the full distribution is reproduced.
 
 In general, Monte Carlo and molecular dynamics simulations complete each other,
@@ -837,7 +867,7 @@ Sometimes, the knowledge and sampling of the whole phase space is not necessary
 to acquire insight on the system of interest. For example, a reaction occurring
 in a water solution will only involve a few degrees of liberty (the distance
 between the reacting molecules) among the thousands of degrees of liberty
-composing the phase space -- this is illustrated in
+composing the phase space --- this is illustrated in
 figure~\ref{fig:free-energy-profile} where. In these cases, it can be more
 efficient to only consider these degrees of freedom and extract the
 corresponding free energy surface. This is what free energy methods are designed
