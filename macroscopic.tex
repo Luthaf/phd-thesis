@@ -205,20 +205,26 @@ are cryogenic distillation, mainly used for air separation, and differential
 adsorption. Adsorption-based processes for gas separation, which rely on
 microporous materials in the form of an adsorber bed, are very versatile because
 of the large choice of materials available --- and the possibility to tune them
-for a specific gas system.
+for a specific gas system. To choose an adsorber and the size of a production
+plant for the separation of a gas mixture, good knowledge on the co-adsorption
+of these gases in the candidate porous adsorbent is required.
 
-Experimental characterization of the co-adsorption of a mixture of gases inside
-a porous adsorbent is typically done through multi-component gas adsorption
-studies. This problem is inherently high-dimensional, e.g., for a ternary
-mixture there are four variables to vary (temperature, total pressure, and two
-independent variables for the mixture composition). Because such experimental
-studies of co-adsorption equilibrium thermodynamics are typically long and
-expensive, there has been a great expense of literature devoted to theoretical
-models for the prediction of mixture co-adsorption based on single-component
-adsorption data. The most commonly used method in the field is the Ideal
-Adsorbed Solution Theory (IAST)\cite{Myers1965}, which is relatively simple to
-implement and robust, and allows the prediction of multi-component adsorption
-behavior from individual single-component isotherms.
+Experimental characterization of this co-adsorption is typically done through
+multi-component gas adsorption studies. This problem is inherently
+high-dimensional, e.g., for a ternary mixture there are four variables to vary
+(temperature, total pressure, and two independent variables for the mixture
+composition). Because such experimental studies of co-adsorption equilibrium
+thermodynamics are typically long and expensive, there has been a great expense
+of literature devoted to theoretical models for the prediction of mixture
+co-adsorption based on single-component adsorption data. The most commonly used
+method in the field is the Ideal Adsorbed Solution Theory
+(IAST)\cite{Myers1965}, which is relatively simple to implement and robust, and
+allows the prediction of multi-component adsorption behavior from individual
+single-component isotherms. Other theory are used when the ideality of the
+system can no longer be assumed: non-ideal adsorbed solution
+models\cite{Yang1987, Sweatman2002}, the vacancy solution theory
+(VST)\cite{Suwanayuen1980}, the Real Adsorbed Solution Theory\cite{Talu1986}
+(RAST), \etc
 
 Materials which undergo large-scale reversible structural transitions impacting
 their total volume or internal pore volume appear to be particular common among
@@ -251,6 +257,9 @@ previous section that when the adsorption host is flexible, one should use the
 Osmotic ensemble. Instead, an alternative method called the Osmotic Framework
 Adsorbed Solution Theory (OFAST)\cite{Coudert2009}, based on the Osmotic
 ensemble, should be used when structural transitions occur during adsorption.
+This theory has been developed in the group\cite{Coudert2010,Ortiz2011}, and
+takes into account the coupling between adsorption and deformations in flexible
+porous materials.
 
 % For example \citeauthor{Nijem2012} \cite{Nijem2012} reported
 % that \emph{"[their] work unveils unexpected hydrocarbon selectivity in a
@@ -295,19 +304,6 @@ the system composition. It can be done with either numerical integration of the
 isotherms, or by fitting the isotherms to a model, and then integrating the
 model analytically.
 
-% The IAST model for the prediction of co-adsorption of mixtures in nanoporous
-% materials is no panacea, and more involved theories have been developed for
-% cases where ideality cannot be assumed: non-ideal adsorbed solution
-% models\cite{Yang1987, Sweatman2002} the vacancy solution theory
-% (VST),\cite{Suwanayuen1980} etc. However, IAST has been extensively studied and
-% both its areas of validity and its weaknesses have been well assessed. In
-% particular, it is known to be fairly reliable for adsorption of small gas
-% molecules, or mixtures of apolar fluids of a similar chemical nature (such as
-% mixtures of hydrocarbons). However, one limitation is that if there are big
-% differences in the sorption capacity, extrapolations to high pressures are
-% necessary and thus, the resulting mixture behavior predicted can be far off.
-
-\newpage
 \subsection{IAST and flexible frameworks}
 
 The original derivation of the IAST equations\cite{Myers1965} by
@@ -342,7 +338,7 @@ in flexible nanoporous frameworks.
 
 \begin{figure}[htp]
     \centering
-    \input{figures/open-close-selectivity.tex}
+    \input{figures/open-close-selectivity}
     \caption{Typical single-component isotherms for adsorption of two gases (red
     and blue) in a material with gate opening. The gate opening pressure is not
     the same for the two adsorbates, creating a pressure range with a high
@@ -388,7 +384,7 @@ The framework is either in one phase or in the other, at any given time.
 
 \begin{figure}[htp]
     \centering
-    \input{figures/open-close-isotherms.tex}
+    \input{figures/open-close-isotherms}
     \caption{Generation of the total isotherm in gate-opening materials by the
     combination of two single-phase isotherms: an \emph{open} pores isotherm,
     and an \emph{closed} pores isotherm. The transition between the two host
@@ -493,6 +489,7 @@ transition pressures for a given composition. Finally, we can compute adsorption
 properties (guest uptake and selectivity) using IAST in each phase, within its
 domain of stability.
 
+\newpage
 \subsection{Comparing IAST and OFAST}
 
 I present here two examples of co-adsorption of gas mixtures in metal-organic
@@ -513,7 +510,7 @@ desorption isotherms.
     \centering
     \raisebox{-0.5\height}{\includegraphics[width=0.35\textwidth]{figures/images/cu-dhbc-structure}}
     \hfill
-    \raisebox{-0.5\height}{\input{figures/cu-dhbc.tex}}
+    \raisebox{-0.5\height}{\input{figures/cu-dhbc}}
     \caption{(left) \Cudhbc structure (from reference.~\cite{Kitaura2003}). (right)
     Sorption isotherms and model isotherms fit at \SI{298}{K} in \Cudhbc for
     various gas compounds. Adsorption data are presented using filled symbols,
@@ -530,8 +527,10 @@ microporous (at higher pressure) host phase. From the experimental
 data\cite{Kitaura2003} I fitted the isotherms at high loading using a Langmuir
 model (equation~\eqref{eq:langmuir-isotherm}) for the isotherm in the open-pore
 structure; and at low loading using a Henry isotherm model
-(equation~\eqref{eq:henry-isotherm}) for the closed-pore structure.
-
+(equation~\eqref{eq:henry-isotherm}) for the closed-pore structure following the
+model proposed in figure~\ref{fig:open-close-isotherms}. Langmuir model is able
+to reproduce type I isotherms, and Henry model is usually valid for low
+loadings.
 \[N(p) = K_H \ p \label{eq:henry-isotherm}\]
 \[N(p) = N_L \ \frac{K_L \ p}{1 + K_L \ p} \label{eq:langmuir-isotherm}\]
 
@@ -559,17 +558,6 @@ parameters and equation~\eqref{eq:ofast:delta-f}, I computed the free energy
 difference for all the isotherms. I took the value of $-3.5 \pm
 \SI{0.1}{kJ/mol}$ as the free energy difference between the phases.
 
-\begin{figure}[htp]
-    \centering
-    \input{figures/cu-dhbc-selectivities.tex}
-    \caption{Comparison of IAST (dashed lines) and OFAST (plain lines)
-    adsorption selectivity for \ce{CO2}/\ce{O2} (top); \ce{CH4}/\ce{O2} (middle)
-    and \ce{CH4}/\ce{CO2} (bottom) mixtures in \Cudhbc. The same curves are
-    presented twice, using linear scale for the $y$ axis on the left panels, and
-    logarithmic scale on the right panels.}
-    \label{fig:cu-dhbc:iast-ofast:selectivity}
-\end{figure}
-
 I performed OFAST calculations using Wolfram Mathematica, the corresponding code
 is available in the lab's GitHub repository\cite{fx-citable-data}. I used the
 PyIAST Python package for the  pure IAST calculations\cite{Simon2016}. For these
@@ -593,6 +581,27 @@ phases. The selectivities observed are almost independent of the fluid mixture
 composition, they are~$\approx 20$ for \ce{CO2}/\ce{O2} and~$\approx 4$ for
 \ce{CH4}/\ce{O2} mixtures.
 
+\begin{figure}[htp]
+    \centering
+    \input{figures/cu-dhbc-selectivities}
+    \caption{Comparison of IAST (dashed lines) and OFAST (plain lines)
+    adsorption selectivity for \ce{CO2}/\ce{O2} (top); \ce{CH4}/\ce{O2} (middle)
+    and \ce{CH4}/\ce{CO2} (bottom) mixtures in \Cudhbc. The same curves are
+    presented twice, using linear scale for the $y$ axis on the left panels, and
+    logarithmic scale on the right panels.}
+    \label{fig:cu-dhbc:iast-ofast:selectivity}
+\end{figure}
+
+\begin{figure}[htp]
+    \centering
+    \input{figures/cu-dhbc-loadings}
+    \caption{Total (full lines) and partial (dashed lines) loading as function
+    of pressure in \Cudhbc for all the gas pairs: from top to bottom \ce{CO2} /
+    \ce{O2}; \ce{CH4} / \ce{O2}; and \ce{CH4} / \ce{CO2}. OFAST results are
+    presented on the left, and IAST results on the right.}
+    \label{fig:cu-dhbc:iast-ofast:loadings}
+\end{figure}
+
 In stark contrast with this picture, the selectivities calculated by IAST are
 clearly non-physical. All selectivity curves present a maximum in the pressure
 range where gate opening occurs, with selectivities that can be several orders
@@ -601,15 +610,6 @@ of magnitude too high, with for example 2 000 instead of 20 for
 range --- the behavior is not identical to the OFAST calculations, because the
 incorrect behavior at low pressure affects IAST directly in the integration of
 the isotherms (equation~\eqref{eq:iast}).
-
-\begin{figure}[htp]
-    \centering
-    \input{figures/cu-dhbc-loadings.tex}
-    \caption{Total (full lines) and partial (dashed lines) loading as function
-    of pressure in \Cudhbc for all the gas combination. Left is OFAST results,
-    and right correspond to IAST results.}
-    \label{fig:cu-dhbc:iast-ofast:loadings}
-\end{figure}
 
 Moreover, the IAST selectivity for \ce{CO2}/\ce{O2} presents a big jump around
 \SI{40}{atm} when $y_{\ce{CO2}} = 0.1$. Looking at the partial loading in
@@ -627,7 +627,7 @@ adapted for adsorption in flexible nanoporous materials.
     \centering
     \raisebox{-0.5\height}{\includegraphics[width=0.35\textwidth]{figures/images/rpm3-zn-structure}}
     \hfill
-    \raisebox{-0.5\height}{\input{figures/rpm3-zn.tex}}
+    \raisebox{-0.5\height}{\input{figures/rpm3-zn}}
     \caption{(left) \RPMZn structure (from reference~\cite{Lan2009}).
     (right) Sorption isotherms at \SI{298}{K} for short
     alkanes in \RPMZn. Blue circles are for \ce{C2H6}, red triangles for
@@ -690,7 +690,7 @@ gas.
 
 \begin{figure}[htp]
     \centering
-    \input{figures/rpm3-zn-selectivities.tex}
+    \input{figures/rpm3-zn-selectivities}
     \caption{IAST (dashed lines) vs OFAST (plain lines) adsorption selectivity
     for \ce{C3H8}/\ce{C2H6} (left) and \ce{C4H10}/\ce{C3H8} (right) mixtures
     in \RPMZn at different compositions.}
@@ -710,10 +710,11 @@ single-component isotherms than the OFAST method, which is based on fits.
 
 \begin{figure}[htp]
     \centering
-    \input{figures/rpm3-zn-loadings.tex}
+    \input{figures/rpm3-zn-loadings}
     \caption{Total (full lines) and partial (dashed lines) loading as function
-    of pressure in \RPMZn for all the gas combination. Left is OFAST results,
-    and right correspond to IAST results.}
+    of pressure in \RPMZn for all the gas pairs: from top to bottom \ce{C4H10} /
+    \ce{C3H8}; \ce{C3H8} / \ce{C2H6}; and \ce{C4H10} / \ce{C2H6}. OFAST results
+    are presented on the left, and IAST results on the right.}
     \label{fig:rpm3-zn:iast-ofast:loadings}
 \end{figure}
 
@@ -737,6 +738,7 @@ non-monotonic evolution as a function of pressure and composition. Even their
 high-pressure limit is often far off from reality, as seen in the case of
 \ce{C3H8}/\ce{C2H6}.
 
+\newpage
 \section*{Conclusions}
 
 % Several published studies of fluid mixture co-adsorption in flexible nanoporous
@@ -755,9 +757,7 @@ high-pressure limit is often far off from reality, as seen in the case of
 % temperatures allows one to produce multi-dimensional {temperature, pressure,
 % mixture composition} phase diagrams for the flexible host\cite{Ortiz2011}.
 % Finally, while OFAST itself relies on the IAST to describe adsorption in each
-% phase of the host material, this method of accounting for flexibility is not
-% limited to IAST and can be used with other adsorbed solution models, such as
-% real adsorbed solution theory (RAST) or vacancy solution theory (VST).
+% phase of the host material,
 
 In this chapter, I presented and compared the existing IAST and OFAST
 macroscopic models for the prediction of co-adsorption of fluid mixtures in two
@@ -774,16 +774,21 @@ concepts that are valid only for rigid host matrices.
 Macroscopic methods such as the ones used here are only applicable under
 restrictive hypotheses; for example both OFAST and IAST assume an ideal mixture
 of perfect gases when deriving and solving the equations. Going past these
-hypotheses is possible but requires empirical models for the chemical
-potentials. Despite these limitations, they are very useful in the study of
-adsorption in flexible materials as they are orders of magnitude faster than
-fully atomistic methods and allow for a faster screening and estimations of the
-performance of different materials. If we want to overcome the limitations of
-such macroscopic methods, we can turn to atomistic simulations. Such simulations
-allow to explore non-ideal systems containing real gases without restricting
-ourselves to a specific expression for the chemical potentials. In the next
-chapter, I am going to present the framework of statistical thermodynamics that
-is used to link together atomistic and macroscopic description of a system.
+hypotheses is possible but requires empirical models for the chemical potentials
+such as the ones used by non-ideal adsorption models such as VST or RAST. These
+theory could be coupled to the osmotic ensemble to create extensions to OFAST
+able to take into account the non-ideality of the system..
+
+Despite these limitations, macroscopic modeling methods are very useful in the
+study of adsorption in flexible materials as they are orders of magnitude faster
+than fully atomistic methods and allow for a faster screening and estimations of
+the performance of different materials. If we want to overcome the limitations
+of such macroscopic methods, we can turn to atomistic simulations. Such
+simulations allow to explore non-ideal systems containing real gases without
+restricting ourselves to a specific expression for the chemical potentials. In
+the next chapter, I am going to present the framework of statistical
+thermodynamics that is used to link together atomistic and macroscopic
+description of a system.
 
 \OnlyInSubfile{\printbibliography}
 
