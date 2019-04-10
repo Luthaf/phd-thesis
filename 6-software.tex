@@ -1,0 +1,81 @@
+\documentclass[thesis]{subfiles}
+
+\begin{document}
+
+\def\cxx{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.3ex}{\footnotesize ++}}\xspace}
+
+\OnlyInSubfile{\setcounter{chapter}{5}}
+
+\chapter{Implementation of a molecular simulation engine}
+
+\vskip2\baselineskip
+\TODO: header
+
+\newpage
+\section{Domino: extensible molecular simulations engine}
+
+\cxx, scientific software.
+
+\cxx11 => common, can make it fast, simple subset
+
+Assume basic \cxx and object-oriented knowledge from reader
+
+\subsection{Goals and architecture}
+
+=> extensible, mixed MC/MD
+
+=> classical only
+
+=> simple
+
+Pure virtual classes, no deep hierarchy
+
+Inherit and implement as an extension strategy
+
+Library vs framework
+
+Example for MD NPT and MC uVT
+
+\subsection{Mixing molecular dynamics and Monte Carlo}
+
+=> on demand computation of forces + energy
+
+\subsubsection{Computing temperature}
+
+\subsubsection{Computing pressure}
+
+\subsection{Monte Carlo energy caching}
+
+Pairs + Ewald
+
+All moves
+
+
+\newpage
+\section{Hybrid Monte Carlo} \label{sec:hmc}
+
+% http://www.choderalab.org/publications/2017/11/29/biomolecular-simulations-under-realistic-macroscopic-salt-conditions
+
+\subsection{Hybrid Monte Carlo}
+
+\subsubsection{Direct simulation of adsorption in flexible materials}
+
+\subsubsection{Requirements on the integrator}
+
+\subsection{Related algorithms and methods}
+
+\subsection{Hybrid simulations of adsorption in MOF-5}
+
+
+\newpage
+\section{Computation of electrostatic energy in classical simulations}
+
+\subsection{The problem}
+
+\subsection{Ewald summation}
+
+\subsection{Wolf summation}
+
+\subsection{Comparing Ewald and Wolf}
+
+\end{document}

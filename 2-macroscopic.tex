@@ -294,16 +294,18 @@ and by imposing the equality of chemical potentials at thermodynamic equilibrium
 In the simpler case of two-component gas mixture containing gases B and C, these
 two equations and the conservation of matter can be rewritten as a set of four
 equations:
-\[ P y_B = P_B^* x_B \]
-\[ x_B = \frac{P_C^* - P}{P_C^* - P_B^*} \]
-\[\frac1{n_\text{tot}} = \frac{x_B}{n_B(P_B^*)} + \frac{1 - x_B}{n_C(P_C^*)}\]
-\[ \label{eq:iast}\int_0^{P_B^*} \frac{n_B(p)}{p} \d p = \int_0^{P_C^*} \frac{n_C(p)}{p} \d p\]
+\[\begin{gathered}
+    P y_B = P_B^* x_B \kern10em x_B = \frac{P_C^* - P}{P_C^* - P_B^*} \\[0.5em]
+    \frac1{n_\text{tot}} = \frac{x_B}{n_B(P_B^*)} + \frac{1 - x_B}{n_C(P_C^*)} \\[1.2em]
+    \label{eq:iast}\int_0^{P_B^*} \frac{n_B(p)}{p} \d p = \int_0^{P_C^*} \frac{n_C(p)}{p} \d p
+\end{gathered}\]
 
 Solving these equations for $P_B^*$ and $P_C^*$ will give all the information on
 the system composition. It can be done with either numerical integration of the
 isotherms, or by fitting the isotherms to a model, and then integrating the
 model analytically.
 
+\newpage
 \subsection{IAST and flexible frameworks}
 
 The original derivation of the IAST equations\cite{Myers1965} by
