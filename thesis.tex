@@ -1,21 +1,22 @@
 \documentclass[11pt, a4paper]{book}
-\usepackage[drafting]{classicthesis}
-\usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{etoolbox}
+\usepackage[utf8]{inputenc}
+\usepackage[drafting]{classicthesis}
+\usepackage[greek, english]{babel}
 \usepackage{libertine}
 \usepackage{mathtools}
 \usepackage{amssymb}
 \usepackage[frenchmath]{mathastext}
 \usepackage{dsfont}
 \usepackage{subfiles}
-\usepackage[draft]{graphicx}
+\usepackage[]{graphicx}
 \usepackage{tabularx}
 \usepackage{xspace}
 \usepackage{float}
 \usepackage{mdframed}
 \usepackage{placeins}
 \usepackage{booktabs}
+\usepackage{xpatch}
 \usepackage[parfill]{parskip}
 \usepackage[autostyle=false, style=english]{csquotes}
 \usepackage[font={it}]{caption}
@@ -153,8 +154,9 @@
     \endgroup
 }
 
-% Add hyphenation rule for journal names
+% Add hyphenation rule for bibliography
 \hyphenation{Chem-Phys-Chem}
+\hyphenation{Geor-geault}
 
 % Convenience macros
 %% Math stuff
@@ -216,23 +218,12 @@
     \appendix
     \subfile{A-chemfiles}
 
-    % List of publications
-    \clearpage
-    \begin{refsection}[publications.bib]
-        \newrefcontext[sorting=ynt]
-        \DeclareFieldFormat{labelnumberwidth}{#1}
-        \nocite{*}
+    \include{publist}
 
-        \chapter*{List of Publications}
-        \startcontents[chapters]
-        \section*{Publications related to this work}
-        \printbibliography[heading=subsectionbibheading,title={Peer-reviewed Journals},type=article,env=publist,keyword={phd}]
-        \printbibliography[heading=subsectionbibheading,title={Preprints},type=unpublished,env=publist]
-
-        \section*{Publications linked to previous work}
-        \printbibliography[heading=none,type=article,env=publist,keyword={previous}]
-    \end{refsection}
-
+    \makeatletter
+        % Use initials for author names in the general bibliography
+        \toggletrue{abx@bool@giveninits}
+    \makeatother
     \printbibliography[heading=bibintoc]
 
     \subfile{Z-resume-fr}
