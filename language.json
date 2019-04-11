@@ -264,6 +264,7 @@
 		"faujasite",
 		"vycor",
 		"macroporous",
-		"mesoporous"
+		"mesoporous",
+		"!Crönsted"
 	]
 }
