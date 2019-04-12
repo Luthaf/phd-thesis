@@ -37,7 +37,7 @@ the size of pores does not exceed \SI{50}{nm}.
     \caption{Three examples of porous material. The left image is a
     representation of a vycor glass (disordered)\cite{Levitz2003}; the middle
     is a scanning electron microscope image of activated carbon (ordered but non
-    crystalline)\cite{TODO}; and right is the crystalline structure of the
+    crystalline)\cite{Das2015}; and right is the crystalline structure of the
     zeolite faujasite.}
     \label{fig:porous-examples}
 \end{figure}
@@ -307,12 +307,165 @@ continuous gas loading increase.
 
 \subsection{Industrial applications}
 
-\newpage
+Zeolites enjoy a wide range of applications, from air separation using pressure
+swing adsorption\cite{Rege1997}, catalysis in oil refining\cite{Primo2014},
+waste water cleaning and heavy metal removal\cite{Curkovi1997}, capture of
+radioactive particles\cite{Borai2009}, molecular sieve\cite{Flanigen1978}, and
+even laundry detergent\cite{Karge1989}. Each year, almost 3 million tonnes of
+zeolites are produced or extracted to satisfy the demand. MOFs are still
+relatively new, and don't enjoy as many commercial and industrial applications
+as zeolites yet. One of the obstacles to a wider usage of MOFs is their price,
+as they can be a hundred times more expensive than zeolites. In the following, I
+will give examples of potential applications of MOFs in various fields.
+
+\subsubsection{Gas separation, purification and storage}
+
+Gas separation and purification processes are at the root of the chemical
+industry, either generating small carbon chains molecules from oil and natural
+gas, separating oxygen from nitrogen in the air, or \ce{CO2} from \ce{H2} during
+ammonia production. Current best estimates indicate that gas separation account
+for 10-15~\% of the energy consumed globally. Furthermore, when faced with
+climate change resulting from continually-increasing anthropogenic \ce{CO2}
+emissions, optimization of storage and separation processes is increasingly
+critical. They are nowadays multiple techniques used for gas separation using
+cryogenic separation, liquid phase adsorption or gas phase adsorption.
+
+As porous materials with huge specific surface area, MOFs seems like ideal
+candidates for any application involving gas adsorption. Separating gases by
+adsorption requires different interactions between the porous material and the
+different adsorbates. These interactions can be tuned in MOFs by changing the
+linkers and modifying the pores size, shape and chemical properties. During gas
+purification, one chemical specie is present in majority (the gas to purify) and
+we try to remove the remaining impurities. For example, HKUST-1 (a MOF with
+formula \ce{Cu3(btc)2}) turned out to be very efficient to remove sulfur
+compounds such as tetrahydrothiphene and thiophene from natural gas, thanks to
+the formation of a \ce{Cu-S} bond\cite{Mueller2006}. It was able to adsorb
+\SI{70}{g} of tetrahydrothiphene by liter of material, which is noticeably
+better than the standard materials used in the industry (less than \SI{10}{g/L}
+for activated carbons).
+
+Considering gas storage, an emerging application is the storage of hydrogen gas
+for energy generation and automobile transportation. Historically, hydrogen has
+been stored through liquefaction or compression in bottles and tanks, but these
+approaches have security and cost issues. MOFs are interesting as safer media
+for gas storage because they are able to pack the hydrogen molecules densely at
+a lower pressure. For example, \ce{Ni2(\textit{m}-dobdc)} is one of the current
+best candidate for \ce{H2} storage, able to adsorb \SI{11}{g/L} of \ce{H2} at
+ambient temperature, and up to \SI{23}{g/L} via a temperature swing from -75°C
+to 25°C\cite{Kapelewski2018}.
+
+\subsubsection{Heterogeneous catalysis}
+
+Heterogeneous catalysis is used in numerous industrial processes. Selectivity of
+these catalytic processes is often based on the shape and size of the reactants,
+hence the interest in using catalysts with a regular and uniform porosity.
+Porous crystalline materials are especially interesting in this regard.
+Moreover, since catalysts can be re-used, and only small quantities of them are
+needed, the advantages of MOFs can offset their cost. The possibilities to
+create chiral MOFs using enantiomerically pure linkers, or conformational
+chirality\cite{Tshabang2018} also opens the way to asymetric catalysis.
+
+A first strategy for using MOFs as catalysts involves the metallic centers,
+which can have a catalytic activity of their own. For example, MIL-100(Fe) and
+MIL-100(Cr) have an interesting activity for the Friedel-Craft benzylation
+reaction, used for the production of linear alkyl-benzene; surpassing the
+activity of the HBEA and HY zeolites traditionally used\cite{Horcajada2007}.
+HKUST-1 MOF can be activated after the synthesis by removing an apical water
+molecule, creating a very reactive Lewis acid site which can be used for
+cyanosilylation reactions\cite{Schlichte2004}.
+
+Another approach for adding catalytic activity to MOFs entails adding functional
+groups to the linkers with the desired activity. For example, SALEM-2 can be
+activated with \mbox{n-butyllithium} and exhibits a strong Brønsted base
+catalytic activity\cite{Karagiaridi2012} (see figure~\ref{fig:zif8-to-salem2}).
+Around the same idea, the amino functions of IRMOF-3 and amino-MIL-53 makes them
+suitable as basic catalysts for the Knoevenagel condensation of
+ethyl-cyanoacetate and ethyl-acetoacetate with benzaldehyde\cite{Gascon2009}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.65\textwidth]{figures/cited/zif8-to-salem2}
+    \caption{Post-synthetic modifications of \ZIF8 to synthesize SALEM-2 and
+    obtain catalytic activity. Image taken from reference~\cite{Karagiaridi2012}.}
+    \label{fig:zif8-to-salem2}
+\end{figure}
+
+\subsubsection{Chemical sensors}
+
+Some MOFs have luminescent properties, linked either to the presence of aromatic
+or functionalized linkers or a metal cation from the lanthanide group. These
+luminescent properties, combined with the adsorption capabilities of MOFs open
+the possibility of using MOFs as chemical sensors. The structural and/or
+electronic transition of a MOF upon adsorption will modify the light emission
+properties of the material, allowing to detect specific gaseous compounds. This
+is particularly interesting to detect explosive materials. For example, the
+\ce{Zn2(bpdc)2(bpee)} MOF is able to detect multiple nitro- substituted
+molecules found in explosives such as 2,4-dinitrotoluene or
+2,3-dimethyl-2,3-dinitrobutane in around \SI{10}{s}\cite{Lan2009} (see
+figure~\ref{fig:chemical-sensor}). Another example is the \ce{[Zn2(oba)2(bpy)]3}
+MOF, also able to detect explosive and aromatic molecules through a fluorescence
+quenching phenomenon\cite{Pramanik2011}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.55\textwidth]{figures/cited/chemical-sensor}
+    \caption{Schematic representation of optical properties modifications of
+    \ce{Zn2(bpdc)2(bpee)} MOF. Image adapted from reference~\cite{Lan2009}.}
+    \label{fig:chemical-sensor}
+\end{figure}
+
 \section{Adsorption and intrusion}
+
+Adsorption is a surface phenomenon, where molecules or atoms are creating a film
+at the surface of a material. Because they have a high specific surface area,
+the adsorption in porous materials is higher than on bulk materials. Adsorption
+is used as a characterization technique for such porous media, and is also the
+basis for their most prevalent applications.
 
 \subsection{Studying adsorption}
 
-IUPAC classification
+It is possible to study adsorption both with experimental and theoretical
+approaches. The central tool for the study of adsorption is the single component
+adsorption isotherm. Considering a pure gas adsorbing in a porous matrix, the
+isotherm adsorption records the amount of adsorbed gas at a fixed temperature as
+a function of the pressure, or the more commonly, the pressure relative to the
+vapor pressure of the gas. Experimentally, these adsorption isotherms are
+obtained with gravimetric, volumetric or chromatographic
+methods\cite{Ruthven1984, Yang1987}.
+
+\begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.75\textwidth]{figures/images/iupac-isotherms}
+    \caption{IUPAC classification of isotherms.}
+    \label{fig:iupac-isotherms}
+\end{figure}
+
+The IUPAC classify adsorption isotherms depending on their shape, as represented
+in figure~\ref{fig:iupac-isotherms}\cite{Sing1985}. Only the isotherms of type
+I, IV and V can occur in nanoporous solids. Type I isotherms are concave,
+reversible and the adsorbed quantity of matter (or \emph{loading}) goes to a
+finite value as the pressure increases. It is the most common isotherm type, and
+express the prevalence of gas--solid interactions over gas--gas interactions in
+a material containing a single kind of equivalent adsorption sites. Type IV
+isotherms also present a maximal loading, and one or two steps with sometimes an
+hysteresis loop between the adsorption and desorption branches. These steps are
+usually attributed to a modification in the structure of the adsorbing
+solid\cite{Karge1989}. Type V isotherm shows an inflection point: at low pressure
+the adsorption is very low, mainly due to small gas--solid interactions. For
+higher pressures the adsorption becomes stronger thanks to interactions between
+the gas molecule themselves. In flexible porous materials, type IV isotherms
+would be associated with \emph{breathing} materials, and type V isotherms with
+\emph{gate opening}. Finally, isotherms types II, III and VI do not present a
+maximal loading, and are usually observed in solids with multiple pore sizes and
+a continuous transition from mono-layer adsorption to multi-layers adsorption and
+capillary condensation.
+
+Is is possible to study and predict adsorption isotherms by using thermodynamics
+and molecular simulations methods such as Grand Canonical Monte Carlo. I will
+present with more details the theoretical methods I used during my PhD to study
+adsorption in the corresponding chapters: chapter~\ref{sec:macrosopic} for
+macrosopic thermodynamics modelling; and chapter~\ref{sec:molsim} for molecular
+simulations.
 
 \subsection{Intrusion: high pressure adsorption}
 
