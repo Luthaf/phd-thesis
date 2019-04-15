@@ -11,7 +11,7 @@ chapter are not always sufficiently precise to gain a complete understanding of
 the phenomenon at play. In particular, as these methods describe the systems at
 the macroscopic level, they don't take into account the individual atoms, and
 the interactions between them: they don't describe the \emph{chemistry} of the
-system.  Statistical thermodynamic is a tool that we can use to bring together
+system. Statistical thermodynamic is a tool that we can use to bring together
 the microscopic description of matter and the macroscopic behavior and
 characteristics of the system (pressure, temperature, \dots).
 
@@ -139,7 +139,7 @@ of phase space based on the knowledge of a way to calculate the energy of each
 state. There are a few algorithms we can use to do this sampling and generate
 the set $\phi$ of points we will use to compute a given property. I will discuss
 two of them below: the Metropolis Monte Carlo (MC) method, and Molecular
-Dynamics (MD).  If we can get these algorithms to generate a set of states in
+Dynamics (MD). If we can get these algorithms to generate a set of states in
 the phase space according to the Maxwell-Boltzmann probability, with the same
 state appearing possibly more than once in the set, we can simplify the
 calculation of ensemble average of observables even further. For a set of $m$
@@ -179,7 +179,7 @@ In the osmotic ($N_\text{host} \ \mu \ PT$) ensemble, the number of atoms $n_i$
 of guest molecules and the volume $V$ can vary while the associated chemical
 potential and pressure are constants. The probability for the system to be in a
 state is given by:
-\[ \mathcal{P}_{\mu VT} = \frac{1}{N!\ \Lambda^{3N}\ \zeta} \kern1em e^{-\beta \left[H(\r^N, \p^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
+\[ \mathcal{P}_{\mu VT} = \frac{1}{N!\ \Lambda^{3N}\ \zeta} \kern1em e^{-\beta \left[H(\r^N, \p^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \label{eq:probably:uvt}\]
 \[ \zeta = \kern-2.5em \sum_{\substack{\kern1.2em N=N_\text{host} \\[0.5ex] \kern2.6em N=n_1+n_2+\dots}}^\infty \kern-1em \frac{1}{N!\ \Lambda^{3N}} \int \d V \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[U(\r^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
 Here, $N$ is the total number of atoms in the system, counting both the fixed
 host atoms and the varying atoms of the guest. The $\sum_i \mu_i n_i$ sum only
@@ -218,7 +218,7 @@ we can study. As of 2019, using standard high performance computing cluster, we
 can used DFT to study systems containing up to 1000 atoms on a time scale of up
 to \SI{100}{ps}. While these numbers increased a lot in the recent years due to
 improvements in software used for DFT and in computing hardware, they are still
-many systems of interest that we can not study with DFT. If the electronic
+many systems of interest that we cannot study with DFT. If the electronic
 density does no vary much across the subspace of phase space we are interested
 in --- \ie no bond creation or breakage; no charge transfer --- then using
 classical potentials or force fields can be a good approximation of the real
@@ -308,7 +308,7 @@ function for the repulsion:
 The most common strategy for describing bonds and angles is to consider only
 vibration of the bond length or the angle around the equilibrium, and represent
 the energy of the bond/angle using the harmonic approximation:
-\[V_\text{harmonic}(r) = \frac 12 k \ (r - r_0)^2  \qquad\text{or}\qquad V_\text{harmonic}(\theta) = \frac 12 k \ (\theta - \theta_0)^2 \]
+\[V_\text{harmonic}(r) = \frac 12 k \ (r - r_0)^2 \qquad\text{or}\qquad V_\text{harmonic}(\theta) = \frac 12 k \ (\theta - \theta_0)^2 \]
 
 For dihedral angles, we often want to be able to reproduce the periodicity of
 the associated energy, which leads to the following definition of the energy:
@@ -332,18 +332,85 @@ more depth in the next chapter, section~\ref{sec:classical-ff-parametrize}.
 
 \subsection{System size and periodic boundary conditions}
 
-\TODO
+Everyday chemical systems contains a huge number of atoms, of the order of
+Avogadro's number (\SI{e23}{} atoms). But when using molecular simulation to
+study a chemical system, we are limited to a much smaller number of atoms: using
+\SI{1}{TB} of computer memory we can only store positions and velocities for
+around \SI{e10}{} atoms. This is even worst if we consider the number of atoms
+for which we can compute properties with molecular simulation methods, of the
+order of \SI{e4}{} to \SI{e7}{} atoms at most from today commodity hardware to
+the biggest super-computers.
+
+At these scales, the surface effects are not negligible: the surface energy
+becomes an important part of the overall energy. The typical way to remove these
+surface effects while keeping the number of simulated atoms low is to use
+\emph{periodic boundary conditions}. The atoms are placed in a rhombohedral
+simulation box called the \emph{unit cell}, which is replicated \emph{ad
+infinitum} in all directions, as illustrated in figure~\ref{fig:pbc}. The copies
+of the initial box are called images of this box.
+
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/images/pbc}
+    \caption{Illustration of periodic boundary condition in a two dimensional
+    system. Molecules from the central cell are \emph{repeated} in all
+    directions.}
+    \label{fig:pbc}
+\end{figure}
+
+In this arrangement, a molecule from the central simulation box will interact
+with all molecules in the same box; but also with any molecule in any image
+boxes, including with molecules images of itself. The effectively infinite
+system created this way will not contain any surface effects, but other issues
+can still affect the sampling and averaging of system properties.
+
+First of all, the use of periodic boundary conditions introduces an artificial
+periodicity to the system, more so as the central simulation box is smaller. For
+the study of crystalline materials, one has to ensure that the periodicity of
+the simulation box matches the periodicity of the crystal primitive cell. This
+periodicity also makes it harder to study defects and other rare features of the
+system. If we explicitly add a defect to the system, it will be replicated over
+all the images, artificially increasing the number of defects per unit of
+volume.
+
+Second, because the system is now infinite, we need to compute an infinity of
+interactions between molecules to evaluate its energy. Fortunately, most
+interactions decay at long distances, and we can use a cutoff radius when
+computing the energy. Any atoms further apart than this cutoff radius will not
+interact. The error $\epsilon$ that arise from a the use of a cutoff radius
+$r_c$ depends on the potential $V(r)$ and the radial distribution function
+$g(r)$ of the current conformation:
+\[\epsilon(r_c) = \int_{r_c}^\infty r^2 V(r)\ g(r)\ \d r \]
+If the cutoff radius is large enough (usually \SI{10}{\\AA} is enough), then
+$g(r) \simeq 1$ and we get a simpler estimation that does not depends on the
+system conformation:
+\[\epsilon(r_c) = \int_{r_c}^\infty r^2 V(r)\ \d r \]
+For any function $V(r)$ that goes to zero at infinity faster than $1/r^3$, this
+error is finite, and can be computed and applied afterward. Notably, the
+electrostatic potential decays as $1/r$, and this error does not converge. In
+order to describe electrostatic interaction properly in presence of periodic
+boundary conditions, we need to use other methods such as the Ewald summation,
+which I will present in more details in chapter~\ref{sec:electrostatic}.
+
+Finally, the \emph{minimum-image convention} is often used to improve simulation
+speed. under this convention, a particle in the central simulation box interacts
+only with neighbors from the central image or an image surroundings the central
+one. This restrict the number of images that has to be searched for neighbors
+inside the cutoff radius. To be able to enforce this minimum-image convention,
+the smallest inscribed sphere must have a radius bigger than the cutoff radius.
+For a orthorhombic simulation box, the smallest box side length must be at least
+twice the cutoff radius.
 
 \newpage
 \section{Metropolis Monte Carlo}
 
-Now that we know how to compute the energy of a configuration, our goal of
-computing macroscopic properties from microscopic states is getting closer. The
-idea is to evaluate the integral in equation~\eqref{eq:observable} by using a
-finite set of configurations $\{\r^N\}_\alpha$ distributed according to the
-right distribution. The ensemble average $\braket{A}$ of a property $A$ that
-only depends on the spatial conformation of the system gives us the value of
-this property at the macroscopic level:
+Now that we know how to compute the energy of any given configuration, our goal
+of computing macroscopic properties from microscopic states is getting closer.
+The idea is to evaluate the integral in equation~\eqref{eq:observable} by using
+a finite set of configurations $\{\r^N\}_\alpha$ distributed according to the
+right distribution, which depends on the ensemble. The ensemble average
+$\braket{A}$ of a property $A$ that only depends on the spatial conformation of
+the system gives us the value of this property at the macroscopic level:
 \[\braket{A} \approx \frac 1 m \sum_\alpha^m A(\r_\alpha^N) \label{eq:mc:sampling}\]
 
 Metropolis Monte Carlo is an algorithm that enables us to generate new
@@ -357,38 +424,39 @@ of interest.
     \centering
     \includegraphics[width=0.6\textwidth]{figures/images/mc-chain}
     \caption{Illustration of a Markov chain in Metropolis Monte Carlo.
-    Configuration are numbered from 1 to 4, and letters from (a) to (e) are used
+    Configurations are numbered from 1 to 4, and letters from (a) to (e) are used
     for tentative moves. Step 2 appears twice in the chain, as the tentative
     move (b) was rejected.}
     \label{fig:mc:chain}
 \end{figure}
 
-Metropolis Monte Carlo is part of the family of Markov Chain Monte Carlo
-algorithms. A Markov chain is set of configurations such as the probability of
-generating a new configuration only depends on the previous configuration of the
-chain. A Markov chain is thus completely defined by the knowledge of the initial
-state and the procedure used to generate a new state.
+The Metropolis Monte Carlo method is part of the family of Markov Chain Monte
+Carlo algorithms. A Markov chain is a set of configurations, such that the
+probability of generating a new configuration only depends on the previous
+configuration of the chain: it has no further \emph{memory} of older states. A
+Markov chain is thus completely defined by the knowledge of the initial state
+and the procedure used to generate a new state.
 
 When using a Markov chain to explore and sample the phase space, we want it to
 be able to explore all the possible states in the phase space. In order to
 ensure this, we want the chain to be \emph{ergodic}, \ie that each state can be
 reached from any other state in a finite number of steps. This property
-guarantee the existence of a \emph{stationary} equilibrium distribution of the
+guarantees the existence of a \emph{stationary} equilibrium distribution of the
 generated states as the Markov chain grows; and that this distribution matches
 the probability to generate a new state from any given state. For us, this means
 that if we are able to create an ergodic Markov chain using the Boltzmann
 statistics to generate a new state, then the whole chain will follow the
 Boltzmann distribution. The same reasoning also works in other statistical
-ensembles following different distributions.
+ensembles, following their own distribution of probability.
 
 \subsubsection{Micro-reversibility}
 
 The usual way to ensure we have an ergodic Markov chain is to impose that this
 chain is \emph{micro-reversible}. Although this is not a required condition to
-have an ergodic chain, it is a sufficient one\cite{Frenkel1997}. Using
-$\mathcal{P}_i$ for the probability of being in a state $i$; and $\pi(i \to j)$
-the probability to go from state $i$ to state $j$, micro-reversibility is
-defined as:
+have an ergodic chain, it is a sufficient one\cite{Frenkel1997}, and quite
+commonly used. Using $\mathcal{P}_i$ for the probability of being in a state
+$i$; and $\pi(i \to j)$ the probability to go from state $i$ to state $j$, the
+condition of micro-reversibility is defined as:
 \[ \mathcal{P}_i \ \pi(i \to j) = \mathcal{P}_j \ \pi(j \to i)\]
 This means that the probability for any transition in the Markov chain to be
 from state $i$ to state $j$ must be the same as the probability for this
@@ -402,24 +470,25 @@ j)$ a product of the probability $\alpha(i \to j)$ to generate a given new
 configuration and the probability $\text{acc}(i \to j)$ to accept it.
 \[\pi(i \to j) = \alpha(i \to j)\times\text{acc}(i \to j)\]
 
-The original Metropolis scheme\cite{Metropolis1953} choose the $\alpha$
-probability to be symmetric, \ie $\alpha(i \to j) = \alpha(j \to i)$, the chance
-of generating a configuration $j$ from $i$ is the same as the chance of
-generating the configuration $i$ starting from $j$. This gives us
+The original Metropolis scheme\cite{Metropolis1953} chooses the $\alpha$
+probability to be symmetric, \ie $\alpha(i \to j) = \alpha(j \to i)$, the
+probability of generating a configuration $j$ from $i$ is the same as the
+probability of generating the configuration $i$ starting from $j$. This gives us
 \[ \frac{\text{acc}(i \to j)}{\text{acc}(j \to i)} = \frac{\mathcal{P}_j}{\mathcal{P}_i} \label{eq:mc:acceptance}\]
 We want to set the resulting probability of the Markov chain to follow Boltzmann
 statistics, which gives us
 \[ \frac{\text{acc}(i \to j)}{\text{acc}(j \to i)} = e^{-\beta [U(j\,) \;-\; U(i\,)]} \]
-There are multiple choices that would give us this relation, the standard choice
-is to always accept the transition from $i$ to $j$ if the energy decreases
-($U(j\,) - U(i\,) < 0$), or else accept it with probability $e^{-\beta \Delta U}$.
+There are multiple choices that would result in this same relation. The standard
+choice is to always accept the transition from $i$ to $j$ if the energy
+decreases ($\Delta U = U(j\,) - U(i\,) < 0$), or else accept it with probability
+$e^{-\beta \Delta U}$.
 \[\text{acc}(i \to j) = \min\left[1, \exp\left(-\beta \Delta U\right)\right] \label{eq:mc:acceptance:nvt}\]
 
 In order to accept a configuration change with probability $e^{-\beta \Delta U}$,
 we usually generate a random number $r$ with uniform distribution in $[0, 1]$,
 and accept the new configuration if $r < e^{-\beta \Delta U}$.
 
-When working in ensembles that are not the canonical ensemble, we can still
+When working in ensembles other than the canonical ensemble, we can still
 apply the same procedure, simply changing the acceptance probability to agree
 with the required distribution. For example, in the $NPT$ ensemble, the
 probability to be in a state is proportional to $e^{-\beta\, U(\r) \; - \; \beta PV}$.
@@ -438,41 +507,44 @@ This changes the acceptance probability to
 \end{figure}
 
 The last remaining piece of the puzzle before being able to run Monte Carlo
-simulations is to specify a way to generate a new configuration. We need to
+simulations is to specify a way to generate new configurations. We need to
 construct them such that the probability of creating a state $j$ from $i$ is the
 same as creating the state $i$ starting from $j$; \ie $\alpha(i \to j) =
 \alpha(j \to i)$. In implementations of Metropolis Monte Carlo for molecular
-simulation, basic algorithms to generate a new conformation are called
-\emph{moves}. At each step of the simulation, a specific move is selected at
-random in the list of moves, ensuring $\alpha(i \to j) = \alpha(j \to i)$ as
-long as the move itself enforce $\alpha(i \to j) = \alpha(j \to i)$.
+simulation, basic algorithms used to generate a new conformation from the
+previous one are called \emph{moves}. At each step of the simulation, a specific
+move is selected at random in the list of possible moves, ensuring $\alpha(i \to
+j) = \alpha(j \to i)$ globally as long as the move itself enforce $\alpha(i \to
+j) = \alpha(j \to i)$.
 
 \subsubsection{Canonical ensemble: translation and rotation}
 
 The simplest move imaginable is to randomly select an atom and move it by a
 random distance in a random direction. The new generated state only differs from
 the previous one by the position of this atom. When working with rigid
-molecules, this move can also be used to translate a full molecule. In order to
-sample all the degrees of freedom of the rigid molecule, we also need to account
-for rotations. We can apply a random rotations (random rotation axis and
+molecules, this move can also be used to translate a full molecule. In that
+case, we also need to account for rotations to sample all the degrees of freedom
+of the rigid molecule. We can apply a random rotations (random rotation axis and
 magnitude) to a molecule to do so. These moves are illustrated in
 figure~\ref{fig:mc:moves}, panels (a) and (b). By using uniform distributions
 for the cartesian components of the translation, the amplitude of the rotation,
 and uniform sampling of the unit sphere for the rotation axis; these moves have
 the same probability of going from a state $i$ to $j$ and vice versa.
 
-It is desirable to have an acceptance rate around 40 to 50\%, as a lower
-acceptance rate means that we are wasting computational time to generate
-conformation that will not be used; and a higher acceptance rate usually means
+The one remaining parameter is then the amplitude of the move, \ie the interval
+in which to draw the translation or rotation amplidut with an uniform
+distribution. It is desirable to have an acceptance rate around 40 to 50\%, as a
+lower acceptance rate means that we are wasting computational time to generate
+conformations that will not be used; and a higher acceptance rate usually means
 that the new conformation will be very close from the previous one, and the
-simulation will take longer to converge. We can adjust the amplitude of the
-rotations and translations to influence the exact value of $\alpha(i \to j)$:
-larger amplitude means a smaller acceptance rate; and smaller amplitude means a
-higher acceptance rate. But adjusting the amplitude breaks micro-reversibility;
-and as such should be done beforehand to prevent polluting the simulation
-results. It is thus customary to break a simulation in two phases: a first
-equilibration phase to adjust the simulation parameters, and a later production
-phase that will be used for statistical analysis.
+simulation will take longer to sample the phase space. We can adjust the
+amplitude of the rotations and translations to influence the exact value of
+$\alpha(i \to j)$: larger amplitude means a smaller acceptance rate; and smaller
+amplitude means a higher acceptance rate. But adjusting the amplitude breaks
+micro-reversibility; and as such should be done beforehand to prevent affecting
+the simulation results. It is thus customary to break a simulation in two
+phases: a first equilibration phase to adjust the simulation parameters, and a
+later production phase that will be used for statistical analysis and averaging.
 
 Translations and rotations, together with the acceptance scheme defined in
 equation~\eqref{eq:mc:acceptance:nvt}, are enough to generate a Markov chain
@@ -485,28 +557,29 @@ evaluate the macroscopic properties of the system.
 \subsubsection{Isobaric-isothermal ensemble: volume changes}
 
 If we want to work in another thermodynamic ensemble such as the $NPT$ ensemble,
-we need both to change the acceptance scheme to
-equation~\eqref{eq:mc:acceptance:npt}; and to actively generate moves than
-change the system volume. One way to change the volume is to randomly pick a new
+we need first to change the acceptance scheme to
+equation~\eqref{eq:mc:acceptance:npt}; and also to generate moves than change
+the system's volume. One way to change the volume is to randomly pick a new
 volume using an uniform distribution centered around the old volume; and then
 resize the simulation unit cell while keeping intra-molecular distances
-constant. This is illustrated in figure~\ref{fig:mc:moves}, panels (c).  Keeping
-the distances constant ensure that the change in energy $\Delta U$ will not be
-too big, and that the move will be accepted more often.  As for translation and
-rotations, we can adjust the acceptance rate of the move by changing the
-amplitude of volume changes.
+constant. This is illustrated in figure~\ref{fig:mc:moves}, panels (c). Keeping
+the distances constant ensures that the change in energy $\Delta U$ will not be
+too big, and that the move will be accepted more often than with a simple
+scaling scheme. As for translation and rotations, we can adjust the acceptance
+rate of the move by changing the amplitude of volume changes.
 
 \subsubsection{Grand Canonical ensemble: insertion and deletion}
 
-Simulations in the $\mu VT$ ensembles are called Grand Canonical Monte Carlo
+Simulations in the $\mu VT$ ensemble are called Grand Canonical Monte Carlo
 (GCMC) simulations. In this ensemble, the number of molecules is allowed to
 fluctuate in order to maintain the chemical potential constant. We need two
 moves to accomplish this, one where we select a molecule at random and remove
-it; and an other one where a molecule is inserted from a fictitious reservoir at
+it; and another one where a molecule is inserted from a fictitious reservoir at
 a random position and orientation (see figure~\ref{fig:mc:moves}, panels (d) and
 (e)). The acceptance probability is given as previously by the $\mathcal{P}_j /
-\mathcal{P}_i$ ratio; but this time the $N!\ \Lambda^{3N}$ terms do not cancel
-out. For the insertion of a new molecule
+\mathcal{P}_i$ ratio; but this time the $N!\ \Lambda^{3N}$ terms from
+equation~\eqref{eq:probably:uvt} do not cancel out. For the insertion of a new
+molecule we have:
 \[ \text{acc}(N \to N + 1) = \min\left[1, \frac{V}{\Lambda^3 (N + 1)} \exp\left(\beta \mu - \beta \Delta U \right)\right]; \]
 and for the removal of a molecule,
 \[ \text{acc}(N \to N - 1) = \min\left[1, \frac{\Lambda^3 N}{V} \exp\left(-\beta \mu - \beta \Delta U \right)\right]. \]
@@ -515,33 +588,41 @@ Unfortunately, the chemical potential $\mu$ is not easily known before starting
 a simulation and these expressions are hard to use. Instead, for chemical
 species in the gas phase we use the fugacity $f$ of the gas, defined as the
 pressure of an ideal gas with the same temperature and molar free enthalpy as
-the real gas. It is related to the chemical potential by:
-\[ f = \frac{e^{\,\beta \mu}}{\beta \Lambda^3}\]
-Replacing in the equation above gives us the standard acceptance probabilities
-for GCMC simulations:
-\[ \text{acc}(N \to N + 1) = \min\left[1, \frac{\beta V f}{N + 1} \exp\left(- \beta \Delta U \right)\right] \]
-\[ \text{acc}(N \to N - 1) = \min\left[1, \frac{N}{\beta V f} \exp\left(- \beta \Delta U \right)\right] \]
+the real gas. It is related to the chemical potential by $f = e^{\,\beta \mu} /
+\beta \Lambda^3$.  Replacing in the equation above gives us the standard
+acceptance probabilities for GCMC simulations in the gas phase:
+\begin{gather}
+\text{acc}(N \to N + 1) = \min\left[1, \frac{\beta V f}{N + 1} \exp\left(- \beta \Delta U \right)\right] \\
+\text{acc}(N \to N - 1) = \min\left[1, \frac{N}{\beta V f} \exp\left(- \beta \Delta U \right)\right]
+\end{gather}
+
+For other phases such as liquids, the relation between chemical potential and
+pressure $\mu(P)$ for the bulk phase has to be established first, by separate
+series of Monte Carlo simulations.
 
 \subsection{Monte Carlo caveats}
 
 Monte Carlo simulations are very powerful, as they allow to directly sample the
-ensemble of interest; and does not require that the moves used to generate a new
-trial configuration follow the laws of physics. This later property is used in
-some extensions of Monte Carlo simulations, where alchemical transformations are
-used for example to replace sodium ions by potassium.
+phase space of the ensemble of interest; and do not require that the moves used
+to generate a new trial configuration follow the laws of physics. This later
+property is used in some extensions of Monte Carlo simulations, where an atom
+nature is transformed as a Monte Carlo move, changing a sodium into a potassium
+for example. This method --- called semi-grand canonical Monte
+Carlo\cite{Kofke1988} --- allow to sample the equilibrium distribution during
+chemical reactions or at an interface without explicitly representing the
+interface.
 
 They also have a few caveats, mainly it is not possible to sample the
 micro-canonical ensemble, as this would require generating trial configurations
 with constant energy, and updating both the positions and velocities of the
 atoms. The main problem with Monte Carlo simulation is that they only deal with
-statistical information, and do not contain any information on the kinetic of
-the transformations. Both of these caveats can be solved by using molecular
-dynamics instead to generate the states used to evaluate
+the conformations of the system, and do not contain any information on the
+kinetic of the transformations. Both of these caveats can be solved by using
+molecular dynamics instead to generate the states used to evaluate
 equation~\eqref{eq:observable}.
 
-\begin{figure}[ht]
+\begin{figure}[b]
     \centering
-    \vskip8em
     \includegraphics[width=\textwidth]{figures/images/mc-vs-md}
     \caption{Representation of the way the potential energy surface is explored
     by molecular dynamics (red line) and Monte Carlo (colored circles)
@@ -549,7 +630,7 @@ equation~\eqref{eq:observable}.
     \label{fig:mc-vs-md}
 \end{figure}
 
-\newpage
+\clearpage
 \section{Molecular dynamics}
 \label{sec:molecular-dynamics}
 
@@ -560,7 +641,7 @@ classical point particles. There are multiple methods to go beyond this
 approximation and incorporate the quantum nature of atoms, mostly based on
 Feynman path integrals\cite{Craig2004}.
 
-Newton's laws give us differential equation on the time evolution of positions
+Newton's laws give us differential equations on the time evolution of positions
 and velocities ($\p_i = m_i \v_i$):
 \[\frac{\partial \r_i}{\partial t} = \v_i; \qquad\text{and}\qquad m_i \frac{\partial \v_i}{\partial t} = - \frac{\partial U(\r)}{\partial \r_i}. \]
 We can discretize time in these equations by considering a succession of
@@ -569,27 +650,28 @@ derivatives with first order finite differences, we get the Euler integrator
 equations:
 \[ \r_i(t + \Delta t) = \r_i(t) + \v_i(t) \Delta t + \smallo(\Delta t^2)\]
 \[ \v_i(t + \Delta t) = \v_i(t) + \frac{1}{m_i} \vec f_i(t) \Delta t + \smallo(\Delta t^2) \]
-where $\vec f_i = - \partial U(\r) / \partial \r_i$ is the force acting on atom
-$i$. The Euler integration scheme presented here have a high discretization
-error and is not used in actual simulations, but helps understanding molecular
-dynamics. Better integration schemes will be presented below.
+where $\vec f_i =\kern-0.7ex - \partial U(\r) / \partial \r_i$ is the force
+acting on atom $i$. The Euler integration scheme presented here have a high
+discretization error and is not used in actual simulations, but helps
+understanding molecular dynamics. Better integration schemes will be presented
+below.
 
 Starting from an initial configuration defined by the positions and velocities
 of each atom at time $t$, these equations allow to compute the positions and
 velocities at the next time point $t + \Delta t$. For this discretization to be
 valid, the time step $\Delta t$ has to be small enough so that both the
-$\smallo(\Delta t^2)$ term is negligible; and the forces acting on the atom are
-constant between $t$ and $t + \Delta t$. Depending on the system, typical values
-for the time step fall between \SI{0.1}{fs} and \SI{2}{fs}.
+$\smallo(\Delta t^2)$ terms are negligible; and the forces acting on each atom
+are constant between $t$ and $t + \Delta t$. Depending on the system, typical
+values for the time step fall between \SI{0.5}{fs} and \SI{2}{fs}.
 
-Time integration of positions and velocities follows the usual rules of
-classical mechanics, and in particular the conservation of energy. This means
-that by default, molecular dynamics trajectory evolve in the micro-canonical
-$NVE$ ensemble. There however is no \emph{a priori} guarantees that a molecular
-dynamics trajectory will generate new configurations following the
-micro-canonical distribution. We rely on the \emph{ergodic} hypothesis to assume
-that the trajectory does sample the $NVE$ ensemble. In the most intuitive form,
-this hypothesis is be formulated as:
+Time integration of positions and velocities follows the standard rules of
+classical mechanics, and in particular the conservation of mechanical energy.
+This means that by default, molecular dynamics trajectories evolve in the
+micro-canonical $NVE$ ensemble. There however is no \emph{a priori} guarantees
+that a molecular dynamics trajectory will generate new configurations following
+the micro-canonical distribution. We rely on the \emph{ergodic} hypothesis to
+assume that the trajectory does sample the whole $NVE$ ensemble. In the most
+intuitive form, this hypothesis is be formulated as:
 
 \vskip0.8ex
 \begin{quote}
@@ -604,9 +686,9 @@ and what can effectively be measured at the macroscopic level. Mathematically
 speaking, the ergodic hypothesis is a property of the Hamiltonian system: a
 system is said to be ergodic if the point representing this system in the phase
 space can approach every point in the phase space as closely as desired. In this
-case, Birkhoff ergodic theorem proves that the time average and ensemble average
-are the same almost everywhere. This condition has been verified for some
-systems; and is usually assumed to hold when working with statistical
+case, the Birkhoff ergodic theorem proves that the time average and ensemble
+average are the same almost everywhere. This condition has been verified for
+some systems; and is usually assumed to hold when working with statistical
 thermodynamics.
 
 \subsection{Integration schemes}
@@ -616,11 +698,14 @@ thermodynamics.
 We want the integration scheme used for a molecular dynamics simulation to
 enforce the symmetry and conservation properties of a real mechanical system;
 namely the time reversal symmetry, conservation of energy, linear momentum,
-angular momentum and phase space volume. Conservation of phase space volume
-means that if we consider a set of initial condition inside a closed and bounded
-region of phase space and propagate them for a given time; the resulting points
-in phase space will still be a closed and bounded region of phase space with the
-same volume as the initial region --- this is illustrated in
+angular momentum and phase space volume. Conservation of phase space volume is a
+consequence of  Liouville's theorem concerning the phase space distribution
+$\rho(\r^N, \v^N)$:
+\[\frac{\d \rho}{\d t} = \frac{\partial \rho}{\partial t} + \sum_i \left(\frac{\partial \rho}{\partial \r_i} \frac{\d \r_i}{\d t} + \frac{\partial \rho}{\partial \v_i} \frac{\d \v_i}{\d t} \right) = 0.\]
+This means that if we consider a set of initial conditions inside a closed and
+bounded region of phase space and propagate them for a given time, the resulting
+points in phase space will still be a closed and bounded region of phase space
+with the same volume as the initial region --- this is illustrated in
 figure~\ref{fig:symplectic-integrator}. An integrator conserving the phase space
 volume is said to be \emph{symplectic}.
 
@@ -634,25 +719,25 @@ volume is said to be \emph{symplectic}.
 \end{figure}
 
 Because we are approximating the equations of motion by evaluating them on
-discrete time step the energy might not be fully conserved, and an energy drift
-might appear. The amplitude of this drift will depend on time step; a bigger
-time step introducing a bigger error. A good integrator will allow us to use
-bigger time steps while keeping the energy constant. This will make the overall
-simulation more efficient by reducing the number of steps needed to simulate
-long processes. Another way to make the simulation more efficient is to only
+discrete time steps the energy might not be fully conserved, and an energy drift
+can appear. The amplitude of this drift will depend on the choice of time step;
+a bigger time step will introduce a bigger error. A good integrator will allow
+us to use bigger time steps while keeping the drift small. This will make the
+overall simulation more efficient by reducing the number of steps needed to
+simulate long processes. Another way to make the simulation more efficient is to
 evaluate the forces acting on the atoms as rarely as possible. This is for
 example the case in multi-timesteps methods such as reversible Reference System
 Propagator Algorithms\cite{Tuckerman1992} (r-RESPA) where forces are separated
 by the time scale of their variations; and evaluated only when needed instead of
-on all steps.
+being calculated at all steps.
 
-\subsubsection{Some examples of integration scheme}
+\subsubsection{Some examples of integration schemes}
 
-One of the simplest integrator respecting all of the above defined constrains
-(symplectic, time-reversible, energy conservation) is the Leap Frog integrator.
-The corresponding algorithm is reproduced below, using $\r(n)$ for $\r(n \times
-\Delta t)$, and $\vec f(n)$ for the forces computed from the positions at step
-$n$.
+One of the simplest integrator respecting all the above defined constraints
+(symplectic, time-reversible, energy conservation) is the \emph{leap frog}
+integrator\cite{Frenkel1997}. The corresponding algorithm is reproduced below,
+using $\r(n)$ for $\r(n \times \Delta t)$, and $\vec f(n)$ for the forces
+computed from the positions at step $n$.
 \[\begin{aligned}
     \vec a(n)   &= \frac{1}{m}\ \vec f(n), \\
     \v(n + 1/2) &= \v(n - 1/2) + \vec a(n) \,\Delta t, \\
@@ -660,13 +745,14 @@ $n$.
 \end{aligned}\]
 
 Evaluation of the forces is made clear by the $a = f / m$ line, to ensure it
-only occurs once. The Leap Frog integrator is more stable than the previously
+only occurs once. The leap frog integrator is more stable than the previously
 mentioned Euler integrator. Unfortunately, it computes the positions and
 velocities at interleaved instants, staggered in such a way that they jump over
 each other in a frog-like fashion.
 
 Velocity-Verlet integrator fixes this issue while keeping the symplectic and
-time reversible nature of Leap Frog. The algorithm works as follow:
+time reversible nature of leap frog\cite{Verlet1967, Frenkel1997}. The algorithm
+works as follow:
 \[\begin{aligned}
     \v(n + 1/2)   &= \v(n) + \frac 12 \vec a(n)\,\Delta t, \\
     \r(n + 1)     &= \r(n) + \v(n + 1/2)\,\Delta t, \\
@@ -674,20 +760,21 @@ time reversible nature of Leap Frog. The algorithm works as follow:
     \v(n + 1)     &= \v(n + 1/2) + \frac 12 \vec a(n + 1)\,\Delta t,
 \end{aligned}\]
 Here, velocities are updated twice by a half step, but the forces are still
-computed only once. This algorithm also yield the positions and velocities on a
+computed only once. This algorithm also yields the positions and velocities at
 full time steps, allowing them to be used together when computing properties of
 the system.
 
 Both integrators presented here have a $\smallo (\Delta t^2)$ error, but they
-are other integration scheme with a smaller error, called higher order
+are other integration scheme with a smaller error, called higher-order
 integrators. The most famous ones are the Runge–Kutta methods, that can be
-derived for any even order, starting with $\smallo (\Delta t^4)$. These methods
-are not used as often as the Velocity-Verlet or Leap Frog integrators, as they
-are more expensive to use and are not time-reversible.
+derived for any even order, starting with $\smallo (\Delta t^4)$. Runge–Kutta
+integrators are not used as often as the Velocity-Verlet or Leap Frog
+integrators, as they are more expensive to use and are not time-reversible.
 
 \subsection{Sampling other ensembles}
 
-By default, molecular dynamics samples the $NVE$ ensemble. To sample an other
+By default, molecular dynamics samples the $NVE$ ensemble since the mechanical
+energy, volume and number of particles are kept constant. To sample another
 ensemble, we need a way to control the variable that changes from this ensemble
 to the $NVE$ ensemble. For example, going from $NVE$ to $NVT$, we want to
 change the energy of the system as $E$ and $T$ are conjugated variables.
@@ -695,41 +782,50 @@ Similarly, going from $NVT$ to $NPT$ requires changes to the volume.
 
 \subsubsection{Thermostats}
 
-Algorithm that control the temperature by changing the energy of the system are
-called \emph{thermostating} algorithms, or just \emph{thermostats}. Thermostats
+Algorithms that control the temperature by changing the energy of the system are
+called \emph{thermostating} algorithms, or \emph{thermostats} for short.  They
 work by changing the kinetic energy of the system, or more generally by changing
-the velocities. If we want to change the system temperature from $T_0$ to $T_1$,
-we need to multiply all velocities by $\sqrt{T_1 / T_0}$. As the system evolve,
-temperature needs to be updated again, as kinetic energy is transferred into
-potential energy and reciprocally.
+the velocities of the atoms. As illustrated in figure~\ref{fig:thermostats},
+for the same system,  different thermostats will produce different temperature
+response.
 
-One of the easiest way to control temperature is to rescale the velocities at
-every step back to the target temperature, after updating the positions and
-velocities with an integrator such as Velocity-Verlet. This approach is
-sometimes called a \emph{rescaling} thermostat. While this algorithm does fix
-the system temperature to the target value, the integrator is no longer
-time-reversible and symplectic, and introduces a lot of non-physical artifacts
-in the dynamics. One example of such non-physical effect is the so-called
-\emph{flying ice cube}; where all the thermal energy of the system is
-transferred into the global translation velocity, while removing all vibrational
-energy from the atoms, resulting in a simulation of flying frozen atoms.
+In the simplest (and crudest) approach, if we want to change the system
+temperature from $T_0$ to $T_1$, we need to multiply all velocities by
+$\sqrt{T_1 / T_0}$. As the system evolves, temperature needs to be updated
+again, as kinetic energy is transferred into potential energy and reciprocally
+by the integrator. This approach is sometimes called a \emph{rescaling}
+thermostat. While this algorithm does fix the system temperature to the target
+value, the integrator is no longer time-reversible and symplectic. This also
+introduces many non-physical artifacts in the dynamics. One example of such
+non-physical effect is the so-called \emph{flying ice cube}; where all the
+thermal energy of the system is transferred into the global translation
+velocity, while removing all vibrational energy from the atoms, resulting in a
+simulation of flying frozen atoms.  Finally, the simulation does not sample the
+true $NVT$ ensemble, since the kinetic energy is not allowed to fluctuate around
+its equilibrium value.
 
 The \emph{weak coupling} or Berendsen\cite{Berendsen1984} thermostat is a
 slightly better version of the rescaling thermostat that imposes a first-order
 (exponential) relaxation of the temperature such that
 \[\frac{\d T(t)}{\d t} = \frac{T_0 - T(t)}{\tau_T};\]
 where $T(t)$ is the instantaneous system temperature, $T_0$ the target external
-temperature, and $\tau_T$ the relaxation time constant. This is implemented by
-rescaling the velocities at each time step by
+temperature, and $\tau_T$ the relaxation time constant. The instantaneous
+temperature is computed from the system's kinetic energy $E_\text{kin} = \sum_i
+m_i \v_i^2(t) $ as
+\[T(t) = \frac{2 \ E_\text{kin}(t)}{n_f\ k_B},\]
+where $n_f$ is the number of degrees of freedom in the system, $3 * N$ for fully
+flexible molecules. The Berendsen thermostat is implemented by rescaling the
+velocities at each time step by
 \[\alpha = \sqrt{1 + \frac{\Delta t}{\tau_T} \left(\frac{T_0}{T(t)} - 1\right) }.\]
-The Berendsen thermostat models a system weakly coupled to an heat bath at
-temperature $T_0$. In order to sample the canonical ensembles, we need an
+The Berendsen thermostat models a system weakly coupled to a heat bath at
+temperature $T_0$. In order to sample the canonical ensemble, we need an
 algorithm that is able to reproduce both the average value of the temperature
-and the fluctuations around the equilibrium of this temperature. Because is
-suppresses fluctuations of the kinetic energy of the system, the Berendsen
-thermostat is unable to produce trajectories in the canonical $NVT$ ensemble. It
-is still useful for the equilibration phase of a simulation, where one wants
-the system to reach approximate equilibrium as fast as possible.
+and the fluctuations around the equilibrium of this temperature. Because it
+diminishes fluctuations of the kinetic energy of the system, the Berendsen
+thermostat is unable to produce trajectories in the canonical $NVT$
+ensemble\cite{Braun2018}. It is still useful for the equilibration phase of a
+simulation, where one wants the system to reach approximate equilibrium as fast
+as possible.
 
 To probe the correct canonical ensemble, we can instead use a
 Nosé-Hoover\cite{Nose1984,Hoover1985} thermostat. In this approach, the
@@ -742,23 +838,34 @@ micro-canonical ensemble is equivalent to sampling the real system in the
 canonical ensemble, including the fluctuations. The intensity of the coupling is
 can be tuned by changing the fictitious mass associated with $s$. The extended
 Lagrangian can be propagated though time with any existing time-reversible and
-symplectic integrators.
+symplectic integrator.
 
 Instead of using such extended Lagrangian methods, it is also possible to modify
 the rescaling methods to sample canonical ensemble. This is the basis of the
 Canonical Sampling through Velocity Rescaling\cite{Bussi2007} (CSVR) thermostat
-I also used during my PhD. The main idea is to replace the $\alpha$ scaling
-parameter from Berendsen thermostat by a parameter picked randomly using the
-expected distribution for the fluctuations of kinetic energy. Then, by
-construction, the trajectory will explore the canonical ensemble.
+which I also used during my PhD. The main idea is to replace the $\alpha$
+scaling parameter from Berendsen thermostat by a parameter picked randomly using
+the expected distribution for the fluctuations of kinetic energy. The trajectory
+will then explore the canonical ensemble, by construction.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/images/thermostat-response}
+    \caption{The temperature response of a Lennard–Jones fluid under control of
+    three thermostats (solid line: Langevin, not presented here; dotted line:
+    Berendsen; dashed line: Nosé–Hoover) after a step change in the reference
+    temperature. Image adapted from reference~\cite{Hess2002}.}
+    \label{fig:thermostats}
+\end{figure}
 
 \subsubsection{Barostats}
 
 Controlling the pressure can be done with the same approaches as the temperature
-to generate the $NPT$ ensemble. For example, the Berendsen barostat rescales the
-system volume at every step to ensure a first-order relaxation to the target
-pressure. For a cubic unit cell subject to isotropic pressure, this means
-multiplying the cell volume by
+to generate the $NPT$ ensemble. In this case, we want to fix the value of the
+pressure $P$ by dynamically changing the volume $V$ of the system. For example,
+the Berendsen barostat\cite{Berendsen1984} rescales the system volume at every
+step to ensure a first-order relaxation to the target pressure. For a cubic unit
+cell subject to isotropic pressure, this means multiplying the cell volume by
 \[ \eta(t) = 1 - \frac{\beta\,\Delta t}{\tau_P} \left(P_0 - P(t)\right);\]
 where $P_0$ is the target pressure, $P(t)$ the instantaneous system pressure,
 $\tau_P$ the pressure relaxation time constant and $\beta$ the compressibility
@@ -769,24 +876,25 @@ should be resized by:
 \[ \underline{\eta} = \mathds{1} - \frac{\beta\,\Delta t}{\tau_P} \left(\underline{S}_0 - \underline{S}(t)\right). \]
 
 As for thermostats, the Berendsen barostat does not sample the actual
-isothermal-isobaric ensemble, as it can no reproduce volume fluctuations. It is
-still very useful for system equilibration when starting a simulation. The
-Nosé-Hoover barostat is based on an extended Lagrangian, and can sample the real
-$NPT$ ensemble. To my knowledge, there is no equivalent to the CSVR thermostat
-for controlling the pressure.
+isothermal-isobaric ensemble, as it cannot accurately reproduce the volume
+fluctuations of the $NPT$ ensemble. It is still very useful for system
+equilibration when starting a simulation. The Nosé-Hoover barostat is based on
+an extended Lagrangian, and can sample the real $NPT$
+ensemble\cite{Tuckerman2010}. To my knowledge, there is no equivalent to the
+CSVR thermostat for controlling the pressure.
 
 When using both a thermostat and a barostat to control the system pressure and
 temperature, one must take care that both control algorithms have sufficient
-time to react to changes. In particular, every-time the barostat resizes the
+time to react to changes. In particular, every time the barostat resizes the
 simulation cell, the thermostat must change the velocities to adapt the kinetic
 energy to the new potential energy. This means that the time step used for the
 barostat should be higher than the one used by the thermostat. In my
 simulations, I found that setting $\tau_P = 10 \times \tau_T = 1000 \times \Delta
-t$ works well.
+t$ works well in practice.
 
 \subsubsection{Can osmostats exist? Grand canonical molecular dynamics}
 
-As we have seen, it is possible to go from an ensemble to an other by
+As we have seen, it is possible to go from an ensemble to another by
 controlling the conjugated variables: change $E$ to control $T$, $V$ to control
 $P$. It is then natural to consider whether it is possible to control the
 chemical potential of a system to sample the grand canonical $\mu V T$
@@ -804,30 +912,34 @@ proven to do so under certain hypothesis, we lack such mathematical proofs for
 the generic hybrid case. It is possible to mix molecular dynamics and Monte
 Carlo under the framework of Hybrid Monte Carlo simulations, which I will
 discuss in more details in chapter~\ref{sec:hmc}. The main idea here is to use
-short Molecular Dynamics simulations as a new Monte Carlo move, and under some
-conditions on the molecular dynamics integrator; the resulting Markov chain is
-proven to be ergodic. Contrary to most grand canonical molecular dynamics
-methods, the driver of the simulation is the Metropolis Monte Carlo algorithm;
-with all associated caveats; and not a dynamic integrator producing a trajectory
-in time.
+short Molecular Dynamics simulations as a new Monte Carlo move to generate new
+configurations. Under some conditions on the molecular dynamics integrator the
+resulting Markov chain is proven to be ergodic. In this case, the simulation is
+a Monte Carlo simulation, and not a molecular dynamics one: Molecular dynamics
+is only used as a mean to generate new configurations, and the underlying
+trajectory is thrown away. Because of this, the resulting simulation suffers
+from the same limitations as all Monte Carlo simulations, and in particular the
+absence of any dynamic information.
 
-In the former case, the general idea is to have one or more \emph{fractional}
-particles in the system, represented by a parameter $\lambda$ going from 0 to 1.
-The interactions of this particle with the system are scaled down by $\lambda$,
-and the value of $\lambda$ evolves through time. When it reaches 1, the particle
-is converted to a full particle and a new one is inserted with a small
-$\lambda$; and when it reaches 0, the particle is removed and a new one is
-picked to have the value of $\lambda$ change. This approach first has an issue
-with the fact that time-reversibility is broken when $\lambda$ reaches 0 or 1.
+For the methods using an extended Hamiltonian approach, the general idea is to
+have one or more \emph{fractional} particles in the system, represented by a
+parameter $\lambda$ going from 0 to 1.  The interactions of this particle with
+the system are scaled down by $\lambda$, and the value of $\lambda$ evolves
+through time. When it reaches 1, the particle is converted to a full particle
+and a new one is inserted with a small $\lambda$; and when it reaches 0, the
+particle is removed and a new one is picked to have the value of $\lambda$
+change.
 
-Finally, Liouville's theorem (the fact that the phase-space distribution
-function is constant along the trajectories of the system) is only proven for a
-constant number of atoms, and might not be valid in the grand canonical
+This approach has several limitations, starting with the fact that
+time-reversibility is broken when $\lambda$ reaches 0 or 1. Additionally,
+Liouville's theorem (the fact that the phase-space distribution function is
+constant along the trajectories of the system) is only proven for a constant
+number of atoms, and might not be valid in the grand canonical
 ensemble\cite{DelleSite2016}. This can be understood intuitively: in both $NVE$,
 $NVT$ and $NPT$ simulations, the system explores a certain sub-space of the
 phase space, the hyper-surfaces at a constant energy/temperature, or the
 hyper-volume at constant pressure respectively. In the grand canonical ensemble,
-the underlying number of dimension of the ensemble would change depending on the
+the underlying number of dimensions of the ensemble would change depending on the
 position in the extended phase space. As all of our current theory and
 understanding of Hamiltonian dynamics is based on a constant number of
 particles, using molecular dynamics to sample the grand canonical ensemble might
@@ -837,16 +949,17 @@ this.
 \subsection{Molecular dynamics caveats}
 
 The main advantage of molecular dynamics simulations is the explicit description
-of time. This allow to study time-dependent phenomenon, and make the simulation
+of time. This allows to study time-dependent phenomena, and make the simulation
 trajectories easier to interpret as they form a "movie" of what is happening in
 the system.
 
-But these simulations also have a few caveats. As they are based on Hamiltonian
-dynamics, they can only sample ensembles with a constant number of particles.
-At the same time, it is harder to ensure that the trajectory is sampling of the
-right ensemble compared to Monte Carlo simulations. Having the right average
-value --- for example when using a Berendsen thermostat --- is not enough; and
-one must check that the full distribution is reproduced.
+But these simulations also have a few limitations. As they are based on
+Hamiltonian dynamics, they can only sample ensembles with a constant number of
+particles.  At the same time, it is harder to ensure that the trajectory is
+sampling the right ensemble, compared with Monte Carlo simulations where the
+ensemble is built directly into the moves and their probabilities. Generating
+the right average value --- for example when using a Berendsen thermostat --- is
+not enough; and one must check that the full distribution is reproduced.
 
 In general, Monte Carlo and molecular dynamics simulations complete each other,
 one having strengths where the other is weaker, or harder to use. The main
@@ -855,7 +968,8 @@ represented figure~\ref{fig:mc-vs-md}. Molecular dynamics will generate a smooth
 trajectory in the phase space, while Monte Carlo trajectories will exhibit jumps
 and discontinuities. This ability of using non-physical moves (such as a change
 in the number of particles in the system) make Monte Carlo simulations a more
-versatile tool for molecular simulations.
+versatile tool for molecular simulations, able to jump over local energy
+barriers and improve sampling rate of the phase space.
 
 \newpage
 \section{Free energy methods}
@@ -864,50 +978,55 @@ versatile tool for molecular simulations.
     \centering
     \includegraphics[width=0.7\textwidth]{figures/images/free-energy-profile}
     \caption{Representation of a free energy profile along a reaction
-    coordinate $x$ on the example of proton exchange in water.}
+    coordinate $x$, on the example of proton exchange in water.}
     \label{fig:free-energy-profile}
 \end{figure}
 
 Sometimes, the knowledge and sampling of the whole phase space is not necessary
 to acquire insight on the system of interest. For example, a reaction occurring
-in a water solution will only involve a few degrees of liberty (the distance
-between the reacting molecules) among the thousands of degrees of liberty
+in a water solution will only involve a few degrees of freedom (the distance
+between the reacting molecules) among the thousands of degrees of freedom
 composing the phase space --- this is illustrated in
-figure~\ref{fig:free-energy-profile} where. In these cases, it can be more
-efficient to only consider these degrees of freedom and extract the
+figure~\ref{fig:free-energy-profile} where the distance of the proton to the
+first water molecule is used as reaction coordinate. In these cases, it
+can be more efficient to only consider these degrees of freedom and extract the
 corresponding free energy surface. This is what free energy methods are designed
 to do. The idea is to bias the system to sample preferentially the degrees of
-freedoms of interest, and extract the real free energy from the resulting
+freedoms of interest, and extract the free energy profile from the resulting
 trajectory.
 
 Another application of free energy methods is the study of rare events, \ie any
-event with a high free energy barrier. If we were to leave the simulation evolve
-by itself, very long simulation time would be needed to obtain correct sampling
-of the phase space. This is true of both molecular dynamics where the barrier
-crossing is explicit, and Monte Carlo where even if a move can "jump" over the
-barrier, moves approaching the barrier have a higher chance of being rejected.
-In both cases, biased free energy methods can help to overcome the issue.
+event involving a high free energy barrier. If we were to leave the simulation
+evolve by itself, very long simulation time would be needed to obtain correct
+sampling of the entire phase space. This is true of both molecular dynamics
+where the barrier crossing is explicit, and Monte Carlo where even if a move can
+"jump" over the barrier, moves approaching the barrier have a higher chance of
+being rejected. In both cases, free energy methods --- also called \emph{biased
+simulations} or \emph{non-Boltzmannian sampling} simulations --- can help
+overcome the issue.
 
 It is important to note that free energy methods do not allow to compute
-absolute free energies, only free energy differences. This is because in
-statistical thermodynamics, free energy is defined as a function pf the
+absolute free energies, but only free energy differences. This is because in
+statistical thermodynamics, free energy is defined as a function of the
 partition function:
 \[ F = -\frac 1 \beta \ln \left( \iiint_\Phi \d\r^N \d\p^N \; e^{-\beta\, H(\r^N, \p^N)} \right)\]
-which can not be computed as an ensemble average using
+which cannot be computed as an ensemble average using
 equation~\ref{eq:observable}. It is however possible to express free energy
 differences as quantities based on ensemble average.
 
 I will focus here on the Umbrella Sampling method which is the main method I
 used during my work. Other methods to extract free energy from a simulation
-include Thermodynamic Integration, Metadynamics, Blue Moon ensemble simulations,
-Adaptive Biased Force, Wang Landau Monte Carlo, and many other.
+include Thermodynamic Integration\cite{Frenkel1997},
+Metadynamics\cite{Laio2002}, Blue Moon ensemble simulations\cite{Ciccotti2004},
+Adaptive Biasing Force\cite{Darve2008}, Wang Landau Monte Carlo\cite{Wang2001},
+and many other.
 
 \subsection{Umbrella sampling}
 
 Umbrella sampling is a method to extract the free energy profile along a
-reaction coordinate $x$. The idea is to constrain the system at specific
-positions $x_i$ with an harmonic potential, such that the total potential energy
-is:
+reaction coordinate $x$. The idea is to use a series of independent simulations
+where the system is constrained at specific positions $x_i$ with a harmonic
+potential, such that the total potential energy is:
 \[ U_i(\r^N) = U(\r^N) + \frac 12 k\ (x - x_i)^2 \]
 With this energy, the probability that the system is in a state described by $x$
 is given by
@@ -924,10 +1043,10 @@ And the overall goal of the method is to evaluate the free energy of the system
 as a function of $x$, using
 \[F = -k_B T \ln\left( \mathcal{P}_0(x) \right)\]
 
-Umbrella sampling rely running multiple simulations for different values of
-$x_i$, and approximating $\mathcal{P}_i(x)$ by counting the number of time the
-system has a value of $x$. In theory, it is then be possible to reconstruct
-$\mathcal{P}_0$ from every histogram:
+Umbrella sampling relies on running multiple simulations for different values of
+$x_i$, and approximating $\mathcal{P}_i(x)$ by an histogram of the values taken
+by $x$ during the constrained simulations. In theory, it is then possible to
+reconstruct $\mathcal{P}_0$ from any of these histograms:
 \[ \mathcal{P}_0(x) = \exp\left(\beta \frac 12 k\ (x - x_i)^2\right) \frac{Z_i}{Z_0} \mathcal{P}_i(x) \]
 In practice, this requires having very good statistics in regions where
 $\mathcal{P}_i$ is near zero, and thus prohibitively long simulation time.
@@ -939,8 +1058,8 @@ where the $w_i(x)$ are weight functions to be determined, normalized such that:
 
 It is then possible to solve these equations for $w_i(x)$ and $Z_i/Z_0$ using a
 self-consistent approach, as expressions for $w_i(x)$ depend on $Z_i/Z_0$ and
-\emph{vice versa}. This approach is called the weighted histogram analysis
-method, or WHAM.
+\emph{vice versa}. This approach is called the \emph{Weighted Histogram Analysis
+Method}\cite{Kumar1995} (WHAM).
 
 \OnlyInSubfile{\printbibliography}
 

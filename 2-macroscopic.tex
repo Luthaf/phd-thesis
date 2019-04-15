@@ -96,7 +96,7 @@ considering that only the pressure forces act on the system, we can extract an
 evolution principle for any transformation:
 \[T \d S = \delta Q + \d S_\text{created}\]
 \[T \d S = (\d \mathcal{U} - \delta W - \sum_i \mu_i \d n_i) + \d S_\text{created}\]
-\[\d \mathcal{U} + P \d V  - \sum_i \mu_i \d n_i - T \d S = -T\delta S_\text{created}.\label{eq:thermo-potentials}\]
+\[\d \mathcal{U} + P \d V - \sum_i \mu_i \d n_i - T \d S = -T\delta S_\text{created}.\label{eq:thermo-potentials}\]
 If there is a function $\Phi$ such as $\d \Phi = \d \mathcal{U} + P \d V - \sum_i \mu_i
 n_i - T \d S$, then for any transformation of a closed system, $\d \Phi =
 -T\delta S_\text{created} \leq 0$. This means that $\Phi$ is a decreasing
@@ -330,7 +330,7 @@ modifications in both the host's volume and internal structure lead to
 variations of pore size and specific area upon structural transitions. We note
 here, in passing, that \textbf{(H2)} should already be ruled out for systems of
 pore size close to the adsorbate diameter, as well as gas mixtures of widely
-different size or shape.  It should, for example, not apply to molecular sieves
+different size or shape. It should, for example, not apply to molecular sieves
 systems, yet those can often be described reasonably well by IAST in practice.
 Finally, \textbf{(H1)} is violated by all the systems that feature
 adsorption-induced deformation, and in particular by systems presenting a
@@ -562,7 +562,7 @@ difference for all the isotherms. I took the value of $-3.5 \pm
 
 I performed OFAST calculations using Wolfram Mathematica, the corresponding code
 is available in the lab's GitHub repository\cite{fx-citable-data}. I used the
-PyIAST Python package for the  pure IAST calculations\cite{Simon2016}. For these
+PyIAST Python package for the pure IAST calculations\cite{Simon2016}. For these
 IAST calculations, I did not fit the isotherms to a specific model, but rather
 solved the IAST equations by numerical integration and interpolation between
 experimental data points. At partial pressures higher than the last point in the
@@ -575,7 +575,7 @@ shows the partial and total loadings for all the gas combinations. The
 adsorption selectivity calculated with OFAST follows what one would expect: at
 low pressure, the pores are closed and no gas enter the structure, making the
 selectivity ill-defined --- the isotherms at low pressure cannot be fitted and
-exploited for calculation of separation.  Then, at a pressure depending on the
+exploited for calculation of separation. Then, at a pressure depending on the
 composition of the gas phase, the gate opening transition occurs. At pressure
 higher than gate opening pressure, the framework is in its open pore form, and
 the value of selectivity depends on the relative saturation uptake of the two
@@ -656,7 +656,7 @@ characterization (such as single X-ray diffraction) would be necessary to
 definitely affirm the character of this second step, I chose avoid the issue and
 work in a reduced pressure range --- although the OFAST method itself works with
 host materials with more than two phases. I thus fitted the \ce{C4H10} isotherm
-using a Langmuir isotherm for pressures below \SI{0.2}{atm}.  The OFAST
+using a Langmuir isotherm for pressures below \SI{0.2}{atm}. The OFAST
 selectivity after this pressure will thus not be quantitatively accurate, but
 will be sufficient for the needed physical insight. I also performed tests by
 computing the selectivity under the assumption that the second jump is due to
@@ -728,7 +728,7 @@ observed in \Cudhbc, with a slowly growing (in logarithmic scale) selectivity at
 high loading. On the other hand, OFAST selectivity for \ce{C4H10}/\ce{C3H8}
 mixture displays a different behavior. The selectivity is lower after the
 transition than before, and further decreases as the pressure and loading
-increases. This is due to the fact that the single-component isotherms  in the
+increases. This is due to the fact that the single-component isotherms in the
 open pore structure cross, with \ce{C3H8} adsorbing more than \ce{C4H10} for
 pressure bigger than \SI{0.03}{bar}. Thus, the low-pressure selectivity is
 reversed at high pressure.
@@ -766,7 +766,7 @@ macroscopic models for the prediction of co-adsorption of fluid mixtures in two
 different frameworks presenting a gate-opening behavior. In both cases, the
 selectivities derived by the IAST method are nonphysical and differ widely from
 the OFAST results, over- or under-estimate the selectivity, sometimes by up to
-two orders of magnitude.  Moreover, this show that even without explicitly using
+two orders of magnitude. Moreover, this show that even without explicitly using
 IAST for calculations of selectivity in flexible frameworks, one has to be
 cautious in comparing single-component isotherms of different guests.
 Differences in step pressure of stepped isotherms can lead to claims of strong
