@@ -1,7 +1,7 @@
 \documentclass[11pt, a4paper]{book}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[drafting]{classicthesis}
+\usepackage{classicthesis}
 \usepackage[greek, english]{babel}
 \usepackage{libertine}
 \usepackage{mathtools}
@@ -9,10 +9,11 @@
 \usepackage[frenchmath]{mathastext}
 \usepackage{dsfont}
 \usepackage{subfiles}
-\usepackage[]{graphicx}
+\usepackage{graphicx}
 \usepackage{tabularx}
+\usepackage{microtype}
 \usepackage{xspace}
-\usepackage{float}
+% \usepackage{float}
 \usepackage{mdframed}
 \usepackage{placeins}
 \usepackage{booktabs}
@@ -34,14 +35,11 @@
 \usepackage{braket}
 \usepackage{siunitx}
 
+% Automagically transform "foobar" to ``foobar''
 \MakeOuterQuote{"}
 
-% No Overfull hbox warning for less than 10pt
-\hfuzz=5pt
-% Add a visual marker for overrfull boxes
-\overfullrule=2em
-% Output more data in log converning underfull boxes
-% \showboxbreadth=50 \showboxdepth=50
+% No Overfull hbox warning for less than 1pt
+\hfuzz=1pt
 
 % Float placement rules, from https://aty.sdsu.edu/bibliog/latex/floats.html
 \renewcommand{\topfraction}{0.9}	% max fraction of floats at top
@@ -56,17 +54,6 @@
 \renewcommand{\floatpagefraction}{0.8}	% require fuller float pages
 % N.B.: floatpagefraction MUST be less than topfraction !!
 \renewcommand{\dblfloatpagefraction}{0.8}	% require fuller float pages
-
-% Put a big red square for undefined references
-\def\@setref#1#2#3{%
-    \ifx#1\relax
-        \protect\G@refundefinedtrue
-        \nfss@text{\reset@font\bfseries\colorbox{red}{??}}%
-        \@latex@warning{Reference `#3' on page \thepage \space undefined}%
-    \else
-        \expandafter#2#1\null
-    \fi%
-}
 
 % Recompile the figures as needed
 \immediate\write18{cd figures && make}
@@ -96,6 +83,24 @@
     \pagestyle{fancy}
 }
 \renewcommand{\chapter}{\@ifstar{\@chapterstar}{\@chapternostar}}
+
+% Use the chapter* style for table of contents, but without adding itself
+% to the TOC ...
+\renewcommand\tableofcontents{%
+    \hrule\relax
+    \vspace*{.9\baselineskip}%
+    \raggedright{\huge\spacedallcaps{\contentsname}}\par%
+    \markboth{\contentsname}{\contentsname}
+    \vspace*{1.1\baselineskip}%
+    \hrule\relax
+    \vspace*{\baselineskip}%
+    \@starttoc{toc}%
+}
+
+% Only expand the argument in a subfile/not in a subfile
+\ifdef{\old@document@subfiles}%
+    {\def\OnlyInSubfile#1{#1}\def\OnlyInMainfile#1{}}%
+    {\def\OnlyInSubfile#1{}\def\OnlyInMainfile#1{#1}}
 \makeatother
 
 % A bibheading using subsections
@@ -137,20 +142,13 @@
 \def\[{\begin{equation}}
 \def\]{\end{equation}}
 
-% Only expand the argument in a subfile/not in a subfile
-\makeatletter
-\ifdef{\old@document@subfiles}%
-    {\def\OnlyInSubfile#1{#1}\def\OnlyInMainfile#1{}}%
-    {\def\OnlyInSubfile#1{}\def\OnlyInMainfile#1{#1}}
-\makeatother
-
 % Partial TOC formatting for chapters
 \newcommand{\printpartialtoc}{%
     \begingroup
         \hypersetup{hidelinks}
-        \hrule\vspace*{3pc}%
+        \hrule\vspace*{0.6em}%
         \printcontents[chapters]{}{1}{\setlength\parskip{0pt}}%
-        \vspace*{0.8pc}\hrule
+        \vspace*{0.6em}\hrule
     \endgroup
 }
 
@@ -183,8 +181,6 @@
 \def\etc{\emph{etc.}\xspace}
 \def\vdW{van der Waals\xspace}
 
-\def\TODO{\colorbox{red}{TODO}}
-
 % PSL cover page
 \usepackage{psl-cover}
 \pslassetspath{figures/psl}
@@ -197,6 +193,32 @@
 
 \addsectionbib{publications.bib}
 \bibliography{thesis, publications}
+
+\addto\captionsenglish{\renewcommand{\contentsname}{Table of contents}}
+
+% DRAFT code, to be commented out/removed in final version
+\makeatletter
+    % Add a visual marker for overrfull boxes
+    \overfullrule=2em
+    % Output more data in log concerning underfull boxes
+    % \showboxbreadth=50 \showboxdepth=50
+    % Add the date/hour of compilation on each page
+    \ct@draftingtrue
+
+    % Use a big red box for TODO items
+    \def\TODO{\colorbox{red}{TODO}}
+
+    % Put a big red square for undefined references
+    \def\@setref#1#2#3{%
+        \ifx#1\relax
+            \protect\G@refundefinedtrue
+            \nfss@text{\reset@font\bfseries\colorbox{red}{??}}%
+            \@latex@warning{Reference `#3' on page \thepage \space undefined}%
+        \else
+            \expandafter#2#1\null
+        \fi%
+    }
+\makeatother
 
 \begin{document}
     \maketitle
@@ -220,11 +242,14 @@
 
     \include{publist}
 
-    \makeatletter
+    \begingroup
         % Use initials for author names in the general bibliography
-        \toggletrue{abx@bool@giveninits}
-    \makeatother
-    \printbibliography[heading=bibintoc]
+        \makeatletter\toggletrue{abx@bool@giveninits}\makeatother
+        % Give more leeway to LaTeX when trying to typeset overfull paragraphs
+        \setlength{\emergencystretch}{2em}
+
+        \printbibliography
+    \endgroup
 
     \subfile{Z-resume-fr}
 
