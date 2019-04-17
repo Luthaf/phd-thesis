@@ -72,13 +72,13 @@ where the potential energy integral is over all the accessible volume. The
 kinetic energy term is a product of Gaussian integrals, and gives us the
 following expression for the partition function:
 \[Z = \frac{1}{N!} \prod_i^{3N} \sqrt{\frac{2\pi m}{\beta h^2}} \iiint_V e^{-\beta\, U(\r^N)} \ \d\r^N\]
-$\Lambda = \sqrt{\beta h^2 / 2\pi m}$ is the de Broglie thermal wavelength for a
+$\lambda = \sqrt{\beta h^2 / 2\pi m}$ is the de Broglie thermal wavelength for a
 particle with mass $m$, and is homogeneous to a distance. This gives the final
 expression for the partition function:
-\[Z = \frac{1}{N!\ \Lambda^{3N}} \iiint_V e^{-\beta\, U(\r^N)} \ \d\r^N \label{eq:partition-function}\]
+\[Z = \frac{1}{N!\ \lambda^{3N}} \iiint_V e^{-\beta\, U(\r^N)} \ \d\r^N \label{eq:partition-function}\]
 And the corresponding probability for the system to be in a given conformation
 without constrains on the kinetic energy:
-\[\mathcal{P}_i = \frac{1}{N!\ \Lambda^{3N}\ Z}\ e^{-\beta\, U(\r^N)}\]
+\[\mathcal{P}_i = \frac{1}{N!\ \lambda^{3N}\ Z}\ e^{-\beta\, U(\r^N)}\]
 
 \subsubsection{Thermodynamic quantities from the partition function}
 
@@ -159,8 +159,8 @@ the system, and in particular the associated thermodynamic potential.
 \subsubsection{Isothermal-isobaric ensemble} In the $NPT$ ensemble, the volume
 $V$ is a free variable, and the probability for the system to be in a given
 configuration is:
-\[ \mathcal{P}_{NPT} = \frac{1}{N!\ \Lambda^{3N}\ \Delta} \kern1em e^{-\beta \left[U(\r^N) \ + \ PV\right]} \]
-\[ \Delta = \frac{1}{N!\ \Lambda^{3N}} \int \d V \iiint_V \d\r^N \; e^{-\beta \left[U(\r^N) \ + \ PV\right]} \]
+\[ \mathcal{P}_{NPT} = \frac{1}{N!\ \lambda^{3N}\ \Delta} \kern1em e^{-\beta \left[U(\r^N) \ + \ PV\right]} \]
+\[ \Delta = \frac{1}{N!\ \lambda^{3N}} \int \d V \iiint_V \d\r^N \; e^{-\beta \left[U(\r^N) \ + \ PV\right]} \]
 
 And the free energy is given by:
 \[G = - \frac 1 \beta \ln \Delta.\]
@@ -170,8 +170,8 @@ And the free energy is given by:
 In the $\mu VT$ ensemble, the number of atoms $n_i$ can vary while the
 associated chemical potential $\mu_i$ is fixed. The probability for the system
 to be in a state is given by:
-\[ \mathcal{P}_{\mu VT} = \frac{1}{N!\ \Lambda^{3N}\ \Theta} \kern1em e^{-\beta \left[U(\r^N) \ - \ \sum_i \mu_i n_i \right]} \label{eq:uVT-probability} \]
-\[ \Theta = \kern-2.5em \sum_{\substack{N=0 \\[0.5ex] \kern2.75em N=n_1+n_2+\dots}}^\infty \kern-2em \frac{1}{N!\ \Lambda^{3N}} \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[U(\r^N) \ - \ \sum_i \mu_i n_i \right]} \]
+\[ \mathcal{P}_{\mu VT} = \frac{1}{N!\ \lambda^{3N}\ \Theta} \kern1em e^{-\beta \left[U(\r^N) \ - \ \sum_i \mu_i n_i \right]} \label{eq:uVT-probability} \]
+\[ \Theta = \kern-2.5em \sum_{\substack{N=0 \\[0.5ex] \kern2.75em N=n_1+n_2+\dots}}^\infty \kern-2em \frac{1}{N!\ \lambda^{3N}} \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[U(\r^N) \ - \ \sum_i \mu_i n_i \right]} \]
 
 \subsubsection{Osmotic ensemble}
 
@@ -179,8 +179,8 @@ In the osmotic ($N_\text{host} \ \mu \ PT$) ensemble, the number of atoms $n_i$
 of guest molecules and the volume $V$ can vary while the associated chemical
 potential and pressure are constants. The probability for the system to be in a
 state is given by:
-\[ \mathcal{P}_{\mu VT} = \frac{1}{N!\ \Lambda^{3N}\ \zeta} \kern1em e^{-\beta \left[H(\r^N, \p^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \label{eq:probably:uvt}\]
-\[ \zeta = \kern-2.5em \sum_{\substack{\kern1.2em N=N_\text{host} \\[0.5ex] \kern2.6em N=n_1+n_2+\dots}}^\infty \kern-1em \frac{1}{N!\ \Lambda^{3N}} \int \d V \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[U(\r^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
+\[ \mathcal{P}_{\mu VT} = \frac{1}{N!\ \lambda^{3N}\ \zeta} \kern1em e^{-\beta \left[H(\r^N, \p^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \label{eq:probably:uvt}\]
+\[ \zeta = \kern-2.5em \sum_{\substack{\kern1.2em N=N_\text{host} \\[0.5ex] \kern2.6em N=n_1+n_2+\dots}}^\infty \kern-1em \frac{1}{N!\ \lambda^{3N}} \int \d V \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[U(\r^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
 Here, $N$ is the total number of atoms in the system, counting both the fixed
 host atoms and the varying atoms of the guest. The $\sum_i \mu_i n_i$ sum only
 run on the guest species.
@@ -577,19 +577,19 @@ moves to accomplish this, one where we select a molecule at random and remove
 it; and another one where a molecule is inserted from a fictitious reservoir at
 a random position and orientation (see figure~\ref{fig:mc:moves}, panels (d) and
 (e)). The acceptance probability is given as previously by the $\mathcal{P}_j /
-\mathcal{P}_i$ ratio; but this time the $N!\ \Lambda^{3N}$ terms from
+\mathcal{P}_i$ ratio; but this time the $N!\ \lambda^{3N}$ terms from
 equation~\eqref{eq:probably:uvt} do not cancel out. For the insertion of a new
 molecule we have:
-\[ \text{acc}(N \to N + 1) = \min\left[1, \frac{V}{\Lambda^3 (N + 1)} \exp\left(\beta \mu - \beta \Delta U \right)\right]; \]
+\[ \text{acc}(N \to N + 1) = \min\left[1, \frac{V}{\lambda^3 (N + 1)} \exp\left(\beta \mu - \beta \Delta U \right)\right]; \]
 and for the removal of a molecule,
-\[ \text{acc}(N \to N - 1) = \min\left[1, \frac{\Lambda^3 N}{V} \exp\left(-\beta \mu - \beta \Delta U \right)\right]. \]
+\[ \text{acc}(N \to N - 1) = \min\left[1, \frac{\lambda^3 N}{V} \exp\left(-\beta \mu - \beta \Delta U \right)\right]. \]
 
 Unfortunately, the chemical potential $\mu$ is not easily known before starting
 a simulation and these expressions are hard to use. Instead, for chemical
 species in the gas phase we use the fugacity $f$ of the gas, defined as the
 pressure of an ideal gas with the same temperature and molar free enthalpy as
 the real gas. It is related to the chemical potential by $f = e^{\,\beta \mu} /
-\beta \Lambda^3$.  Replacing in the equation above gives us the standard
+\beta \lambda^3$.  Replacing in the equation above gives us the standard
 acceptance probabilities for GCMC simulations in the gas phase:
 \begin{gather}
 \text{acc}(N \to N + 1) = \min\left[1, \frac{\beta V f}{N + 1} \exp\left(- \beta \Delta U \right)\right] \\
@@ -645,11 +645,11 @@ Newton's laws give us differential equations on the time evolution of positions
 and velocities ($\p_i = m_i \v_i$):
 \[\frac{\partial \r_i}{\partial t} = \v_i; \qquad\text{and}\qquad m_i \frac{\partial \v_i}{\partial t} = - \frac{\partial U(\r)}{\partial \r_i}. \]
 We can discretize time in these equations by considering a succession of
-instants separated by the \emph{time step} $\Delta t$. If we then replace the
+instants separated by the \emph{time step} $\delta t$. If we then replace the
 derivatives with first order finite differences, we get the Euler integrator
 equations:
-\[ \r_i(t + \Delta t) = \r_i(t) + \v_i(t) \Delta t + \smallo(\Delta t^2)\]
-\[ \v_i(t + \Delta t) = \v_i(t) + \frac{1}{m_i} \vec f_i(t) \Delta t + \smallo(\Delta t^2) \]
+\[ \r_i(t + \delta t) = \r_i(t) + \v_i(t) \delta t + \smallo(\delta t^2)\]
+\[ \v_i(t + \delta t) = \v_i(t) + \frac{1}{m_i} \vec f_i(t) \delta t + \smallo(\delta t^2) \]
 where $\vec f_i =\kern-0.7ex - \partial U(\r) / \partial \r_i$ is the force
 acting on atom $i$. The Euler integration scheme presented here have a high
 discretization error and is not used in actual simulations, but helps
@@ -658,10 +658,10 @@ below.
 
 Starting from an initial configuration defined by the positions and velocities
 of each atom at time $t$, these equations allow to compute the positions and
-velocities at the next time point $t + \Delta t$. For this discretization to be
-valid, the time step $\Delta t$ has to be small enough so that both the
-$\smallo(\Delta t^2)$ terms are negligible; and the forces acting on each atom
-are constant between $t$ and $t + \Delta t$. Depending on the system, typical
+velocities at the next time point $t + \delta t$. For this discretization to be
+valid, the time step $\delta t$ has to be small enough so that both the
+$\smallo(\delta t^2)$ terms are negligible; and the forces acting on each atom
+are constant between $t$ and $t + \delta t$. Depending on the system, typical
 values for the time step fall between \SI{0.5}{fs} and \SI{2}{fs}.
 
 Time integration of positions and velocities follows the standard rules of
@@ -736,12 +736,12 @@ being calculated at all steps.
 One of the simplest integrator respecting all the above defined constraints
 (symplectic, time-reversible, energy conservation) is the \emph{leap frog}
 integrator\cite{Frenkel1997}. The corresponding algorithm is reproduced below,
-using $\r(n)$ for $\r(n \times \Delta t)$, and $\vec f(n)$ for the forces
+using $\r(n)$ for $\r(n \times \delta t)$, and $\vec f(n)$ for the forces
 computed from the positions at step $n$.
 \[\begin{aligned}
     \vec a(n)   &= \frac{1}{m}\ \vec f(n), \\
-    \v(n + 1/2) &= \v(n - 1/2) + \vec a(n) \,\Delta t, \\
-    \r(n + 1)   &= \r(n) + \v(n + 1/2)\,\Delta t,
+    \v(n + 1/2) &= \v(n - 1/2) + \vec a(n) \,\delta t, \\
+    \r(n + 1)   &= \r(n) + \v(n + 1/2)\,\delta t,
 \end{aligned}\]
 
 Evaluation of the forces is made clear by the $a = f / m$ line, to ensure it
@@ -754,20 +754,20 @@ Velocity-Verlet integrator fixes this issue while keeping the symplectic and
 time reversible nature of leap frog\cite{Verlet1967, Frenkel1997}. The algorithm
 works as follow:
 \[\begin{aligned}
-    \v(n + 1/2)   &= \v(n) + \frac 12 \vec a(n)\,\Delta t, \\
-    \r(n + 1)     &= \r(n) + \v(n + 1/2)\,\Delta t, \\
+    \v(n + 1/2)   &= \v(n) + \frac 12 \vec a(n)\,\delta t, \\
+    \r(n + 1)     &= \r(n) + \v(n + 1/2)\,\delta t, \\
     \vec a(n + 1) &= \frac{1}{m}\ \vec f(n + 1), \\
-    \v(n + 1)     &= \v(n + 1/2) + \frac 12 \vec a(n + 1)\,\Delta t,
+    \v(n + 1)     &= \v(n + 1/2) + \frac 12 \vec a(n + 1)\,\delta t,
 \end{aligned}\]
 Here, velocities are updated twice by a half step, but the forces are still
 computed only once. This algorithm also yields the positions and velocities at
 full time steps, allowing them to be used together when computing properties of
 the system.
 
-Both integrators presented here have a $\smallo (\Delta t^2)$ error, but they
+Both integrators presented here have a $\smallo (\delta t^2)$ error, but they
 are other integration scheme with a smaller error, called higher-order
 integrators. The most famous ones are the Runge–Kutta methods, that can be
-derived for any even order, starting with $\smallo (\Delta t^4)$. Runge–Kutta
+derived for any even order, starting with $\smallo (\delta t^4)$. Runge–Kutta
 integrators are not used as often as the Velocity-Verlet or Leap Frog
 integrators, as they are more expensive to use and are not time-reversible.
 
@@ -816,7 +816,7 @@ m_i \v_i^2(t) $ as
 where $n_f$ is the number of degrees of freedom in the system, $3 * N$ for fully
 flexible molecules. The Berendsen thermostat is implemented by rescaling the
 velocities at each time step by
-\[\alpha = \sqrt{1 + \frac{\Delta t}{\tau_T} \left(\frac{T_0}{T(t)} - 1\right) }.\]
+\[\alpha = \sqrt{1 + \frac{\delta t}{\tau_T} \left(\frac{T_0}{T(t)} - 1\right) }.\]
 The Berendsen thermostat models a system weakly coupled to a heat bath at
 temperature $T_0$. In order to sample the canonical ensemble, we need an
 algorithm that is able to reproduce both the average value of the temperature
@@ -831,7 +831,7 @@ To probe the correct canonical ensemble, we can instead use a
 Nosé-Hoover\cite{Nose1984,Hoover1985} thermostat. In this approach, the
 Lagrangian (and thus the Hamiltonian) of the system is modified to include an
 additional variable $s$ controlling the temperature of the system by changing
-the time scale of the extended system such that $\Delta t' = s\, \Delta t$. This
+the time scale of the extended system such that $\delta t' = s\, \delta t$. This
 new variable is coupled to the system by changing all the velocities to $\v' =
 s^{-1}\ \d \r / \d t$. It can be shown that sampling the extended system in the
 micro-canonical ensemble is equivalent to sampling the real system in the
@@ -866,14 +866,14 @@ pressure $P$ by dynamically changing the volume $V$ of the system. For example,
 the Berendsen barostat\cite{Berendsen1984} rescales the system volume at every
 step to ensure a first-order relaxation to the target pressure. For a cubic unit
 cell subject to isotropic pressure, this means multiplying the cell volume by
-\[ \eta(t) = 1 - \frac{\beta\,\Delta t}{\tau_P} \left(P_0 - P(t)\right);\]
+\[ \eta(t) = 1 - \frac{\beta\,\delta t}{\tau_P} \left(P_0 - P(t)\right);\]
 where $P_0$ is the target pressure, $P(t)$ the instantaneous system pressure,
 $\tau_P$ the pressure relaxation time constant and $\beta$ the compressibility
 of the system; often approximated by the compressibility of liquid water. We
 then multiply the atomic positions by $\sqrt[3]{\eta}$. If the system is subject
 to an anisotropic stress tensor $\underline{S}_0$, then the unit cell matrix
 should be resized by:
-\[ \underline{\eta} = \mathds{1} - \frac{\beta\,\Delta t}{\tau_P} \left(\underline{S}_0 - \underline{S}(t)\right). \]
+\[ \underline{\eta} = \mathds{1} - \frac{\beta\,\delta t}{\tau_P} \left(\underline{S}_0 - \underline{S}(t)\right). \]
 
 As for thermostats, the Berendsen barostat does not sample the actual
 isothermal-isobaric ensemble, as it cannot accurately reproduce the volume
@@ -893,6 +893,7 @@ simulations, I found that setting $\tau_P = 10 \times \tau_T = 1000 \times \Delt
 t$ works well in practice.
 
 \subsubsection{Can osmostats exist? Grand canonical molecular dynamics}
+\label{sec:gcmd}
 
 As we have seen, it is possible to go from an ensemble to another by
 controlling the conjugated variables: change $E$ to control $T$, $V$ to control

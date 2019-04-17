@@ -10,7 +10,7 @@ all: ${TEX_OUTPUTS} ${PDF_OUTPUTS}
 	@cd gnuplot && gnuplot $(notdir $<)
 
 %.tex: %.pdf
-	@sed -i '' 's|includegraphics{../|includegraphics{|' $@
+	@perl -pi -e s,includegraphics{../,includegraphics{,g $@
 
 clean:
 	rm -f ${TEX_OUTPUTS} ${PDF_OUTPUTS}
