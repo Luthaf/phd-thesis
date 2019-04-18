@@ -277,6 +277,10 @@
 		"porosimetry",
 		"!Rosenbluth",
 		"decorrelated",
-		"!HMC"
+		"!HMC",
+		"particles'",
+		"computability",
+		"canonicalization",
+		"extensibility"
 	]
 }

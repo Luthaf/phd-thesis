@@ -35,6 +35,9 @@
 \usepackage{braket}
 \usepackage{siunitx}
 
+\usepackage[outputdir=build]{minted}
+\usepackage{inconsolata}
+
 % Automagically transform "foobar" to ``foobar''
 \MakeOuterQuote{"}
 
@@ -108,6 +111,17 @@
 \ifdef{\old@document@subfiles}%
     {\def\OnlyInSubfile#1{#1}\def\OnlyInMainfile#1{}}%
     {\def\OnlyInSubfile#1{}\def\OnlyInMainfile#1{#1}}
+
+\let\@oldprintbibliography\printbibliography
+\renewcommand{\printbibliography}{
+    \begingroup
+        % Use initials for author names in the general bibliography
+        \makeatletter\toggletrue{abx@bool@giveninits}\makeatother
+        % Give more leeway to LaTeX when trying to typeset overfull paragraphs
+        \setlength{\emergencystretch}{2em}
+        \@oldprintbibliography
+    \endgroup
+}
 \makeatother
 
 % A bibheading using subsections
@@ -189,6 +203,7 @@
 \def\ie{\emph{i.e.}\xspace}
 \def\etc{\emph{etc.}\xspace}
 \def\vdW{van der Waals\xspace}
+\def\cxx{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.2ex}{\footnotesize ++}}\xspace}
 
 % PSL cover page
 \usepackage{psl-cover}
@@ -251,14 +266,7 @@
 
     \include{publist}
 
-    \begingroup
-        % Use initials for author names in the general bibliography
-        \makeatletter\toggletrue{abx@bool@giveninits}\makeatother
-        % Give more leeway to LaTeX when trying to typeset overfull paragraphs
-        \setlength{\emergencystretch}{2em}
-
-        \printbibliography
-    \endgroup
+    \printbibliography
 
     \subfile{Z-resume-fr}
 

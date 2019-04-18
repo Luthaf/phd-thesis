@@ -2,8 +2,6 @@
 
 \begin{document}
 
-\def\cxx{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.3ex}{\footnotesize ++}}\xspace}
-
 \OnlyInSubfile{\setcounter{chapter}{5}}
 
 \chapter{Implementation of molecular simulation software}
@@ -11,9 +9,9 @@
 \vskip\baselineskip
 
 During my PhD, I also worked to implement molecular simulation software as part
-of the domino project. In this chapter I will this project and my contributions
+of the Domino project. In this chapter I will this project and my contributions
 to it, as well as some advanced simulation techniques I worked to incorporate in
-domino.
+Domino.
 
 The first of these advanced methods is the Hybrid Monte Carlo simulation
 technique, which join molecular dynamics and Monte Carlo in an attempt to get
@@ -29,71 +27,187 @@ that only relies on a sum of pair terms.
 \newpage
 \section{Domino: extensible molecular simulations library}
 
-\cxx, scientific software.
+Domino is a \cxx library that allow to run classical molecular simulations. In
+this section I will present the code and my contributions to it, as well as some
+of the goals and software architecture choices made to reach these goals.
 
-\cxx11 => common, can make it fast, simple subset
+Domino is written in \cxx, a computer programming language created in 1983 by
+Bjarne Stroustrup as an extension of the C language. \cxx mainly adds
+object-orientatation, functions overloading and generic programming to C. We
+choose \cxx because it is a general purpose language, which we can use to
+implement complex algorithms while retaining the ability to manage memory
+allocations and the memory layout of data. These two last points are what allow
+\cxx to run faster than \emph{managed} languages, where the users don't have
+control over memory allocation, locality and layout.  Software written in \cxx
+will not be inherently faster than say Python, but developers are able to
+optimize it further. Domino uses the \cxx11 version of \cxx standard, which
+brought major changes to \cxx, creating a subset of the language which is easier
+to use correctly and more expressive.
 
-Assume basic \cxx and object-oriented knowledge from reader
+In this section, I will assume some basic programming, \cxx and object-oriented
+knowledge from the readers. There are a lot of great online resources on all of
+these subjects, as well as books such as \emph{"\cxx Primer"} by Stanley B.
+Lippman, Josée Lajoie, and Barbara E. Moo; or \emph{"Effective Modern \cxx"} by
+Scott Meyers.
 
 \subsection{Goals and architecture}
 
-=> extensible, mixed MC/MD
+The main goal of Domino is to be an extensible classical molecular simulation
+library. A software library is a collection of functions and classes working
+together to provide some functionality. Domino provides facilities to run
+classical Monte Carlo, molecular dynamics and energy minimization simulations.
+We also tried to make it easy to use, and easy to extend, meaning it can be used
+as a basis for the development of new molecular simulations methods.
 
-=> classical only
+These goals translate into some of the architectural choices: in particular, the
+code needs to be simple to understand before being simple to extend. This means
+I restricted myself to a simple subset of \cxx, not using complex template-based
+meta-programming or deep class hierarchies.
 
-=> library
+Extensions points exist in two places in Domino. Classes that provide central
+behavior, such as potentials or molecular dynamics integrators are manipulated
+through pointers to a pure virtual base class --- or \emph{interface} ---
+throughout the code. By creating a new class inheriting from this interface, it
+is possible to add behavior to Domino without having to modify any of its
+internal source code. For example, the source code listing~\ref{code:potential}
+shows the interface used for potentials and the implementation for Lennard-Jones
+potentials. Adding a new potential to Domino is as simple as creating a new
+class and implementing the corresponding required functions. Other extensible
+parts of Domino include Monte Carlo moves, molecular dynamics thermostat and
+integrators, and overall simulation propagators.
 
-Pure virtual classes, no deep hierarchy
+\begin{listing}[ht]
+    \begin{minted}[autogobble, fontsize=\small]{c++}
+    /// Abstract base class for all energy and forces computations. All
+    /// functions take an abstract parameter 'x' that will be the distance for
+    /// pair potentials and the angle for angles or dihedral angles potentials.
+    class Potential {
+    public:
+        Potential() = default;
+        virtual ~Potential() = default;
 
-Inherit and implement as an extension strategy
+        /// Get the energy for the parameter `x`
+        virtual double energy(double x) const = 0;
+        /// Get the force factor for the parameter `x`
+        virtual double force(double x) const = 0;
+    };
 
-Library vs framework
+    class LennardJones final: public Potential {
+    public:
+        LennardJones(double epsilon, double sigma): sigma_(sigma), epsilon_(epsilon) {}
 
-Example for MD NPT and MC uVT
+        double energy(double r) const override {
+            auto sr = sigma_ / r;
+            auto sr3 = sr * sr * sr;
+            auto sr6 = sr3 * sr3;
+            return 4 * epsilon_ * sr6 * (sr6 - 1);
+        }
 
+        double force(double r) const override {
+            // [implementation of the force]
+        }
+
+    private:
+        double sigma_ = 0;
+        double epsilon_ = 0;
+    };
+    \end{minted}
+    \caption{Extract of the definition of the \texttt{Potential} interface in
+    Domino, and implementation for Lennard-Jones potential.}
+    \label{code:potential}
+\end{listing}
+
+The other way it is possible to extend Domino is by adding directly adding code
+before, inside or after the simulation loop. As a library, Domino does not
+impose a structure on the simulation program. It is thus possible to customize
+the simulation flow, adding \emph{on-the-fly} analysis, or merging multiple
+molecular dynamics simulation into a parallel tempering one. See the source code
+listing~\ref{code:simulation-example} for a simple example of constant pressure
+Monte Carlo simulation.
+
+\begin{listing}[ht]
+    \begin{minted}[autogobble, fontsize=\small]{c++}
+    #include "domino.hpp"
+    using namespace domino;
+
+    int main(int argc, char *argv[]) {
+        domino::initialization();
+
+        // Read the system
+        auto system = Trajectory("initial.pdb").read();
+        // Read the interaction potential
+        domino::InputFile("potential.yml").read_to(system);
+
+        // Setup the simulation: Monte Carlo at 300 K with three moves
+        auto mc = MonteCarlo(units::from(300, "K"));
+        mc.add_move(Translate(units::from(0.5, "A"), 50));
+        mc.add_move(Rotate(units::from(20, "deg"), 50));
+        mc.add_move(Resize(units::from(500, "bar"), 1));
+        mc.setup(system);
+
+        // Add code before the simulation loop
+        // ...
+
+        // Simulation loop
+        for (size_t i=0; i<1e6; i++) {
+            // This function call will propagate the simulation for one step
+            mc.propagate(system);
+
+            // Add code inside the simulation loop
+            if (i % 100 == 0) {
+                std::cout << i << " " << system.energy() << "\n";
+            }
+        }
+
+        // Add code after the loop
+        std::cout << mc.summary() << std::endl;
+
+        domino::finalization();
+        return 0;
+    }
+    \end{minted}
+    \caption{Example of a constant pressure Monte Carlo simulation using Domino.}
+    \label{code:simulation-example}
+\end{listing}
+
+\vskip\baselineskip
 \subsubsection{Contributions to Domino}
 
-Code quality:
+Domino was started in 2009 by François-Xavier Coudert, my PhD advisor. Before I
+started working on it in 2015, it had contributions by Jean-Marie Teuler, Julien
+Germond and David Bousquet. Since then, I was the only contributor to the code,
+and rewrote most of it, creating 480 git commits (self contained modifications)
+on the 800 of the repository.  My contributions were related to two area of the
+code: code quality improvement and simulation algorithm implementation.
 
-cleanup + modernizing code
+On the code quality improvements side, I ported Domino to \cxx11, and cleaned up
+multiple previous experiments, such as a Python binding, atomic selection
+language and file input and output (for which I used chemfiles, presented in
+appendix~\ref{sec:chemfiles}). I added tests with respect to NIST simulations
+reference data\cite{NIST}, as well as a YAML input file to specify interaction
+potentials. I improved the simulated system in-memory representation and
+canonicalization: dealing with normalization of bond and angles indexes and
+representation of the bonded distance matrix.
 
-Add tests with reference NIST data
+On the algorithms implementation side, I added the interface-based extensibility
+of Domino. I also implemented grand canonical and hybrid Monte Carlo moves, as
+well as an anisotropic Berendsen barostat, a Monte Carlo barostat and the CSVR
+thermostat for molecular dynamics. I improved the support for anisotropic
+simulations by implementing anisotropic stress and pressure calculations for
+both Monte Carlo and molecular dynamics. I implemented both Ewald and Wolf
+summation methods for electrostatic energy and forces calculations. Finally, I
+improved the cache of already-computed energy in Monte Carlo simulations, adding
+support for more moves and electrostatic interactions.
 
-Potential interface
+\subsection{Challenges encountered}
 
-YAML for input
-
-System representation and normalization
-
-
-
-Algorithms:
-
-GCMC
-
-Hybrid Monte Carlo
-
-Anisotropic Stress tensor
-
-Berendsen anisotropic barostat
-
-Monte-Carlo barostat
-
-CSVR thermostat
-
-Ewald
-
-Wolf
-
-\subsection{Challenges of mixed simulation software}
-
-=> MD + MC
+\subsubsection{Mixed molecular dynamics and Monte Carlo}
 
 => on demand computation of forces + energy
 
-\subsubsection{Computing pressure and stress}
+=> Computing pressure and stress
 
-\subsection{Monte Carlo energy caching}
+\subsubsection{Monte Carlo energy caching}
 
 Pairs + Ewald
 
@@ -131,7 +245,7 @@ illustrated in figure~\ref{fig:cbmc}.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{figures/images/cbmc}
+    \includegraphics[width=0.9\textwidth]{figures/images/cbmc}
     \caption{Illustration of a single configurational bias Monte Carlo move. A
     linear molecule is regrown step by step. At each step, the position for the
     next atom is picked at random, depending on the position of all the
@@ -225,12 +339,13 @@ $\delta \mathcal{H}$:
 we can show that the resulting Monte Carlo move respect the detailed balance
 provided that the integration scheme $\psi_{\delta t}$ is \emph{time reversible}
 and \emph{symplectic}.
-\[\begin{array}{lcl}
-    \mathcal{P}(\r)\ \pi(\r \to \r') \ \d\r\d\v   &=& \mathcal{P}(\r)\ \mathcal{P}_T(\v)\ \text{acc}\kern-0.5ex\left((\r, \v) \to \psi_{\delta t}(\r, \v)\right) \d\r\d\v \\
-    \text{\footnotesize \itshape see below}       &=& \mathcal{P}(\r')\ \mathcal{P}_T(\v')\ \text{acc}\kern-0.5ex\left(\psi_{\delta t}(\r, \v) \to (\r, \v)\right) \d\r\d\v \\
-    \text{\footnotesize \itshape time reversible} &=& \mathcal{P}(\r')\ \mathcal{P}_T(\v')\ \text{acc}\kern-0.5ex\left((\r', \v') \to \psi_{-\delta t}(\r', \v')\right) \d\r\d\v \\
-    \text{\footnotesize \itshape symplectic}      &=& \mathcal{P}(\r')\ \mathcal{P}_T(\v')\ \text{acc}\kern-0.5ex\left((\r', \v') \to \psi_{-\delta t}(\r', \v')\right) \d\r'\d\v' \\
-    \mathcal{P}(\r)\ \pi(\r \to \r') \ \d\r\d\v &=& \mathcal{P}(\r')\ \pi(\r' \to \r) \ \d\r'\d\v'
+\[\begin{array}{lcllll}
+    \mathcal{P}(\r)\ \pi(\r \to \r') \ \d\r\d\v   &=& \mathcal{P}(\r)  & \mathcal{P}_T(\v)  & \text{acc}\kern-0.5ex\left((\r, \v) \to \psi_{\delta t}(\r, \v)\right)      & \d\r\d\v \\
+    \text{\footnotesize \itshape see below}       &=& \mathcal{P}(\r') & \mathcal{P}_T(\v') & \text{acc}\kern-0.5ex\left(\psi_{\delta t}(\r, \v) \to (\r, \v)\right)      & \d\r\d\v \\
+    \text{\footnotesize \itshape time reversible} &=& \mathcal{P}(\r') & \mathcal{P}_T(\v') & \text{acc}\kern-0.5ex\left((\r', \v') \to \psi_{-\delta t}(\r', \v')\right) & \d\r\d\v \\
+    \text{\footnotesize \itshape symplectic}      &=& \mathcal{P}(\r') & \mathcal{P}_T(\v') & \text{acc}\kern-0.5ex\left((\r', \v') \to \psi_{-\delta t}(\r', \v')\right) & \d\r'\d\v' \\
+                                                  &=& \mathcal{P}(\r') & \multicolumn{2}{l}{\pi(\r' \to \r) \ \d\r'\d\v'}
+\label{eq:hmc-demonstration}
 \end{array}\]
 The first step in the above demonstration comes from the mathematical identity
 \[e^{-\beta\mathcal{H}(\r, \v)} \min\kern-0.5ex\left(1, e^{-\beta \delta \mathcal{H}}\right) = e^{-\beta\mathcal{H}(\r', \v')} \min\kern-0.5ex\left(e^{\, \beta \delta \mathcal{H}}, 1\right). \]
@@ -246,38 +361,89 @@ timestep used by the molecular simulation, and depends only on $\delta t$ and
 the number of steps used to propagate the system with molecular dynamics. These
 are the parameters we can adjust to change the global acceptance rate.
 
-\subsection{Related algorithms and methods}
+\subsubsection{Constant pressure simulations}
 
-In the last decade, improvements
+There are two ways to use Hybrid Monte Carlo simulations to sample the
+isobaric-isothermal $NPT$ ensemble. The first one is to use separate moves to
+change the volume and the particles' positions --- the former using standard
+Monte Carlo moves and the latter relying on hybrid moves. While doing so is
+simpler from an implementation point of view, it can be less efficient when the
+changes in volume are coupled to local deformations of the system.
 
-Since the original hybrid Monte Carlo method
+Another possibility is to use the hybrid moves to sample both the volume changes
+and the particles' displacements. The same construction used above can be used
+to create an hybrid move that sample the $NPT$ ensemble. The molecular dynamics
+integrator now maps the initial position in phase space including the volume $V$
+$(V, \r, \v)$ to a new position in phase space $(V', \r', \v')$. If the
+integrator is deterministic, the probability to generate a specific new state
+from the initial one $\alpha((V, \r) \to (V', \r'))$ is still the same as the
+probability to generate the initial  velocities $\mathcal{P}_T(\v)$. Provided
+the integrator is time reversible and symplectic, the same demonstration as in
+equation~\eqref{eq:hmc-demonstration} applies by adapting the acceptance
+criterion to
+\[\text{acc}((V, \r, \v) \to (V', \r', \v')) = \min\left(1, e^{-\beta \delta \mathcal{H} - \beta\ P \Delta V}\right)\]
 
-\subsubsection{Shadow Hybrid Monte Carlo}
+If an extended Langrangian integrator such as the one proposed by
+Andersen\cite{Andersen1980} is used, the momentum of the fictitious external
+\emph{piston} should also be included in both the probability of creating a new
+state $\alpha((V, \r) \to (V', \r'))$ and in the Hamiltonian part of the
+acceptance criterion\cite{Faller2002, FernandezPendas2014}.
 
-\subsubsection{Compressible Hybrid Monte Carlo}
+Again, we should note that the molecular dynamics simulation only samples the
+is\-enthalpic-iso\-baric $NPH$ ensemble, and the Monte Carlo acceptance criterion
+ensure sampling of the isobaric-isothermal $NPT$ ensemble. Actually, the
+molecular dynamics does not even need to sample an accurate $NPH$ ensemble, only
+to generate new states with different volume and following the above properties
+of being deterministic, time-reversible and symplectic. The Metropolis
+acceptance criterion ensures that the correct ensemble will be sampled.
 
-\subsubsection{Constant pressure Hybrid Monte Carlo}
+\subsubsection{Osmotic simulations}
 
+Once we are able to use hybrid simulations to sample the $NPT$ ensemble, moving
+to the osmotic $N_\text{host}\,\mu\,PT$ ensemble is accomplished by adding
+insertion/deletion moves to allow the number of adsorbed particles to vary. Very
+recently, \citeauthor{Rogge2019}\cite{Rogge2019} used such hybrid Monte Carlo
+simulations to study adsorption of noble gases, \ce{CO2} and \ce{CH4} in
+MIL-53(Al) using the osmotic ensemble. They were able to reach very good
+agreement with experimental measurements of adsorption isotherms and predict the
+bi-stability and breathing of MIL-53(Al) upon adsorption.
 
-\TODO\cite{Akhmatskaya2009}
+Because the correctness of the sampled ensemble is validated by the Metropolis
+criterion and the detailed balance, hybrid moves are not required to produce
+statistically correct ensemble. This means that it should be possible to use an
+adapted Grand Canonical Molecular Dynamics scheme to generate new trial
+conformation to be accepted with the Metropolis criterion. To my knowledge, this
+as not been attempted yet, but could improve insertion rate for osmotic
+simulations in dense phases --- such as the simulation of intrusion in porous
+solids. Traditional insertion/deletion moves suffer from a very low acceptance
+rate in dense phases such as liquids, because molecules are already densly
+packed and there is not enough space to add new molecules. Grand canonical
+molecular dynamics can help by progressively scaling the \emph{presence} of the
+new molecule up, allowing its surroundings to relax.
 
-\TODO\cite{Izaguirre2004}
+\subsubsection{Related algorithms and methods}
 
-\TODO\cite{Akhmatskaya2011}
-
-\TODO\cite{Fang2014}
-
-\subsection{Sampling other ensembles}
-
-\TODO constant pressure simulation
-
-\TODO osmotic simulations\cite{Rogge2019}
+In the last decade, some improvements to the simple hybrid Monte Carlo method
+presented here have been proposed. Shadow Hybrid Monte Carlo\cite{Izaguirre2004}
+relies on the existence and computability of a \emph{shadow} Hamiltonian being
+propagated exactly (without any propagation error) by $\psi_{\delta t}$ to
+improve the acceptance rate of hybrid moves, and reconstruct \emph{a posteriori}
+the probabilities of each generated conformation. Generalized Hybrid Monte
+Carlo\cite{Akhmatskaya2009, Akhmatskaya2011} uses configurations in the phase
+space instead of conformations in the Markov chain, keeping the velocities from
+one Monte Carlo move to another. The different steps are still accepted or
+rejected by a Metropolis criterion, and velocities are partially updated with
+new random values at each step. The combination of these two approaches is
+called Generalized Shadow Hybrid Monte Carlo, and implemented in the GROMACS
+simulation software\cite{FernandezPendas2014}. Finally, tentative to lift
+the symplectic requirement on the integrator are at the origin of Compressible
+Generalized Hybrid Monte Carlo\cite{Fang2014}.
 
 \subsection{Hybrid simulations of adsorption}
 
-I used my implementation of hybrid Monte Carlo in domino to study adsorption of
+I used my implementation of hybrid Monte Carlo in Domino to study adsorption of
 methane \ce{CH4} in MOF-5 at \SI{300}{K}. I used a simplified model of both
-MOF-5 and \ce{CH4} as domino did not support computing electrostatic
+MOF-5 and \ce{CH4} as Domino did not support computing electrostatic
 interactions at the time. \ce{CH4} molecules where approximated by a single
 spherical Lennard-Jones sphere, using $\sigma = \SI{3.737}{\AA}$ and $\epsilon =
 \SI{1.247}{kJ/mol}$. I used the Lennard-Jones and intra-molecular terms from
@@ -292,7 +458,7 @@ moves used a Velocity-Verlet integrator with a timestep of \SI{1}{fs}, and a
 Berendsen barostat setting the external pressure at the same value as the
 \ce{CH4} fugacity and a time step of \SI{5}{ps}. I should point out that I used
 the Berendsen barostat even if it is not symplectic nor time reversible, as it
-was the only barostat implemented in domino. Again, while the resulting
+was the only barostat implemented in Domino. Again, while the resulting
 simulation might not sample the adequate ensemble, it is still and interesting
 check. Each simulation was propagated for a million of Monte Carlo moves, using
 the first 250 000 moves as the equilibration period. The resulting isotherms is
@@ -319,21 +485,58 @@ Mouhat2015}: the presence of few molecules inside the pores induces a
 this phenomenon is to envision the molecules inside the pore \emph{pulling} on
 the pores wall.
 
-=> bad model, good physics
+It is remarkable to see that a simple model of the MOF is able to reproduce this
+relatively complex behavior. In order to improve the model and predictive
+possibilities of hybrid Monte Carlo simulations, I needed to implement a way to
+compute electrostatics interactions. In the next section, I will discuss two
+methods one can use to compute these interactions in the presence of periodic
+boundary conditions.
 
-=> needs electrostatics to go further
-
-\newpage
+% \newpage
 \section{Computation of electrostatic energy in classical simulations}
 \label{sec:electrostatic}
 
+Classical force fields represent the energy of an atomic system as a sum of
+multiple contributions, including dispersion and short-range repulsion,
+intra-molecular interactions and electrostatic interactions. In the last case,
+atoms are often identified to point charges, interacting through a Coulombic
+potential. For two atoms $i$ and $j$ carrying charges $q_i$ and $q_j$, at a
+distance $r$ from one another, this potential reads:
+\[ V(r) = \frac{q_i q_j}{4 \pi \epsilon_0 r}.\]
+In the remaining of this chapter, I will be using units such that $4 \pi
+\epsilon_0 = 1$.
+
 \subsection{The problem}
 
-PBC: infinite + non convergence of the error if cutoff used
+As presented in section~\ref{sec:pbc}, we are limited in the size of systems we
+can simulate with classical simulation methods. To remove the size and surface
+effects arising from the relatively small number of particles in a simulation,
+most if not all classical simulations uses the trick of periodic boundary
+conditions. This means that we are in effect simulating an infinite system,
+extending in all three dimensions of space. All of the interaction potentials
+that have an action at long distances goes down to zero as the distance between
+atoms goes to infinity (else the overall energy would be infinite). It is thus
+usual to use a cutoff radius $r_c$ when computing the energy of a system: any
+interaction between atoms further apart than this radius is supposed negligible,
+and set to zero. This allows to speed up the calculation of energies in the
+simulations by ignoring many small contributions. The error $\epsilon$ arising
+from the use of a cutoff radius can be quantified --- using $V(r)$ for the pair
+potential:
+\[\epsilon = \int_{r_c}^\infty r^2 V(r)\ \d r. \]
+This error can be computed and used to correct after the fact the energy and
+pressure computed from a simulation. This correction is called the
+\emph{long-range} or \emph{tail} correction.
+
+Unfortunely, the above integral only converges if $V(r)$ goes to zero faster
+than $1/r^3$, which is not the case for the electrostatic potential. In the
+following, I will be describing two methods one can use to compute the
+electrostatic interaction accurately in classical molecular simulations: Ewald
+summation and Wolf summation. I implemented both in the Domino project, and I
+will give some software tricks I used to speed up the implementations.
 
 \subsection{Ewald summation}
 
-Periodic: Fourier Transform!
+Ewald summation was proposed by Paul Peter Ewald in 1921\cite{Ewald1921}
 
 \subsection{Wolf summation}
 
