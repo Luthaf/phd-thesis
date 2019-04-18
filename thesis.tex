@@ -13,10 +13,10 @@
 \usepackage{tabularx}
 \usepackage{microtype}
 \usepackage{xspace}
-% \usepackage{float}
 \usepackage{mdframed}
 \usepackage{placeins}
 \usepackage{booktabs}
+\usepackage{afterpage}
 \usepackage{xpatch}
 \usepackage[parfill]{parskip}
 \usepackage[autostyle=false, style=english]{csquotes}
@@ -54,6 +54,13 @@
 \renewcommand{\floatpagefraction}{0.8}	% require fuller float pages
 % N.B.: floatpagefraction MUST be less than topfraction !!
 \renewcommand{\dblfloatpagefraction}{0.8}	% require fuller float pages
+
+% space left between floats (default is 12.0pt plus 2.0pt minus 2.0pt).
+\setlength{\floatsep}{\parskip}
+% space left on top and bottom of an in-text float (default is 12.0pt plus 2.0pt minus 2.0pt).
+\setlength{\intextsep}{\parskip}
+% space between last top float or first bottom float and the text (default is 20.0pt plus 2.0pt minus 4.0pt).
+\setlength{\textfloatsep}{2\parskip}
 
 % Recompile the figures as needed
 \immediate\write18{cd figures && make}

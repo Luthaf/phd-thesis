@@ -332,46 +332,45 @@ more depth in the next chapter, section~\ref{sec:classical-ff-parametrize}.
 
 \subsection{System size and periodic boundary conditions}
 
-Everyday chemical systems contains a huge number of atoms, of the order of
+Everyday chemical systems contain a huge number of atoms, of the order of
 Avogadro's number (\SI{e23}{} atoms). But when using molecular simulation to
 study a chemical system, we are limited to a much smaller number of atoms: using
 \SI{1}{TB} of computer memory we can only store positions and velocities for
-around \SI{e10}{} atoms. This is even worst if we consider the number of atoms
+around \SI{e10}{} atoms. This is even worse if we consider the number of atoms
 for which we can compute properties with molecular simulation methods, of the
 order of \SI{e4}{} to \SI{e7}{} atoms at most from today commodity hardware to
 the biggest super-computers.
 
-At these scales, the surface effects are not negligible: the surface energy
-becomes an important part of the overall energy. The typical way to remove these
-surface effects while keeping the number of simulated atoms low is to use
-\emph{periodic boundary conditions}. The atoms are placed in a rhombohedral
-simulation box called the \emph{unit cell}, which is replicated \emph{ad
-infinitum} in all directions, as illustrated in figure~\ref{fig:pbc}. The copies
-of the initial box are called images of this box.
+At these scales, the size and surface effects are not negligible: the surface
+energy becomes an important part of the overall energy. The typical way to
+remove these surface effects while keeping the number of simulated atoms low is
+to use \emph{periodic boundary conditions}. The atoms are placed in a simulation
+box called the \emph{unit cell}, which is replicated \emph{ad infinitum} in all
+directions, as illustrated in figure~\ref{fig:pbc}.  The copies of the initial
+box are called images of this box.
 
 \begin{figure}[b]
     \centering
     \includegraphics[width=0.6\textwidth]{figures/images/pbc}
     \caption{Illustration of periodic boundary condition in a two dimensional
-    system. Molecules from the central cell are \emph{repeated} in all
-    directions.}
+    system. Molecules from the central cell are repeated in all directions.}
     \label{fig:pbc}
 \end{figure}
 
 In this arrangement, a molecule from the central simulation box will interact
 with all molecules in the same box; but also with any molecule in any image
-boxes, including with molecules images of itself. The effectively infinite
+box, including with molecules image of itself. The effectively infinite
 system created this way will not contain any surface effects, but other issues
 can still affect the sampling and averaging of system properties.
 
 First of all, the use of periodic boundary conditions introduces an artificial
-periodicity to the system, more so as the central simulation box is smaller. For
-the study of crystalline materials, one has to ensure that the periodicity of
-the simulation box matches the periodicity of the crystal primitive cell. This
-periodicity also makes it harder to study defects and other rare features of the
-system. If we explicitly add a defect to the system, it will be replicated over
-all the images, artificially increasing the number of defects per unit of
-volume.
+periodicity into the system, which grows more important as the central
+simulation box is smaller. For the study of crystalline materials, one has to
+ensure that the periodicity of the simulation box matches the periodicity of the
+crystal primitive cell. This periodicity also makes it harder to study defects
+and other statistically rare features of the system. If we explicitly add a
+defect to the system, it will be replicated over all the images, artificially
+increasing the number of defects per unit of volume.
 
 Second, because the system is now infinite, we need to compute an infinity of
 interactions between molecules to evaluate its energy. Fortunately, most
@@ -381,24 +380,24 @@ interact. The error $\epsilon$ that arise from a the use of a cutoff radius
 $r_c$ depends on the potential $V(r)$ and the radial distribution function
 $g(r)$ of the current conformation:
 \[\epsilon(r_c) = \int_{r_c}^\infty r^2 V(r)\ g(r)\ \d r \]
-If the cutoff radius is large enough (usually \SI{10}{\\AA} is enough), then
+If the cutoff radius is large enough (usually \SI{10}{\AA} is enough), then
 $g(r) \simeq 1$ and we get a simpler estimation that does not depends on the
 system conformation:
 \[\epsilon(r_c) = \int_{r_c}^\infty r^2 V(r)\ \d r \]
 For any function $V(r)$ that goes to zero at infinity faster than $1/r^3$, this
 error is finite, and can be computed and applied afterward. Notably, the
 electrostatic potential decays as $1/r$, and this error does not converge. In
-order to describe electrostatic interaction properly in presence of periodic
+order to describe electrostatic interactions properly in presence of periodic
 boundary conditions, we need to use other methods such as the Ewald summation,
-which I will present in more details in chapter~\ref{sec:electrostatic}.
+which I will present in more detail in section~\ref{sec:electrostatic}.
 
 Finally, the \emph{minimum-image convention} is often used to improve simulation
-speed. under this convention, a particle in the central simulation box interacts
+speed. Under this convention, a particle in the central simulation box interacts
 only with neighbors from the central image or an image surroundings the central
 one. This restrict the number of images that has to be searched for neighbors
 inside the cutoff radius. To be able to enforce this minimum-image convention,
 the smallest inscribed sphere must have a radius bigger than the cutoff radius.
-For a orthorhombic simulation box, the smallest box side length must be at least
+For an orthorhombic simulation box, the smallest box side length must be at least
 twice the cutoff radius.
 
 \newpage
