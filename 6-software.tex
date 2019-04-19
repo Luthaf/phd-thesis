@@ -48,16 +48,20 @@ In this section, I will assume some basic programming, \cxx and object-oriented
 knowledge from the readers. There are a lot of great online resources on all of
 these subjects, as well as books such as \emph{"\cxx Primer"} by Stanley B.
 Lippman, Josée Lajoie, and Barbara E. Moo; or \emph{"Effective Modern \cxx"} by
-Scott Meyers.
+Scott Meyers. Concerning the algorithms I implemented, I found the book by
+Frenkel and Smit\cite{Frenkel2002} to be a great help, as well as the one by
+Allen and Tildesley\cite{Allen2017}.
 
 \subsection{Goals and architecture}
 
 The main goal of Domino is to be an extensible classical molecular simulation
 library. A software library is a collection of functions and classes working
-together to provide some functionality. Domino provides facilities to run
-classical Monte Carlo, molecular dynamics and energy minimization simulations.
-We also tried to make it easy to use, and easy to extend, meaning it can be used
-as a basis for the development of new molecular simulations methods.
+together to provide some functionality. One specificity of Domino is that is
+provides facilities to run both classical Monte Carlo, molecular dynamics and
+energy minimization simulations, where most other simulation software only offer
+either Monte Carlo or molecular dynamics. We also tried to make it easy to use,
+and easy to extend, meaning it can be used as a basis for the development of new
+molecular simulations methods.
 
 These goals translate into some of the architectural choices: in particular, the
 code needs to be simple to understand before being simple to extend. This means
@@ -170,7 +174,6 @@ Monte Carlo simulation.
     \label{code:simulation-example}
 \end{listing}
 
-\vskip\baselineskip
 \subsubsection{Contributions to Domino}
 
 Domino was started in 2009 by François-Xavier Coudert, my PhD advisor. Before I
@@ -201,18 +204,154 @@ support for more moves and electrostatic interactions.
 
 \subsection{Challenges encountered}
 
+While working on Domino, I encountered a few challenges, some of which were
+generic to the field of molecular simulation, other which were specific to the
+fact that Domino provides both Monte Carlo and molecular dynamics. In this
+section, I will present some of these challenges, as well as the technical
+solutions I used to overcome them. Most of these challenges are related to the
+computation of energy and forces, and the computation of distances under
+periodic boundary conditions, which are the most expensive steps of the
+simulation.
+
+\subsubsection{A performance model of modern computers}
+
+At their basis, computers are made of two main components: the central
+processing unit (CPU) or processor execute the instructions, and the memory ---
+usually in the form of random access memory (RAM) --- stores data used by the
+processor. On the first personal computers in the 80s, CPU executed instructions
+at \SI{1}{MHz}, and RAM access were made at roughly the same speed. Optimizing
+code then mainly meant reducing the number of instructions executed by the CPU.
+Since then, CPU speed increased dramatically to around \SI{4}{GHz}, while the
+RAM access speed only increased to \SI{10}{MHz}. This means that data access
+patterns are much more important to consider when optimizing software for low
+run time. In order to speedup data access, modern CPU comes with multiple level
+of cache, from the fast but small first level (L1 cache), to the bigger but
+slower L2 and L3 caches. Upon the first access, data is copied from RAM to the
+cache, and on subsequent operations, the data from the cache is used. Later on,
+data is copied back to RAM. Typically latency for data access on caches and RAM
+are represented on figure~\ref{fig:computer-model}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/images/computer-model}
+    \caption{Latency for data access from the CPU to three level of CPU cache
+    (L1, L2 and L3) and the RAM of a modern computer. The numbers are for Intel
+    Corporation's i7 and Xeon CPU\cite{SO-CPU-latency}.}
+    \label{fig:computer-model}
+\end{figure}
+
+Because the CPU can spend hundred of cycles waiting for data which is not yet in
+cache, it is important to make sure data in the RAM is accessed in a linear
+fashion. When some data is explicit fetched from the RAM, another mechanism
+called \emph{pre-fetching} kicks in, fetching additional data close to the one
+requested and storing it in the cache. If the code access data in a linear way,
+the next data fetch will be faster, as everything required is already in the
+caches. Software behaving is way is said to have high \emph{memory locality}.
+Improving memory locality is nowadays an additional important item for code
+optimization.
+
 \subsubsection{Mixed molecular dynamics and Monte Carlo}
 
-=> on demand computation of forces + energy
+Monte Carlo, and in particular Grand Canonical Monte Carlo requires a different
+set of operations on the system that molecular dynamics, and has a different
+optimal data representation. Specifically, Grand Canonical Monte Carlo requires
+the possibility to dynamically change the number of molecules, and prevent the
+use of atomic index as atomic identifier, as the indexes will change during the
+simulation. At the same time, molecular dynamics can benefit from distributed
+memory parallelism (using for example the \emph{Message Passing Interface} MPI)
+by using a domain decomposition algorithm, but this kind of parallelism is less
+trivial to integrate efficiently with Monte Carlo. To both allow GCMC
+simulations and a future implementation of distributed memory parallelism for
+molecular dynamics, the storage of atom uses dynamic allocation in growable
+containers. At the same time, atoms from the same molecules are kept contiguous
+in memory, improving memory locality when computing intra-molecular interactions
+and allowing the implementation of domain decomposition.
 
-=> Computing pressure and stress
+Moreover, molecular dynamics needs information on the forces acting on the
+system, while Monte Carlo only needs to compute the energy. When computing the
+forces, adding the energy is a minimal additional runtime cost --- periodic
+boundary conditions have already been applied --- and no additional memory cost.
+On the opposite, when computing energy, adding forces increases the memory and
+runtime cost: for a small system containing 50 water molecules, computing only
+the energy with Domino takes \SI{1.3}{ms}, and computing the energy and the
+forces takes \SI{2.6}{ms}. Domino thus provides two different code path, one
+computing only the energy for Monte Carlo and another one computing both the
+energy and the forces for molecular dynamics.
 
-\subsubsection{Monte Carlo energy caching}
+At the same time, most of the Monte Carlo moves only update the positions of a
+few atoms. This means that most of the energy components do not change before
+and after the move. Instead of recomputing all the energy components when
+evaluating the energy difference $\Delta U$ in the Metropolis criterion, Domino
+uses a cache for the energies, storing the energy associated with a pair in a
+bi-dimensional array, and only updating the energies associated with the
+modified pairs. This strategy is illustrated in figure~\ref{fig:mc-cache}. This
+can result in multiple order of magnitude of improvement when compared to a full
+energy evaluation.
 
-Pairs + Ewald
+\begin{figure}[ht]
+    \centering
+    % \includegraphics[width=\textwidth]{}
+    \caption{\TODO}
+    \label{fig:mc-cache}
+\end{figure}
 
-All moves
+\subsubsection{Computation of the pressure}
 
+Another conflict between Monte Carlo and molecular dynamics occurs when
+computing the virial pressure with rigid or flexible molecules. It is often
+interesting to use a rigid model for small molecules in classical molecular
+simulation. If we are not interested in the small vibrational movements around
+equilibrium of the bonds and angles, making the molecule rigid restricts the
+size of the phase space we have to sample, and allows us to use larger timesteps
+in molecular dynamics. Molecular dynamics need to use specific algorithms to
+simulate rigid molecules, either by using rigid body dynamics, or by adding
+corrections to the positions, velocities and forces. The latter case is the
+realm of the SHAKE and RATTLE family of algorithms\cite{Ryckaert1977,
+Andersen1983}. Monte Carlo simulations have the ability to run explicitly model
+rigid molecules by simply omitting moves that would deform molecules.
+
+This difference comes into play when trying to evaluate the instantaneous
+pressure of the system. In kinetic theory of gases, the pressure arise from
+shocks of molecules with the containing walls. In molecular simulations, there
+are usually no walls, and we want to compute an instantaneous pressure instead
+of a time average. We use instead the thermodynamic definition of the pressure:
+\[P = - \left.\frac{\partial F}{\partial V}\right|_{T, N} \]
+For a given potential energy surface $U(\r)$, this equation gives the definition
+for the \emph{virial pressure}:
+\[ P = \frac{n_f k_B T}{3 V} + \frac{1}{3 V} \left[\sum_i \r_i \cdot \vec f_i - 3 V \frac{\partial U}{\partial V} \right], \label{eq:virial:full}\]
+where $V$ is the simulation volume, $T$ the instantaneous simulation
+temperature, $n_f$ the number of degrees of freedom, $r_i$ is the position of
+atom $i$ and $f_i$ the force acting on it. Unfortunely, the sum is not trivial
+to compute in presence of periodic boundary conditions, as their are multiple
+equivalent values for $r_i$. Instead, we use in molecular simulation software
+origin-independent formulations. For fully flexible molecules and potentials
+without explicit dependency on the volume, equation~\eqref{eq:virial:full}
+reduces to the more standard formulation:
+\[ P = \frac{n_f k_B T}{3V} + \frac{1}{3 V} \sum_i\sum_{j>i} \r_{ij} \cdot \vec f_{ij}. \]
+Only the forces arising from non-bonded or bonded pair potentials appear in the
+double sum, as the sum cancels out for three or four body potentials that only
+depends on the geometrical angle or dihedral angle\cite{Smith1993}. The stress
+tensor --- for anisotropic simulation --- is computed in a similar way:
+\[ \underline{\sigma} = \frac{n_f k_B T}{3V} \mathds{1} + \frac{1}{3 V} \sum_i\sum_{j>i} \r_{ij} \otimes \vec f_{ij}; \label{eq:virial:atomic} \]
+where $\otimes$ denotes the tensorial product: $(\r \otimes \vec
+f)_{\alpha\beta} = r_\alpha \times f_\beta$. The pressure is simply the trace of
+the stress tensor: $P = Tr(\underline{\sigma})$.
+
+For rigid molecules, equation~\eqref{eq:virial:full} reduces to a different
+expression:
+\[ \underline{\sigma} = \frac{n_f k_B T}{3V} \mathds{1} + \frac{1}{3 V} \sum_a\sum_{b>a}\sum_{i\in a}\sum_{j\in b} \r_{ij} \otimes \vec f_{ij} \frac{\r_{ab} \cdot \r_{ij}}{||r_{ij}||^2}. \label{eq:virial:molecular} \]
+Here, the sums over $a$ and $b$ run over different molecules, and the sums over
+$i$ and $j$ run over the atoms in the molecules. In both cases, if the potential
+has an explicit dependency on the volume, the corresponding terms needs to be
+included. This is in particular the case for the electrostatic potential when
+computed with Ewald summation.
+
+Domino uses either equation~\eqref{eq:virial:atomic}
+or~\eqref{eq:virial:molecular} depending on the propagator used (molecular
+dynamics or Monte Carlo), as well as the set of moves for Monte Carlo
+simulations. Each move registers how it changes the system when generating a
+trial conformation, and Domino figures out the number of simulated degrees of
+freedom.
 
 \newpage
 \section{Hybrid Monte Carlo}
@@ -238,7 +377,7 @@ direction. Multiple improved Monte Carlo moves have been proposed to overcome
 these limitations. For small molecules displaying intra-molecular flexibility,
 it is possible to directly sample rotations around all the bonds using
 configuration bias Monte Carlo base on Rosenbluth sampling (see
-reference~\cite{Frenkel1997} for more details on the algorithm), where the
+reference~\cite{Frenkel2002} for more details on the algorithm), where the
 molecule is fully regrown from a starting atom, randomly choosing the
 orientation of the next backbone bond at each step.  This procedure is
 illustrated in figure~\ref{fig:cbmc}.
@@ -416,7 +555,7 @@ conformation to be accepted with the Metropolis criterion. To my knowledge, this
 as not been attempted yet, but could improve insertion rate for osmotic
 simulations in dense phases --- such as the simulation of intrusion in porous
 solids. Traditional insertion/deletion moves suffer from a very low acceptance
-rate in dense phases such as liquids, because molecules are already densly
+rate in dense phases such as liquids, because molecules are already densely
 packed and there is not enough space to add new molecules. Grand canonical
 molecular dynamics can help by progressively scaling the \emph{presence} of the
 new molecule up, allowing its surroundings to relax.

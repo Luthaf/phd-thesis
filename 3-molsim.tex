@@ -20,7 +20,7 @@ thermodynamics I used during my PhD. For a more in depth description of
 statistical mechanics, I recommend the book of Tuckerman\cite{Tuckerman2010}. I
 will then present the molecular simulation methods used to sample thermodynamic
 ensembles in practice. On this section, I recommend the book of Frenkel and
-Smit\cite{Frenkel1997}.
+Smit\cite{Frenkel2002}.
 
 \section{Statistical thermodynamics}
 \label{sec:statistical-thermo}
@@ -453,7 +453,7 @@ ensembles, following their own distribution of probability.
 
 The usual way to ensure we have an ergodic Markov chain is to impose that this
 chain is \emph{micro-reversible}. Although this is not a required condition to
-have an ergodic chain, it is a sufficient one\cite{Frenkel1997}, and quite
+have an ergodic chain, it is a sufficient one\cite{Frenkel2002}, and quite
 commonly used. Using $\mathcal{P}_i$ for the probability of being in a state
 $i$; and $\pi(i \to j)$ the probability to go from state $i$ to state $j$, the
 condition of micro-reversibility is defined as:
@@ -735,7 +735,7 @@ being calculated at all steps.
 
 One of the simplest integrator respecting all the above defined constraints
 (symplectic, time-reversible, energy conservation) is the \emph{leap frog}
-integrator\cite{Frenkel1997}. The corresponding algorithm is reproduced below,
+integrator\cite{Frenkel2002}. The corresponding algorithm is reproduced below,
 using $\r(n)$ for $\r(n \times \delta t)$, and $\vec f(n)$ for the forces
 computed from the positions at step $n$.
 \[\begin{aligned}
@@ -751,7 +751,7 @@ velocities at interleaved instants, staggered in such a way that they jump over
 each other in a frog-like fashion.
 
 Velocity-Verlet integrator fixes this issue while keeping the symplectic and
-time reversible nature of leap frog\cite{Verlet1967, Frenkel1997}. The algorithm
+time reversible nature of leap frog\cite{Verlet1967, Frenkel2002}. The algorithm
 works as follow:
 \[\begin{aligned}
     \v(n + 1/2)   &= \v(n) + \frac 12 \vec a(n)\,\delta t, \\
@@ -885,7 +885,7 @@ CSVR thermostat for controlling the pressure.
 
 When using both a thermostat and a barostat to control the system pressure and
 temperature, one must take care that both control algorithms have sufficient
-time to react to changes. In particular, every time the barostat resizes the
+time to react to changes. In particular, every time the barostat changes the
 simulation cell, the thermostat must change the velocities to adapt the kinetic
 energy to the new potential energy. This means that the time step used for the
 barostat should be higher than the one used by the thermostat. In my
@@ -1017,7 +1017,7 @@ differences as quantities based on ensemble average.
 
 I will focus here on the Umbrella Sampling method which is the main method I
 used during my work. Other methods to extract free energy from a simulation
-include Thermodynamic Integration\cite{Frenkel1997},
+include Thermodynamic Integration\cite{Frenkel2002},
 Metadynamics\cite{Laio2002}, Blue Moon ensemble simulations\cite{Ciccotti2004},
 Adaptive Biasing Force\cite{Darve2008}, Wang Landau Monte Carlo\cite{Wang2001},
 and many other.
