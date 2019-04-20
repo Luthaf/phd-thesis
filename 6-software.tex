@@ -36,21 +36,19 @@ Bjarne Stroustrup as an extension of the C language. \cxx mainly adds
 object-orientatation, functions overloading and generic programming to C. We
 choose \cxx because it is a general purpose language, which we can use to
 implement complex algorithms while retaining the ability to manage memory
-allocations and the memory layout of data. These two last points are what allow
-\cxx to run faster than \emph{managed} languages, where the users don't have
-control over memory allocation, locality and layout.  Software written in \cxx
-will not be inherently faster than say Python, but developers are able to
-optimize it further. Domino uses the \cxx11 version of \cxx standard, which
-brought major changes to \cxx, creating a subset of the language which is easier
-to use correctly and more expressive.
+allocations, locality and layout. These two last points are what allow \cxx to
+run faster than \emph{managed} languages, where the users don't have control
+over memory. Software written in \cxx will not be inherently faster than say
+Python, but developers are able to optimize it further. Domino uses the \cxx11
+version of \cxx standard, which brought major changes to \cxx, creating a subset
+of the language which is easier to use correctly and more expressive.
 
 In this section, I will assume some basic programming, \cxx and object-oriented
 knowledge from the readers. There are a lot of great online resources on all of
 these subjects, as well as books such as \emph{"\cxx Primer"} by Stanley B.
 Lippman, Josée Lajoie, and Barbara E. Moo; or \emph{"Effective Modern \cxx"} by
 Scott Meyers. Concerning the algorithms I implemented, I found the book by
-Frenkel and Smit\cite{Frenkel2002} to be a great help, as well as the one by
-Allen and Tildesley\cite{Allen2017}.
+Frenkel and Smit\cite{Frenkel2002} to be a great help.
 
 \subsection{Goals and architecture}
 
@@ -78,7 +76,7 @@ shows the interface used for potentials and the implementation for Lennard-Jones
 potentials. Adding a new potential to Domino is as simple as creating a new
 class and implementing the corresponding required functions. Other extensible
 parts of Domino include Monte Carlo moves, molecular dynamics thermostat and
-integrators, and overall simulation propagators.
+integrators, and simulation propagators.
 
 \begin{listing}[ht]
     \begin{minted}[autogobble, fontsize=\small]{c++}
@@ -108,7 +106,10 @@ integrators, and overall simulation propagators.
         }
 
         double force(double r) const override {
-            // [implementation of the force]
+            auto sr = sigma_ / r;
+            auto sr3 = sr * sr * sr;
+            auto sr6 = sr3 * sr3;
+            return -24 * epsilon_ * sr6 * (1 - 2 * sr6) / r;
         }
 
     private:
@@ -174,6 +175,7 @@ Monte Carlo simulation.
     \label{code:simulation-example}
 \end{listing}
 
+\newpage
 \subsubsection{Contributions to Domino}
 
 Domino was started in 2009 by François-Xavier Coudert, my PhD advisor. Before I
@@ -208,12 +210,21 @@ While working on Domino, I encountered a few challenges, some of which were
 generic to the field of molecular simulation, other which were specific to the
 fact that Domino provides both Monte Carlo and molecular dynamics. In this
 section, I will present some of these challenges, as well as the technical
-solutions I used to overcome them. Most of these challenges are related to the
-computation of energy and forces, and the computation of distances under
-periodic boundary conditions, which are the most expensive steps of the
-simulation.
+solutions I used to overcome them. Most of these challenges were related to the
+computation of energy, forces, and distances under periodic boundary conditions,
+which are the most expensive steps of a simulation.
 
 \subsubsection{A performance model of modern computers}
+\label{sec:computer-model}
+
+\begin{figure}[b]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/images/computer-model}
+    \caption{Latency for data access from the CPU to three level of CPU cache
+    (L1, L2 and L3) and the RAM of a modern computer. The numbers are for Intel
+    Corporation's i7 and Xeon CPU\cite{SO-CPU-latency}.}
+    \label{fig:computer-model}
+\end{figure}
 
 At their basis, computers are made of two main components: the central
 processing unit (CPU) or processor execute the instructions, and the memory ---
@@ -230,15 +241,6 @@ slower L2 and L3 caches. Upon the first access, data is copied from RAM to the
 cache, and on subsequent operations, the data from the cache is used. Later on,
 data is copied back to RAM. Typically latency for data access on caches and RAM
 are represented on figure~\ref{fig:computer-model}.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.7\textwidth]{figures/images/computer-model}
-    \caption{Latency for data access from the CPU to three level of CPU cache
-    (L1, L2 and L3) and the RAM of a modern computer. The numbers are for Intel
-    Corporation's i7 and Xeon CPU\cite{SO-CPU-latency}.}
-    \label{fig:computer-model}
-\end{figure}
 
 Because the CPU can spend hundred of cycles waiting for data which is not yet in
 cache, it is important to make sure data in the RAM is accessed in a linear
@@ -278,6 +280,17 @@ forces takes \SI{2.6}{ms}. Domino thus provides two different code path, one
 computing only the energy for Monte Carlo and another one computing both the
 energy and the forces for molecular dynamics.
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=.7\textwidth]{figures/images/mc-cache}
+    \caption{Illustration of the use of an energy cache with Monte Carlo
+    simulation. Before the move, all the interaction contributions are computed
+    and stored. After the move, only the interactions in green needs to be
+    computed to get the energy difference. Not all pairs contributions are
+    represented on the figure.}
+    \label{fig:mc-cache}
+\end{figure}
+
 At the same time, most of the Monte Carlo moves only update the positions of a
 few atoms. This means that most of the energy components do not change before
 and after the move. Instead of recomputing all the energy components when
@@ -288,14 +301,8 @@ modified pairs. This strategy is illustrated in figure~\ref{fig:mc-cache}. This
 can result in multiple order of magnitude of improvement when compared to a full
 energy evaluation.
 
-\begin{figure}[ht]
-    \centering
-    % \includegraphics[width=\textwidth]{}
-    \caption{\TODO}
-    \label{fig:mc-cache}
-\end{figure}
-
-\subsubsection{Computation of the pressure}
+\newpage
+\subsubsection{Computation of the stress tensor and pressure}
 
 Another conflict between Monte Carlo and molecular dynamics occurs when
 computing the virial pressure with rigid or flexible molecules. It is often
@@ -631,7 +638,7 @@ compute electrostatics interactions. In the next section, I will discuss two
 methods one can use to compute these interactions in the presence of periodic
 boundary conditions.
 
-% \newpage
+\newpage
 \section{Computation of electrostatic energy in classical simulations}
 \label{sec:electrostatic}
 
@@ -649,22 +656,21 @@ In the remaining of this chapter, I will be using units such that $4 \pi
 
 As presented in section~\ref{sec:pbc}, we are limited in the size of systems we
 can simulate with classical simulation methods. To remove the size and surface
-effects arising from the relatively small number of particles in a simulation,
-most if not all classical simulations uses the trick of periodic boundary
-conditions. This means that we are in effect simulating an infinite system,
-extending in all three dimensions of space. All of the interaction potentials
-that have an action at long distances goes down to zero as the distance between
-atoms goes to infinity (else the overall energy would be infinite). It is thus
-usual to use a cutoff radius $r_c$ when computing the energy of a system: any
-interaction between atoms further apart than this radius is supposed negligible,
-and set to zero. This allows to speed up the calculation of energies in the
-simulations by ignoring many small contributions. The error $\epsilon$ arising
-from the use of a cutoff radius can be quantified --- using $V(r)$ for the pair
-potential:
+effects arising from the relatively small number of simulated particles, most if
+not all classical simulations uses the trick of periodic boundary conditions.
+This means that we are in effect simulating an infinite system, extending in all
+three dimensions of space. All the inter-molecular interaction potential decay
+to zero as the distance between atoms goes to infinity. It is thus customary to
+use a cutoff radius $r_c$ when computing the energy of a system: any interaction
+between atoms further apart than this radius is supposed negligible, and set to
+zero. This allows to speed up the calculation of energies in the simulations by
+ignoring contributions between atoms that are too far apart. The error
+$\epsilon$ arising from the use of a cutoff radius can be quantified --- using
+$V(r)$ for the pair potential:
 \[\epsilon = \int_{r_c}^\infty r^2 V(r)\ \d r. \]
-This error can be computed and used to correct after the fact the energy and
-pressure computed from a simulation. This correction is called the
-\emph{long-range} or \emph{tail} correction.
+This value --- also called \emph{long-range} or \emph{tail} correction --- can
+be computed and used to correct after the fact the energy and pressure computed
+from a simulation.
 
 Unfortunely, the above integral only converges if $V(r)$ goes to zero faster
 than $1/r^3$, which is not the case for the electrostatic potential. In the
@@ -675,8 +681,138 @@ will give some software tricks I used to speed up the implementations.
 
 \subsection{Ewald summation}
 
-Ewald summation was proposed by Paul Peter Ewald in 1921\cite{Ewald1921}
+Ewald summation was proposed by Paul Peter Ewald in 1921\cite{Ewald1921}. The
+core idea is to decompose the electrostatic potential using the identity:
+\[ \frac{1}{r} = \frac{f(r)}{r} + \frac{1 - f(r)}{r}. \]
+By choosing the right $f(r)$, one can create decompose the diverging in zero,
+slow-decaying $1/r$ potential into a short-range, rapidly converging potential
+that can be computed with a cutoff radius; and a long-range, smooth potential
+that will be computed in Fourier space. The usual decomposition uses the error
+function $\erf$ and the complementary error function $\erfc$:
+\[\erf(x) = \frac{2}{\sqrt\pi} \int_0^x e^{-t^2} \d t \hskip3em \erfc(x) = 1 - \erf(x)\]
+The three functions are represented in figure~\ref{fig:ewald:erf}, were we can
+see that $\erfc(r)/r$ goes to zero faster than $1/r$, and that $\erf(r)/r$ is
+very smooth, and can be prolonged on zero.
 
+\begin{figure}[ht]
+    \centering
+    \input{figures/ewald-erf}
+    \caption{Shape of the functions involved in Ewald summation: $1/r$, $\erfc(\alpha r) / r$,
+    and $\erf(\alpha r) / r$.}
+    \label{fig:ewald:erf}
+\end{figure}
+
+In practice, a damping parameter $\alpha$ is used to tune the distance at which
+$\erfc\,(\alpha r) / r$ becomes dominant over $\erf\,(\alpha r) / r$. The
+potential to be computed is finally given by:
+\[ V(r) = q_i q_j \left[\frac{\erfc(\alpha r)}{r} + \frac{\erf(\alpha r)}{r} \right].\]
+The total energy of the system is a sum over all possible pairs, and can be
+decomposed as a short-range contribution $U_\text{short}$ (containing the
+$\erfc$ terms) and a long-range contribution $U_\text{long}$ (containing the
+$\erf$ terms):
+\[ U = \frac12 \sum_{i\neq j}^\infty q_i q_j \frac{\erfc(\alpha r_{ij})}{r_{ij}} + \frac12 \sum_{i\neq j}^\infty q_i q_j \frac{\erf(\alpha r_{ij})}{r_{ij}};\]
+\[ U = U_\text{short} + U_\text{long}\]
+The short-range contribution sum can be evaluated directly (in \emph{real
+space}), as it decays faster than $1/r^3$:
+\[ U_\text{short} = \frac12 \sum_{\substack{i\neq j \\ r_{ij} < r_c}} q_i q_j \frac{\erfc(\alpha r_{ij})}{r_{ij}}.\]
+
+Concerning the long-range contribution, we can use the periodicity introduced by
+periodic boundary conditions to our advantage: as the potential $\erf(\alpha
+r)/r$ is relatively smooth, its Fourier transform will only contain a few number
+of harmonics. This means it will converges rapidly in \emph{Fourier space}.
+
+First we make the sum fully periodic by adding the term for $i = j$, and
+extending $\erf(\alpha r)/r$ in zero to $\alpha / \sqrt\pi$:
+\[ U_\text{long} = \frac12 \sum_{i, j}^\infty q_i q_j \frac{\erf(\alpha r_{ij})}{r_{ij}} - \sum_i^N \frac{\alpha}{\sqrt\pi} q_i^2.\]
+By taking the Fourier transform of the sum over all reciprocal lattice
+translations $\vec k$, and after a bit of algebra, we get a simpler expression:
+\[ U_\text{long} = \frac{\pi}{V} \int_0^\alpha \frac{1}{u^3} \d u \ \sum_{i,j} q_i q_j \ +\ \frac{2\pi}{V} \sum_{\vec k \neq 0}^\infty \frac{e^{-k^2 / 4 \alpha^2}}{k^2} \left|\sum_i^N q_i \ e^{\ j \vec k \cdot \r_i}\right|^2  \kern1ex  -\ \sum_i^N \frac{\alpha}{\sqrt\pi} q_i^2, \label{eq:ewald:long}\]
+where $j$ is the imaginary number ($j^2 = -1$). The first integral in
+equation~\eqref{eq:ewald:long} comes from the $\vec k = 0$ case, and is
+infinite. This means that the energy is infinite unless $\sum_{i,j} q_i q_j$ is
+null, \ie unless the simulated system is neutral. This makes sense, as an
+infinite periodic charged system would have an infinite total charge. If this is
+the case, we need to add an uniform background charge to ensure the neutrality
+of the system.
+
+The sum over $\vec k$ converges quickly, and is usually computed over a few
+number of $\vec k$ vectors, using a cutoff in Fourier space $k_c$:
+\[ U_\text{long} = \frac{2\pi}{V} \sum_{\substack{\vec k \neq 0\\[0.4ex] \vec k^2 < k_c^2}} \frac{e^{-k^2 / 4 \alpha^2}}{k^2} \left|\rho(\vec k)\right|^2  \kern1ex  -\ \sum_i^N \frac{\alpha}{\sqrt\pi} q_i^2.\]
+\[\rho(\vec k) = \sum_i^N q_i \ e^{\ j \vec k \cdot \r_i}\]
+The total energy in Ewald formulation can include additional terms not derived
+here, such as a correction for charged systems, and a correction for
+intra-molecular interactions:
+\[\begin{array}{lrc>{\displaystyle}l}
+    \text{short-range interaction} & U &=& \frac12 \kern1em\sideset{}{^\ddagger}\sum_{i\neq j, \ r_{ij} < r_c} q_i q_j \frac{\erfc(\alpha r_{ij})}{r_{ij}} \\
+    \text{long-range interaction} &&+& \frac{2\pi}{V} \sum_{\vec k \neq 0, \ \vec k^2 < k_c^2} \frac{e^{-k^2 / 4 \alpha^2}}{k^2} \left|\rho(\vec k)\right|^2 \\
+    \text{self interaction} &&-& \sum_i^N \frac{\alpha}{\sqrt\pi} q_i^2 \\
+    \text{molecular correction} &&-& \frac12 \sideset{}{^{\ddagger-1}}\sum_{i\neq j} q_i q_j \frac{\erf(\alpha r_{ij})}{r_{ij}} \\
+    \text{charge correction} &&-& \frac{\pi}{2 \alpha^2 V} \left| \sum_i q_i \right|^2
+    \label{eq:ewald}
+\end{array} \]
+
+The molecular correction comes from another trick used when fitting the
+parameters of classical force fields. Electrostatic interactions between bonded
+atoms are ignored, allowing the use of less stiff bonded potential. They are
+typically completely ignored for 1-2 and 1-3 atoms, \ie atoms directly bonded
+and atoms both bonded to a common central atom. 1-4 interaction can be included,
+scaled down or ignored depending on the force field. In the above expression,
+the $\sum^\ddagger$ symbol on the short-range term indicate that intra-molecular
+contributions should be skipped or scaled down as necessary. For the long-range
+term, we only want to remove interaction between atoms in the same molecule and
+in the same simulation box image. Instead of changing the sum over the $\vec k$
+vectors, we explicitly remove the corresponding contribution --- leading to the
+molecular correction term in equation~\ref{eq:ewald}.
+
+Following the same procedure, one can compute the force $\vec f_i$ acting on a
+given atom at position $\r_i$, and the stress tensor contribution from
+electrostatic interactions $\underline\sigma$.
+\[\renewcommand{\arraystretch}{3}\begin{array}{rc>{\displaystyle}l}
+    \vec f_i &=& q_i \kern0.5em\sideset{}{^\ddagger}\sum_{j=1,\ r_{ij} < r_c}^N q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}} + \frac{2 \alpha}{\sqrt\pi} e^{-\alpha^2 r_{ij}^2} \right] \frac{\r_{ij}}{r_{ij}^2}\\
+    &+& \frac{4\pi}{V} \sum_{\vec k \neq 0,\ \vec k^2 < k_c^2} \frac{e^{-k^2 / 4 \alpha^2}}{k^2} \mathcal{I}\kern-0.2ex m\left( e^{\,j \vec k \cdot \r_i} \rho(\vec k) \right) \vec k \\
+    &+& \frac12 q_i \sideset{}{^{\ddagger-1}}\sum_j q_j \left[\frac{2\alpha}{\sqrt\pi} e^{-\alpha^2 r_{ij}^2} - \frac{\erf(\alpha r_{ij})}{r_{ij}} \right] \frac{\r_{ij}}{r_{ij}}
+    \label{eq:ewald}
+\end{array} \]
+\vskip-1em
+\[\renewcommand{\arraystretch}{3}\begin{array}{rc>{\displaystyle}l}
+    3 V\ \underline\sigma &=& \frac12\kern0.5em\sideset{}{^\ddagger}\sum_{i\neq j,\ r_{ij} < r_c}^N q_i q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}} + \frac{2 \alpha}{\sqrt\pi} e^{-\alpha^2 r_{ij}^2} \right] \frac{\r_{ij}\otimes\r_{ij}}{r_{ij}^2}\\
+    &+& \frac{4\pi}{V} \sum_{\vec k \neq 0,\ \vec k^2 < k_c^2} \frac{e^{-k^2 / 4 \alpha^2}}{k^2} \left|\rho(\vec k)\right|^2 \left[ \mathds{1} - \frac{2}{1/k^2 + 1/4\alpha^2} \vec k \otimes \vec k\right]  \\
+    &+& \frac12 \sideset{}{^{\ddagger-1}}\sum_{i\neq j} q_i q_j \left[\frac{2\alpha}{\sqrt\pi} e^{-\alpha^2 r_{ij}^2} - \frac{\erf(\alpha r_{ij})}{r_{ij}} \right] \frac{\r_{ij}\otimes\r_{ij}}{r_{ij}} \\
+    \label{eq:ewald}
+\end{array} \]
+\vskip-3em
+Here, $\mathcal{I}\kern-0.2ex m$ is the imaginary part of a complex number; and
+the self interaction and charge correction do not contribute to the forces or
+stress.
+
+\subsubsection{Implementation tricks}
+
+When using Ewald for electrostatic potential computation, the short-range
+contribution is the easiest to compute, as it behaves like a standard pair
+potential. The long-range interaction is usually harder, and needs more fine
+tuning. A first easy improvement is to compute separately the factors only
+depending on $\vec k$ vectors, and the Fourier transform of charge density
+$\rho(\vec k)$. This allow to re-use the factors as long as the unit cell does
+not change, and only recompute the density. This also helps to improve
+efficiency for Monte Carlo simulations, using the knowledge that only some atoms
+moved to update $\rho(\vec k)$ (see figure~\ref{fig:mc-cache} and accompanying
+text for more information on this strategy).
+
+The choice of storage for the multiplicative factors and $\rho(\vec k)$ also has
+a large impact on performances. As these quantities depend on $\vec k$ vectors,
+it is natural to store them in three dimensional arrays, corresponding to the
+three components of the vector. But this strategy induces a lot of jumps when
+accessing memory (called cache misses), lowering performances (see
+section~\ref{sec:computer-model} for a performance model of modern computers).
+A better strategy consists in using a first linear array to store the $\vec k$
+vectors, each vector being associated with an index. Then, the multiplicative
+factors and $\rho(\vec k)$ can also be stored in linear arrays, the
+corresponding $\vec k$ vector for each entry being found by the entry index.
+This drastically improves memory locality and performance of the calculation.
+
+% TODO skip k vectors?
+
+\newpage
 \subsection{Wolf summation}
 
 Papier originel de la méthode de Wolf\cite{Wolf1999}: on utilise le fait que le

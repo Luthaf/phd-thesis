@@ -188,9 +188,11 @@
 \def\p{\vec{p}}
 \def\v{\vec{v}}
 \def\smallo{{\scriptstyle\mathcal{O}}}
-\def\erfc{\text{erfc}}
-\def\erf{\text{erf}}
-%ù Text stuff
+\def\erfc{{\normalfont\text{erfc}}}
+\def\erf{{\normalfont\text{erf}}}
+% Fix formatting of \neq with mathastext
+\def\neq{\not\kern0.2ex=}
+% Text stuff
 \def\AA{\text{\oldring{A}}}
 \def\ZIF8{\mbox{ZIF-8}}
 \def\ZIFCH3{\ZIF8(\ce{CH3})\xspace}
