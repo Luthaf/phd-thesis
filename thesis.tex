@@ -112,14 +112,13 @@
     {\def\OnlyInSubfile#1{#1}\def\OnlyInMainfile#1{}}%
     {\def\OnlyInSubfile#1{}\def\OnlyInMainfile#1{#1}}
 
-\let\@oldprintbibliography\printbibliography
-\renewcommand{\printbibliography}{
+\newcommand{\printglobalbibliography}{
     \begingroup
         % Use initials for author names in the general bibliography
         \makeatletter\toggletrue{abx@bool@giveninits}\makeatother
         % Give more leeway to LaTeX when trying to typeset overfull paragraphs
         \setlength{\emergencystretch}{2em}
-        \@oldprintbibliography
+        \printbibliography
     \endgroup
 }
 \makeatother
@@ -268,7 +267,7 @@
 
     \include{publist}
 
-    \printbibliography
+    \printglobalbibliography
 
     \subfile{Z-resume-fr}
 
