@@ -328,7 +328,7 @@ for the \emph{virial pressure}:
 \[ P = \frac{n_f k_B T}{3 V} + \frac{1}{3 V} \left[\sum_i \r_i \cdot \vec f_i - 3 V \frac{\partial U}{\partial V} \right], \label{eq:virial:full}\]
 where $V$ is the simulation volume, $T$ the instantaneous simulation
 temperature, $n_f$ the number of degrees of freedom, $r_i$ is the position of
-atom $i$ and $f_i$ the force acting on it. Unfortunely, the sum is not trivial
+atom $i$ and $f_i$ the force acting on it. Unfortunately, the sum is not trivial
 to compute in presence of periodic boundary conditions, as their are multiple
 equivalent values for $r_i$. Instead, we use in molecular simulation software
 origin-independent formulations. For fully flexible molecules and potentials
@@ -672,7 +672,7 @@ This value --- also called \emph{long-range} or \emph{tail} correction --- can
 be computed and used to correct after the fact the energy and pressure computed
 from a simulation.
 
-Unfortunely, the above integral only converges if $V(r)$ goes to zero faster
+Unfortunately, the above integral only converges if $V(r)$ goes to zero faster
 than $1/r^3$, which is not the case for the electrostatic potential. In the
 following, I will be describing two methods one can use to compute the
 electrostatic interaction accurately in classical molecular simulations: Ewald
@@ -771,7 +771,6 @@ electrostatic interactions $\underline\sigma$.
     \vec f_i &=& q_i \kern0.5em\sideset{}{^\ddagger}\sum_{j=1,\ r_{ij} < r_c}^N q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}} + \frac{2 \alpha}{\sqrt\pi} e^{-\alpha^2 r_{ij}^2} \right] \frac{\r_{ij}}{r_{ij}^2}\\
     &+& \frac{4\pi}{V} \sum_{\vec k \neq 0,\ \vec k^2 < k_c^2} \frac{e^{-k^2 / 4 \alpha^2}}{k^2} \mathcal{I}\kern-0.2ex m\left( e^{\,j \vec k \cdot \r_i} \rho(\vec k) \right) \vec k \\
     &+& \frac12 q_i \sideset{}{^{\ddagger-1}}\sum_j q_j \left[\frac{2\alpha}{\sqrt\pi} e^{-\alpha^2 r_{ij}^2} - \frac{\erf(\alpha r_{ij})}{r_{ij}} \right] \frac{\r_{ij}}{r_{ij}}
-    \label{eq:ewald}
 \end{array} \]
 \vskip-1em
 \[\renewcommand{\arraystretch}{3}\begin{array}{rc>{\displaystyle}l}
@@ -815,33 +814,136 @@ This drastically improves memory locality and performance of the calculation.
 \newpage
 \subsection{Wolf summation}
 
-Papier originel de la méthode de Wolf\cite{Wolf1999}: on utilise le fait que le
-potentiel effectif d'un multipole complexe est de l'ordre de $1/r^5$ pour
-effectuer le calcul de l'énergie de Madelung via un simple somme de paires avec
-un terme correctif. Ceci est équivalent à l'utilisation d'un potentiel
-\emph{shifté}:
-\[V_{SP}(r) = q_i q_j \left(\frac{1}{r} - \frac{1}{r_c} \right) \text{pour } r < r_c\]
+Wolf summation, proposed by the eponym author in 1999\cite{Wolf1999}, is based
+on the observation that the effective electrostatic orduretial created by a
+complex charge multipole vary like $1/r^5$. It should thus be possible to use a
+direct pair sum to evaluate it. The authors showed that the direct pair sum does
+not converge when using spherical cutoff because the system included inside the
+cutoff is not charge neutral. They proposed to include a corrective term for the
+remaining charge, effectively replacing the electrostatic potential by a shifted
+potential:
+\[V_{SP}(r_{ij}) = q_i q_j \left(\frac{1}{r_{ij}} - \frac{1}{r_c} \right)\]
+The energy resulting from this potential is a good approximation of the true
+electrostatic potential, while being a lot easier to compute. It gets closer to
+the real energy as the cutoff distance is increased.
 
-Pour ne pas avoir besoin de rayons de coupure énormes, on utilse un potentiel amorti:
-\[V_{DSP}(r) = \frac{q_i q_j \ \erfc(\alpha r)}{r} - \lim_{r \to r_c} \frac{q_i q_j \ \erfc(\alpha r)}{r}\]
-\[\vec f_{ij}^{\ DSP} = q_i q_j \left[\frac{\erfc(\alpha r)}{r^2} + \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r^2)}{r}\right] \frac{\vec r}{r}
-- q_i q_j \left[\frac{\erfc(\alpha R_c)}{R_c^2} + \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 R_c^2)}{R_c}\right] \frac{\vec r}{r}\]
+Because the naive shifted potential presented above requires relatively large
+cutoff radius to offer a good approximation of the energy, the authors also
+proposed to \emph{damp} the potential using the complementary error function.
+This allow the use of smaller cutoff radius ($10 - \SI{20}{\AA}$), while still
+being a good approximation of the electrostatic potential. This \emph{damped
+shifted potential} (DSP) --- and the corresponding force expression --- are
+given by:
+\[V_{DSP}(r_{ij}) = q_i q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}} - \frac{\erfc(\alpha r_c)}{r_c} \right]\]
+\[\vec f_{DSP}(\vec r_{ij}) = q_i q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}^2} + \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r_{ij}^2)}{r_{ij}}\right] \frac{\vec r_{ij}}{r_{ij}}\]
+This expression for the forces presents a discontinuity at $r_{ij} = r_c$, which
+can introduce artifacts in molecular dynamics simulation as particles enter or
+leave the cutoff sphere.
 
-
-Les formules ci-dessus ont l'inconvénient de ne pas être $\mathcal{C}^1$ en $r_c$. Ce
-papier\cite{Fennell2006} propose de partir de la force, et d'intégrer pour obtenir le potentiel
-correspondant. On obtient:
-
-\[\vec f_{ij}^{\ DSF} = q_i q_j \left[\frac{\erfc(\alpha r)}{r^2} + \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r^2)}{r}\right] \frac{\vec r}{r}
-- q_i q_j \left[\frac{\erfc(\alpha R_c)}{R_c^2} + \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 R_c^2)}{R_c}\right] \frac{\vec r}{r}\]
-
-\[V_{DSF}(r) = q_i q_j \left[\frac{\erfc(\alpha r)}{r} - \frac{\erfc(\alpha r_c)}{r_c}
-+ \left(\frac{\erfc(\alpha r_c)}{r_c^2} + \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r_c^2)}{r_c}\right) (r - r_c)\right]\]
-
-
-\TODO \cite{Fukuda2013}
+In 2006, \citeauthor{Fennell2006} proposed to \cite{Fennell2006} remove this
+discontinuity by changing the potential to:
+\[V_{DSF}(r_{ij}) = q_i q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}} - \frac{\erfc(\alpha r_c)}{r_c} + (r_{ij} - r_c) \frac{\partial V_{DSP}(r_{ij})}{\partial r_{ij}}(r_c)\right].\]
+This approach gives us the \emph{damped shifted force} (DSF) formulation of Wolf
+potential:
+\[V_{DSF}(r_{ij}) = q_i q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}} - \frac{\erfc(\alpha r_c)}{r_c} + \left(\frac{\erfc(\alpha r_c)}{r_c^2} + \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r_c^2)}{r_c}\right) (r_{ij} - r_c)\right]\]
+\[\vec f_{DSF}(\vec r_{ij}) = q_i q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}^2} + \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r_{ij}^2)}{r_{ij}} - \frac{\erfc(\alpha r_c)}{r_c^2} - \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r_c^2)}{r_c}\right] \frac{\vec r_{ij}}{r_{ij}}\]
+\citeauthor{Fennell2006} also compared the DSP and DFS approaches on a large set
+of systems, and showed that the DSF approach is able to reproduce the forces
+computed by Ewald summation very well with a damping parameter $\alpha =
+\SI{0.2}{\AA^{-1}}$; while the DSP approach was able to reproduce energies very
+well with the same damping parameter. They suggest to use the DSP approach for
+Monte Carlo simulation, and the DSF approach for molecular dynamics.
 
 \subsection{Comparing Ewald and Wolf}
+
+I implemented the both the DSP and the DSF formulation of Wolf summation in
+Domino. As they are based on sums of pair terms, they were much easier to
+implement and integrate with Monte Carlo energy caching than Ewald summation.
+Being simpler, the computation time for both energy and forces is smaller for
+Wolf summation than for Ewald: for a small system containing 50 water molecules,
+forces computation takes \SI{755}{\micro s} with Wolf, and \SI{1810}{\micro s}
+with Ewald (respectively \SI{755}{\micro s} and \SI{860}{\micro s} for the
+energy).
+
+To check that my implementation of both Ewald and Wolf was correct, and to
+compare their behavior in simple cases, I ran simulations in the $NVT$ ensemble
+of a NaCl in crystalline form at \SI{300}{K} and molten at \SI{2000}{K} using
+both Domino and LAMMPS. I ran both Monte Carlo simulations, and molecular
+dynamics simulations with Domino, and only molecular dynamics with LAMMPS. The
+molecular dynamics used a time step of \SI{1}{fs} and a Berendsen thermostat to
+fix the temperature, with a thermostat time constant of \SI{100}{fs}. Both Ewald
+and Wolf simulations used a cutoff radius of \SI{11}{\AA} and a damping
+parameter $\alpha$ of \SI{0.29}{\AA^{-1}}. Ewald simulation considered $\vec k$
+vectors up to 10 translations in reciprocal space.
+
+The system contained 256 \ce{Na+} and 256 \ce{Cl-} atoms, placed on a
+face-centered cubic lattice, in a cubic simulation cell of \SI{22.5608}{\AA}.
+The molten NaCl simulations were started from the same conformation, placed into
+a bigger unit cell of \SI{25.3809}{\AA}. The atoms interacted through both
+electrostatic and Lennard-Jones potential, using parameters from
+reference~\cite{Mao2012}. From these simulations, I extracted the average
+pressure and potential energy, which are presented in
+table~\ref{tab:ewald-vs-wolf}.
+
+\begin{table}[ht]
+    \caption{Energy and pressure ($\pm$ the standard deviation) for the set of
+    simulations comparing Ewald and Wolf on crystalline and molten NaCl. MC
+    denotes Monte Carlo simulations, and MD molecular dynamics.}
+    \label{tab:ewald-vs-wolf}
+    \begin{tabular}{c c c c c c}
+        \toprule
+        Software & System  & Potential & Simulation & Energy (\si{kJ/mol}) & Pressure (bar) \\
+        \midrule
+        LAMMPS   & Crystal &    Ewald  &    MD      & -203419 $\pm$ 45  & 13494 $\pm$ 302  \\
+        LAMMPS   & Crystal &    Wolf   &    MD      & -203428 $\pm$ 45  & 13724 $\pm$ 297  \\
+        LAMMPS   & Molten  &    Ewald  &    MD      & -182283 $\pm$ 345 & 15971 $\pm$ 1812 \\
+        LAMMPS   & Molten  &    Wolf   &    MD      & -182424 $\pm$ 355 & 17977 $\pm$ 1770 \\
+        \midrule
+        Domino   & Crystal &    Ewald  &    MD      & -203470 $\pm$ 53 & 13431 $\pm$ 229 \\
+        Domino   & Crystal &    Ewald  &    MC      & -203511 $\pm$ 62 & 13064 $\pm$ 383 \\
+        Domino   & Crystal &    Wolf   &    MD      & -86714 $\pm$ 69 & 13909 $\pm$ 355 \\
+        Domino   & Crystal &    Wolf   &    MC      & -86723 $\pm$ 69 & 13658 $\pm$ 455 \\
+        Domino   & Molten  &    Ewald  &    MD      & -182310 $\pm$ 278 & 15527 $\pm$ 1676 \\
+        Domino   & Molten  &    Ewald  &    MC      & -182818 $\pm$ 367 & 15090 $\pm$ 1620 \\
+        Domino   & Molten  &    Wolf   &    MD      & -65803 $\pm$ 306 & 18440 $\pm$ 1306 \\
+        Domino   & Molten  &    Wolf   &    MC      & -65785 $\pm$ 359 & 17686 $\pm$ 2054 \\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+First, we can see that my implementation of Ewald gives the same average values
+for energy and pressure than LAMMPS, both for crystalline and molten NaCl; and
+both for molecular dynamics and Monte Carlo simulations. My implementation of
+Wolf gives gives the same results with molecular dynamics and Monte Carlo, and
+the same pressures as LAMMPS. Strangely, it does not give the same average
+energies as LAMMPS, maybe because LAMMPS chooses a different energy origin.
+This does not mean that my implementation is incorrect, as energies are only
+defined up to an additive constant.
+
+\begin{figure}[t]
+    \centering
+    \input{figures/ewald-vs-wolf}
+    \caption{Radial distribution function for three pairs (from left to right
+    \ce{Na-Na}, \ce{Na-Cl}, and \ce{Cl-Cl}) on two system: a solid NaCl crystal
+    at \SI{300}{K} on top, and melted NaCl at \SI{2000}{K} on bottom. They are
+    presented for two different softwares (LAMMPS and Domino), two different
+    electrostatic summation (Ewald and Wolf) and two simulation methods (Monte
+    Carlo or MC and molecular dynamics or MD).}
+    \label{fig:ewald-vs-wolf:rdf}
+\end{figure}
+
+Another proof of my implementation being correct comes from the radial
+distribution functions for all the simulation presented in
+figure~\ref{fig:ewald-vs-wolf:rdf}. All simulations methods and electrostatic
+summations gives the exact same curves, except for rounding errors and
+statistical noise. This is also another evidence that Wolf summation is able to
+reproduce properties predicted by Ewald summation.
+
+In conclusion, Wolf summation seems to be able to replace Ewald summation, at
+least for simple cases. It can also be twice as fast as Ewald, and simpler to
+implement in simulation software. I did not had the time to use it in
+conjunction with hybrid simulations, but this would be a natural extension of
+this work.
 
 \OnlyInSubfile{\printglobalbibliography}
 

@@ -269,6 +269,8 @@
 		"zeolites",
 		"zeolitic",
 		"tensorial",
-		"runtime"
+		"runtime",
+		"multipole",
+		"!NaCl"
 	]
 }
