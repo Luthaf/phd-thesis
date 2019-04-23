@@ -350,6 +350,8 @@
 % subsections
 \titleformat{\subsection}
     {\large\bfseries}{\textsc{\MakeTextLowercase{\thesubsection}}}{1em}{#1}
+\titleformat{name=\subsection, numberless}
+    {\large\bfseries}{}{0pt}{#1\addcontentsline{toc}{subsection}{#1}}
 
 % subsubsections
 \titleformat{\subsubsection}

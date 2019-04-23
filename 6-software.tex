@@ -495,7 +495,7 @@ The first step in the above demonstration comes from the mathematical identity
 \[e^{-\beta\mathcal{H}(\r, \v)} \min\kern-0.5ex\left(1, e^{-\beta \delta \mathcal{H}}\right) = e^{-\beta\mathcal{H}(\r', \v')} \min\kern-0.5ex\left(e^{\, \beta \delta \mathcal{H}}, 1\right). \]
 
 It is worth noting that even though the molecular dynamics simulation evolves in
-the micro-canonical $NVE$ ensemble, the overall HMC simulation is sampling the
+the microcanonical  $NVE$ ensemble, the overall HMC simulation is sampling the
 canonical $NVT$ ensemble. This allow to use HMC simulations as a rigorous way to
 sample the $NVT$ ensemble using molecular dynamics.
 
@@ -775,7 +775,6 @@ electrostatic interactions $\underline\sigma$.
     3 V\ \underline\sigma &=& \frac12\kern0.5em\sideset{}{^\ddagger}\sum_{i\neq j,\ r_{ij} < r_c}^N q_i q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}} + \frac{2 \alpha}{\sqrt\pi} e^{-\alpha^2 r_{ij}^2} \right] \frac{\r_{ij}\otimes\r_{ij}}{r_{ij}^2}\\
     &+& \frac{4\pi}{V} \sum_{\vec k \neq 0,\ \vec k^2 < k_c^2} \frac{e^{-k^2 / 4 \alpha^2}}{k^2} \left|\rho(\vec k)\right|^2 \left[ \mathds{1} - \frac{2}{1/k^2 + 1/4\alpha^2} \vec k \otimes \vec k\right]  \\
     &+& \frac12 \sideset{}{^{\ddagger-1}}\sum_{i\neq j} q_i q_j \left[\frac{2\alpha}{\sqrt\pi} e^{-\alpha^2 r_{ij}^2} - \frac{\erf(\alpha r_{ij})}{r_{ij}} \right] \frac{\r_{ij}\otimes\r_{ij}}{r_{ij}} \\
-    \label{eq:ewald}
 \end{array} \]
 \vskip-3em
 Here, $\mathcal{I}\kern-0.2ex m$ is the imaginary part of a complex number; and

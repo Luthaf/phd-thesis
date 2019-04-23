@@ -11,12 +11,12 @@ chapter are not always sufficiently precise to gain a complete understanding of
 the phenomenon at play. In particular, as these methods describe the systems at
 the macroscopic level, they don't take into account the individual atoms, and
 the interactions between them: they don't describe the \emph{chemistry} of the
-system. Statistical thermodynamic is a tool that we can use to bring together
+system. Statistical thermodynamics is a tool that we can use to bring together
 the microscopic description of matter and the macroscopic behavior and
 characteristics of the system (pressure, temperature, \dots).
 
 In this chapter, I will derive and recall some concepts from statistical
-thermodynamics I used during my PhD. For a more in depth description of
+thermodynamics I used during my PhD. For a more in-depth description of
 statistical mechanics, I recommend the book of Tuckerman\cite{Tuckerman2010}. I
 will then present the molecular simulation methods used to sample thermodynamic
 ensembles in practice. On this section, I recommend the book of Frenkel and
@@ -38,10 +38,10 @@ $E_i$ is given by:
 \[\mathcal{P}_i = \frac{1}{N!\ h^{3N}\ Z} e^{-\beta\, E_i}, \label{eq:maxwell-boltzmann}\]
 where $\beta = 1 / k_B T$ with $k_B$ the Boltzmann constant and $N!\ h^{3N}\ Z$
 is a normalization constant. To be more precise, particles would either follow
-Bose–Einstein statistics for bosons (particles with a full integer spin, such as
+Bose--Einstein statistics for bosons (particles with a full integer spin, such as
 photons) or the Fermi–Dirac statistics for fermions (particles with half-integer
 spin, such as electrons or protons). But as both Bose-Einstein and Fermi-Dirac
-statistics reduce to the Maxwell-Boltzmann distribution when temperature is high
+statistics reduce to the Maxwell-Boltzmann distribution when the temperature is high
 enough, we will use this distribution instead.
 
 We define the state of a system by the values taken by all the positions $\r_i$
@@ -62,7 +62,7 @@ the system to be anywhere in the phase space $\Phi$ should be 1, which gives us:
 And finally:
 \[Z = \frac{1}{N!\ h^{3N}} \iint_\Phi e^{-\beta\, H(\r^N, \p^N)} \ \d\r^N \d\p^N\]
 where the Planck constant $h$ is used as a normalization factor used to make
-sure that $Z$ has the right dimension; and the $N!$ factor comes from the fact
+sure that $Z$ has the right dimension, andthe $N!$ factor comes from the fact
 that particles are not distinguishable one from another.
 
 We can already compute at least a part of this integral by separating the
@@ -125,7 +125,7 @@ This theoretical approach to define macroscopic properties from microscopic data
 is useless unless we can compute the integrals over the whole phase space $\Phi$
 in~\eqref{eq:observable}. But computing this integral explicitly in all but the
 simplest cases will prove difficult, as the phase space is a $6N$ dimensional
-vector space; and values for $N$ range from a few hundred all the way up to
+vector space, andvalues for $N$ range from a few hundred all the way up to
 Avogadro number. But in general, a lot of states in the phase space are not
 relevant when computing the integral, mainly because their energy is too high
 and their probability becomes negligible. So instead of computing the whole
@@ -215,11 +215,11 @@ energy of the system in the ground state.
 Even when using DFT, solving the Schrödinger equation is costly in term of
 computing time, and imposes a limit on both the time and length scale of systems
 we can study. As of 2019, using standard high performance computing cluster, we
-can used DFT to study systems containing up to 1000 atoms on a time scale of up
-to \SI{100}{ps}. While these numbers increased a lot in the recent years due to
+can use DFT to study systems containing up to 1000 atoms on a time scale of up
+to \SI{100}{ps}. While these numbers increased a lot in recent years due to
 improvements in software used for DFT and in computing hardware, they are still
 many systems of interest that we cannot study with DFT. If the electronic
-density does no vary much across the subspace of phase space we are interested
+density does not vary much across the subspace of phase space we are interested
 in --- \ie no bond creation or breakage; no charge transfer --- then using
 classical potentials or force fields can be a good approximation of the real
 energy.
@@ -228,7 +228,7 @@ energy.
 \label{sec:classical-ff}
 
 A force field is an educated guess on the functional form of the energy of a
-system, decomposed as a sum of simple terms with physical meaning. It is a
+system, decomposed as a sum of simple terms with physical meanings. It is a
 classical and empirical approximation of the real, quantum potential energy
 surface. The usual decomposition is the following:
 \[V(\r) = \sum_i \sum_j V_\text{pairs}^{ij} + \sum_\alpha V_\text{molecular}^\alpha + V_\text{coulomb} \]
@@ -241,12 +241,12 @@ the force field parametrization. If this is not enough to reproduce the
 properties of the system of interest, we can use diffuse Gaussian charges
 instead, or add a term describing atomic polarization. $V_\text{pairs}$ is used
 to reproduce both the dispersion interactions and the Pauli repulsion between
-atoms at short distance. $V_\text{molecular}$ represent the intra-molecular
+atoms at short distances. $V_\text{molecular}$ represent the intra-molecular
 interactions, and is usually decomposed over bonded coefficients:
 \[V_\text{molecular} = \sum_\text{bonds} V_\text{bond}(r) + \sum_\text{angles} V_\text{angle}(\theta) + \sum_\text{dihedrals} V_\text{dihedral}(\phi)\]
 Each energy term only depends on the type of bonded atoms, and a single scalar
 variable: the distance $r$ between the two atoms for bonds contributions; the
-3-body angle $\theta$ for angles contributions; and the 4-body dihedral angle
+3-body angle $\theta$ for angles contributions, andthe 4-body dihedral angle
 $\phi$ or out of plane distance $d$ for dihedral angles contributions. These
 variables are illustrated in figure~\ref{fig:force-fields:molecular}.
 
@@ -324,7 +324,7 @@ $\sigma$ and $\epsilon$ are adjustable.
 
 The process of adjusting these parameters to make sure the force field produces
 the correct energy and physical properties of the system is called the
-parametrization of a force field. It usually involve a trade-off between
+parametrization of a force field. It usually involves a trade-off between
 accuracy --- \ie how well the force field can reproduce the potential energy
 surface --- and transferability. A force field is said to be transferable if we
 can use the same set of parameters for different systems. I will discuss it with
@@ -377,7 +377,7 @@ Second, because the system is now infinite, we need to compute an infinity of
 interactions between molecules to evaluate its energy. Fortunately, most
 interactions decay at long distances, and we can use a cutoff radius when
 computing the energy. Any atoms further apart than this cutoff radius will not
-interact. The error $\epsilon$ that arise from a the use of a cutoff radius
+interact. The error $\epsilon$ that arise from the use of a cutoff radius
 $r_c$ depends on the potential $V(r)$ and the radial distribution function
 $g(r)$ of the current conformation:
 \[\epsilon(r_c) = \int_{r_c}^\infty r^2 V(r)\ g(r)\ \d r \]
@@ -394,8 +394,8 @@ which I will present in more detail in section~\ref{sec:electrostatic}.
 
 Finally, the \emph{minimum-image convention} is often used to improve simulation
 speed. Under this convention, a particle in the central simulation box interacts
-only with neighbors from the central image or an image surroundings the central
-one. This restrict the number of images that has to be searched for neighbors
+only with neighbors from the central image or an image surrounding the central
+one. This restricts the number of images that has to be searched for neighbors
 inside the cutoff radius. To be able to enforce this minimum-image convention,
 the smallest inscribed sphere must have a radius bigger than the cutoff radius.
 For an orthorhombic simulation box, the smallest box side length must be at least
@@ -442,7 +442,7 @@ be able to explore all the possible states in the phase space. In order to
 ensure this, we want the chain to be \emph{ergodic}, \ie that each state can be
 reached from any other state in a finite number of steps. This property
 guarantees the existence of a \emph{stationary} equilibrium distribution of the
-generated states as the Markov chain grows; and that this distribution matches
+generated states as the Markov chain grows, andthat this distribution matches
 the probability to generate a new state from any given state. For us, this means
 that if we are able to create an ergodic Markov chain using the Boltzmann
 statistics to generate a new state, then the whole chain will follow the
@@ -455,7 +455,7 @@ The usual way to ensure we have an ergodic Markov chain is to impose that this
 chain is \emph{micro-reversible}. Although this is not a required condition to
 have an ergodic chain, it is a sufficient one\cite{Frenkel2002}, and quite
 commonly used. Using $\mathcal{P}_i$ for the probability of being in a state
-$i$; and $\pi(i \to j)$ the probability to go from state $i$ to state $j$, the
+$i$, and$\pi(i \to j)$ the probability to go from state $i$ to state $j$, the
 condition of micro-reversibility is defined as:
 \[ \mathcal{P}_i \ \pi(i \to j) = \mathcal{P}_j \ \pi(j \to i)\]
 This means that the probability for any transition in the Markov chain to be
@@ -520,11 +520,11 @@ j) = \alpha(j \to i)$.
 \subsubsection{Canonical ensemble: translation and rotation}
 
 The simplest move imaginable is to randomly select an atom and move it by a
-random distance in a random direction. The new generated state only differs from
+random distance in a random direction. The newly generated state only differs from
 the previous one by the position of this atom. When working with rigid
 molecules, this move can also be used to translate a full molecule. In that
 case, we also need to account for rotations to sample all the degrees of freedom
-of the rigid molecule. We can apply a random rotations (random rotation axis and
+of the rigid molecule. We can apply random rotations (random rotation axis and
 magnitude) to a molecule to do so. These moves are illustrated in
 figure~\ref{fig:mc:moves}, panels (a) and (b). By using uniform distributions
 for the cartesian components of the translation, the amplitude of the rotation,
@@ -532,16 +532,16 @@ and uniform sampling of the unit sphere for the rotation axis; these moves have
 the same probability of going from a state $i$ to $j$ and vice versa.
 
 The one remaining parameter is then the amplitude of the move, \ie the interval
-in which to draw the translation or rotation amplidut with an uniform
+in which to draw the translation or rotation amplitude with a uniform
 distribution. It is desirable to have an acceptance rate around 40 to 50\%, as a
 lower acceptance rate means that we are wasting computational time to generate
-conformations that will not be used; and a higher acceptance rate usually means
-that the new conformation will be very close from the previous one, and the
+conformations that will not be used, and a higher acceptance rate usually means
+that the new conformation will be very close to the previous one, and the
 simulation will take longer to sample the phase space. We can adjust the
 amplitude of the rotations and translations to influence the exact value of
-$\alpha(i \to j)$: larger amplitude means a smaller acceptance rate; and smaller
+$\alpha(i \to j)$: larger amplitude means a smaller acceptance rate, and smaller
 amplitude means a higher acceptance rate. But adjusting the amplitude breaks
-micro-reversibility; and as such should be done beforehand to prevent affecting
+micro-reversibility, and as such should be done beforehand to prevent affecting
 the simulation results. It is thus customary to break a simulation in two
 phases: a first equilibration phase to adjust the simulation parameters, and a
 later production phase that will be used for statistical analysis and averaging.
@@ -558,9 +558,9 @@ evaluate the macroscopic properties of the system.
 
 If we want to work in another thermodynamic ensemble such as the $NPT$ ensemble,
 we need first to change the acceptance scheme to
-equation~\eqref{eq:mc:acceptance:npt}; and also to generate moves than change
+equation~\eqref{eq:mc:acceptance:npt}, and also to generate moves that change
 the system's volume. One way to change the volume is to randomly pick a new
-volume using an uniform distribution centered around the old volume; and then
+volume using a uniform distribution centered around the old volume, and then
 resize the simulation unit cell while keeping intra-molecular distances
 constant. This is illustrated in figure~\ref{fig:mc:moves}, panels (c). Keeping
 the distances constant ensures that the change in energy $\Delta U$ will not be
@@ -574,7 +574,7 @@ Simulations in the $\mu VT$ ensemble are called Grand Canonical Monte Carlo
 (GCMC) simulations. In this ensemble, the number of molecules is allowed to
 fluctuate in order to maintain the chemical potential constant. We need two
 moves to accomplish this, one where we select a molecule at random and remove
-it; and another one where a molecule is inserted from a fictitious reservoir at
+it, andanother one where a molecule is inserted from a fictitious reservoir at
 a random position and orientation (see figure~\ref{fig:mc:moves}, panels (d) and
 (e)). The acceptance probability is given as previously by the $\mathcal{P}_j /
 \mathcal{P}_i$ ratio; but this time the $N!\ \lambda^{3N}$ terms from
@@ -603,21 +603,21 @@ series of Monte Carlo simulations.
 \subsection{Monte Carlo caveats}
 
 Monte Carlo simulations are very powerful, as they allow to directly sample the
-phase space of the ensemble of interest; and do not require that the moves used
+phase space of the ensemble of interest, anddo not require that the moves used
 to generate a new trial configuration follow the laws of physics. This later
 property is used in some extensions of Monte Carlo simulations, where an atom
-nature is transformed as a Monte Carlo move, changing a sodium into a potassium
-for example. This method --- called semi-grand canonical Monte
-Carlo\cite{Kofke1988} --- allow to sample the equilibrium distribution during
+nature is transformed as a Monte Carlo move, changing a sodium atom into a
+potassium atom for example. This method --- called semi-grand canonical Monte
+Carlo\cite{Kofke1988} --- allows to sample the equilibrium distribution during
 chemical reactions or at an interface without explicitly representing the
 interface.
 
 They also have a few caveats, mainly it is not possible to sample the
-micro-canonical ensemble, as this would require generating trial configurations
+microcanonical  ensemble, as this would require generating trial configurations
 with constant energy, and updating both the positions and velocities of the
 atoms. The main problem with Monte Carlo simulation is that they only deal with
 the conformations of the system, and do not contain any information on the
-kinetic of the transformations. Both of these caveats can be solved by using
+kinetics of the transformations. Both of these caveats can be solved by using
 molecular dynamics instead to generate the states used to evaluate
 equation~\eqref{eq:observable}.
 
@@ -635,7 +635,7 @@ equation~\eqref{eq:observable}.
 \label{sec:molecular-dynamics}
 
 The fundamental idea of molecular dynamics is to use Newton's laws of motion to
-integrate the positions and velocities of the atoms in the system as function of
+integrate the positions and velocities of the atoms in the system as a function of
 time. In this work, I will consider that the atoms in the system behave as
 classical point particles. There are multiple methods to go beyond this
 approximation and incorporate the quantum nature of atoms, mostly based on
@@ -660,18 +660,18 @@ Starting from an initial configuration defined by the positions and velocities
 of each atom at time $t$, these equations allow to compute the positions and
 velocities at the next time point $t + \delta t$. For this discretization to be
 valid, the time step $\delta t$ has to be small enough so that both the
-$\smallo(\delta t^2)$ terms are negligible; and the forces acting on each atom
+$\smallo(\delta t^2)$ terms are negligible, and the forces acting on each atom
 are constant between $t$ and $t + \delta t$. Depending on the system, typical
 values for the time step fall between \SI{0.5}{fs} and \SI{2}{fs}.
 
 Time integration of positions and velocities follows the standard rules of
 classical mechanics, and in particular the conservation of mechanical energy.
 This means that by default, molecular dynamics trajectories evolve in the
-micro-canonical $NVE$ ensemble. There however is no \emph{a priori} guarantees
+microcanonical  $NVE$ ensemble. There however is no \emph{a priori} guarantees
 that a molecular dynamics trajectory will generate new configurations following
-the micro-canonical distribution. We rely on the \emph{ergodic} hypothesis to
+the microcanonical  distribution. We rely on the \emph{ergodic} hypothesis to
 assume that the trajectory does sample the whole $NVE$ ensemble. In the most
-intuitive form, this hypothesis is be formulated as:
+intuitive form, this hypothesis is formulated as:
 
 \vskip0.8ex
 \begin{quote}
@@ -688,7 +688,7 @@ system is said to be ergodic if the point representing this system in the phase
 space can approach every point in the phase space as closely as desired. In this
 case, the Birkhoff ergodic theorem proves that the time average and ensemble
 average are the same almost everywhere. This condition has been verified for
-some systems; and is usually assumed to hold when working with statistical
+some systems, andis usually assumed to hold when working with statistical
 thermodynamics.
 
 \subsection{Integration schemes}
@@ -728,7 +728,7 @@ simulate long processes. Another way to make the simulation more efficient is to
 evaluate the forces acting on the atoms as rarely as possible. This is for
 example the case in multi-timesteps methods such as reversible Reference System
 Propagator Algorithms\cite{Tuckerman1992} (r-RESPA) where forces are separated
-by the time scale of their variations; and evaluated only when needed instead of
+by the time scale of their variations, andevaluated only when needed instead of
 being calculated at all steps.
 
 \subsubsection{Some examples of integration schemes}
@@ -768,7 +768,7 @@ Both integrators presented here have a $\smallo (\delta t^2)$ error, but they
 are other integration scheme with a smaller error, called higher-order
 integrators. The most famous ones are the Runge–Kutta methods, that can be
 derived for any even order, starting with $\smallo (\delta t^4)$. Runge–Kutta
-integrators are not used as often as the Velocity-Verlet or Leap Frog
+integrators are not used as often as the Velocity-Verlet or leap frog
 integrators, as they are more expensive to use and are not time-reversible.
 
 \subsection{Sampling other ensembles}
@@ -791,7 +791,7 @@ response.
 
 In the simplest (and crudest) approach, if we want to change the system
 temperature from $T_0$ to $T_1$, we need to multiply all velocities by
-$\sqrt{T_1 / T_0}$. As the system evolves, temperature needs to be updated
+$\sqrt{T_1 / T_0}$. As the system evolves, the temperature needs to be updated
 again, as kinetic energy is transferred into potential energy and reciprocally
 by the integrator. This approach is sometimes called a \emph{rescaling}
 thermostat. While this algorithm does fix the system temperature to the target
@@ -834,10 +834,10 @@ additional variable $s$ controlling the temperature of the system by changing
 the time scale of the extended system such that $\delta t' = s\, \delta t$. This
 new variable is coupled to the system by changing all the velocities to $\v' =
 s^{-1}\ \d \r / \d t$. It can be shown that sampling the extended system in the
-micro-canonical ensemble is equivalent to sampling the real system in the
+microcanonical  ensemble is equivalent to sampling the real system in the
 canonical ensemble, including the fluctuations. The intensity of the coupling is
 can be tuned by changing the fictitious mass associated with $s$. The extended
-Lagrangian can be propagated though time with any existing time-reversible and
+Lagrangian can be propagated through time with any existing time-reversible and
 symplectic integrator.
 
 Instead of using such extended Lagrangian methods, it is also possible to modify
@@ -864,7 +864,7 @@ Controlling the pressure can be done with the same approaches as the temperature
 to generate the $NPT$ ensemble. In this case, we want to fix the value of the
 pressure $P$ by dynamically changing the volume $V$ of the system. For example,
 the Berendsen barostat\cite{Berendsen1984} rescales the system volume at every
-step to ensure a first-order relaxation to the target pressure. For a cubic unit
+step to ensure first-order relaxation to the target pressure. For a cubic unit
 cell subject to isotropic pressure, this means multiplying the cell volume by
 \[ \eta(t) = 1 - \frac{\beta\,\delta t}{\tau_P} \left(P_0 - P(t)\right);\]
 where $P_0$ is the target pressure, $P(t)$ the instantaneous system pressure,
@@ -909,12 +909,12 @@ trajectory\cite{Heffelfinger1994,Cracknell1995,Boinepalli2003}.
 The latter methods --- mixing Monte Carlo moves with molecular dynamics
 integration --- have not been proven, to my knowledge, to generate any specific
 statistical ensemble. While Monte Carlo simulations and molecular dynamics are
-proven to do so under certain hypothesis, we lack such mathematical proofs for
+proven to do so under certain hypotheses, we lack such mathematical proofs for
 the generic hybrid case. It is possible to mix molecular dynamics and Monte
 Carlo under the framework of Hybrid Monte Carlo simulations, which I will
 discuss in more details in chapter~\ref{sec:hmc}. The main idea here is to use
 short Molecular Dynamics simulations as a new Monte Carlo move to generate new
-configurations. Under some conditions on the molecular dynamics integrator the
+configurations. Under some conditions on the molecular dynamics integrator, the
 resulting Markov chain is proven to be ergodic. In this case, the simulation is
 a Monte Carlo simulation, and not a molecular dynamics one: Molecular dynamics
 is only used as a mean to generate new configurations, and the underlying
@@ -927,7 +927,7 @@ have one or more \emph{fractional} particles in the system, represented by a
 parameter $\lambda$ going from 0 to 1.  The interactions of this particle with
 the system are scaled down by $\lambda$, and the value of $\lambda$ evolves
 through time. When it reaches 1, the particle is converted to a full particle
-and a new one is inserted with a small $\lambda$; and when it reaches 0, the
+and a new one is inserted with a small $\lambda$, andwhen it reaches 0, the
 particle is removed and a new one is picked to have the value of $\lambda$
 change.
 
@@ -960,14 +960,14 @@ particles.  At the same time, it is harder to ensure that the trajectory is
 sampling the right ensemble, compared with Monte Carlo simulations where the
 ensemble is built directly into the moves and their probabilities. Generating
 the right average value --- for example when using a Berendsen thermostat --- is
-not enough; and one must check that the full distribution is reproduced.
+not enough, andone must check that the full distribution is reproduced.
 
 In general, Monte Carlo and molecular dynamics simulations complete each other,
 one having strengths where the other is weaker, or harder to use. The main
 difference between them remains the way they explore the phase space,
 represented figure~\ref{fig:mc-vs-md}. Molecular dynamics will generate a smooth
 trajectory in the phase space, while Monte Carlo trajectories will exhibit jumps
-and discontinuities. This ability of using non-physical moves (such as a change
+and discontinuities. This ability to use non-physical moves (such as a change
 in the number of particles in the system) make Monte Carlo simulations a more
 versatile tool for molecular simulations, able to jump over local energy
 barriers and improve sampling rate of the phase space.
@@ -984,7 +984,7 @@ barriers and improve sampling rate of the phase space.
 \end{figure}
 
 Sometimes, the knowledge and sampling of the whole phase space is not necessary
-to acquire insight on the system of interest. For example, a reaction occurring
+to acquire insight into the system of interest. For example, a reaction occurring
 in a water solution will only involve a few degrees of freedom (the distance
 between the reacting molecules) among the thousands of degrees of freedom
 composing the phase space --- this is illustrated in
@@ -1020,7 +1020,7 @@ used during my work. Other methods to extract free energy from a simulation
 include Thermodynamic Integration\cite{Frenkel2002},
 Metadynamics\cite{Laio2002}, Blue Moon ensemble simulations\cite{Ciccotti2004},
 Adaptive Biasing Force\cite{Darve2008}, Wang Landau Monte Carlo\cite{Wang2001},
-and many other.
+and many others.
 
 \subsection{Umbrella sampling}
 
@@ -1033,7 +1033,7 @@ With this energy, the probability that the system is in a state described by $x$
 is given by
 \[ \mathcal{P}_i(x) = \frac1{Z_i} \iiint_V \d \r^N\ \exp[-\beta\, U_i(\r^N)] \ \delta(x - x(\r^N)).\]
 The above expression uses $x(\r^N)$ as the value of the collective variable $x$
-for a given conformation; and the $\delta$ function to filter out a specific
+for a given conformation, andthe $\delta$ function to filter out a specific
 value of $x$. $Z_i$ is the modified conformational partition function:
 \[ Z_i = \iiint_V \d \r^N\ \exp[-\beta\, U_i(\r^N)].\]
 
@@ -1045,7 +1045,7 @@ as a function of $x$, using
 \[F = -k_B T \ln\left( \mathcal{P}_0(x) \right)\]
 
 Umbrella sampling relies on running multiple simulations for different values of
-$x_i$, and approximating $\mathcal{P}_i(x)$ by an histogram of the values taken
+$x_i$, and approximating $\mathcal{P}_i(x)$ by a histogram of the values taken
 by $x$ during the constrained simulations. In theory, it is then possible to
 reconstruct $\mathcal{P}_0$ from any of these histograms:
 \[ \mathcal{P}_0(x) = \exp\left(\beta \frac 12 k\ (x - x_i)^2\right) \frac{Z_i}{Z_0} \mathcal{P}_i(x) \]

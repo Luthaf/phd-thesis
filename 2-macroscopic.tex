@@ -9,11 +9,11 @@
 A first way to approach the problem of coupled deformation and adsorption in
 porous materials is through the use of macroscopic or thermodynamic modeling
 methods. Such methods are based on classical thermodynamic principles and allow
-us to a gain high-level understanding of the processes at play. In this section,
+us to gain high-level understanding of the processes at play. In this section,
 I will introduce the concept of thermodynamic potential and thermodynamic
 ensemble, that can be used together to predict the evolution of a system. In a
 second part, I will show how these potentials can be used to make predictions on
-the co-adsorption of multiple gas in the same porous framework, but that one
+the co-adsorption of multiple gases in the same porous framework, but that one
 needs to be careful to use the thermodynamic ensemble adapted to the problem at
 hand.
 
@@ -83,7 +83,7 @@ The variation of entropy during a transformation of a closed system can be
 linked to the heat transfer between the system and its surroundings by the
 Clausius relation:
 \[\Delta S = \frac Q T + S_\text{created}. \label{eq:clausius}\]
-The $Q/T$ term is homogeneous to an entropy and called the exchanged entropy,
+The $Q/T$ term is homogeneous to entropy and called the exchanged entropy,
 and is the entropy given to the system by its surroundings. $S_\text{created}$
 is the entropy created during the transformation, and is a positive quantity by
 the second law of thermodynamics. When $S_\text{created}$ is null, the
@@ -104,14 +104,14 @@ $\Phi$ is called the \emph{thermodynamic potential}.
 \subsection{Statistical ensembles}
 
 A thermodynamic ensemble is defined by a set of thermodynamic state variable
-that obey some constraints. For example the ensemble where the composition of
+that obey some constraints. For example, the ensemble where the composition of
 the system is fixed, together with the volume and total energy is called the
-$NVE$ or micro-canonical ensemble. Other well known ensembles present a fixed
+$NVE$ or microcanonical  ensemble. Other well-known ensembles present a fixed
 pressure or temperature: the $NVT$ or canonical ensemble, and the $NPT$ or
 isobaric-isothermal ensemble.
 
 Each of these ensembles has an associated thermodynamic potential. For the
-micro-canonical ensemble, we start with equation~\eqref{eq:thermo-potentials}:
+microcanonical  ensemble, we start with equation~\eqref{eq:thermo-potentials}:
 \[\d \Phi = \d \mathcal{U} + P \d V - \sum_i \mu_i \d n_i - T \d S.\]
 $\d \mathcal{U}$ and $\d V$ will be zero as the energy and volume is constant.
 Moreover as the system composition is fixed, $\d n_i = 0$. This gives
@@ -183,7 +183,7 @@ as the associated fixed quantities and thermodynamic potentials.
     \renewcommand{\arraystretch}{1.3}
     \begin{tabularx}{0.8\textwidth}{l c c c X}
         Ensemble            & Fixed quantities                    & \multicolumn{3}{l}{Thermodynamic potential} \\ \hline
-        Micro-canonical     & $N$, $V$, $E$                       & \hskip1em $\mathcal{N}$ & $\equiv$ & $-TS$                   \\
+        microcanonical      & $N$, $V$, $E$                       & \hskip1em $\mathcal{N}$ & $\equiv$ & $-TS$                   \\
         Canonical           & $N$, $V$, $T$                       & \hskip1em $F$      & $\equiv$ & $\mathcal{U} - TS$      \\
         Isobaric-Isothermal & $N$, $P$, $T$                       & \hskip1em $G$      & $\equiv$ & $H - TS$                \\
         Grand-Canonical     & $\mu_i$, $V$, $T$                   & \hskip1em $\Psi$   & $\equiv$ & $F - \sum_i \mu_i n_i $ \\
@@ -218,26 +218,26 @@ co-adsorption based on single-component adsorption data. The most commonly used
 method in the field is the Ideal Adsorbed Solution Theory
 (IAST)\cite{Myers1965}, which is relatively simple to implement and robust, and
 allows the prediction of multi-component adsorption behavior from individual
-single-component isotherms. Other theory are used when the ideality of the
+single-component isotherms. Other theories are used when the ideality of the
 system can no longer be assumed: non-ideal adsorbed solution
 models\cite{Yang1987, Sweatman2002}, the vacancy solution theory
 (VST)\cite{Suwanayuen1980}, the Real Adsorbed Solution Theory\cite{Talu1986}
 (RAST), \etc
 
 Materials which undergo large-scale reversible structural transitions impacting
-their total volume or internal pore volume appear to be particular common among
+their total volume or internal pore volume appear to be particularly common among
 metal-organic frameworks based on relatively weaker bonds (coordination bonds,
 $\pi$--$\pi$ stacking, hydrogen bonds, or some covalent bonds) compared to
 inorganic dense nanoporous materials (such as zeolites). In particular, some of
 these materials show transitions between an \emph{open} phase with large pore
 volume, and a \emph{condensed} or \emph{narrow pore} phase with smaller pore
 volume --- or, in some cases, no microporosity at all. Such transitions, known
-as \emph{gate opening}\cite{Kitaura2003, Tanaka2008, Li2015} or
+as \emph{gate-opening}\cite{Kitaura2003, Tanaka2008, Li2015} or
 \emph{breathing}\cite{Serre2002} depending on the order in which the phases
 occur upon adsorption, can lead to stepped adsorption isotherms for pure
 components.
 
-In the recent literature, many authors have relied on IAST predictions to
+In recent literature, many authors have relied on IAST predictions to
 predict that several such flexible MOFs would present very good selectivity for
 gas separation. In some cases, the authors explicitly used IAST to derive such
 predictions on flexible materials\cite{Banerjee2014, Mukherjee2015, Foo2016,
@@ -276,7 +276,7 @@ by up to two orders of magnitude. All of this work is published in
 The Ideal Adsorbed Solution Theory (IAST) starts by assuming that for a given
 adsorbent and at fixed temperature $T$, the pure-component isotherms $n_i(P)$
 for each gas $i$ of interest is known. Then, given a mixture of ideal gases
-adsorbing at total pressure $P$ in an host framework and the composition of the
+adsorbing at total pressure $P$ in a host framework and the composition of the
 gas phase $y_i$ --- such that the partial pressures follow the ideal mixing law
 $P_i = y_i P$ --- the goal of the method is to predict the total adsorbed
 quantity $n_\text{tot}$ and the molar fractions $x_i$ in the adsorbed phase.
@@ -322,7 +322,7 @@ later confirmed\cite{Myers2014} it to qualify the method by which the adsorption
 isotherms are measured. There is, however, consensus on the fact that absolute
 adsorption should be used in IAST calculations --- as opposed to excess or net
 adsorption\cite{Brandani2016}. This assumption thus applies equally to both
-rigid and flexible adsorbents. However, the first two hypothesis are not valid
+rigid and flexible adsorbents. However, the first two hypotheses are not valid
 for flexible nanoporous materials. \textbf{(H2)} is clearly invalid, as
 modifications in both the host's volume and internal structure lead to
 variations of pore size and specific area upon structural transitions. We note
@@ -331,8 +331,8 @@ pore size close to the adsorbate diameter, as well as gas mixtures of widely
 different size or shape. It should, for example, not apply to molecular sieves
 systems, yet those can often be described reasonably well by IAST in practice.
 Finally, \textbf{(H1)} is violated by all the systems that feature
-adsorption-induced deformation, and in particular by systems presenting a
-gate-opening or a breathing behavior. As a conclusion, IAST has no theoretical
+adsorption-induced deformation, and in particular by systems presenting
+gate-opening or breathing behavior. As a conclusion, IAST has no theoretical
 foundation for those systems and should not be used for co-adsorption prediction
 in flexible nanoporous frameworks.
 
@@ -340,24 +340,24 @@ in flexible nanoporous frameworks.
     \centering
     \input{figures/open-close-selectivity}
     \caption{Typical single-component isotherms for adsorption of two gases (red
-    and blue) in a material with gate opening. The gate opening pressure is not
+    and blue) in a material with gate-opening. The gate-opening pressure is not
     the same for the two adsorbates, creating a pressure range with a high
-    difference in the adsorption capacity for single-components isotherms (gray
+    difference in the adsorption capacity for single-component isotherms (gray
     zone in the figure). Contrary to intuition, selectivity will not necessarily
-    by high in this pressure range, but will depend on difference in saturation
+    by high in this pressure range, but will depend on the difference in saturation
     uptake $\Delta n$.}
     \label{fig:open-close-selectivity}
 \end{figure}
 
 Aside from the mathematical treatment and thermodynamic hypotheses, we can show
-in an qualitative way why it is not possible, in flexible host frameworks, to
+in a qualitative way why it is not possible, in flexible host frameworks, to
 use the single-component isotherm directly to predict multi-components
 adsorption. We address here a common misconception, due to an invalid graphical
 interpretation of the isotherms. Figure~\ref{fig:open-close-selectivity} depicts
 the equilibrium adsorption isotherms for two different guests in a material
-presenting a gate-opening behavior. The gate opening is an adsorption-induced
+presenting a gate-opening behavior. The gate-opening is an adsorption-induced
 structural transition from a nonporous to a porous phase of the host, leading to
-a step in the single-component adsorption isotherm. Gate opening occurs at two
+a step in the single-component adsorption isotherm. gate-opening occurs at two
 different pressures for the two adsorbates, due to the specific host--guest
 interactions of the two gases (characterized notably by the enthalpy of
 adsorption and saturation uptake). In the pressure range in-between the
@@ -398,7 +398,7 @@ stepped isotherms. The single-component isotherm (represented in
 figure~\ref{fig:open-close-isotherms}) is a combination of two isotherms: one in
 the first phase (the contracted pore phase), and one in the second phase (the
 open pore phase). Both phases --- and the thermodynamic equilibrium between them
---- need to be taken in account to predict the multi-component adsorption.
+--- need to be taken into account to predict the multi-component adsorption.
 
 \subsection{Osmotic Framework Adsorbed Solution Theory}
 
@@ -416,8 +416,8 @@ and expressed as a function not of chemical potentials, but of fluid pressure
 (taken equal to mechanical pressure $P$) and adsorption
 isotherms:\cite{Coudert2008}
 \[ \label{eq:osmotic-potential}\Omega(T, P, \mu_i) = F_\alpha + P V_\alpha - \sum_i \int_0^P n_{\alpha,i}(T, p) V^m_i(T, p) \ \d p\]
-Here, $n_{\alpha,i}(T,P)$ are the co-adsorption isotherms for each component and
-$V^m_i(T,P)$ the molar volume for the species $i$ in the bulk phase. Supposing
+Here, $n_{\alpha,i}(T, P)$ are the co-adsorption isotherms for each component and
+$V^m_i(T, P)$ the molar volume for the species $i$ in the bulk phase. Supposing
 that the gases are ideal, the molar volume is given by $RT/P$, with $R$ the
 ideal gas constant.
 
@@ -443,7 +443,7 @@ compared the method against experimental data for adsorption of
 \ce{CO2}/\ce{CH4} mixtures in the MIL-53(Al) MOF. MIL-53(Al) is the seminal
 example of material with a \emph{breathing} behavior: at low loadings, its most
 stable phase is the high porous volume \emph{open-pore} phases, at intermediate
-loadings it transition to a \emph{closed-pore} phase, and at high loading it
+loadings it transitions to a \emph{closed-pore} phase, and at high loading it
 goes back to the open-pore structure. One of the very interesting things that
 \citeauthor{Ortiz2011} predicted using OFAST is the increase of the stability
 domain of the closed pore phase when using mixtures with respect to pure
@@ -484,7 +484,7 @@ Then, for all values of thermodynamic parameters of interest (pressure and gas
 mixture composition) the osmotic potential of the host phases is computed,
 enabling the identification of the most stable phase: the phase with the lowest
 osmotic potential is the most stable at this pressure and composition. The
-pressures at which the osmotic potential in both phases are equal are the phase
+pressures at which the osmotic potential in two phases are equal are the phase
 transition pressures for a given composition. Finally, we can compute adsorption
 properties (guest uptake and selectivity) using IAST in each phase, within its
 domain of stability.
@@ -493,12 +493,12 @@ domain of stability.
 \subsection{Comparing IAST and OFAST}
 
 I present here two examples of co-adsorption of gas mixtures in metal-organic
-frameworks with gate opening behavior, based on experimental data from the
+frameworks with gate-opening behavior, based on experimental data from the
 published literature, comparing the predictions of IAST with those of OFAST. The
 first example deals with the adsorption of $\ce{CO2}$, $\ce{CH4}$, and $\ce{O2}$
 in the \Cudhbc MOF\cite{Kitaura2003} (see figure~\ref{fig:cu-dhbc}; dhbc =
 2,5-dihydroxybenzoate; bpy = bipyridine). These isotherms correspond very
-closely to the archetypal \emph{gate opening} scenario described above. The
+closely to the archetypal \emph{gate-opening} scenario described above. The
 second example deals with linear alkanes (ethane, propane, and butane)
 adsorption in \RPMZn MOF\cite{Nijem2012}; figure~\ref{fig:rpm3-zn} presents the
 framework structure of \RPMZn and relevant experimental adsorption and
@@ -520,9 +520,9 @@ desorption isotherms.
     \label{fig:cu-dhbc}
 \end{figure}
 
-\Cudhbc is a textbook example of gate opening upon adsorption, with
+\Cudhbc is a textbook example of gate-opening upon adsorption, with
 single-component adsorption isotherms (reproduced in figure~\ref{fig:cu-dhbc})
-that clearly show the transition from a nonporous (at low gas pressure) to a
+that clearly shows the transition from a nonporous (at low gas pressure) to a
 microporous (at higher pressure) host phase. From the experimental
 data\cite{Kitaura2003} I fitted the isotherms at high loading using a Langmuir
 model (equation~\eqref{eq:langmuir-isotherm}) for the isotherm in the open-pore
@@ -571,11 +571,11 @@ Figure~\ref{fig:cu-dhbc:iast-ofast:selectivity} presents the selectivity
 obtained with IAST and OFAST; and figure~\ref{fig:cu-dhbc:iast-ofast:loadings}
 shows the partial and total loadings for all the gas combinations. The
 adsorption selectivity calculated with OFAST follows what one would expect: at
-low pressure, the pores are closed and no gas enter the structure, making the
+low pressure, the pores are closed and no gas enters the structure, making the
 selectivity ill-defined --- the isotherms at low pressure cannot be fitted and
 exploited for calculation of separation. Then, at a pressure depending on the
-composition of the gas phase, the gate opening transition occurs. At pressure
-higher than gate opening pressure, the framework is in its open pore form, and
+composition of the gas phase, the gate-opening transition occurs. At pressure
+higher than gate-opening pressure, the framework is in its open pore form, and
 the value of selectivity depends on the relative saturation uptake of the two
 phases. The selectivities observed are almost independent of the fluid mixture
 composition, they are~$\approx 20$ for \ce{CO2}/\ce{O2} and~$\approx 4$ for
@@ -604,9 +604,9 @@ composition, they are~$\approx 20$ for \ce{CO2}/\ce{O2} and~$\approx 4$ for
 
 In stark contrast with this picture, the selectivities calculated by IAST are
 clearly non-physical. All selectivity curves present a maximum in the pressure
-range where gate opening occurs, with selectivities that can be several orders
+range where gate-opening occurs, with selectivities that can be several orders
 of magnitude too high, with for example 2 000 instead of 20 for
-\ce{CO2}/\ce{O2}. Even at higher pressure --- above the gate opening pressure
+\ce{CO2}/\ce{O2}. Even at higher pressure --- above the gate-opening pressure
 range --- the behavior is not identical to the OFAST calculations, because the
 incorrect behavior at low pressure affects IAST directly in the integration of
 the isotherms (equation~\eqref{eq:iast}).
@@ -617,8 +617,8 @@ figure~\ref{fig:cu-dhbc:iast-ofast:loadings} top right panel, we can attribute
 this jump to an equilibrium displacement: \ce{O2} is replacing \ce{CO2} in the
 structure. This shows again the fact that IAST behaves as if the structure was
 closed for \ce{O2} while at the same time being open for \ce{CO2} at pressures
-lower than \SI{40}{atm}. I thus confirm by a quantitative study that IAST is not
-adapted for adsorption in flexible nanoporous materials.
+lower than \SI{40}{atm}. I thus confirmed by a quantitative study that IAST is
+not adapted for adsorption in flexible nanoporous materials.
 
 \FloatBarrier
 \subsubsection{More complex isotherms: the case of \RPMZn}
@@ -638,23 +638,23 @@ adapted for adsorption in flexible nanoporous materials.
     \label{fig:rpm3-zn}
 \end{figure}
 
-We now turn to a second example of gate opening material, \RPMZn\cite{Lan2009-2},
-which presents more complex adsorption--desorption isotherms for short alkanes
-(ethane, propane, butane) --- depicted on the right panel of
-figure~\ref{fig:rpm3-zn}. While adsorption of \ce{C2H6}, and \ce{C3H8} in this
-material displays a typical gate opening behavior, with a well-marked single
-transition from a nonporous to a microporous phase, the adsorption of \ce{C4H10}
-presents two steps at \SI{0.01}{atm} and \SI{0.2}{atm}. There, the first
-transition can be attributed to the structural transition (gate opening), but
-the second one is of a different nature. Because there is no hysteresis loop for
-the second step, and because it occurs for the larger and more anisotropic guest
-molecule, it can be attributed to a fluid reorganization (or fluid packing)
-transition inside the pores. Because experimental \emph{in situ}
+We now turn to a second example of gate-opening material,
+\RPMZn\cite{Lan2009-2}, which presents more complex adsorption--desorption
+isotherms for short alkanes (ethane, propane, butane) --- depicted on the right
+panel of figure~\ref{fig:rpm3-zn}. While adsorption of \ce{C2H6}, and \ce{C3H8}
+in this material displays a typical gate-opening behavior, with a well-marked
+single transition from a nonporous to a microporous phase, the adsorption of
+\ce{C4H10} presents two steps at \SI{0.01}{atm} and \SI{0.2}{atm}. There, the
+first transition can be attributed to the structural transition (gate-opening),
+but the second one is of a different nature. Because there is no hysteresis loop
+for the second step, and because it occurs for the larger and more anisotropic
+guest molecule, it can be attributed to a fluid reorganization (or fluid
+packing) transition inside the pores. Because experimental \emph{in situ}
 characterization (such as single X-ray diffraction) would be necessary to
-definitely affirm the character of this second step, I chose avoid the issue and
-work in a reduced pressure range --- although the OFAST method itself works with
-host materials with more than two phases. I thus fitted the \ce{C4H10} isotherm
-using a Langmuir isotherm for pressures below \SI{0.2}{atm}. The OFAST
+definitely affirm the character of this second step, I chose to avoid the issue
+and work in a reduced pressure range --- although the OFAST method itself works
+with host materials with more than two phases. I thus fitted the \ce{C4H10}
+isotherm using a Langmuir isotherm for pressures below \SI{0.2}{atm}. The OFAST
 selectivity after this pressure will thus not be quantitatively accurate, but
 will be sufficient for the needed physical insight. I also performed tests by
 computing the selectivity under the assumption that the second jump is due to
@@ -682,7 +682,7 @@ From the \ce{C3H8} and \ce{C4H10} isotherms, I computed the free energy
 difference between the nonporous and microporous phases, which I find to be
 $\Delta F = -30.0 \pm \SI{0.1}{kJ/mol}$. The details are in
 table~\ref{table:rpm3-zn:fit}. I did not use the \ce{C2H6} isotherms for this
-purpose, as it has only limited data at high loading (at pressure above 1 bar),
+purpose, as it has only limited data at high loading (for pressures above 1 bar),
 which increases somewhat the uncertainty of the fit. I was still able to fit the
 \ce{C2H6} isotherm with a Langmuir model and use it to compute co-adsorption
 data, as the free energy difference of the two host phases do not depend on the
@@ -718,9 +718,9 @@ single-component isotherms than the OFAST method, which is based on fits.
     \label{fig:rpm3-zn:iast-ofast:loadings}
 \end{figure}
 
-OFAST correctly describes the occurrence of gate opening, at a pressure which
+OFAST correctly describes the occurrence of gate-opening, at a pressure which
 depends on mixture composition but is in the range of the pure component gating
-pressures. After gate opening, the selectivity jumps to its value in the open
+pressures. After gate-opening, the selectivity jumps to its value in the open
 pore framework. \ce{C3H8}/\ce{C2H6} mixtures have a behavior similar to that
 observed in \Cudhbc, with a slowly growing (in logarithmic scale) selectivity at
 high loading. On the other hand, OFAST selectivity for \ce{C4H10}/\ce{C3H8}
@@ -731,7 +731,7 @@ open pore structure cross, with \ce{C3H8} adsorbing more than \ce{C4H10} for
 pressure bigger than \SI{0.03}{bar}. Thus, the low-pressure selectivity is
 reversed at high pressure.
 
-In contrast, the IAST fails to describe the gate opening phenomenon, with
+In contrast, the IAST fails to describe the gate-opening phenomenon, with
 selectivity showing a continuous evolution. Even the trends displayed by this
 evolution are in poor agreement and make no physical sense, featuring
 non-monotonic evolution as a function of pressure and composition. Even their
@@ -764,7 +764,7 @@ macroscopic models for the prediction of co-adsorption of fluid mixtures in two
 different frameworks presenting a gate-opening behavior. In both cases, the
 selectivities derived by the IAST method are nonphysical and differ widely from
 the OFAST results, over- or under-estimate the selectivity, sometimes by up to
-two orders of magnitude. Moreover, this show that even without explicitly using
+two orders of magnitude. Moreover, this shows that even without explicitly using
 IAST for calculations of selectivity in flexible frameworks, one has to be
 cautious in comparing single-component isotherms of different guests.
 Differences in step pressure of stepped isotherms can lead to claims of strong
@@ -776,15 +776,15 @@ restrictive hypotheses; for example both OFAST and IAST assume an ideal mixture
 of perfect gases when deriving and solving the equations. Going past these
 hypotheses is possible but requires empirical models for the chemical potentials
 such as the ones used by non-ideal adsorption models such as VST or RAST. These
-theory could be coupled to the osmotic ensemble to create extensions to OFAST
-able to take into account the non-ideality of the system..
+theories could be coupled to the osmotic ensemble to create extensions to OFAST
+able to take into account the non-ideality of the system.
 
 Despite these limitations, macroscopic modeling methods are very useful in the
 study of adsorption in flexible materials as they are orders of magnitude faster
-than fully atomistic methods and allow for a faster screening and estimations of
+than fully atomistic methods and allow for faster screening and estimations of
 the performance of different materials. If we want to overcome the limitations
 of such macroscopic methods, we can turn to atomistic simulations. Such
-simulations allow to explore non-ideal systems containing real gases without
+simulations allow exploring non-ideal systems containing real gases without
 restricting ourselves to a specific expression for the chemical potentials. In
 the next chapter, I am going to present the framework of statistical
 thermodynamics that is used to link together atomistic and macroscopic

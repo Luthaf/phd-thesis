@@ -275,6 +275,7 @@
 		"!OpenBabel",
 		"specificities",
 		"absorber",
-		"moduli"
+		"moduli",
+		"microcanonical"
 	]
 }
