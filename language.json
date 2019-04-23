@@ -271,6 +271,8 @@
 		"tensorial",
 		"runtime",
 		"multipole",
-		"!NaCl"
+		"!NaCl",
+		"!OpenBabel",
+		"specificities"
 	]
 }

@@ -4,6 +4,7 @@
 \usepackage{classicthesis}
 \usepackage[greek, english]{babel}
 \usepackage{libertine}
+\usepackage{inconsolata}
 \usepackage{mathtools}
 \usepackage{amssymb}
 \usepackage[frenchmath]{mathastext}
@@ -18,6 +19,8 @@
 \usepackage{booktabs}
 \usepackage{afterpage}
 \usepackage{xpatch}
+\usepackage{pifont}
+\usepackage{newunicodechar}
 \usepackage[parfill]{parskip}
 \usepackage[autostyle=false, style=english]{csquotes}
 \usepackage[font={it}]{caption}
@@ -36,7 +39,6 @@
 \usepackage{siunitx}
 
 \usepackage[outputdir=build]{minted}
-\usepackage{inconsolata}
 
 % Automagically transform "foobar" to ``foobar''
 \MakeOuterQuote{"}
@@ -205,6 +207,9 @@
 \def\etc{\emph{etc.}\xspace}
 \def\vdW{van der Waals\xspace}
 \def\cxx{{C\nolinebreak[4]\hspace{-.05em}\raisebox{.2ex}{\footnotesize ++}}\xspace}
+
+\newunicodechar{✓}{\ding{51}}
+\newunicodechar{✗}{\ding{55}}
 
 % PSL cover page
 \usepackage{psl-cover}
