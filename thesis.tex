@@ -81,6 +81,10 @@
 \let\@oldaddcontentsline\addcontentsline
 \renewcommand{\addcontentsline}{\phantomsection\@oldaddcontentsline}
 
+% Prevent line break in multiple citations like [4-5,7]
+\let\@oldcite\cite
+\renewcommand{\cite}[1]{\mbox{\@oldcite{#1}}}
+
 \let\@oldchapter\chapter
 % Skip at least one page before chapter (OnlyInMainfile), and print toc after
 \newcommand{\@chapterstar}[1]{
@@ -91,8 +95,9 @@
 \newcommand{\@chapternostar}[1]{
     \OnlyInMainfile{\clearpage\pagestyle{empty}\null}%
     \@oldchapter{#1}%
+    \pagestyle{fancy}%
     \startcontents[chapters]\printpartialtoc% only print TOC for numbered chapters
-    \pagestyle{fancy}
+    \vskip\baselineskip%
 }
 \renewcommand{\chapter}{\@ifstar{\@chapterstar}{\@chapternostar}}
 

@@ -273,6 +273,8 @@
 		"multipole",
 		"!NaCl",
 		"!OpenBabel",
-		"specificities"
+		"specificities",
+		"absorber",
+		"moduli"
 	]
 }

@@ -1,4 +1,4 @@
-set terminal cairolatex pdf colortext size 13cm,14cm font ",12pt"
+set terminal cairolatex pdf colortext size 13cm,13cm font ",12pt"
 set tics nomirror
 
 OUTPUT = "../" . system("echo ". ARG0 . " | cut -d '.' -f1 " ) . ".tex"
@@ -52,6 +52,6 @@ set multiplot
     splot '<xzcat data/imogolite/density-flat-Hw.dat.xz' u 1:2:(max($3,$6)) with image title ""
 
     set origin 0,0.1
-    set xlabel 'circular coordinate'
+    set xlabel "circular coordinate (\\AA)"
     splot '<xzcat data/imogolite/density-flat-Hint.dat.xz' u 1:2:(max($3,$6)) with image title ""
 unset multiplot

@@ -6,30 +6,31 @@
 \chapter{Classical simulations}
 \label{sec:classical}
 
-\vskip2\baselineskip
-First principles simulations allow us to describe and simulate any system while
-making a minimal number of hypothesis on the shape of the potential energy
-surface. Unfortunately, they are limited by the computing power available to
-systems containing less than a few hundred atoms, and to time scale of a few
-hundred picoseconds. If we want to study larger systems --- up to a hundred of
-thousands of atoms and a few microseconds --- we can use classical simulations.
+First principles molecular simulations allow us to describe and simulate any
+system while making a minimal number of hypotheses on the shape of the potential
+energy surface. Unfortunately, they are limited by the computing power currently
+available to systems containing less than a few hundred atoms, and to time
+scales of a few hundred picoseconds. If we want to study larger systems --- up
+to a hundred of thousands of atoms and a few microseconds --- we can switch to
+classical simulations.
 
-During my PhD, I used classical simulations --- both classical molecular
-dynamics and classical Monte Carlo --- to study water and electrolyte solutions
-confined in porous materials. In the first part of this chapter, I will present
-the intrusion of water-based electrolytes liquids in \ZIF8, from static, dynamic
-and thermodynamic points of view. In the second part, I will discuss the
-adsorption of water in alumino-silicate nanotubes called imogolite.
+During my PhD, I used classical molecular simulations --- both classical
+molecular dynamics and classical Monte Carlo --- to study the behavior of water
+and electrolyte solutions confined in porous materials. In the first part of
+this chapter, I will present the intrusion of aqueous electrolytes liquids
+in \ZIF8, from static, dynamic and thermodynamic points of view. In the second
+part, I will discuss the adsorption of water in alumino-silicate nanotubes
+called imogolite.
 
 \newpage
-\section{Intrusion of electrolyte in ZIF-8}
+\section{Intrusion of electrolytes in ZIF-8}
 \label{sec:zif8-intrusion}
 
-One of the novel applications that has been proposed for hydrophobic nanoporous
+One of the novel applications that have been proposed for hydrophobic nanoporous
 materials is related to mechanical energy storage or dissipation through water
 intrusion\cite{Eroshenko2001, Soulard2004}. In a hydrophobic porous material,
-the pressure at which external water will enter the pore space is greater than
-the vapor pressure of water. That is, adsorption happens only in the liquid
+the pressure at which external bulk water will enter the pore space is greater
+than the vapor pressure of water. That is, adsorption happens only in the liquid
 phase --- and this high-pressure adsorption is called
 \emph{intrusion}\cite{Fraux2017}. This phenomenon has been extensively studied
 in inorganic nanoporous materials, such as zeolites\cite{Saada2010,
@@ -37,34 +38,48 @@ Desbiens2005, Humplik2014a, Humplik2014b}, and more recently evidenced in
 hydrophobic metal--organic frameworks\cite{Ortiz2013, Grosu2015,
 MichelinJamois2015}. Depending on the nature of the nanoporous material and the
 strength of the host--guest interactions, intrusion curves can have different
-shapes and be classified as either as a molecular spring, a shock adsorber, or a
-bumper. This classification depends on the level of hysteresis during an
-intrusion--extrusion cycle.
+shapes and be classified as either as a molecular spring, a shock absorber, or a
+bumper. These behaviors are illustrated in figure~\ref{fig:intrusion-shapes}.
+This classification depends on the level of hysteresis during an
+intrusion--extrusion cycle: springs do not present hysteresis, shock absorber
+present a moderate amount of it, and bumpers do not present a reversible
+behavior.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/images/intrusion-shapes}
+    \caption{Schematic representation of the 3 different types of energy storage
+    behavior: spring (S), shock absorber (SA) and bumper (B). The intruded
+    volume of liquid is represented as a function of applied pressure.}
+    \label{fig:intrusion-shapes}
+\end{figure}
 
 A very sought-after property related to the intrusion of water in hydrophobic
 frameworks is the ability to tune the intrusion pressure and the amount of
 hysteresis present. This can be achieved by chemical modifications of the
 structure of the host material\cite{AOrtiz2014}, or by changing the nature of
-the liquid --- namely, by adding ions to the water\cite{Ortiz2014}. Depending on
-the size of the ions and porous channels, in some cases only water can enter the
-nanopores while ions stay in the bulk liquid. The change in the intrusion
-pressure is then directly related to additional osmotic pressure the fluid has
-to overcome to enter the structure\cite{MichelinJamois2015}. But in other cases,
-the addition of ions has a more complex impact on both the intrusion pressure
-and the shape of intrusion curves. For example, in the pure-silica analogue of
-the $\beta$ zeolite\cite{Camblor1996}, increasing the electrolyte concentration
-from \SI{5}{mol/L} to \SI{10}{mol/L} only shifts the intrusion pressure, but
-increasing it again to \SI{15}{mol/L} changes the overall behavior from a
-shock-absorber to a spring\cite{Ryzhikov2014}. Such changes indicate that the
-interaction between the electrolyte fluid and the host structure is not merely
-reduced to a simple effect of size-based exclusion. At the same time, \emph{in
-situ} X-ray diffraction measurements performed during intrusion--extrusion
-cycles showed that \ce{MgCl2} ions can enter a pure-silica ferrierite during
-intrusion\cite{Arletti2016}. All this evidence points to a more complex effect
-than pure osmotic pressure when using an electrolyte fluid for intrusion.
+the liquid ---for example by adding ions to the water\cite{Ortiz2014}. Depending
+on the size of the ions and porous channels, in some cases only water can enter
+the nanopores while ions stay in the bulk liquid. In this case, the change in
+intrusion pressure is directly related to additional osmotic pressure the fluid
+has to overcome to enter the structure\cite{MichelinJamois2015}. But in other
+cases, the addition of ions has a more complex impact on both the intrusion
+pressure and the shape of intrusion curves. For example, in the pure-silica
+analog of the $\beta$ zeolite\cite{Camblor1996}, increasing the electrolyte
+concentration from \SI{5}{mol/L} to \SI{10}{mol/L} only shifts the intrusion
+pressure, but increasing it again to \SI{15}{mol/L} changes the overall behavior
+from a shock-absorber to a spring\cite{Ryzhikov2014}, removing hysteresis in the
+intrusion-extrusion cycle. Such changes indicate that the interaction between
+the electrolyte fluid and the host structure is not merely reduced to a simple
+effect of size-based exclusion. At the same time, \emph{in situ} X-ray
+diffraction measurements performed during intrusion--extrusion cycles showed
+that \ce{MgCl2} ions can enter a pure-silica ferrierite\cite{Arletti2016}. All
+this evidence points to a more complex effect than pure osmotic pressure when
+using an electrolyte fluid for intrusion, but these effects are currently not
+well understood.
 
 Moreover, we know that adsorption of water in the gas phase can induce large
-structural changes in nanoporous materials\cite{Lee2001, Seoung2013}. This is
+structural changes in nanoporous materials\cite{Lee2001, Seoung2013}. This is in
 particular true of soft porous crystals\cite{Horike2009}, such as flexible
 MOFs\cite{Schneemann2014}, exhibiting dynamic frameworks that are able to
 respond to external stimuli. This has been studied, by both experimental and
@@ -73,46 +88,48 @@ presence of water influences the structure of MIL-53(Cr)\cite{Haigis2013}, and
 is responsible for the occurrence of numerous structural transitions in
 MIL-53(Ga), as a function of both water vapor pressure and
 temperature\cite{Boutin2013, Coudert2014}. Relatively little is known, in
-contrast, on the impact of liquid water --- and aqueous solution --- intrusion
-on the structure of flexible MOFs.
+contrast, on the impact of the intrusion of liquid water --- and aqueous
+solutions --- on the structure and properties of flexible MOFs.
 
-During my PhD, I worked on high-pressure electrolyte intrusion in \ZIF8. \ZIF8
-is hydrophobic\cite{AOrtiz2014}, and presents interesting behavior upon
+During my PhD, I have studied high-pressure electrolyte intrusion in \ZIF8.
+\ZIF8 is hydrophobic\cite{AOrtiz2014} and presents interesting behavior upon
 intrusion. While osmotic pressure effects do not depend on the chemical nature
-of the ions, \ZIF8 shows changes from one energetic behavior to another when the
-ion nature changes while keeping concentration constant\cite{Ortiz2014}. \ZIF8
-behavior can also be tuned chemically, by modifying the nature of the linkers,
-for example changing the methylimidazolate to a chloroimidazolate increases the
-intrusion pressure\cite{Mortada2018}.
+of the ions but only of their concentration, \ZIF8 shows changes from one
+energetic behavior to another when the ion nature changes while keeping
+concentration constant\cite{Ortiz2014}. \ZIF8 behavior can also be tuned
+chemically, by modifying the nature of the linkers. For example, changing the
+methylimidazolate to a chloroimidazolate increases the intrusion
+pressure\cite{Mortada2018}.
 
-However, the exact mechanism and behavior at the molecular level upon intrusion
-of electrolytes in \ZIF8 are still unknown. In this work, I used classical
-molecular simulations to study the structure, dynamics and energetic
+However, the exact mechanism and behavior at the molecular level of the
+electrolytes intrusion in \ZIF8 are still unknown. In this work, I used
+classical molecular simulations to study the structure, dynamics and energetic
 implications of confining water and aqueous solutions of LiCl in \ZIF8. Using
 these simulations, I was able to explore different aspects of the \{water,
 \ZIF8\} and \{electrolyte, \ZIF8\} systems. I describe below the structure of
 the liquids and the influence of confinement, their dynamics, the mechanical
-properties of \ZIF8 and the impact of liquid intrusion on them. I also looks at
-the energetic behavior of intrusion, and the thermodynamics of ions entry in
-\ZIF8.
+properties of \ZIF8 and the impact of liquid intrusion on them. I also look at
+the energetic behavior of intrusion, and the thermodynamics of the ions' entry
+in \ZIF8.
 
 \subsubsection{Computational methods}
 
 I ran classical molecular dynamics (MD) simulations and umbrella sampling
 simulations using the LAMMPS\cite{Plimpton1993} software. The umbrella sampling
-simulations additionally used the COLVARS\cite{Fiorin2013} module for collective
-variables. I used a combination of different force fields for the component of
-the system: a rigid SPC/E\cite{Berendsen1987} for water, for its ability to
-describe the dynamics of liquid water and the solvation of ions; a flexible
-force-field adapted from AMBER by \citeauthor{Zheng2012}\cite{Zheng2012} for the
-description of the \ZIF8 framework; and a combination of electrostatic and
-Lennard-Jones potentials for the ions\cite{Chowdhuri2003}. I used
-Lorentz-Berthelot mixing rules for cross-terms in Lennard-Jones potential, and
-Ewald summation to account efficiently for electrostatic interactions. I used a
-cutoff of \SI{8.5}{\AA} for both the Lennard-Jones potential and the
-separation between real space and Fourier space in the Ewald summation.
+simulations additionally employed the COLVARS\cite{Fiorin2013} module for
+collective variables. I used a combination of different force fields for the
+component of the system: a rigid SPC/E\cite{Berendsen1987} for water, for its
+ability to describe the dynamics of liquid water and the solvation of ions; a
+flexible force-field adapted from AMBER by
+\citeauthor{Zheng2012}\cite{Zheng2012} for the description of the \ZIF8
+framework; and a combination of electrostatic and Lennard-Jones potentials for
+the ions\cite{Chowdhuri2003}. I used Lorentz-Berthelot mixing rules for
+cross-terms in Lennard-Jones potential, and Ewald summation to account
+efficiently for electrostatic interactions. I used a cutoff of \SI{8.5}{\AA} for
+both the Lennard-Jones potentials and the separation between real space and
+Fourier space in the Ewald summation.
 
-After an initial energy minimization, I carried all simulations in the
+After initial energy minimization, I carried all simulations in the
 isothermal-isobaric $NPT$ ensemble with a timestep of \SI{1}{fs}, using a
 Nosé-Hoover thermostat with a time constant of \SI{1}{ps} and a Nosé-Hoover
 barostat with a time constant of \SI{10}{ps}. I allowed the barostat to make
@@ -133,27 +150,28 @@ featuring an explicit \ZIF8/liquid interface) for the umbrella sampling
 simulations. This last system is represented in
 figure~\ref{fig:licl-zif:umbrella-system}.
 
-I generated the initial configuration using the packmol
+I generated the initial configurations using the packmol
 software\cite{Martnez2009}, randomly placing the desired number of particles in
 the system. I started with bulk electrolyte in a \SI{32}{\AA} cubic box
 containing 750 water molecules for the pure water, and added ions for the
-different LiCl concentrations. For the liquids confined in \ZIF8, I needed to
-know how many molecules would fit in the \ZIF8 pores. For that, I ran a constant
-pressure simulation with a reservoir of pure water outside an empty
-$2\times2\times3$ \ZIF8 super-cell at \SI{0.5}{GPa} for \SI{10}{ns} and counted
-75 water molecules by unit cell that entered \ZIF8. I then ran simulations of
-the bulk liquid at varying concentration at the constant pressure of
-\SI{0}{GPa}, and recorded the corresponding particles density. Using the density
-of pure water, I mapped the 75 molecules per unit cell to an accessible porous
-volume of \SI{2.286}{nm^3}, or 46~\% of the unit cell. From this volume and the
-density of the bulk liquids, I could compute the number of molecule to put
-in the $3\times3\times3$ super-cell for each concentration. The resulting
-system was a cubic box of \SI{51}{\AA}, containing roughly 13\,000 atoms.
+different LiCl concentrations. To generate initial configuration of the liquids
+confined in \ZIF8, I needed to know how many molecules would fit in the \ZIF8
+pores. For that, I ran a constant pressure simulation with a reservoir of pure
+water outside an empty $2\times2\times3$ \ZIF8 super-cell at \SI{0.5}{GPa} for
+\SI{10}{ns} and counted 75 water molecules by unit cell that entered \ZIF8. I
+then ran simulations of the bulk liquid at various values of concentration at
+the constant pressure of \SI{0}{GPa} and recorded the corresponding particles
+density. Using the density of pure water, I mapped the 75 molecules per unit
+cell to an accessible porous volume of \SI{2.286}{nm^3}, or 46\% of the unit
+cell. From this volume and the density of the bulk liquids, I could compute the
+number of molecules to put in the $3\times3\times3$ super-cell for each
+concentration. The resulting system was a cubic box of \SI{51}{\AA}, containing
+roughly 13\,000 atoms.
 
 \subsection{Structuration of the liquid}
 \label{sec:licl-zifliquid-structure}
 
-From the point of view of the liquid, the principal effect of intrusion is the
+From the point of view of the liquid, the main effect of intrusion is the
 confinement of the fluid to a pore space of nanometric dimensions, \ie the
 nanoporous material acts as a host matrix --- although a flexible one. I looked
 at the effects of this confinement on the liquid structure, as a function of the
@@ -176,23 +194,24 @@ liquid.
     \label{fig:licl-zif:neighbors}
 \end{figure}
 
-The first thing we can see here is that, for all species (\ce{Li+}, \ce{Cl-} and
-water), the number of neighboring water molecules --- \ie, the solvation ---
+The first thing we can see here is that, for all species (\ce{Li+}, \ce{Cl-},
+and water), the number of neighboring water molecules --- \ie, the solvation ---
 decreases as the LiCl concentration increases. At \SI{0}{mol/L} and
 \SI{1}{mol/L}, there are more than enough water molecules for each ion (roughly
 55 water molecule per ion at \SI{1}{mol/L}) so that they can be in their ideal
-solvation state: 4 \ce{H2O} per \ce{Li+}, and 6 \ce{H2O} per \ce{Cl-}. But as
-the concentration increases, there are fewer available water molecules and the
-ions have to accommodate by having less molecule in their first solvation shell.
-At \SI{20}{mol/L}, there are only 2.7 water molecule available for each lithium
-ion; and each cation is thus surrounded by 1.9 water molecule, less than half
-its complete solvation state. The same is true for water/water coordination
-through hydrogen bonds, as the water molecules compete with the ions to surround
-themselves with other water molecules.
+solvation state: 4 \ce{H2O} around each \ce{Li+}, and 6 \ce{H2O} around each
+\ce{Cl-}. But as the concentration increases, there are fewer available water
+molecules and the ions have to accommodate by having fewer molecules in their
+first solvation shell. At \SI{20}{mol/L}, there are only 2.7 water molecules
+available for each lithium ion; and each cation is thus surrounded by 1.9 water
+molecules on average, less than half its complete solvation state. The same is
+true for water/water coordination through hydrogen bonds, as the water molecules
+compete with the ions to surround themselves with other water molecules.
 
 \begin{figure}[b]
     \centering
     \input{figures/licl-zif-density}
+    \vskip-\baselineskip
     \caption{Two-dimensional density profile of oxygen (top), lithium (middle) and
     chlorine (bottom) atoms in LiCl electrolyte confined in \ZIF8 at \SI{0}{GPa}
     as a function of LiCl concentration (left to right). The atoms from the
@@ -201,17 +220,17 @@ themselves with other water molecules.
     \label{fig:licl-zif:density}
 \end{figure}
 
-In the bulk liquid, the loss of neighbors is linear with the concentration, as
-all the molecules in the system are able to adapt to find the state of largest
-possible solvation. In the confined liquid however, the molecules are
-geometrically constrained by the presence of the \ZIF8 framework, which
-manifests as an excluded volume, and thus are not able to adapt as well to the
-increase in LiCl concentration, making the number of neighbors drop faster. We
-also note a slight increase in the number of chlorine neighbors of lithium ions
-at intermediate concentration, compared to the bulk: the effect of confinement,
-by diminishing the solvation of the ions, favors the occurrence of anion--cation
-pairs. The number of lithium neighbors for chlorine ions is the same as the
-number of chlorine neighbors for lithium ions.
+In the bulk liquid, the loss of neighbors is seemingly linear with the
+concentration, as all the molecules in the system are able to adapt to find the
+state of largest possible solvation. In the confined liquid, however, the
+molecules are geometrically constrained by the presence of the \ZIF8 framework,
+which manifests as an excluded volume, and thus are not able to adapt as well to
+the increase in LiCl concentration. Therefore the number of neighbors drops
+faster. We also note a slight increase in the number of chlorine neighbors of
+lithium ions at intermediate concentrations, compared to the bulk: the effect of
+confinement, by diminishing the solvation of the ions, favors the occurrence of
+anion--cation pairs. The number of lithium neighbors for chlorine ions is the
+same as the number of chlorine neighbors for lithium ions.
 
 Going from bulk liquid to confined liquid also changes the number of neighbors
 for water and Cl ions, even at \SI{1}{mol/L}. In addition to preventing a full
@@ -223,7 +242,7 @@ effect at longer range, the available space in the pores dictating the
 arrangement of molecules. Instead of being widely distributed, the molecules are
 restricted to specific preferential locations, due to host--guest interactions.
 This effect is particularly visible on figure~\ref{fig:licl-zif:density}, and is
-stronger on Cl/water pairs than water/water or Li/water, as the Cl has a larger
+stronger on Cl/water pairs than water/water or Li/water: the Cl has a larger
 radius and binds to the hydrogen atoms in water, making its solvation sphere
 both bigger and "softer".
 
@@ -237,9 +256,8 @@ both bigger and "softer".
     \label{fig:licl-zif:density:all}
 \end{figure}
 
-
 I also computed in figures~\ref{fig:licl-zif:density}
-and~\ref{fig:licl-zif:density:all} the density profile of atoms in the confined
+and~\ref{fig:licl-zif:density:all} the density profiles of atoms in the confined
 liquid, represented in the $xy$ plane, averaged over $z$ and the
 $3\times3\times3$ super-cell. To account for cell deformation during the $NPT$
 simulations, I used fractional coordinates to represent the positions of atoms.
@@ -248,15 +266,15 @@ Here we clearly see the long distance structuration of water inside the \ZIF8
 pores. At low concentration (\SI{1}{mol/L}), the water molecules occupy very
 well-defined sites, in particular inside the windows between two neighboring
 cages. As the concentration increases, this organization is perturbed by the
-ions inserted in the water molecules' network --- however this effect is
+ions inserted in the water molecules' network --- however, this effect is
 relatively small, and the water distribution is not greatly affected. The same
 can be observed in the distribution of chlorine ions, with a well defined, high
 symmetry distribution at low concentration, but as the concentration increases
 the distribution of ions becomes more and more distributed over the whole pore
-space. Concerning lithium ions, they present a looser arrangement inside the
-pores, and are distributed relatively evenly, yet present a preferential
-occupation next to the water molecules in the 6-member windows (in the diagonal
-in figure~\ref{fig:licl-zif:density}).
+space. When it comes to lithium ions, they present a looser arrangement inside
+the pores and are distributed relatively evenly. Yet they present a
+preferential occupation next to the water molecules in the 6-member windows (in
+the diagonal in figure~\ref{fig:licl-zif:density}).
 
 These results can be explained by both the difference in kinetic
 radius\cite{Marcus1988} for water molecules (\SI{2.65}{\AA}), chlorine
@@ -275,11 +293,12 @@ I used two different indicators to quantify the dynamics of water molecules
 confined in \ZIF8 and the impact of LiCl concentration and pressure on this
 dynamic. The first one is based on the lifetime of hydrogen bonds between water
 molecules. Following \citeauthor{Luzar1996}\cite{Luzar1996}, I characterize the
-presence of a hydrogen bond between two water molecules as two oxygen atoms
-separated by less than \SI{3.5}{\AA}, with an oxygen--oxygen--hydrogen
-($\widehat{\text{OOH}}$) angle less than 30\textdegree. I then computed the
-time autocorrelation function of the hydrogen bond existence functions $H(t)$
---- set to 1 if the bond exists at time $t$, 0 if is does not exists --- as:
+presence of a hydrogen bond between two water molecules based on a purely
+geometric definition: two oxygen atoms separated by less than \SI{3.5}{\AA},
+with an oxygen--oxygen--hydrogen ($\widehat{\text{OOH}}$) angle less than
+30\textdegree. I then computed the time autocorrelation function of the hydrogen
+bond existence functions $H(t)$ --- set to 1 if the bond exists at time $t$, 0
+if it does not exists --- as:
 \[C_{\text{hbonds}}(t) = \left\langle H(t_0) \cdot H(t_0 + t) \right\rangle_{t_0} \]
 The decay of this autocorrelation function, presented in
 figure~\ref{fig:licl-zif:hbonds}, is characteristic of the dynamics of the
@@ -293,7 +312,9 @@ hydrogen bond network and the lifetime of individual hydrogen bonds.
     \label{fig:licl-zif:hbonds}
 \end{figure}
 
-I then fitted all the autocorrelation functions with bi-exponential functions:
+This decay is not adequately described by a pure exponential model, and
+therefore I fitted all the autocorrelation functions with bi-exponential
+functions:
 \[ f(t) = A_1 e^{-t / \tau_1} + A_2 e^{-t / \tau_2}, \]
 where $\tau_1$ and $\tau_2$ are the two time scales of decay, and $A_1$ and
 $A_2$ are their relative weights. The resulting fit parameters are presented in
@@ -308,12 +329,12 @@ table~\ref{table:licl-zif:hbonds} and figure~\ref{fig:licl-zif:hbonds:fit:pressu
         \multicolumn{1}{c}{~} & \multicolumn{4}{c}{Bulk}                          &~& \multicolumn{4}{c}{Confined} \\
         \multicolumn{1}{c}{~} & $\tau_1$ (ps) & $\tau_2$ (ps) & $A_1$   & $A_2$   &~& $\tau_1$ (ps) & $\tau_2$ (ps) & $A_1$   & $A_2$   \\
         \midrule
-        \SI{0}{mol/L}         &    3.27       &    9.84       & 69.7~\% & 15.4~\% &~&  1.41         &  11.3         & 45.2~\% & 8.94~\% \\
-        \SI{1}{mol/L}         &    3.36       &    10.1       & 67.0~\% & 17.3~\% &~&  1.56         &  13.8         & 42.3~\% & 15.0~\% \\
-        \SI{5}{mol/L}         &    3.70       &    11.1       & 48.8~\% & 32.4~\% &~&  2.05         &  26.8         & 35.4~\% & 28.0~\% \\
-        \SI{10}{mol/L}        &    3.31       &    14.6       & 30.3~\% & 47.2~\% &~&  2.31         &  38.7         & 29.1~\% & 37.4~\% \\
-        \SI{15}{mol/L}        &    3.28       &    21.5       & 25.5~\% & 47.6~\% &~&  2.37         &  49.3         & 23.8~\% & 45.7~\% \\
-        \SI{20}{mol/L}        &    2.87       &    27.7       & 20.9~\% & 47.9~\% &~&  2.36         &  61.9         & 22.0~\% & 47.5~\% \\
+        \SI{0}{mol/L}         &    3.27       &    9.84       & 69.7\% & 15.4\% &~&  1.41         &  11.3         & 45.2\% & 8.94\% \\
+        \SI{1}{mol/L}         &    3.36       &    10.1       & 67.0\% & 17.3\% &~&  1.56         &  13.8         & 42.3\% & 15.0\% \\
+        \SI{5}{mol/L}         &    3.70       &    11.1       & 48.8\% & 32.4\% &~&  2.05         &  26.8         & 35.4\% & 28.0\% \\
+        \SI{10}{mol/L}        &    3.31       &    14.6       & 30.3\% & 47.2\% &~&  2.31         &  38.7         & 29.1\% & 37.4\% \\
+        \SI{15}{mol/L}        &    3.28       &    21.5       & 25.5\% & 47.6\% &~&  2.37         &  49.3         & 23.8\% & 45.7\% \\
+        \SI{20}{mol/L}        &    2.87       &    27.7       & 20.9\% & 47.9\% &~&  2.36         &  61.9         & 22.0\% & 47.5\% \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -336,26 +357,27 @@ table~\ref{table:licl-zif:hbonds} and figure~\ref{fig:licl-zif:hbonds:fit:pressu
 %     \label{fig:licl-zif:hbonds:fit}
 % \end{figure}
 
-This geometric definition of hydrogen bonds has a minor inconvenient: small
+This geometric definition of hydrogen bonds has a minor drawback: small
 fluctuations of the atomic positions, near the cut-off values, can be mistaken
 for hydrogen bond forming and breaking. To overcome this issue, I also
 computed the time autocorrelation of the orientation vector $\vec u(t)$ of
 water molecules:
 \[C_{\text{rot}}(t) = \left\langle P_2(\vec u(t_0) \cdot \vec u(t_0 + t)) \right\rangle_{t_0} ,\]
 where $P_2(x)$ is the second order Legendre polynomial $P_2(x) = 1/2\ (3x^2 -
-1)$\cite{Fogarty2014}. The resulting fit coefficients are presented in
-table~\ref{table:licl-zif:rotcf}. As water is a strongly associated liquid,
-breaking a hydrogen bond is predominantly correlated to rotational jumps, both
-autocorrelation decay in very similar ways, and I will mainly focus the
-discussion on hydrogen bonds dynamics.
+1)$\cite{Fogarty2014}. The resulting curves and fit coefficients are presented
+in figure~\ref{fig:licl-zif:rotcf} and table~\ref{table:licl-zif:rotcf}
+respectively. As water is a strongly associated liquid, breaking a hydrogen bond
+is predominantly correlated to rotational jumps, both autocorrelation decay in
+very similar ways, and I will mainly focus the discussion on hydrogen bonds
+dynamics.
 
-% \begin{figure}[ht]
-%     \centering
-%     \input{figures/licl-zif-rotcf}
-%     \caption{Rotational autocorrelation in bulk (left) and confined (right)
-%     electrolyte as function of LiCl concentration.}
-%     \label{fig:licl-zif:rotcf}
-% \end{figure}
+\begin{figure}[ht]
+    \centering
+    \input{figures/licl-zif-rotcf}
+    \caption{Rotational autocorrelation in bulk (left) and confined (right)
+    electrolyte as function of LiCl concentration.}
+    \label{fig:licl-zif:rotcf}
+\end{figure}
 
 \begin{table}[ht]
     \caption{Fit coefficients for the rotational autocorrelation decay at \SI{0}{GPa}.}
@@ -366,12 +388,12 @@ discussion on hydrogen bonds dynamics.
         \multicolumn{1}{c}{~} & \multicolumn{4}{c}{Bulk}                          &~& \multicolumn{4}{c}{Confined} \\
         \multicolumn{1}{c}{~} & $\tau_1$ (ps) & $\tau_2$ (ps) & $A_1$   & $A_2$   &~& $\tau_1$ (ps) & $\tau_2$ (ps) & $A_1$   & $A_2$   \\
         \midrule
-        \SI{0}{mol/L}         &    2.69       &    1.05       & 55.6~\% & 17.2~\% &~&    0.85       &     4.65      &  32.2~\% &  5.0  \% \\
-        \SI{1}{mol/L}         &    1.84       &    4.02       & 40.3~\% & 30.0~\% &~&    1.23       &     10.9      &  31.5~\% &  6.2  \% \\
-        \SI{5}{mol/L}         &    2.42       &    7.69       & 33.5~\% & 37.1~\% &~&    1.92       &     24.3      &  30.6~\% &  15.9~\% \\
-        \SI{10}{mol/L}        &    2.80       &    13.8       & 24.8~\% & 45.8~\% &~&    2.33       &     33.6      &  27.1~\% &  25.3~\% \\
-        \SI{15}{mol/L}        &    3.24       &    22.8       & 21.4~\% & 48.5~\% &~&    2.62       &     47.1      &  24.7~\% &  30.1~\% \\
-        \SI{20}{mol/L}        &    3.34       &    31.8       & 20.8~\% & 48.3~\% &~&    2.54       &     51.0      &  23.7~\% &  29.7~\% \\
+        \SI{0}{mol/L}         &    2.69       &    1.05       & 55.6\% & 17.2\% &~&    0.85       &     4.65      &  32.2\% &  5.0  \% \\
+        \SI{1}{mol/L}         &    1.84       &    4.02       & 40.3\% & 30.0\% &~&    1.23       &     10.9      &  31.5\% &  6.2  \% \\
+        \SI{5}{mol/L}         &    2.42       &    7.69       & 33.5\% & 37.1\% &~&    1.92       &     24.3      &  30.6\% &  15.9\% \\
+        \SI{10}{mol/L}        &    2.80       &    13.8       & 24.8\% & 45.8\% &~&    2.33       &     33.6      &  27.1\% &  25.3\% \\
+        \SI{15}{mol/L}        &    3.24       &    22.8       & 21.4\% & 48.5\% &~&    2.62       &     47.1      &  24.7\% &  30.1\% \\
+        \SI{20}{mol/L}        &    3.34       &    31.8       & 20.8\% & 48.3\% &~&    2.54       &     51.0      &  23.7\% &  29.7\% \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -388,13 +410,13 @@ discussion on hydrogen bonds dynamics.
 First, we can see on figure~\ref{fig:licl-zif:hbonds:fit:pressure} that the
 pressure has a relatively small influence on the hydrogen bonds dynamics.
 Pressure could be expected to have an impact on the dynamics through excluded
-volume effects\cite{Fogarty2014}: a molecule needs to rotate and temporarly
+volume effects\cite{Fogarty2014}: a molecule needs to rotate and temporarily
 occupy "more space"  when creating and destroying hydrogen bonds. This
 additional space might not be available under high pressure. The small impact of
 pressure on hydrogen bonds dynamics here has to be related with the relatively
-small volume changes as the pressure increases seen in
-figure~\ref{fig:licl-zif:pv}: they are too small for excluded volume effect to
-have significant impacts.
+small volume changes as the pressure increase seen in
+figure~\ref{fig:licl-zif:pv}: they are too small for an excluded volume effect
+to have a significant impact.
 
 In the bulk liquid, the shortest lifetime is almost constant around \SI{3}{ps}
 as the concentration increases, but the weight of this fast process ($A_1$)
@@ -406,14 +428,14 @@ presented in section~\ref{sec:licl-zifliquid-structure}. This lifetime is
 smaller in the confined liquid than it is in the bulk phase, which has already
 been shown for water at interfaces: \citeauthor{Fogarty2014}\cite{Fogarty2014}
 showed that it is linked to the librational motions of the \ce{O-H} bonds, and
-the dynamics of these \emph{dangling} OH groups at interfaces is faster than
-bulk\cite{Scatena2001}. On the other hand, the second lifetime, associated to
-the slowest process, increases with concentration, as well as the corresponding
-weight ($A_2$). This points to hydrogen bonds between water molecules bounded to
-ions.
+the dynamics of these \emph{dangling} OH groups at interfaces is faster than in
+the bulk liquid\cite{Scatena2001}. On the other hand, the second lifetime,
+associated with the slowest process, increases with concentration, as well as the
+corresponding weight ($A_2$). This points to hydrogen bonds between water
+molecules bounded to ions.
 
 In the confined liquid, weights still evolve in the same way with respect to the
-concentration, which point to them being associated with the same kind of
+concentration, which points to them being associated with the same kind of
 hydrogen bonds. The second lifetime increases in the confined liquid compared to
 the bulk liquid. This slowdown of water dynamics under confinement is
 well-known\cite{Fogarty2014}, and has been observed in many classes of
@@ -421,8 +443,8 @@ nanoporous materials\cite{Jeffery2004, RomeroVargasCastrillon2009, Haigis2013,
 Scalfi2018}. It is attributed to the stronger organization of water as well as
 water molecules finding fewer partners for hydrogen bond exchange. The same
 arguments also apply to the increase in LiCl concentration, both in the bulk and
-confined liquid. This is coherent with what we see on the changes on bulk
-modulus as concentration changes in table~\ref{table:bulk}.
+confined liquid. This is coherent with what we see on the changes of bulk
+modulus as a function of concentration in table~\ref{table:bulk}.
 
 \subsection{Deformation of the framework}
 \label{sec:licl-zifdeformation}
@@ -435,32 +457,33 @@ modulus as concentration changes in table~\ref{table:bulk}.
     \label{fig:licl-zif:dihedrals}
 \end{figure}
 
-So far, I have studied the property of the confined liquid inside the \ZIF8
-framework, and the changes in the structure and dynamic of this liquid as it
+So far, I have studied the properties of the confined liquid inside the \ZIF8
+framework, and the changes in the structure and dynamics of this liquid as it
 goes from a bulk to a confined state. It is also interesting to look at the
 changes the framework undergoes when going from an empty state to an intruded
-state. Macroscopic changes to the volume are relatively small (less than 4~\%),
-and presented in the next section, specially in figure~\ref{fig:licl-zif:pv}. In
-this section I will look at the internal deformations of the framework under
-intrusion. I used the distribution of the \ce{Zn-Zn-Zn-CH3} dihedral swing angle
-to characterize the deformations of the framework under intrusion. The
+state. Macroscopic changes to the volume are relatively small (less than 4\%),
+and presented in the next section, especially in figure~\ref{fig:licl-zif:pv}.
+In this sections, I will look at the internal deformations of the framework
+under intrusion. I used the distribution of the \ce{Zn-Zn-Zn-CH3} dihedral swing
+angle to characterize the deformations of the framework under intrusion. The
 distributions for empty and intruded \ZIF8 are presented in
 figure~\ref{fig:licl-zif:dihedrals}.
 
-The distribution for the empty framework reproduces the results from
-chapter~\ref{sec:ab-initio}: it is a Gaussian distribution, centered around the
-equilibrium value of 15°, and with fluctuations of the order of 10°. The
-distributions for \ZIF8 containing the electrolyte liquid does not seems to
-depend on the electrolyte concentration. Instead they are all centered around
-5°, and still have the same order of magnitude for fluctuations. This is to be
-contrasted with the effect of nitrogen adsorption at \SI{77}{K} in \ZIF8; where
-the equilibrium value goes from 10° to 25° as the pores fill up with nitrogen.
-It is however interesting to note that the presence of ions does not impact the
-structure more than the presence of pure water does. This is coherent with the
-results presented in figure~\ref{fig:licl-zif:density}, where the water
-molecules are located inside the 6-member windows. Water molecules take the
-place of linkers that rotate to accommodate them in the windows. As ions never
-enter this window, they don't have any effect on the linkers rotation.
+The distribution of swing angles for the empty framework reproduces the results
+from chapter~\ref{sec:ab-initio}, obtained at a different level of theory: it is
+a Gaussian distribution, centered around the equilibrium value of 15°, and with
+fluctuations of the order of 10°. The distributions for \ZIF8 containing the
+electrolyte liquid do not seems to depend on the electrolyte concentration.
+Instead, they are all centered around 5° and still have the same order of
+magnitude for fluctuations. This is to be contrasted with the effect of nitrogen
+adsorption at \SI{77}{K} in \ZIF8; where the equilibrium value goes from 10° to
+25° as the pores fill up with nitrogen. It is however interesting to note that
+the presence of ions does not impact the structure more than the presence of
+pure water does. This is coherent with the results presented in
+figure~\ref{fig:licl-zif:density}, where the water molecules are located inside
+the 6-member windows. Water molecules take the place of linkers that rotate to
+accommodate them in the windows. As ions never enter this window, they don't
+have any effect on the linkers rotation.
 
 \subsection{Elastic properties}
 
@@ -475,37 +498,41 @@ enter this window, they don't have any effect on the linkers rotation.
 
 Given its potential applications in mechanical energy storage, one of the most
 important properties of the \ZIF8/electrolyte system is its mechanical behavior,
-and notably its stability under high pressure. As an increasing stress is
-applied to a material, it will first deform in a reversible and linear fashion,
-in what is called the linear elastic regime. Under higher stress, the
-material will start to deform in an irreversible way, and finally break.
-Information on the linear elastic regime and its extent is useful to study the
-stability of materials under stress, as stiffer materials are generally tougher
-and able to bear higher stress before failing. This is particularly important
-for soft nanoporous materials, where the mechanical stability range is lower
-than in inorganic porous materials such as zeolites, and where pressure-induced
-amorphization is common at moderate (sub-gigapascal)
-pressures\cite{Bennett2011, Cao2012, AOrtiz2013}.
+and notably its stability under high pressure. As increasing stress is applied
+to a material, it will first deform in a reversible and linear fashion, in what
+is called the linear elastic regime. Under higher stress, the material will
+start to deform in an irreversible way --- called \emph{plastic deformations}
+--- and finally break. Information on the linear elastic regime and its extent
+are useful to study the stability of materials under stress, as stiffer
+materials are generally tougher and able to bear higher stress before failing.
+This is particularly important for soft nanoporous materials, where the
+mechanical stability range is lower than in inorganic porous materials such as
+zeolites, and where pressure-induced amorphization is common at moderate
+(sub-gigapascal) pressures. For example, ZIF-4 can undergo reversible
+amorphization between 0.35 and \SI{0.98}{GPa}\cite{Bennett2011}, and ZIF-8
+becomes amorphous after ball-milling operations\cite{Cao2012, AOrtiz2013}.
 
 I probed the mechanical response of the \ZIF8/electrolyte system using direct
 simulations of the system under explicit hydrostatic stress. We can first note
 that even though I allowed arbitrary changes to the unit cell lengths and tilt
-factors, all the simulations cells remained orthorhombic. The
-figure~\ref{fig:licl-zif:pv} present the changes in volume as the pressure
-increases, for all the liquid concentrations. We can see that up to \SI{1}{GPa},
-the deformation remains in the elastic regime, and that the response is almost
-linear. Moreover, confining an electrolyte in the \ZIF8 structure do not
-drastically affect the mechanical properties of the system.
+factors (anisotropic strain), all the simulations cells remained orthorhombic on
+average. Figure~\ref{fig:licl-zif:pv} presents the changes in volume as the
+pressure increases, for all the liquid concentrations. We can see that up to
+\SI{1}{GPa}, the deformation remains in the elastic regime, and that the
+response is almost linear. Moreover, confining an electrolyte in the \ZIF8
+structure do not drastically affect the mechanical properties of the system.
 
 From these curves, I extracted the bulk modulus $K$ of the system, defined as
 \[K = -V\left(\frac{\partial P}{\partial V}\right)_{N,T}\]
 The values obtained for all concentrations are reported in
 table~\ref{table:bulk}. The value for the empty \ZIF8 is close to the
-experimental\cite{Tan2012} value of \SI{7.8}{GPa}. The bulk modulii of pure
-water and \SI{1}{mol/L} are further away from the experimental
+experimental\cite{Tan2012} value of \SI{7.8}{GPa}. The bulk moduli of pure water
+and the \SI{1}{mol/L} liquid are further away from the experimental
 values\cite{Lanman1934} of \SI{2.4}{GPa} and \SI{2.6}{GPa} respectively. These
 differences are likely coming from the force-fields we used, which were not
-parametrized on mechanical properties of the framework or the liquids.
+parametrized on the mechanical properties of the framework or the liquids. I
+will mainly discuss the trends here, as they should be reproduced by the force
+field even if the absolute values are not.
 
 \begin{table}[ht]
     \caption{Bulk modulus of the bulk electrolyte liquids and of \ZIF8
@@ -529,24 +556,48 @@ parametrized on mechanical properties of the framework or the liquids.
     \end{tabular}
 \end{table}
 
-The trends, however, are interesting to see. Adding water to the pores of \ZIF8
-only changes the bulk modulus by a moderate amount (10~\%), meaning that most of
-the stiffness comes from the \ZIF8 framework --- the stiffer component of the
-two. However, adding ions to the liquid has a larger effect, both in the bulk
-state and the confined state, with the bulk modulus increasing by up to 50~\% at
-\SI{20}{mol/L} with respect to the empty framework. Since I generated the
-structures in such a way that the volume occupied by the liquid is always the
-same, the increase in bulk modulus is not be related to changes in the size
-occupied by the ions relatively to water. Rather, this increase in bulk modulus
-comes from the stronger interactions between ions and water molecules, compared
-to interactions between water molecules. The interactions between lithium
-cations and water molecules are stronger than water--water hydrogen bonds, and
-will make the liquid less compressible, especially at high concentration where,
-statistically, all water molecules are bonded to at least one lithium atom. This
-is further supported by the fact that the bulk modulus increases by the same
-order of magnitude ($\approx$ \SI{5}{GPa}) in both the bulk liquid and the
-confined liquid in \ZIF8.
+Adding water to the pores of \ZIF8 only changes the bulk modulus by a moderate
+amount (10\%), meaning that most of the stiffness comes from the \ZIF8 framework
+--- the stiffer component of the two. However, adding ions to the liquid has a
+larger effect, both in the bulk state and the confined state, with the bulk
+modulus increasing by up to 50\% at \SI{20}{mol/L} with respect to the empty
+framework. Since I generated the structures in such a way that the volume
+occupied by the liquid is always the same, the increase in bulk modulus is not
+related to changes in the size occupied by the ions relative to water. Rather,
+this increase in bulk modulus comes from the stronger interactions between ions
+and water molecules, compared to interactions between water molecules.
+Interactions between lithium cations and water molecules are stronger than
+water--water hydrogen bonds. This will make the liquid less compressible,
+especially so at high concentrations all water molecules (statistically
+speaking) are bonded to at least one lithium atom. This is further supported by
+the fact that the bulk modulus increases by the same order of magnitude
+($\approx$ \SI{5}{GPa}) in both the bulk liquid and the confined liquid in
+\ZIF8.
 
+\newpage
+
+\begin{table}[t]
+    \caption{Average interaction energy in kcal/mol per unit cell for various
+    sub-systems. See the text for the definition of each sub-system.
+    For reference, $k_BT$ is \SI{0.6}{kcal/mol} at \SI{300}{K}.}
+    \label{table:thermo:raw}
+    \centering
+    \renewcommand{\arraystretch}{1.1}
+    \begin{tabular}{c c c c c c}
+        \toprule
+        Concentration  & $E_\text{Total}$ & $E_\text{ZIF}$ & $E_\text{LiCl}$ & $E_\text{LiCl/ZIF}$ & $E_\text{LiCl}^\text{bulk}$ \\
+        \midrule
+        \SI{0}{mol/L}  &     $-1617$        &    $-758.1$      &   $-703.1$        &     $-155.5$           &   $-822.9$    \\
+        \SI{1}{mol/L}  &     $-1859$        &    $-739.5$      &   $-974.0$        &     $-145.8$          &   $-1080$     \\
+        \SI{5}{mol/L}  &     $-2753$        &    $-738.3$      &   $-1864$         &     $-149.7$           &   $-1995$     \\
+        \SI{10}{mol/L} &     $-3628$        &    $-735.5$      &   $-2744$         &     $-148.6$           &   $-2898$     \\
+        \SI{15}{mol/L} &     $-4295$        &    $-732.5$      &   $-3416$         &     $-146.0$           &   $-3581$     \\
+        \SI{20}{mol/L} &     $-4818$        &    $-728.4$      &   $-3949$         &     $-140.9$           &   $-4117$     \\
+        \bottomrule
+        Empty          &     $-746.8$       &    $-746.8$      &                 &                      &             \\
+        \bottomrule
+    \end{tabular}
+\end{table}
 \subsection{Thermodynamics of the intrusion}
 
 In order to shed light into the thermodynamics of electrolyte intrusion in
@@ -577,29 +628,6 @@ change during the \mbox{\ZIF8 + liquid $\rightarrow$ liquid $\in$
 negative when the confined state is more stable.
 
 \begin{table}[ht]
-    \caption{Average interaction energy in kcal/mol per unit cell for various
-    sub-systems. See the text for the definition of each sub-system.
-    For reference, $k_BT$ is \SI{0.6}{kcal/mol} at \SI{300}{K}.}
-    \label{table:thermo:raw}
-    \centering
-    \renewcommand{\arraystretch}{1.1}
-    \begin{tabular}{c c c c c c}
-        \toprule
-        Concentration  & $E_\text{Total}$ & $E_\text{ZIF}$ & $E_\text{LiCl}$ & $E_\text{LiCl/ZIF}$ & $E_\text{LiCl}^\text{bulk}$ \\
-        \midrule
-        \SI{0}{mol/L}  &     $-1617$        &    $-758.1$      &   $-703.1$        &     $-155.5$           &   $-822.9$    \\
-        \SI{1}{mol/L}  &     $-1859$        &    $-739.5$      &   $-974.0$        &     $-145.8$          &   $-1080$     \\
-        \SI{5}{mol/L}  &     $-2753$        &    $-738.3$      &   $-1864$         &     $-149.7$           &   $-1995$     \\
-        \SI{10}{mol/L} &     $-3628$        &    $-735.5$      &   $-2744$         &     $-148.6$           &   $-2898$     \\
-        \SI{15}{mol/L} &     $-4295$        &    $-732.5$      &   $-3416$         &     $-146.0$           &   $-3581$     \\
-        \SI{20}{mol/L} &     $-4818$        &    $-728.4$      &   $-3949$         &     $-140.9$           &   $-4117$     \\
-        \bottomrule
-        Empty          &     $-746.8$       &    $-746.8$      &                 &                      &             \\
-        \bottomrule
-    \end{tabular}
-\end{table}
-
-\begin{table}[ht]
     \caption{Derived thermodynamic quantities in kcal/mol per unit cell. See
     the text for the definition of each quantity.}
     \label{table:thermo}
@@ -625,16 +653,16 @@ intruded states $\Delta E_\text{ZIF}$ is in the range of tens of $kT$ (at \SI{30
 $kT \approx \SI{0.6}{kcal/mol}$). The \ZIF8 framework is slightly destabilized
 (energetically) in presence of the intruded liquid except at \SI{0}{mol/L},
 where it is slightly stabilized. The overall effect is small compared to the two
-next trends we see. I have already shown that the presence of ions have little
+next trends we see. I have already shown that the presence of ions has little
 to no effect on the \ZIF8 structure in section~\ref{sec:licl-zifdeformation}.
 
 First, the liquid is always more energetically stable in the intruded phase than
 in the bulk phase ($\Delta E_\text{LiCl}$). This might seems strange as \ZIF8 is
-an hydrophobic material, but the values presented only account for energetic
-contributions, and do not contain entropy. figure~\ref{fig:licl-zif:density}
+a hydrophobic material, but the values presented only account for energetic
+contributions, and do not contain entropy. Figure~\ref{fig:licl-zif:density}
 shows that the entropy of the confined liquid can indeed be expected to be lower
 than the entropy of the bulk liquid, because of the strong organization of the
-confined fluid. As the LiCl concentration increase, the intruded phases becomes
+confined fluid. As the LiCl concentration increase, the intruded phases become
 more and more stabilized, the ions adding additional rigidity and strong
 interactions in the pores network.
 
@@ -650,28 +678,16 @@ to the Gibbs free energy, which makes the adsorption overall thermodynamically
 unfavorable. This balance of effects, computed here from molecular simulations,
 could be measured experimentally using high-pressure calorimetry, as it has been
 done for the purely siliceous silicalite-1 zeolite\cite{Karbowiak2009,
-Karbowiak2010}.
+Karbowiak2010} in previous works.
 
-\newpage
 \subsection{Thermodynamics of ion entry into the nanopores}
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.9\textwidth]{figures/images/licl-zif-umbrella}
-    \caption{Representation of the system used for umbrella sampling simulation
-    to compute the free energy profile of entry of lithium ions in \ZIF8. We
-    used similar systems for the free energy profile of entry of chlorine and
-    water. Water molecules are represented in red, lithium ions in pink and
-    chlorine ion in green. \ZIF8 is represented as a transparent matrix.}
-    \label{fig:licl-zif:umbrella-system}
-\end{figure}
 
 In the previous sections, I described the behavior of intruded electrolytes in
 the pores of \ZIF8, using full periodic boundary conditions. Here, I want to
-investigate the thermodynamics of the process by which species (water molecules
-and ions) can actually enter the nanopores space, \emph{\ie} pass through the
-windows of the material and its external surface. I have thus modeled an
-explicit water/\ZIF8 interface, depicted in
+investigate the thermodynamics of the process by which individual species (water
+molecules and ions) can actually enter the nanopores' space, \emph{\ie} pass
+through the windows of the material and its external surface. I have thus
+modeled an explicit water/\ZIF8 interface, depicted in
 figure~\ref{fig:licl-zif:umbrella-system}: the system here contains both water
 in the bulk state in a \SI{34}{\AA}$\times$\SI{34}{\AA}$\times$\SI{30}{\AA}
 reservoir, and water confined inside \ZIF8. I used umbrella sampling simulations
@@ -680,12 +696,23 @@ of a single species (\ce{Li+}, \ce{Cl-}, or \ce{H2O}) entering \ZIF8 along the
 (111) crystallographic axis. I placed the molecule of interest at \SI{5}{\AA} of
 a window between the bulk and confined water, and the corresponding counter ion
 on the other side of the \ZIF8 slab (to keep the system neutral yet minimize
-ion--ion interactions). I ran a total of 121 umbrella sampling simulation for
+ion--ion interactions). I ran a total of 121 umbrella sampling simulations for
 each species, spaced every \SI{0.33}{\AA}. Each simulation ran for \SI{500}{ps}
-in the $NVT$ ensemble, using the last step of the previous simulation as
-starting point. The resulting free energy profile is presented in
+in the $NVT$ ensemble, using the last step of the previous simulation as the
+starting configuration. The resulting free energy profile is presented in
 figure~\ref{fig:licl-zif:free}, together with the average number of neighbors at
 a given position on the axis (lower panel).
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=0.9\textwidth]{figures/images/licl-zif-umbrella}
+    \caption{Representation of the system used for umbrella sampling simulations
+    to compute the free energy profile of entry of lithium ions in \ZIF8. We
+    used similar systems for the free energy profile of entry of chlorine and
+    water. Water molecules are represented in red, lithium ions in pink and
+    chlorine ion in green. \ZIF8 is represented as a transparent matrix.}
+    \label{fig:licl-zif:umbrella-system}
+\end{figure}
 
 \begin{figure}[ht]
     \centering
@@ -703,7 +730,7 @@ a given position on the axis (lower panel).
 
 The first conclusion is that there is no free energy barrier for entry of the
 water molecule: the energy profile is flat and the number of neighbors is
-constant and around 4. This is coherent with the results already presented on
+constant and around 4. This is consistent with the results already presented on
 the location of water molecules inside the \ZIF8 windows and on the number of
 neighbors for water molecules inside \ZIF8. It also confirms that the nature of
 the liquid-phase intrusion process is not a kinetic limitation of water
@@ -713,8 +740,8 @@ correspond to the \ZIF8 windows at 0 and \SI{15}{\AA}. These barriers are
 correlated to a lower number of neighbors for the anion, dropping to a value of
 4: there is not enough space inside the window to fit a chlorine ion and 7 water
 molecules, and the anion has to partially desolvate to pass through the window
---- explaining the presence of the free energy barrier. Outside of these
-barrier, the profile is flat and at the same level as in the bulk liquid,
+--- explaining the existence of the free energy barrier. Outside of these
+barriers, the profile is flat and at the same level as in the bulk liquid,
 meaning that while the entry of a single chlorine ion is a rare event, at long
 thermodynamic time scale, Cl ions should be able to enter in \ZIF8. Generally
 speaking, the Cl ions have a kinetic barrier to entry in the \ZIF8.
@@ -729,7 +756,7 @@ differences are not linked to a difference in solvation as in the chlorine case,
 as the number of neighbors of lithium stays constant and around 4. Indeed, the
 solvation of \ce{Li+} by water is much stronger, and its solvation sphere is
 smaller in size than \ce{Cl-}. As lithium does not partially desolvate or
-rearrange to pass the barrier, the whole solvation sphere needs to go though a
+rearrange to pass the barrier, the whole solvation sphere needs to go through a
 relatively small window, thus making the barrier higher. This points to a
 difference in nature between the \ce{Li+} and \ce{Cl-} ions, which will have to
 be probed further, for example by studies on other ions of different size.
@@ -737,21 +764,21 @@ be probed further, for example by studies on other ions of different size.
 \newpage
 \subsection*{Conclusion}
 
-Liquid intrusion of water and concentrated aqueous solutions in hydrophobic
+Intrusion of liquid water and concentrated aqueous solutions in hydrophobic
 materials have been proposed for applications in mechanical energy storage and
 dissipation, and recently ZIF frameworks have been highlighted for the high
 energy density that they can store. However, while the process of intrusion has
 been well studied in various zeolitic materials over the last 20 years, there is
 relatively little information available on the behavior --- at the microscopic
 scale --- of water and electrolytes in hydrophobic metal--organic frameworks.
-These systems are difficult to probe experimentally, because liquid intrusion
-has to occur under high pressure. Therefore, we have used molecular dynamics
+These systems are difficult to probe experimentally because liquid intrusion
+occurs under high pressure. Therefore, I have used molecular dynamics
 simulations to shed some light onto the properties of LiCl aqueous solutions at
 various concentrations confined inside the pores of the \ZIF8 metal--organic
-framework. We show that the presence of the electrolyte has a moderate impact on
+framework. I show that the presence of the electrolyte has a moderate impact on
 the \ZIF8 framework, while the presence of the \ZIF8 matrix strongly influences
 the behavior of the confined aqueous solution, affecting the overall properties
-of the system. We also computed the free energy profile for the entry of water
+of the system. I also computed the free energy profiles for the entry of water
 molecules and ions into the nanopores, showing a difference between anions and
 cations.
 
@@ -780,69 +807,83 @@ Finally, this work focused on the \ZIF8 framework, perhaps the most archetypal
 of the ZIF materials. The influence of framework functionalization with various
 imidazolate derivatives, which has shown to greatly impact adsorption in the gas
 phase, will surely also manifest itself in the liquid-phase intrusion processes.
+This is currently a wide open question, which is just starting to get
+studied\cite{Mortada2018}.
 
 \newpage
 \section{Adsorption of water in imogolites}
 
-I worked with Laura Scalfi during her master internship in the group to study
-water adsorption, confinement and structuration in alumino-silicate nanotubes
-called imogolites. This study is published in
-\citejournal{Scalfi2018}\cite{Scalfi2018}.
+I worked with Laura Scalfi during her master's internship (\emph{stage de M2} in
+France) in the group to study water adsorption, confinement, and structuration
+in alumino-silicate nanotubes called imogolites. This study was published in
+\citejournal{Scalfi2018}\cite{Scalfi2018}, and is described in this section.
 
-Imogolite is an alumino-silicate material, with formula \ce{Al2SiO3(OH)4}, that
-was first discovered in volcanic ashes in Japan\cite{Yoshinaga1962}. It is the
-only known alumino-silicate material that spontaneously forms inorganic
-nanotubes, and there exists no planar equivalent material in nature --- unlike
-carbon nanotubes, of which graphene is the planar form. Imogolite nanotubes are
-monodisperse in diameter, and can be readily synthesized with controlled length
-and diameter, for example by substituting silicon with
-germanium\cite{Amara2013}. This precise control of the imogolite nanotube
-dimensions is interesting for applications that rely on one-dimensional pore
-channels, in fields such as nanofluidic devices, membranes for filtration and
-separation, desalination, etc. Moreover, from a theoretical point of view, its
-hollow cylindrical topology and tuneable size make it a very attractive model to
-study the properties of fluids under confinement. Their structure was first
-described by \citeauthor{Cradwick1972}\cite{Cradwick1972} from electron
-diffraction measurements as a cylindrical assembly of silicon tetrahedra and
-aluminum octahedra (see figure~\ref{fig:imogolite:structure}). This sheet
-spontaneously folds into a nanotube because of bond length mismatch and
-formation of hydrogen bonds\cite{Lee2011,Gonzalez2014}. The imogolite nanotubes
-are characterized using the same nomenclature as carbon nanotubes. Both natural
-and synthetic imogolite nanotubes exhibit a zigzag folding, with a variable
-number $n$ of \ce{Al2O3SiOH(OH)3} units (called gibbsite units) along the
-nanotube circumference. The cylindrical unit cell then contains $2n$ gibbsite
-units. Natural imogolite is a nanotube with size $n=12$, while depending on the
-details of the synthesis conditions, synthetic imogolites correspond to values
-of $n$ typically between 12 and 14, and sometimes larger.
-
-\begin{figure}[b]
+\begin{figure}[h]
     \centering
-    \includegraphics[width=\textwidth]{figures/images/imogolite}
+    \includegraphics[width=0.8\textwidth]{figures/images/imogolite}
     \caption{Imogolite nanotube ($n=12$) with three unit cells along the tube
     axis $z$. Color code: aluminum (pink), silicon (yellow), oxygen (red),
     hydrogen (white). Note the hydrogen bonds between silanol groups on the
-    inner surface (left panel).}
+    internal surface (left panel).}
     \label{fig:imogolite:structure}
 \end{figure}
 
+Imogolite is a natural alumino-silicate material, with formula
+\ce{Al2SiO3(OH)4}, that was first discovered in volcanic ashes in
+Japan\cite{Yoshinaga1962}. It is the only known alumino-silicate material that
+spontaneously forms inorganic nanotubes, and there exists no planar equivalent
+material in nature --- unlike carbon nanotubes, of which graphene is the planar
+form. Imogolite nanotubes are monodisperse in diameter, and can be readily
+synthesized with controlled length and diameter, for example by substituting
+silicon with germanium\cite{Amara2013}. This precise control of the imogolite
+nanotube dimensions is interesting for applications that rely on one-dimensional
+pore channels, in fields such as nanofluidic devices, membranes for filtration
+and separation, desalination, etc. Moreover, from a theoretical point of view,
+its hollow cylindrical topology and tuneable size make it a very attractive
+model to study the properties of fluids under confinement. Their structure was
+first described by \citeauthor{Cradwick1972}\cite{Cradwick1972} from electron
+diffraction measurements as a cylindrical assembly of silicon tetrahedra and
+aluminum octahedra (see figure~\ref{fig:imogolite:structure}). This sheet
+spontaneously folds into a nanotube because of bond length mismatch and
+formation of intra-molecular hydrogen bonds\cite{Lee2011,Gonzalez2014}. The
+imogolite nanotubes are characterized using the same nomenclature as carbon
+nanotubes. Both natural and synthetic imogolite nanotubes exhibit a zigzag
+folding, with a variable number $n$ of \ce{Al2O3SiOH(OH)3} units (called
+gibbsite units) along the nanotube circumference. The cylindrical unit cell then
+contains $2n$ gibbsite units. Natural imogolite is a nanotube with size $n=12$,
+while depending on the details of the synthesis conditions, synthetic imogolites
+correspond to values of $n$ typically between 12 and 14, and sometimes larger.
+
 Although imogolites have been the subject of several experimental studies, only
-a few theoretical works have been carried out until now. In particular, there is
-relatively little data --- experimental or computational --- on the hydration of
-these nanotubes and the behavior of the confined water molecules inside the pore
-space. Imogolite nanotubes differ markedly from the more common carbon nanotubes
-in both geometry and chemistry, and the behavior of water inside their pores is
-still very much open. It is experimentally challenging to address these issues,
-especially differentiating the water inside the nanotubes from the water
-outside, and a computational approach through molecular modeling is therefore a
-natural complement to the published experimental results.
+a few theoretical works have been carried out until now. Most of the theoretical
+studies on imogolite nanotubes focus on the energetics of empty nanotubes. The
+sharp monodispersity in nanotube diameters has been explained by both quantum
+chemistry and classical studies, that show the strain energy has a minimum for a
+given nanotube diameter, contrary to carbon nanotubes where the energetically
+favorable structure is that of infinite diameter (\ie, the graphene
+slab\cite{Tamura2002, Guimaraes2007, Zhao2009, Demichelis2010}). Several studies
+also focused on computing vibrational spectra\cite{Tamura2002,
+AlvarezRamirez2007, Konduri2008} and studying the energetics and dynamics of the
+rolling of the nanotubes themselves\cite{Lee2011, Gonzalez2014, Gonzalez2016}.
+Finally, other works have pointed at more complex aspects, such as
+defects\cite{Gustafsson2001} and deformation of the nanotubes\cite{Tamura2002,
+Amara2014, Creton2008}. There is still relatively little data --- experimental
+or computational --- on the hydration of these nanotubes and the behavior of the
+confined water molecules inside the pore space. Imogolite nanotubes differ
+markedly from the more common carbon nanotubes in both geometry and chemistry,
+and the behavior of water inside their pores is still very much open. It is
+experimentally challenging to address these issues, especially differentiating
+the water inside the nanotubes from the water outside, and a computational
+approach through molecular modeling is therefore a natural complement to the
+published experimental results.
 
 A single imogolite nanotube presents two surfaces, both available for
 adsorption. The outer surface is composed of a gibbsite-like sheet of aluminum
-octahedra. The inner surface is formed of silicon tetrahedra with one hydroxyl
+octahedra. The internal surface is formed of silicon tetrahedra with one hydroxyl
 group exposed and the three other corners of the tetrahedron linked to three
 aluminum octahedra. Therefore both surfaces are covered with hydroxyl groups
 that are expected to have a hydrophilic behavior. Based on electrostatic
-calculations, authors have suggested that the inner surface is strongly
+calculations, authors have suggested that the internal surface is strongly
 hydrophilic whereas the outer surface might be more
 hydrophobic\cite{Gustafsson2001,Guimaraes2007}. Because adsorption on the outer
 surface of the nanotubes depends strongly on experimental conditions affecting
@@ -859,40 +900,34 @@ so that all the hydroxyl groups are in a plane normal to the nanotube axis, as
 shown in figure \ref{fig:imogolite:structure}. The internal diameter, computed
 between internal oxygen atoms (noted \ce{O_{int}}), is \SI{12.8}{\AA} and the
 external diameter, computed between external oxygen atoms (noted \ce{O_{ext}}),
-is approximately \SI{22}{\AA}. As a consequence the inner pore is not smooth and
-uniform as for the carbon nanotube, but the pore is rugged: narrower where there
-are silanol groups and larger between these silicon rings. One can picture the
-internal cavity as a hollow cylinder with equally spaced circular furrows in the
-circumference.
-
-% Most of the theoretical studies on imogolite nanotubes focus on the energetics
-% of empty nanotubes. The sharp monodispersity in nanotube diameters has been
-% explained by both quantum chemistry and classical studies, that show the strain
-% energy has a minimum for a given nanotube diameter, contrary to carbon nanotubes
-% where the energetically favorable structure is that of infinite diameter (\ie,
-% the graphene slab\cite{tamura2002, guimaraes2007,
-% zhao2009, demichelis2010}). Several studies also focused
-% on computing vibrational spectra\cite{tamura2002,
-% alvarez-ramirez2007,konduri2007} and studying the energetics
-% and dynamics of the rolling of the nanotubes themselves.\cite{lee2011,
-% gonzalez2014, gonzalez2016} Finally, other works have pointed
-% at more complex aspects, such as defects \cite{gustafsson2001} and
-% deformation or hexagonalisation of the nanotubes.\cite{tamura2002,
-% Amara2014, creton2008-1}
+is approximately \SI{22}{\AA}. As a consequence, the internal pore is not smooth
+and uniform as for the carbon nanotube, but the pore is rugged: narrower where
+there are silanol groups and larger between these silicon rings. One can picture
+the internal cavity as a hollow cylinder with equally spaced circular furrows in
+the circumference.
 
 \subsection{Simulation methods}
 
 In order to produce imogolite nanotube models, we started from the structure of
 \citeauthor{Cradwick1972}\cite{Cradwick1972} for a $n=10$ nanotube with $C_{2n}$
 symmetry. We formed a flat gibbsite-like sheet by unfolding the nanotube and
-adding hydrogen atoms (which are not present on electron diffraction data). We
-relaxed the slab geometry and unit cell at DFT level, using the PBE-SOL
-functional in the CRYSTAL14 software. From this relaxed planar structure, we
+adding hydrogen atoms (which were not present on the original structure derived
+from electron diffraction data). We relaxed the slab geometry and unit cell at
+DFT level, using the PBE-SOL exchange-correlation functional\cite{Perdew2008} in
+the CRYSTAL14 software\cite{Dovesi2014}. From this relaxed planar structure, we
 rolled back a nanotube of size $n=12$, and relaxed the nanotube structure and
 cell parameters using periodic DFT calculations, with large inter-nanotube
-spacing (\SI{60}{\AA}) so that there are no interactions between nanotubes. We
+spacing (\SI{60}{\AA}) so that there are no interactions between nanotubes. I
 show on figure~\ref{fig:imogolite:structure}, two views from top and side of the
 $n=12$ nanotube with three unit cells along the $z$ axis.
+
+\begin{figure}[t]
+	\centering
+	\includegraphics[width=0.8\textwidth]{figures/images/imogolite-gcmc-result}
+	\caption{Fully hydrated imogolite nanotube ($n=12$) with hexagonal packing.
+    Water molecules are represented as blue sticks.}
+    \label{fig:imogolite:gcmc-result}
+\end{figure}
 
 Imogolite nanotubes can have a length from \SI{10}{nm} up to a few micrometers
 and experiments show that they tend to pack into bundles when dry. The periodic
@@ -908,27 +943,27 @@ lattice parameters $c = n \times \SI{8.486}{\AA}$ where $n = 1$, 3 or 5 (where
 the value of \SI{8.486}{\AA} was determined by geometry optimization with
 variable cell).
 
-We used classical simulations to study structure and dynamics of water in
+We used classical simulations to study the structure and dynamics of water in
 imogolites at large timescales. We ran MD simulations in the canonical $NVT$
 ensemble with the LAMMPS code\cite{Plimpton1993}, using a timestep of
 \SI{0.5}{fs}. After \SI{100}{ps} of equilibration, we collected trajectories
 from \SI{200}{ps} to \SI{50}{ns}, depending on the properties studied in each
-case. We also performed series of Grand Canonical Monte Carlo (GCMC) simulations
-to study the adsorption behavior of the nanotubes. In the gas phase, we
-considered water to be an ideal gas, and the chemical potential is then easily
-linked to the gas pressure\cite{Desbiens2005}.
+case. We also performed a series of Grand Canonical Monte Carlo (GCMC)
+simulations to study the adsorption behavior of the nanotubes. In the gas phase,
+we considered water to be an ideal gas, and the chemical potential is then
+easily linked to the gas pressure\cite{Desbiens2005}.
 
 To describe the interactions of the nanotube, we relied on the CLAY-FF force
-field\cite{Cygan2004}, which has been extensively used in the literature
-\cite{Konduri2008, Zang2010, Gonzalez2016}. Water was described in the flexible
-Single-Point Charge (f-SPC) model\cite{Teleman1987}, which is naturally suited
-for coupling with CLAY-FF. CLAY-FF is a general force field developed to model
-clay minerals, that have the same chemical nature of the imogolite. It relies
-almost exclusively on non-bonded interactions using mostly electrostatic
-(Coulombic) and Lennard-Jones potential to describe the system's interactions.
-In addition to these non-bonding interactions, CLAY-FF includes a harmonic bond
-term for hydroxyl bonds (\ce{O-H} stretching); and a \ce{M-O-H} harmonic bending
-potential.
+field\cite{Cygan2004}, which has been extensively used in the literature for
+clay and other alumino-sil\-ic\-ates\cite{Konduri2008, Zang2010, Gonzalez2016}.
+Water was described in the flexible Single-Point Charge (f-SPC)
+model\cite{Teleman1987}, which is naturally suited for coupling with CLAY-FF.
+CLAY-FF is a general force field developed to model clay minerals, that have the
+same chemical nature as the imogolite. It relies almost exclusively on
+non-bonded interactions using mostly electrostatic (Coulombic) and Lennard-Jones
+potential to describe the system's interactions. In addition to these
+non-bonding interactions, CLAY-FF includes a harmonic bond term for hydroxyl
+bonds (\ce{O-H} stretching); and a \ce{M-O-H} harmonic bending potential.
 
 % \section{Results and discussion}
 %
@@ -954,7 +989,7 @@ potential.
 %     \label{fig:imogolite:ff-angles}
 % \end{figure}
 %
-% Secondly, we focus on the description of the inner and outer surface groups. We
+% Secondly, we focus on the description of the internal and outer surface groups. We
 % plot in figure~\ref{fig:imogolite:ff-angles} the calculated distributions of
 % \ce{Si-O_{int}-H_{int}} angles for silanol groups inside the tube, and
 % \ce{Al-O_{ext}-H_{ext}} angles for AlOH groups on the outer surface. There are
@@ -1012,7 +1047,7 @@ strongly with the nature of the model chosen for the description of the water,
 and the movement allowed for the silanol groups --- consistent with the findings
 of \citeauthor{Zang2010}\cite{Zang2010}. We find transition pressures of
 \SI{0.1}{kPa} for TIP4P/2005, and \SI{1}{kPa} for the SPC water model. The order
-of magnitude of those values are within the range of experimental data, for
+of magnitude of those values is within the range of experimental data, for
 example the gravimetric study of \citeauthor{Konduri2008}\cite{Konduri2008},
 which features a smooth isotherm with water uptake in the same range.
 
@@ -1024,45 +1059,21 @@ which features a smooth isotherm with water uptake in the same range.
     \label{fig:imogolite:isotherms}
 \end{figure}
 
-In contrast to the adsorption pressure model dependence, there is a excellent
+In contrast to the adsorption pressure model dependence, there is excellent
 agreement between the various models on the saturation uptake of water once the
 pore is filled, \ie on the density of the water adsorbed inside the imogolite
-nanotube. Uptake is found to be 10~\% by weight after the transition, both for
+nanotube. Uptake is found to be 10\% by weight after the transition, both for
 the SPC and TIP4P/2005 water models. We thus derived from the GCMC calculations
 an initial configuration for the simulation of the fully filled imogolite
 nanotube, from the plateau of the SPC adsorption isotherm. This initial
 configuration contains three nanotube ($n=12$) unit cells along the $z$ axis, 98
 water molecules inside the nanotubes and 18 water molecules outside. It is
 represented in figure~\ref{fig:imogolite:gcmc-result}. We used this fully
-hydrated tube as a starting configuration for classical molecular dynamics
+hydrated tube as initial configuration for classical molecular dynamics
 simulations, with the extended CLAY-FF force field and f-SPC water model.
 
-\begin{figure}[ht]
-	\centering
-	\includegraphics[width=0.8\textwidth]{figures/images/imogolite-gcmc-result}
-	\caption{Fully hydrated imogolite nanotube ($n=12$) with hexagonal packing. Water molecules are represented as blue sticks.}
-    \label{fig:imogolite:gcmc-result}
-\end{figure}
-
+\newpage
 \subsection{Structure of confined water}
-
-\begin{figure}[ht]
-    \centering
-    \input{figures/imogolite-density-xy}
-    \caption{Two-dimensional density profiles in the $xy$ plane for atoms from
-    the silanol groups (Si in green, O in red, H in black) and water molecules
-    (\ce{O_w} in blue on the left, \ce{H_w} in orange on the right).}
-    \label{fig:imogolite:density:xy}
-\end{figure}
-
-\begin{figure}[ht]
-    \centering
-    \input{figures/imogolite-density-rz}
-    \caption{Two-dimensional density profiles (the radial dimension versus the
-    projection along the $z$ axis) for surface atoms (Si, O, H) and water atoms
-    (\ce{O_w}, \ce{H_w}). Silicon rings are indicated by dashed lines.}
-    \label{fig:imogolite:density:rz}
-\end{figure}
 
 From the analysis of the MD trajectories of the fully hydrated imogolite, we
 computed density profiles of all atom types (water \ce{O_{w}} and \ce{H_{w}};
@@ -1070,7 +1081,7 @@ silanol groups Si, \ce{O_{int}}, and \ce{H_{int}}). They are plotted in
 figure~\ref{fig:imogolite:density:xy} in the $xy$ plane, \ie as if viewed from
 the top of the (infinite) nanotube. From the water oxygen distribution \ce{O_w},
 it is clear that there are two different populations of water molecules:
-strongly structured water adsorbed next to the inner surface (a first hydration
+strongly structured water adsorbed next to the internal surface (a first hydration
 layer, at distances between 4.5 and \SI{5.8}{\AA} from the nanotube's center),
 and more disordered water filling up the center of the nanotube. This is also
 clearly visible in the cylindrical distribution functions
@@ -1087,13 +1098,32 @@ water/quartz interfaces\cite{Gor2016}, and more generally for adsorbates in soft
 porous materials\cite{Neimark2009, Mouhat2015}. In the case of imogolite, the
 stress exerted is counterbalanced by the relative stiffness of the nanotube,
 although the extent and details of the deformation depend on the packing of the
-nanotubes. For example\citeauthor{Creton2008}\cite{Creton2008}, used a larger
+nanotubes. For example, \citeauthor{Creton2008}\cite{Creton2008}, used a larger
 distance between the nanotubes and observed a transition between an ellipsoid
 shape to a more cylindrical shape when increasing water densities.
 
+\begin{figure}[ht]
+    \centering
+    \input{figures/imogolite-density-xy}
+    \caption{Two-dimensional density profiles in the $xy$ plane for atoms from
+    the silanol groups (Si in green, O in red, H in black) and water molecules
+    (\ce{O_w} in blue and \ce{H_w} in orange).}
+    \label{fig:imogolite:density:xy}
+\end{figure}
+
+\begin{figure}[ht]
+    \centering
+    \input{figures/imogolite-density-rz}
+    \caption{Two-dimensional density profiles (the radial distance to the center
+    of the nanotube $r$ versus the projection along the $z$ axis) for surface
+    atoms (Si in green, O in red, H in black) and water molecules (\ce{O_w} in
+    blue and \ce{H_w} in orange). Silicon rings are indicated by dashed lines.}
+    \label{fig:imogolite:density:rz}
+\end{figure}
+
 To better understand the structuration of the first adsorbed layer, we plot in
 figure~\ref{fig:imogolite:density:rz} the same densities, but this time as a
-function of cylindrical coordinates $z$ and $\rho$, where $\rho$ is the distance
+function of cylindrical coordinates $z$ and $r$, where $r$ is the distance
 to the central axis of the nanotube. There, the strongly preferential location
 for the confined water oxygen atoms becomes clear: the water molecules sit in
 the wider furrows, situated in-between two rings of silanol groups (SiOH rings
@@ -1104,21 +1134,21 @@ carbon nanotubes, whose internal surface is smoother. It was, however,
 demonstrated in other nanopores of small dimensions with dangling hydroxyl
 groups accessible to the water for hydrogen-bonding\cite{Haigis2013}.
 
-These molecules are strongly hydrogen-bonded to the silanol groups, as indicated
-by the well-defined positions for \ce{H_{int}} atoms, which are rearranged
-compared to their relaxed position. Indeed, in the dry imogolite nanotube, the
-most stable position for the internal hydrogen atoms is in the silanol ring
-plane ($z = 0$), where they are pointing toward a neighboring \ce{O_{int}} atom.
-This conformation allows the formation a relatively weak hydrogen bond, because
-the \ce{O_{int}-H_{int}$\cdots$O_{int}} distance is large. In the hydrated tube,
-the hydrogen atoms' most common position is shifted out of that silanol ring
-plane (see figure~\ref{fig:imogolite:density:rz}).
+These water molecules are strongly hydrogen-bonded to the silanol groups, as
+indicated by the well-defined positions for \ce{H_{int}} atoms, which are
+rearranged compared to their relaxed position. Indeed, in the dry imogolite
+nanotube, the most stable position for the internal hydrogen atoms is in the
+silanol ring plane ($z = 0$), where they are pointing toward a neighboring
+\ce{O_{int}} atom. This conformation allows the formation a relatively weak
+hydrogen bond, because the \ce{O_{int}-H_{int}$\cdots$O_{int}} distance is
+large. In the hydrated tube, the hydrogen atoms' most common position is shifted
+out of that silanol ring plane (see figure~\ref{fig:imogolite:density:rz}).
 
 % This is reflected by a change in the \ce{O_{br}-Si-O_{int}-H_{int}} dihedral
 % angle (see figure~S3), which goes from 0{\textdegree} to 60{\textdegree}; where
 % \ce{O_{br}} is the oxygen atom bridging the aluminum to the silicon.
 
-\begin{figure}[hb]
+\begin{figure}[p]
 	\centering
 	\includegraphics[width=0.7\textwidth]{figures/images/imogolite-hbonds-sites}
 	\caption{Illustration of the triangular adsorption sites, highlighted by
@@ -1127,31 +1157,31 @@ plane (see figure~\ref{fig:imogolite:density:rz}).
     \label{fig:imogolite:hbonds:sites}
 \end{figure}
 
-We thus propose the following model to better visualize and understand the
-structure of the adsorbed water. We model the inner surface of the nanotube as a
-periodic sequence of triangles, where each silanol group SiOH is a vertex. The
-Si--Si and O--O radial distribution functions show two first neighbor peaks at
-4.2 and \SI{4.7}{\AA} for silicon, and at 3.3 and \SI{4.6}{\AA} for internal
-oxygen atoms. This means that the triangles are isosceles with two angles of
-66.5{\textdegree} and one angle of 47{\textdegree}. This pattern is depicted on
-figure~\ref{fig:imogolite:hbonds:sites}. Above the center of each triangle is a
-potential water adsorption site. However, analysis of the sites show that no
-neighboring sites in the same $xy$ plane can be occupied at the same time, due
-to short-distance inter-molecular repulsion of water molecules, so that at most
-half of the adsorption sites are occupied in the filled tube. Then, each of the
-hydrogen atoms of the SiOH groups that form the vertices of a triangle will
-point toward one of the three occupied neighboring adsorption sites.
-
-\begin{figure}[ht]
+\begin{figure}[p]
     \centering
     \input{figures/imogolite-density-flat}
     \caption{Density profiles on the flattened hydrated nanotube planes for
-    water oxygen (top), water hydrogen (middle) and internal hydrogen (bottom).
-    The circular coordinate corresponds to a curvilinear abscissa that draws a
-    circle of radius $R = 6.5$ {\AA} centered on the axis $z$. On all the
-    graphs, internal oxygen atoms appear as yellow dots.}
+    water oxygen (top) and water hydrogen (bottom). The circular coordinate
+    corresponds to a curvilinear abscissa that draws a circle of radius $R =
+    \SI{6.5}{\AA}$ centered on the axis $z$. On all the graphs, internal oxygen
+    atoms appear as yellow dots.}
     \label{fig:imogolite:density:circular}
 \end{figure}
+
+We thus propose the following model to better visualize and understand the
+structure of the adsorbed water. We model the internal surface of the nanotube
+as a periodic sequence of triangles, where each silanol group SiOH is a vertex.
+The Si--Si and O--O radial distribution functions show two first neighbor peaks
+at 4.2 and \SI{4.7}{\AA} for silicon, and at 3.3 and \SI{4.6}{\AA} for internal
+oxygen atoms. This means that the triangles are isosceles with two angles of
+66.5{\textdegree} and one angle of 47{\textdegree}. This pattern is depicted on
+figure~\ref{fig:imogolite:hbonds:sites}. Above the center of each triangle is a
+potential water adsorption site. However, analysis of the sites shows that no
+neighboring sites in the same $xy$ plane can be occupied at the same time, due
+to short-distance inter-molecular repulsion of water molecules, so that at most
+half of the adsorption sites are occupied in the filled nanotube. Then, each of
+the hydrogen atoms of the SiOH groups that form the vertices of a triangle will
+point toward one of the three occupied neighboring adsorption sites.
 
 A final visualization can be obtained by a density plot of O and H atoms, where
 the density is mapped against $z$ and a circular coordinate, as if a slice of
@@ -1165,28 +1195,29 @@ while there is no observed density crossing the silanol rings, as already
 observed by \citeauthor{Creton2008}\cite{Creton2008}. This shows that there is
 surface diffusion of water molecules, but only in the $xy$ plane.
 
+\FloatBarrier
 \subsection{Hydrogen bonding patterns}
 
-The localization of the first layer of adsorbed water on the inner surface of
+The localization of the first layer of adsorbed water on the internal surface of
 the imogolite nanotube, and the strong hydrogen bonds that are created with the
-tube's silanol groups, make the first layer of water strongly ordered. We can
-see on figure~\ref{fig:imogolite:density:rz} (bottom panel) that this includes
+tube's silanol groups make the first layer of water strongly ordered. We can see
+on figure~\ref{fig:imogolite:density:rz} (bottom panel) that this includes
 rotational ordering of the water molecules, with three marked preferential
 positions for their hydrogen atoms at room temperature. Two of those, equivalent
-by symmetry, correspond to the formation of a hydrogen bond, donated by the
-water molecule to the silanol group (acting as acceptor). The third position
-corresponds to a hydrogen atom dangling toward the inside of the nanotube.
-Because the water molecules have 2 hydrogen atoms that can occupy these
-positions, there are 3 possible geometries, summarized on
-figure~\ref{fig:imogolite:hbonds:surface}: a water molecule can be donating two
-hydrogen bonds (case A); accepting one and donating one (case B); or accepting
-two hydrogen bonds from neighboring silanol groups (case C).
+by symmetry, corresponding to the formation of a hydrogen bond donated by the
+water molecule to the silanol group. The third position corresponds to a
+hydrogen atom dangling toward the inside of the nanotube.  Because the water
+molecules have 2 hydrogen atoms that can occupy these positions, there are 3
+possible geometries, summarized on figure~\ref{fig:imogolite:hbonds:surface}: a
+water molecule can be donating two hydrogen bonds (case A); accepting one and
+donating one (case B); or accepting two hydrogen bonds from neighboring silanol
+groups (case C).
 
 \begin{figure}[ht]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/images/imogolite-hbonds-surface}
 	\caption{Three possible geometries of water adsorbed in the first layer of
-    the imogolite inner surface.}
+    the imogolite internal surface.}
     \label{fig:imogolite:hbonds:surface}
 \end{figure}
 
@@ -1205,16 +1236,16 @@ in table~\ref{tab:imogolite:hbonds:count}. The change in silanol--silanol
 hydrogen bonding confirms the structural change upon adsorption: when the
 nanotube is empty, approximately half of the silanol groups are linked by a
 hydrogen bond within silicon rings (as detected per our rather strict criteria).
-When hydrated, only 2~\% form a hydrogen bond with another silanol group.
-Regarding the hydrogen bonds between a water molecule and the surface, 94~\% of
+When hydrated, only 2\% form a hydrogen bond with another silanol group.
+Regarding the hydrogen bonds between a water molecule and the surface, 94\% of
 the silanol groups donate a hydrogen bond to a water molecule and each silanol
 group receives on average 0.96 hydrogen bonds from water. Since a silanol group
 can donate only 1 hydrogen bond and can receive 1 or 2 hydrogen bonds, the
 bonding possibilities of the surface are extensively used. Within the nanotube,
-on average 58~\% of water molecules receive or donate at least one hydrogen bond
+on average 58\% of water molecules receive or donate at least one hydrogen bond
 from or to a silanol group, \ie are in the first adsorbed layer.
 
-\begin{table}[ht]
+\begin{table}[t]
     \centering
     \caption{Average number of hydrogen bonds ($\pm$ the standard deviation)
     for given donor--acceptor pairs along a 1 ns trajectory of empty and
@@ -1234,10 +1265,10 @@ from or to a silanol group, \ie are in the first adsorbed layer.
 \end{table}
 
 To further characterize the local hydrogen bond network, we considered all 4
-singular hydrogen bonding behaviors possible for a single water molecule:
+singular hydrogen bonding patterns possible for a single water molecule:
 donating to a silanol or a water molecule, or accepting from either. Each of
 these singular behaviors can appear zero, once, or twice. The patterns that
-represent more than {5~\%} of the occurrences found over the whole trajectory are
+represent more than {5\%} of the occurrences found over the whole trajectory are
 described in table~\ref{tab:imogolite:hbonds:patterns}.
 
 \begin{table}[ht]
@@ -1252,21 +1283,21 @@ described in table~\ref{tab:imogolite:hbonds:patterns}.
         Pattern & Occurrence & Donating   & Accepting    & Donating & Accepting  \\
                 &            & to silanol & from silanol & to water & from water \\
         \midrule
-            1   & 22.4~\%     &      0     &      0       &    2     &     2      \\
-            2   & 14.9~\%     &      1     &      2       &    1     &     0      \\
-            3   & 9.3~\%      &      2     &      1       &    0     &     1      \\
-            4   & 7.8~\%      &      0     &      0       &    2     &     1      \\
-            5   & 7.3~\%      &      1     &      1       &    1     &     1      \\
-            6   & 6.3~\%      &      1     &      1       &    1     &     0      \\
+            1   & 22.4\%     &      0     &      0       &    2     &     2      \\
+            2   & 14.9\%     &      1     &      2       &    1     &     0      \\
+            3   & 9.3\%      &      2     &      1       &    0     &     1      \\
+            4   & 7.8\%      &      0     &      0       &    2     &     1      \\
+            5   & 7.3\%      &      1     &      1       &    1     &     1      \\
+            6   & 6.3\%      &      1     &      1       &    1     &     0      \\
         \bottomrule
     \end{tabular}
 \end{table}
 
-The six patterns highlighted by this analysis can be divided in two groups: (i)
+The six patterns highlighted by this analysis can be divided into two groups: (i)
 water molecules that do not form any hydrogen bond with a silanol group
 (patterns 1 and 4), that can have either 4 hydrogen bonds (tetragonal
 arrangement) or 3 hydrogen bonds, similarly to bulk water; and (ii) molecules whose
-adsorption on the inner surface of the nanotube involves at least one hydrogen
+adsorption on the internal surface of the nanotube involves at least one hydrogen
 bond (types 2, 3, 5 and 6). It is worth noting that the mean number of hydrogen
 bonds for a water molecule not bonded to the surface is 3.65, slightly higher
 than the bulk value for f-SPC water (3.60 hydrogen bonds per water molecule).
@@ -1285,22 +1316,23 @@ The most common patterns are represented in figure~\ref{fig:imogolite:hbonds:pat
 
 
 For adsorbed molecules, the most common pattern is an "upright" water molecule
-(pattern 2), in a plane bisecting the triangular adsorption site. This water
-molecule receives two hydrogen bonds from two silanol groups and donates one hydrogen
-bond to the third silanol. A water hydroxyl group is left pointing toward the
-center of the nanotube, free to donate a hydrogen bond to a water molecule of
-the second layer. This creates a structuration of the adsorbed water beyond the
-first layer, which is clearly visible in the density maps
-(figures~\ref{fig:imogolite:density:xy} and \ref{fig:imogolite:density:rz}),
-with a favorable position for water oxygen atoms across that pending hydroxyl
-group. It also defines an equilibrium distance between the first and second
-layer of adsorption, which corresponds to a water--water hydrogen bond length.
+(pattern 2 in figure~\ref{fig:imogolite:hbonds:patterns}), in a plane bisecting
+the triangular adsorption site. This water molecule receives two hydrogen bonds
+from two silanol groups and donates one hydrogen bond to the third silanol. A
+water hydroxyl group is left pointing toward the center of the nanotube, free to
+donate a hydrogen bond to a water molecule of the second layer. This creates a
+structuration of the adsorbed water beyond the first layer, which is clearly
+visible in the density maps (figures~\ref{fig:imogolite:density:xy} and
+\ref{fig:imogolite:density:rz}), with a favorable position for water oxygen
+atoms across that pending hydroxyl group. It also defines an equilibrium
+distance between the first and second layer of adsorption, which corresponds to
+water--water hydrogen bond length.
 
 The second most common pattern for the first layer of water is a water molecule
-lying "flat" on the inner imogolite surface, donating two hydrogen bonds to
+lying "flat" on the internal imogolite surface, donating two hydrogen bonds to
 neighboring silanol groups and receiving one from the third silanol neighbor.
 This allows the formation of a fourth hydrogen bond from a water molecule
-outside of the first layer. In this case the direction of the hydrogen bond is
+outside of the first layer. In this case, the direction of the hydrogen bond is
 less constrained, explaining the "diffuse" part of the oxygen density in the
 second water layer, seen in figure~\ref{fig:imogolite:density:rz}.
 
@@ -1312,7 +1344,7 @@ individual configurations, as well as the frustration arising from constraints
 adsorption sites can be populated at the same time), we believe that a model of
 the orientational disorder in that strongly bound layer of adsorbed water could
 be constructed, possibly explaining why the adsorption sites are only occupied
-at nearly 38~\% at saturation uptake.
+at nearly 38\% at saturation uptake.
 
 \subsection{Water dynamics}
 
@@ -1368,7 +1400,7 @@ For all three possible donor--acceptor hydrogen bond types, we computed
 autocorrelation decay, represented in
 figure~\ref{fig:imogolite:hbonds:lifetime}. From these autocorrelation
 functions, the lifetime of each hydrogen bond type was extracted as the time for
-the autocorrelation function to decay to 50~\%, and are presented in
+the autocorrelation function to decay to 50\%, and are presented in
 table~\ref{tab:imogolite:hbonds:lifetime}. The autocorrelation decay is not
 strictly exponential, because the hydrogen bonds form multiple populations
 (first and second layer, etc.) with different decays.
@@ -1395,7 +1427,7 @@ strictly exponential, because the hydrogen bonds form multiple populations
         \bottomrule
     \end{tabular}
     \caption{Characteristic lifetime for hydrogen bonds calculated from the time
-    length for the autocorrelation function to decay to 50~\%.}
+    length for the autocorrelation function to decay to 50\%.}
     \label{tab:imogolite:hbonds:lifetime}
 \end{table}
 
@@ -1404,17 +1436,17 @@ roughly 2 times higher in the imogolite nanotube than in bulk water (calculated
 at \SI{2.67}{ps} from a simulation of pure f-SPC water). This slow down of the
 water dynamics under confinement has been well studied and explained in previous
 work, and is due in part to the stronger organization of the water, and in part
-to excluded volume effects: water molecules finding fewer partners to switch
-a hydrogen bond to\cite{Fogarty2014, Fogarty2014-2}. Secondly, we see that
+to excluded volume effects: water molecules finding fewer partners to switch a
+hydrogen bond to\cite{Fogarty2014, Fogarty2014-2}. Secondly, we see that
 hydrogen bonds between water and the silanol-rich surface have a lifetime more
 than an order of magnitude greater than water--water hydrogen bonds. A study on
 hydrogen bonding of water on the $\alpha$-quartz interface --- whose (001)
 surface is chemically similar to imogolite, in that it presents geminal silanol
 groups --- calculated persistence times of SiOH--water hydrogen bonds between
 160 and \SI{170}{fs}\cite{Ozkanlar2013}. The extremely large difference, and the
-very strong bonding of water on the imogolite inner surface, can be explained by
-the cooperative effect of the formation of three hydrogen bonds, on top of which
-is present the generic confinement slow-down.
+very strong bonding of water on the imogolite internal surface can be explained
+by the cooperative effect of the formation of three hydrogen bonds, on top of
+which is present the generic confinement slow-down.
 
 We also investigated the residence time of water molecules in the first adsorbed
 layer, inside the imogolite nanotube. There are two ways to define the "first
@@ -1422,12 +1454,12 @@ layer", by using geometrical radius, or by considering molecules that form at
 least one hydrogen bond with the surface. We chose the latter option, which is
 more chemically robust. The time autocorrelation function deriving from it is
 plotted in figure~\ref{fig:imogolite:hbonds:lifetime}. It shows an exponential
-decay, and reaches a plateau at 58~\%, \ie the average percentage of water
+decay, and reaches a plateau at 58\%, \ie the average percentage of water
 molecules that belong to that first layer. The decay time for the
 autocorrelation function is found to be \SI{410}{ps}. This is two or four times
 larger than the indicative lifetimes of hydrogen bonds with the surface (donated
 or received by the silanol group, respectively). This confirms the existence of
-an "inner surface diffusion" mechanism that allows diffusion between adsorption
+an "internal surface diffusion" mechanism that allows diffusion between adsorption
 sites without exiting the layer itself. We can also compare this lifetime to
 residence times in protein adsorption sites. For example, for
 myoglobin\cite{Makarov2000}, residence times span from 10 to \SI{450}{ps} where
@@ -1437,16 +1469,12 @@ either in the cavities inside the protein or in the grooves and concave regions.
 \subsection*{Conclusions}
 
 This study of the properties of water adsorbed inside hydrophilic imogolite
-nanotubes was motivated by the understanding of the specific behavior of water
-due to its tight confinement, with numerous silanol groups on the inner surface
-of the nanotubes. Because the strong interactions between water and imogolite,
-and the slow dynamics of the confined water, we relied on a classical force
-field in order to perform molecular dynamics studies. We validated the CLAY-FF
-force field, and found that it had to be employed in its extended version ---
-with a Si--O--H bending term --- in order to correctly reproduce the reference
-data we had produced from first-principles molecular dynamics. This is in
-contrast with conventional clay materials, where this term is not as important,
-and is ascribed to the strong curvature of the imogolite surface.
+nanotubes was motivated by the need for a better understanding of the specific
+behavior of water due to its tight confinement, with numerous silanol groups on
+the internal surface of the nanotubes. Because of the strong interactions
+between water and imogolite, and the slow dynamics of the confined water, we
+relied on a classical force field in order to perform molecular dynamics
+studies at long time scales.
 
 We then developed a model for the structure of adsorbed water, based on the
 calculated atomic densities and statistical analysis of the hydrogen bonding
