@@ -5,7 +5,7 @@ all: thesis.pdf
 	cp build/$*.{pdf,synctex.gz} .
 
 archive: thesis.pdf
-	pdftk $< output $@.pdf
+	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer -dUseCIEColor -dNOPAUSE -dQUIET -dBATCH -sOutputFile=$@.pdf $<
 
 .FORCE:
 .PHONY: clean .FORCE
