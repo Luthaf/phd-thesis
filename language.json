@@ -276,6 +276,10 @@
 		"specificities",
 		"absorber",
 		"moduli",
-		"microcanonical"
+		"microcanonical",
+		"interoperability",
+		"functionalities",
+		"metadata",
+		"chemfiles'"
 	]
 }

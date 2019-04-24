@@ -6,10 +6,11 @@
 \chapter{Chemfiles: a library for chemistry input/output}
 \label{sec:chemfiles}
 
-During my PhD, I also wrote chemfiles, a library that allow to read and write
-multiple file formats used in computational chemistry. I will present here the
-software, its goals and some software architecture choices I made to reach these
-goals.
+During my PhD, I also wrote chemfiles, an open source library that allow to read
+and write multiple file formats used in computational chemistry. I will present
+here the software, its goals and some software architecture choices I made to
+reach these goals. Chemfiles is available online at \url{https://chemfiles.org}
+and \url{https://github.com/chemfiles}.
 
 \vfill
 \begin{figure}[H]
@@ -50,26 +51,27 @@ optimized to store proteins and other bio-molecules.
 \end{figure}
 
 This multiplication of formats means that there is less interoperability between
-different software. Analysis and visualization software support specific
-
-To run analysis on the results of a simulation wee have to
-either use readily available algorithms, or learn how to read the format of our
-current software. There is quite a lot of friction to switch between simulation
-softwares or to use a specific analysis code
+the different softwares used in computational chemistry. Analysis and
+visualization software each support specific formats, which are not always the
+same as the ones produced by simulation softwares. To run specific analysis on
+the results of a simulation we have to either use readily available algorithms,
+or learn how to read the format of our current software, and implement the
+analysis ourselves. This friction can prevent switching between simulation
+softwares or using specific analysis methods, and gets in the way of using the
+tools of molecular simulation to improve our understanding of the world.
 
 Chemfiles is an attempt to provide an unified and simple interface for
 programmers to work with all these file formats. In order to do so, it defines a
 representation for the data that can exist in various formats, and transparently
 reads and writes files from and to this representation. Which means that
 software developers only need to learn how to use chemfiles, and can then use it
-to read or write every supported file format!
+to read or write every supported file format. Chemfiles is a software library; a
+collection of functions and classes meant to be integrated into other software.
+It can be used in simulation software (for example Domino uses chemfiles for
+reading the initial configuration and writing the trajectory); visualization or
+analysis software.
 
-Chemfiles is a software library; a collection of functions and classes meant to
-be integrated into other software. It can be used in simulation software (for
-example Domino uses chemfiles for reading the initial configuration and writing
-the trajectory); visualization or analysis software, such as cfiles, presented
-below.
-
+\newpage
 \section{An overview of chemfiles}
 
 \subsection{Goals and non-goals}
@@ -105,9 +107,9 @@ existing formats.
 
 \subsection{Existing alternatives}
 
-Multiple attempts to solve the issue of file format multiplication already
-exist. Here, I will review some of these, and compare them to chemfiles,
-given the goals stated above for this kind of library.
+% Multiple attempts to solve the issue of file format multiplication already
+% exist. Here, I will review some of these, and compare them to chemfiles,
+% given the goals stated above for this kind of library.
 
 \subsubsection{OpenBabel}
 
@@ -167,14 +169,17 @@ goals and implementations; I summarize the most popular ones in
 table~\ref{tab:chemfiles:alternatives}. Unfortunately, none of these
 alternatives support GCMC simulations, with a number of molecules which can vary
 during the simulation. Other than OpenBabel, only VMD molfile plugins (written
-in C and \cxx) are compatible with \cxx simulation software. Most of the other
-are written in Python, with the notable exception of the Chemical Development
-Kit (CDK), written in Java.
+in C and \cxx) are compatible with \cxx simulation software.
 
 I could not find an existing library that would cover all of my needs, which is
 why I started working on chemfiles. I hope to increase the number of options
 available to developers of chemical scientific software, and provide tools for
-users of these software improving interoperability.
+users of these software improving interoperability. Chemfiles is open source,
+distributed under the BSD license at
+\url{https://github.com/chemfiles/chemfiles}. This license roughly means that
+anyone can download, use, modify and distribute the code --- even together with
+software released under different licenses --- if they provide attribution of
+the code to the original authors.
 
 \subsection{Some code statistics}
 
@@ -192,6 +197,7 @@ them all here again: Jonathan Fine from Purdue University (USA); Patricio Germá
 Barletta from Universidad Nacional de Quilmes (Argentina); Laura Scalfi and Elsa
 Perrin from École Normale Supérieure (France).
 
+\newpage
 \section{Architecture and functionalities}
 
 In this section, I will describe the general architecture of chemfiles, and then
@@ -235,10 +241,10 @@ additional atomic grouping, such as molecules, amino- or nucleic-acids, \etc
 The \texttt{Property} class can be associated with either a frame, an atom or a
 residue. It stores additional metadata that only occurs in some specific
 formats, such as atomic hybridization state, molecule name or chain identifier
-in bio-molecules. Finally, the \texttt{Selection} class implements chemfiles's
+in bio-molecules. Finally, the \texttt{Selection} class implements chemfiles'
 atomic selection language, which can be used to get a list of atoms matching
-some constrains, such as \emph{"name == O and x < 22"} or \mbox{\emph{"pairs:
-name(\#1) O and name(\#2) F and is\_bonded(\#1, name C)"}}. I will describe this
+some constrains, such as \texttt{name == O and x < 22} or \texttt{pairs:
+name(\#1) O and name(\#2) F and is\_bonded(\#1, name C)}. I will describe this
 functionality with more details in section~\ref{sec:chemfiles:selections}.
 
 \subsection{Files and formats}
@@ -311,12 +317,13 @@ time less space than the corresponding XYZ file, and be five times faster to
 read.
 
 Most binary formats comes with a C or \cxx software library that should be used
-to read or write them, or use another generic binary format with molecular
-simualtions specific conventions. This is the case of Amber NetCDF, using the
+to read or write them, or use another generic binary format with conventions
+specific to molecular simulations. This is the case of Amber NetCDF, using the
 NetCDF format\cite{AmberNetCDF}, MMTF using the MessagePack
 format\cite{Bradley2017}, or H5MD using HDF5 data storage\cite{DeBuyl2014}.
 This is their main shortcoming when compared to text-based formats, which does
-not require special software to create or edit a file.
+not require special software to create or edit a file: any text editor can be
+used.
 
 In chemfiles, the file being read or written is managed by a subclass of either
 the \texttt{TextFile} or \texttt{BinaryFile} classes. \texttt{BinaryFile} mainly
@@ -344,51 +351,167 @@ to another through chemfiles, assuming both format support storing it. Secondly,
 it allows users of chemfiles working with a specific format to still access all
 the data defined in the format.
 
-\TODO: adding new static attributes / data member is not tractable: waste of
-space and increase in complexity
+Adding new attributes to atoms, frames or residues for every possible property
+would not not tractable. As most metadata are only defined by one or two
+formats, adding a new data member in the classes would be a waste of memory. It
+would also increase the complexity of the code, as implementing a new format
+would require adding new data members not only to the core \cxx classes, but
+also to the corresponding objects in the other languages bindings. Adding new
+data member also means that it would be impossible to maintain a stable binary
+interface between releases of chemfiles, as the size of classes would change.
 
-Chemfiles solution is to introduce a dynamically typed property, associated with
-a name, which can be attached to frames, atoms or residues. The
-\texttt{Property} class is a tagged union, containing a type tag which can
-change at run-time and the associated data. It can contain either a character
-string, a Boolean value (\emph{true} or \emph{false}), a number stored a double
-precision IEEE-754 floating point or a three-dimensional vector as three double
-precision floating point numbers. These four types cover the vast majority of
-data found in molecular simulation: for example atomic forces can be stored as
+Chemfiles solution is to introduce a dynamically typed property, which can be
+attached to frames, atoms or residues in associative maps. The associative map
+associate each property with a property name, which can be used to check if the
+property is defined on a given frame, atom or residue. The \texttt{Property}
+class is a tagged union, containing a type tag which can change at run-time and
+the associated data. It can contain either a character string, a Boolean value
+(\emph{true} or \emph{false}), a number stored a double precision IEEE-754
+floating point or a three-dimensional vector as three double precision floating
+point numbers. These four types cover the vast majority of data found in
+molecular simulation: for example atomic forces can be stored as
 three-dimensional vector atomic properties; and the user who created a
 particular file can be stored as character string associated with the frame.
+This strategy trades a small performance penalty at runtime --- the code must
+check if a property exists, and if it has the right type -- for a huge
+flexibility when storing additional data and metadata.
 
-\TODO Introduces a small penalty at run-time, as the code must check if a
-property exists, and if it has the right type.
+\subsection{Atomic selection language}
+\label{sec:chemfiles:selections}
+\newcommand{\token}[1]{\texttt{\bfseries#1}}
 
+Chemfiles implements a rich selection language that allow to find the atoms in a
+frame that match a set of constrains. For example, \texttt{atom: name == H and x
+> 15} would select all atoms with a name equal to "H" and x cartesian coordinate
+bigger than 15. Here, \texttt{name == H} and \texttt{x > 15} are individual
+constrains, and they are combined with \texttt{and}, meaning both of them must
+be true for an atom to match to full selection.
 
-% \subsection{Atomic selection language}
-% \label{sec:chemfiles:selections}
-%
-% \subsubsection{Multi-atoms selections}
-%
-% \subsubsection{Implementation strategy}
-%
-% Lexing => parsing with recursive descent (add grammar?) => create AST
-%
-% => Evaluate AST, candidate match by candidate match
-%
-% \begin{figure}[ht]
-%     \centering
-%     \includegraphics[width=0.6\textwidth]{figures/images/chemfiles-selection-ast}
-%     \caption{Abstract syntax tree for the \emph{"name O and (x + y < 7 or index
-%     < 80)"} selection. Nodes in green return a Boolean value, nodes in red a
-%     character string and nodes in blue deal with numbers.}
-%     \label{fig:chemfiles:selection-ast}
-% \end{figure}
-%
-% \subsection{Using a library from multiple programming languages}
-%
-% \section{cfiles: analysis of trajectories}
-%
-% \subsection{Algorithm for fast auto-correlations}
-%
-% \subsection{Elastic constants from fluctuations}
+\subsubsection{Multi-atoms selections}
+
+Chemfiles atomic selection language differs from other implementations such as
+the one in VMD, MDAnalysis, or ASE (the Python Atomistic Simulation Environment)
+by the fact that it is possible to formulate constrains not only on single
+atoms, but also on pairs, triplets and quadruplets of atoms. For example,
+\texttt{angles: name(\#2) O and mass(\#3) < 1.5} will select all sets of three
+bonded atoms forming an angle such that the name of the second atom is O and the
+mass of the third atom is less than 1.5. Here, the first atom is left
+unconstrained. Where evaluating simple selections yields a list of matching
+atomic indexes, evaluating triplet selection will return a list of triplet of
+atomic indexes (and correspondingly for pairs and quadruplets).
+
+The number of atoms to select together is indicated in chemfiles by a context,
+separated from the main selection by a colon. Seven contexts are available:
+\token{atoms} is the default context, matching a single atoms. \token{two},
+\token{three}, and \token{four} match arbitrary pairs, triplets and quadruplets
+respectively. \token{bonds}, \token{angles}, and \token{dihedrals} match pairs,
+triplets and quadruplets of atoms bonded together to form the corresponding
+connectivity element.
+
+The selections are built by assembling simple constrains with Boolean operators:
+\token{and}, \token{or} and \token{not}. They follow the usual interpretation of
+logic: \texttt{A and B} will be true only if both A and B are true, \texttt{A or
+B} will be true if one of A or B is, and \texttt{not A} will be true is A is
+false. The constrains can check text values, such as \token{name} (atomic name),
+\token{type} (atomic type), \token{resname} (residue name), with a fixed string
+(\texttt{name(\#1) == Fe}) or another text value (\texttt{type(\#1) !=
+type(\#3)}). There are also constrains on numeric values, for example \token{x},
+\token{y}, \token{z} for the position of the atoms, \token{mass} for the atomic
+mass, \token{index} for the index of the atom in the frame, \etc Numeric values
+can be combined with the usual mathematical operations: \texttt{x\^{}2 + y\^{}2
++ z\^{}2 < 10\^{}2} will check for atoms inside the sphere with a radius of
+\SI{10}{\AA} centered on the origin. Finally, Boolean constrains such as
+\texttt{is\_bonded(i, j)}, \texttt{is\_angle(i, j, k)} or
+\texttt{is\_dihedral(i, j, k, m)} are used to query the connectivity of atoms.
+Here, the arguments to \texttt{is\_bonded} and the others can either be one of
+the atoms currently being matched (\texttt{\#1}, \texttt{\#2}, \texttt{\#3},
+\texttt{\#4}) or a sub-selection, and every atom matched by the sub-selection
+will be checked. This makes for example \texttt{is\_bonded(\#1, name O)} select
+all atoms bonded to an oxygen.
+
+\subsubsection{Implementation strategy}
+
+The transformation from a character string describing the constrains in a domain
+specific language to a \texttt{Selection} object able to find the atoms matching
+these constrains goes through three main steps. First, the string is transformed
+into a stream of simple tokens during an operation called \emph{lexing}. For
+example, a single parenthesis \token{(} is a token, each mathematical operator
+(\token{+}, \token{-}, \token{*}, \token{/}, \token{\textasciicircum}) is its
+own token, keywords such as \token{and} and \token{or} are tokens, and single
+words such as \token{name} or \token{index} are tokens.
+
+Then, the tokens are checked for specific patterns during \emph{parsing}. For
+example, if the tokens \token{name}, \token{==} and \token{"O"} are found in
+this order, we know we have found a constrain stating that the atom name must be
+equal to "O". Multiple different algorithms are available to implement the
+parsing step, and chemfiles uses a recursive descent parser. This kind of parser
+is built around multiple functions that can call each other (hence the
+\emph{recursive} part of recursive descent), each function being able to parse a
+small subset of the possible expressions. There is a function that recognize
+additions and subtractions ($\cdots$ \token{+|-} $\cdots$), another one that
+deals with multiplication and divisions ($\cdots$ \token{*|/} $\cdots$), \etc By
+combining these function, it is then possible to parse complex expressions with
+the right precedence. An example of recursive calling is the parsing of
+\texttt{3 + 4 * (5 + 2)}. First the function for additions is called, and it
+calls the one for multiplication to parse \texttt{4 * (5 + 2)}, which itself
+calls the function for addition to parse \texttt{5 + 2}.
+
+Finally, an \emph{Abstract Syntax Tree} (AST) is built from the recognized
+constrains. Such tree is illustrated in figure~\ref{fig:chemfiles:selection-ast}
+for the selection \texttt{name O and (x + y < 7 or index < 80)}. In this tree,
+each node knows how to evaluate itself, by first asking its left and right
+children to evaluate themselves and combining the results. AST in chemfiles deal
+with three types of values: Boolean nodes create or combine Boolean values,
+string nodes create character strings, and numeric nodes create or combine
+numbers.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/images/chemfiles-selection-ast}
+    \caption{Abstract syntax tree for the selection \texttt{name O and (x + y <
+    7 or index < 80)}. Nodes in green return a Boolean value, nodes in red a
+    character string and nodes in blue deal with numbers.}
+    \label{fig:chemfiles:selection-ast}
+\end{figure}
+
+To get the list of atoms matching the selection, the AST is walked from top to
+bottom, evaluating individual components and combining them to build the full
+answer to the question "does this set of atoms fulfill these constrains?".
+
+\section*{Conclusions}
+
+In this chapter I presented chemfiles, an open source \cxx software library
+that can be used to read and write a variety of file format produced by
+computational chemistry softwares. Chemfiles currently supports 18 different
+file formats, and I plan to add support for more popular formats, such as the
+Crystallographic Interchange Format (CIF) and Protein Structure Files (PSF). It
+also supports reading and writing compressed files for all text-based format.
+
+The main goal of the chemfiles project is to produce a library simple enough
+that scientist can learn it quickly and use it for their own needs. To do so, it
+has a simple structure, with only seven public classes. Additional data and
+metadata is represented as dynamically typed properties, keeping the overall
+size of the programming interface small.
+
+Chemfiles also features a rich and innovative atomic selection language, able to
+use constrains on multiples atoms at once. While these selections are not
+strictly central to file input and output, they are a central building block for
+analysis and visualization software. The complexity associated with the
+implementation and performance of selections justify their inclusion in a core,
+shared library.
+
+I used chemfiles in the \texttt{cfiles} command line tool to implement analysis
+algorithms for molecular simulation. \texttt{cfiles} can compute radial
+distribution functions; angles and dihedral angles distributions, density
+profiles along a variety of axes (cartesian and radial) and density maps,
+elastic constants from unit cell fluctuations in $NPT$
+simulations\cite{Clavier2017}, hydrogen bonds and hydrogen bond autocorrelation,
+and rotational autocorrelation. The autocorrelation of time series is computed
+with a Fast Fourier Transform (FFT) approach, as the FFT algorithm is
+$\mathcal{O}(n \log n)$ in the size of the input instead of $\mathcal{O}(n^2)$
+for the naive version\cite{Kneller1995}. \texttt{cfiles} also provides some
+tools to manage trajectory data, converting from a format to another and merging
+multiple trajectories together.
 
 \OnlyInSubfile{\printglobalbibliography}
 
