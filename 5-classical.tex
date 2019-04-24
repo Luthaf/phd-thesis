@@ -129,6 +129,8 @@ efficiently for electrostatic interactions. I used a cutoff of \SI{8.5}{\AA} for
 both the Lennard-Jones potentials and the separation between real space and
 Fourier space in the Ewald summation.
 
+\newpage
+
 After initial energy minimization, I carried all simulations in the
 isothermal-isobaric $NPT$ ensemble with a timestep of \SI{1}{fs}, using a
 Nosé-Hoover thermostat with a time constant of \SI{1}{ps} and a Nosé-Hoover
@@ -211,7 +213,6 @@ compete with the ions to surround themselves with other water molecules.
 \begin{figure}[b]
     \centering
     \input{figures/licl-zif-density}
-    \vskip-\baselineskip
     \caption{Two-dimensional density profile of oxygen (top), lithium (middle) and
     chlorine (bottom) atoms in LiCl electrolyte confined in \ZIF8 at \SI{0}{GPa}
     as a function of LiCl concentration (left to right). The atoms from the
@@ -357,6 +358,7 @@ table~\ref{table:licl-zif:hbonds} and figure~\ref{fig:licl-zif:hbonds:fit:pressu
 %     \label{fig:licl-zif:hbonds:fit}
 % \end{figure}
 
+\newpage
 This geometric definition of hydrogen bonds has a minor drawback: small
 fluctuations of the atomic positions, near the cut-off values, can be mistaken
 for hydrogen bond forming and breaking. To overcome this issue, I also
@@ -473,13 +475,13 @@ The distribution of swing angles for the empty framework reproduces the results
 from chapter~\ref{sec:ab-initio}, obtained at a different level of theory: it is
 a Gaussian distribution, centered around the equilibrium value of 15°, and with
 fluctuations of the order of 10°. The distributions for \ZIF8 containing the
-electrolyte liquid do not seems to depend on the electrolyte concentration.
-Instead, they are all centered around 5° and still have the same order of
-magnitude for fluctuations. This is to be contrasted with the effect of nitrogen
-adsorption at \SI{77}{K} in \ZIF8; where the equilibrium value goes from 10° to
-25° as the pores fill up with nitrogen. It is however interesting to note that
-the presence of ions does not impact the structure more than the presence of
-pure water does. This is coherent with the results presented in
+electrolyte liquid do not seems to depend on the concentration.  Instead, they
+are all centered around 5° and still have the same order of magnitude for
+fluctuations. This is to be contrasted with the effect of nitrogen adsorption at
+\SI{77}{K} in \ZIF8; where the equilibrium value goes from 10° to 25° as the
+pores fill up with nitrogen. It is however interesting to note that the presence
+of ions does not impact the structure more than the presence of pure water does.
+This is coherent with the results presented in
 figure~\ref{fig:licl-zif:density}, where the water molecules are located inside
 the 6-member windows. Water molecules take the place of linkers that rotate to
 accommodate them in the windows. As ions never enter this window, they don't
@@ -874,24 +876,23 @@ markedly from the more common carbon nanotubes in both geometry and chemistry,
 and the behavior of water inside their pores is still very much open. It is
 experimentally challenging to address these issues, especially differentiating
 the water inside the nanotubes from the water outside, and a computational
-approach through molecular modeling is therefore a natural complement to the
-published experimental results.
+approach is therefore a natural complement to the published experimental
+results.
 
 A single imogolite nanotube presents two surfaces, both available for
 adsorption. The outer surface is composed of a gibbsite-like sheet of aluminum
-octahedra. The internal surface is formed of silicon tetrahedra with one hydroxyl
-group exposed and the three other corners of the tetrahedron linked to three
-aluminum octahedra. Therefore both surfaces are covered with hydroxyl groups
-that are expected to have a hydrophilic behavior. Based on electrostatic
+octahedra. The internal surface is formed of silicon tetrahedra with one
+hydroxyl group exposed and the three other corners of the tetrahedron linked to
+three aluminum octahedra. Therefore both surfaces are covered with hydroxyl
+groups that are expected to have a hydrophilic behavior. Based on electrostatic
 calculations, authors have suggested that the internal surface is strongly
 hydrophilic whereas the outer surface might be more
-hydrophobic\cite{Gustafsson2001,Guimaraes2007}. Because adsorption on the outer
+hydrophobic\cite{Gustafsson2001, Guimaraes2007}. Because adsorption on the outer
 surface of the nanotubes depends strongly on experimental conditions affecting
-the bundling of the nanotubes, and therefore the spacing between them, we
-focused on the adsorption and behavior of water confined \emph{inside} imogolite
-nanotubes. Moreover, the strong curvature and limited space inside the nanotube
-provide for strong confinement effects on which little experimental data is
-available.
+the bundling of the nanotubes, and the spacing between them, we focused on the
+adsorption and behavior of water confined \emph{inside} imogolite nanotubes.
+Moreover, the strong curvature and limited space inside the nanotube provide for
+strong confinement effects on which little experimental data is available.
 
 The internal surface of an imogolite nanotube can be described as a periodic
 sequence of silicon rings along the nanotube axis. Two adjacent rings are
@@ -1072,7 +1073,6 @@ represented in figure~\ref{fig:imogolite:gcmc-result}. We used this fully
 hydrated tube as initial configuration for classical molecular dynamics
 simulations, with the extended CLAY-FF force field and f-SPC water model.
 
-\newpage
 \subsection{Structure of confined water}
 
 From the analysis of the MD trajectories of the fully hydrated imogolite, we
@@ -1183,6 +1183,7 @@ half of the adsorption sites are occupied in the filled nanotube. Then, each of
 the hydrogen atoms of the SiOH groups that form the vertices of a triangle will
 point toward one of the three occupied neighboring adsorption sites.
 
+\newpage
 A final visualization can be obtained by a density plot of O and H atoms, where
 the density is mapped against $z$ and a circular coordinate, as if a slice of
 the nanotube had been cut and unrolled. These densities are presented in
@@ -1305,9 +1306,11 @@ The most common patterns are represented in figure~\ref{fig:imogolite:hbonds:pat
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.2\textwidth]{figures/images/imogolite-hbonds-pattern-1}
-    \includegraphics[width=0.2\textwidth]{figures/images/imogolite-hbonds-pattern-2}
-    \includegraphics[width=0.2\textwidth]{figures/images/imogolite-hbonds-pattern-3}
+    \raisebox{-0.5\height}{\includegraphics[width=0.2\textwidth]{figures/images/imogolite-hbonds-pattern-1}}
+    \hskip2em
+    \raisebox{-0.5\height}{\includegraphics[width=0.2\textwidth]{figures/images/imogolite-hbonds-pattern-2}}
+    \hskip2em
+    \raisebox{-0.5\height}{\includegraphics[width=0.2\textwidth]{figures/images/imogolite-hbonds-pattern-3}}
     \caption{Illustration of the most common hydrogen bonding patterns for water
     in an imogolite nanotube. From left to right these are patterns 1, 2 and 3.
     For the numbering of patterns, see table~\ref{tab:imogolite:hbonds:patterns}.}

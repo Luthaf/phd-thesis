@@ -62,7 +62,7 @@ the system to be anywhere in the phase space $\Phi$ should be 1, which gives us:
 And finally:
 \[Z = \frac{1}{N!\ h^{3N}} \iint_\Phi e^{-\beta\, H(\r^N, \p^N)} \ \d\r^N \d\p^N\]
 where the Planck constant $h$ is used as a normalization factor used to make
-sure that $Z$ has the right dimension, andthe $N!$ factor comes from the fact
+sure that $Z$ has the right dimension, and the $N!$ factor comes from the fact
 that particles are not distinguishable one from another.
 
 We can already compute at least a part of this integral by separating the
@@ -125,7 +125,7 @@ This theoretical approach to define macroscopic properties from microscopic data
 is useless unless we can compute the integrals over the whole phase space $\Phi$
 in~\eqref{eq:observable}. But computing this integral explicitly in all but the
 simplest cases will prove difficult, as the phase space is a $6N$ dimensional
-vector space, andvalues for $N$ range from a few hundred all the way up to
+vector space, and values for $N$ range from a few hundred all the way up to
 Avogadro number. But in general, a lot of states in the phase space are not
 relevant when computing the integral, mainly because their energy is too high
 and their probability becomes negligible. So instead of computing the whole
@@ -246,7 +246,7 @@ interactions, and is usually decomposed over bonded coefficients:
 \[V_\text{molecular} = \sum_\text{bonds} V_\text{bond}(r) + \sum_\text{angles} V_\text{angle}(\theta) + \sum_\text{dihedrals} V_\text{dihedral}(\phi)\]
 Each energy term only depends on the type of bonded atoms, and a single scalar
 variable: the distance $r$ between the two atoms for bonds contributions; the
-3-body angle $\theta$ for angles contributions, andthe 4-body dihedral angle
+3-body angle $\theta$ for angles contributions, and the 4-body dihedral angle
 $\phi$ or out of plane distance $d$ for dihedral angles contributions. These
 variables are illustrated in figure~\ref{fig:force-fields:molecular}.
 
@@ -442,7 +442,7 @@ be able to explore all the possible states in the phase space. In order to
 ensure this, we want the chain to be \emph{ergodic}, \ie that each state can be
 reached from any other state in a finite number of steps. This property
 guarantees the existence of a \emph{stationary} equilibrium distribution of the
-generated states as the Markov chain grows, andthat this distribution matches
+generated states as the Markov chain grows, and that this distribution matches
 the probability to generate a new state from any given state. For us, this means
 that if we are able to create an ergodic Markov chain using the Boltzmann
 statistics to generate a new state, then the whole chain will follow the
@@ -517,28 +517,28 @@ move is selected at random in the list of possible moves, ensuring $\alpha(i \to
 j) = \alpha(j \to i)$ globally as long as the move itself enforce $\alpha(i \to
 j) = \alpha(j \to i)$.
 
-\subsubsection{Canonical ensemble: translation and rotation}
+\subsubsection{Canonical ensemble: translations and rotations}
 
 The simplest move imaginable is to randomly select an atom and move it by a
-random distance in a random direction. The newly generated state only differs from
-the previous one by the position of this atom. When working with rigid
-molecules, this move can also be used to translate a full molecule. In that
-case, we also need to account for rotations to sample all the degrees of freedom
-of the rigid molecule. We can apply random rotations (random rotation axis and
-magnitude) to a molecule to do so. These moves are illustrated in
-figure~\ref{fig:mc:moves}, panels (a) and (b). By using uniform distributions
-for the cartesian components of the translation, the amplitude of the rotation,
-and uniform sampling of the unit sphere for the rotation axis; these moves have
-the same probability of going from a state $i$ to $j$ and vice versa.
+random distance in a random direction. The newly generated state only differs
+from the previous one by the position of this atom. When working with rigid
+molecules, this move can also be used to translate a full molecule. But in that
+case, we also need to account for rotational degrees of freedom. We use random
+rotations (random rotation axis and magnitude) of molecules to do so. These
+moves are illustrated in figure~\ref{fig:mc:moves}, panels (a) and (b). By using
+uniform distributions for the cartesian components of the translation, the
+amplitude of the rotation, and uniform sampling of the unit sphere for the
+rotation axis; these moves have the same probability of going from a state $i$
+to $j$ and vice versa.
 
 The one remaining parameter is then the amplitude of the move, \ie the interval
 in which to draw the translation or rotation amplitude with a uniform
 distribution. It is desirable to have an acceptance rate around 40 to 50\%, as a
-lower acceptance rate means that we are wasting computational time to generate
+lower acceptance rate means that we are wasting computation time to generate
 conformations that will not be used, and a higher acceptance rate usually means
 that the new conformation will be very close to the previous one, and the
 simulation will take longer to sample the phase space. We can adjust the
-amplitude of the rotations and translations to influence the exact value of
+amplitude of the rotations and translations to influence the value of
 $\alpha(i \to j)$: larger amplitude means a smaller acceptance rate, and smaller
 amplitude means a higher acceptance rate. But adjusting the amplitude breaks
 micro-reversibility, and as such should be done beforehand to prevent affecting
@@ -565,7 +565,7 @@ resize the simulation unit cell while keeping intra-molecular distances
 constant. This is illustrated in figure~\ref{fig:mc:moves}, panels (c). Keeping
 the distances constant ensures that the change in energy $\Delta U$ will not be
 too big, and that the move will be accepted more often than with a simple
-scaling scheme. As for translation and rotations, we can adjust the acceptance
+scaling scheme. As for translations and rotations, we can adjust the acceptance
 rate of the move by changing the amplitude of volume changes.
 
 \subsubsection{Grand Canonical ensemble: insertion and deletion}
@@ -574,7 +574,7 @@ Simulations in the $\mu VT$ ensemble are called Grand Canonical Monte Carlo
 (GCMC) simulations. In this ensemble, the number of molecules is allowed to
 fluctuate in order to maintain the chemical potential constant. We need two
 moves to accomplish this, one where we select a molecule at random and remove
-it, andanother one where a molecule is inserted from a fictitious reservoir at
+it, and another one where a molecule is inserted from a fictitious reservoir at
 a random position and orientation (see figure~\ref{fig:mc:moves}, panels (d) and
 (e)). The acceptance probability is given as previously by the $\mathcal{P}_j /
 \mathcal{P}_i$ ratio; but this time the $N!\ \lambda^{3N}$ terms from
@@ -603,7 +603,7 @@ series of Monte Carlo simulations.
 \subsection{Monte Carlo caveats}
 
 Monte Carlo simulations are very powerful, as they allow to directly sample the
-phase space of the ensemble of interest, anddo not require that the moves used
+phase space of the ensemble of interest, and do not require that the moves used
 to generate a new trial configuration follow the laws of physics. This later
 property is used in some extensions of Monte Carlo simulations, where an atom
 nature is transformed as a Monte Carlo move, changing a sodium atom into a
@@ -688,7 +688,7 @@ system is said to be ergodic if the point representing this system in the phase
 space can approach every point in the phase space as closely as desired. In this
 case, the Birkhoff ergodic theorem proves that the time average and ensemble
 average are the same almost everywhere. This condition has been verified for
-some systems, andis usually assumed to hold when working with statistical
+some systems, and is usually assumed to hold when working with statistical
 thermodynamics.
 
 \subsection{Integration schemes}
@@ -711,7 +711,7 @@ volume is said to be \emph{symplectic}.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/images/symplectic-integrator}
+    \includegraphics[width=0.7\textwidth]{figures/images/symplectic-integrator}
     \caption{Illustration of a set of trajectories (in red) in a 2 dimensional
     phase space. For a symplectic integrator, the initial volume (in blue) will
     be the same as the final volume (in green).}
@@ -721,15 +721,15 @@ volume is said to be \emph{symplectic}.
 Because we are approximating the equations of motion by evaluating them on
 discrete time steps the energy might not be fully conserved, and an energy drift
 can appear. The amplitude of this drift will depend on the choice of time step;
-a bigger time step will introduce a bigger error. A good integrator will allow
-us to use bigger time steps while keeping the drift small. This will make the
+a bigger time step will introduce a bigger error. Good integrators will allow us
+to use bigger time steps while keeping the drift small. In turn, this makes the
 overall simulation more efficient by reducing the number of steps needed to
 simulate long processes. Another way to make the simulation more efficient is to
-evaluate the forces acting on the atoms as rarely as possible. This is for
-example the case in multi-timesteps methods such as reversible Reference System
-Propagator Algorithms\cite{Tuckerman1992} (r-RESPA) where forces are separated
-by the time scale of their variations, andevaluated only when needed instead of
-being calculated at all steps.
+evaluate the forces acting on the atoms as rarely as possible. This is the case
+in multi-timesteps methods such as reversible Reference System Propagator
+Algorithms\cite{Tuckerman1992} (r-RESPA) where forces are separated by the time
+scale of their variations, and evaluated only when needed instead of being
+calculated at all steps.
 
 \subsubsection{Some examples of integration schemes}
 
@@ -850,7 +850,7 @@ will then explore the canonical ensemble, by construction.
 
 \begin{figure}[ht]
     \centering
-    \includegraphics[width=0.6\textwidth]{figures/images/thermostat-response}
+    \includegraphics[width=0.7\textwidth]{figures/images/thermostat-response}
     \caption{The temperature response of a Lennard–Jones fluid under control of
     three thermostats (solid line: Langevin, not presented here; dotted line:
     Berendsen; dashed line: Nosé–Hoover) after a step change in the reference
@@ -927,7 +927,7 @@ have one or more \emph{fractional} particles in the system, represented by a
 parameter $\lambda$ going from 0 to 1.  The interactions of this particle with
 the system are scaled down by $\lambda$, and the value of $\lambda$ evolves
 through time. When it reaches 1, the particle is converted to a full particle
-and a new one is inserted with a small $\lambda$, andwhen it reaches 0, the
+and a new one is inserted with a small $\lambda$, and when it reaches 0, the
 particle is removed and a new one is picked to have the value of $\lambda$
 change.
 
@@ -960,7 +960,7 @@ particles.  At the same time, it is harder to ensure that the trajectory is
 sampling the right ensemble, compared with Monte Carlo simulations where the
 ensemble is built directly into the moves and their probabilities. Generating
 the right average value --- for example when using a Berendsen thermostat --- is
-not enough, andone must check that the full distribution is reproduced.
+not enough, and one must check that the full distribution is reproduced.
 
 In general, Monte Carlo and molecular dynamics simulations complete each other,
 one having strengths where the other is weaker, or harder to use. The main
@@ -1033,7 +1033,7 @@ With this energy, the probability that the system is in a state described by $x$
 is given by
 \[ \mathcal{P}_i(x) = \frac1{Z_i} \iiint_V \d \r^N\ \exp[-\beta\, U_i(\r^N)] \ \delta(x - x(\r^N)).\]
 The above expression uses $x(\r^N)$ as the value of the collective variable $x$
-for a given conformation, andthe $\delta$ function to filter out a specific
+for a given conformation, and the $\delta$ function to filter out a specific
 value of $x$. $Z_i$ is the modified conformational partition function:
 \[ Z_i = \iiint_V \d \r^N\ \exp[-\beta\, U_i(\r^N)].\]
 
