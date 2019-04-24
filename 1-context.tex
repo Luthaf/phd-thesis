@@ -565,7 +565,7 @@ intrusion-extrusion cycle without hysteresis can simply be termed as a
 incomplete cycle in which water is retained in the porous framework upon
 pressure release can be called a \emph{bumper}.
 
-\begin{figure}[ht]
+\begin{figure}[p]
     \centering
     \includegraphics[width=0.7\textwidth]{figures/cited/intrusion-licl}
     \caption{Intrusion-extrusion process in $\beta$ zeosil. With pure water, it
@@ -574,6 +574,18 @@ pressure release can be called a \emph{bumper}.
     is observed from 10~M to 15~M of LiCl. Image reproduced from
     reference~\cite{Ryzhikov2014}}
     \label{fig:intrusion-licl}
+\end{figure}
+
+\begin{figure}[p]
+    \centering
+    \includegraphics[width=0.6\textwidth]{figures/cited/osmotic-zif}
+    \caption{Intrusion and extrusion pressures for NaCl solutions of
+    various concentrations in ZIF-8 at 323 K. The inset displays
+    intrusion--extrusion curves, plotted not in absolute pressure $P$ but as a
+    function of $\ P - 2cRT$, showing that the effect of concentration is well
+    explained by the van 't Hoff osmotic pressure. Figure reproduced from
+    reference~\cite{MichelinJamois2015}.}
+    \label{fig:osmotic-zif}
 \end{figure}
 
 Patarin and coworkers\cite{Tzanis2014, Khay2014} were the first to show that the
@@ -603,27 +615,60 @@ framework. A simple application of the van't Hoff osmotic equation ($\Pi = i c R
 T$) confirmed this model in most of the studied cases, as illustrated in
 figure~\ref{fig:osmotic-zif}.
 
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.5\textwidth]{figures/cited/osmotic-zif}
-    \caption{Intrusion and extrusion pressures for NaCl solutions of
-    various concentrations in ZIF-8 at 323 K. The inset displays
-    intrusion--extrusion curves, plotted not in absolute pressure $P$ but as a
-    function of $\ P - 2cRT$, showing that the effect of concentration is well
-    explained by the van 't Hoff osmotic pressure. Figure reproduced from
-    reference~\cite{MichelinJamois2015}.}
-    \label{fig:osmotic-zif}
-\end{figure}
-
 Even more recently, \citeauthor{Arletti2016}\cite{Arletti2016} coupled
 intrusion-extrusion experiments of \ce{MgCl2} aqueous solution to \emph{in situ}
 high-pressure synchrotron X-ray diffraction analysis. This study clearly
 demonstrated the presence of both ions and water molecules in the high pressure
-intruded liquid. During my PhD, I approached the question of when and why
-ions in the aqueous solution enter the microporous frameworks using classical
-molecular simulations. This work is presented in chapter~\ref{sec:classical}.
+intruded liquid. During my PhD, I approached the question of when and why ions
+in the aqueous solution enter the microporous frameworks using classical
+molecular simulations, the corresponding work is presented in
+chapter~\ref{sec:classical}.
 
-\TODO: confinement and effects on gas + liquids ?
+\subsection{Coupling between adsorption and deformations}
+
+Adsorption and intrusion in flexible nanoporous materials can present very
+interesting behaviors. First, some materials deforms during adsorption, creating
+the aforementioned effects of breathing, gate opening or even negative gas
+adsorption\cite{Krause2016}. At the same time, because they are constrained by
+the surrounding porous solid, fluids inside the pores adopt different static
+organization and dynamic behavior than fluids in the bulk state. These effects
+of the porous solids on the fluids are grouped together under the category of
+\emph{confinement} effects.
+
+Confinement effects introduce another way to look at adsorption and intrusion:
+two different phases of the same chemical species are at equilibrium, and
+transfers from one phase to the other occurs as the fluid enters or leave the
+porous structure. In some cases, there can even be multiple different fluid
+phases inside the porous volume. Recently,
+\citeauthor{Braun2015}\cite{Braun2015} demonstrated, using NMR relaxometry and
+molecular dynamics, that a true liquid–vapor coexistence existed in fluid
+benzene confined in MOF-5. The liquid and vapor phases were shown to extend over
+many unit cells thanks to the open 3D framework, as shown in
+figure~\ref{fig:mof5-bezene}.
+
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.5\textwidth]{figures/cited/mof5-bezene}
+    \caption{A snapshot of the molecular dynamics simulation of benzene in MOF-5.
+    A vapor–liquid coexistence takes place, the vapor and liquid phases extending
+    over many unit cells. Image adapted from reference~\cite{Braun2015}.}
+    \label{fig:mof5-bezene}
+\end{figure}
+
+While confinement effects also occurs in rigid nanoporous material, when working
+with flexible nanoporous materials we need to consider multiple phases
+equilibrium occurring at the same time. The fluid phase equilibrium between the
+bulk state and the confined state can have an influence on phase equilibrium
+between the porous material phases and reciprocally.
+
+During my PhD work, I explored confinement effects mainly in \ZIF8, with
+different fluids: gaseous nitrogen at \SI{77}{K} in chapter~\ref{sec:ab-initio},
+and aqueous solutions at ambient temperature in chapter~\ref{sec:classical}. I
+also looked at more rigid systems --- namely aluminosilicate nanotubes --- in
+chapter~\ref{sec:imogolites}. I have been particularly interested in the
+simulation methods one can use to study the coupling between adsorption and
+deformations in flexible nanoporous materials.
+\newpage
 
 \OnlyInSubfile{\printglobalbibliography}
 

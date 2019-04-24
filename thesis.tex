@@ -91,7 +91,7 @@
 % Prevent line break inside multiple citations like [4-5,7], but allow it
 % before the opening [
 \let\@oldcite\cite
-\renewcommand{\cite}[1]{\allowbreak\mbox{\@oldcite{#1}}}
+\renewcommand{\cite}[1]{\penalty1000\mbox{\@oldcite{#1}}}
 
 \let\@oldchapter\chapter
 % Skip at least one page before chapter (OnlyInMainfile), and print toc after
@@ -248,8 +248,8 @@
     % Add the date/hour of compilation on each page
     \ct@draftingtrue
 
-    % Use a big red box for TODO items
-    \def\TODO{\colorbox{red}{TODO}}
+    % % Use a big red box for TODO items
+    % \def\TODO{\colorbox{red}{TODO}}
 
     % Put a big red square for undefined references
     \def\@setref#1#2#3{%
