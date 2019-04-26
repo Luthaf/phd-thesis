@@ -292,35 +292,12 @@
       }{\relax}
 
 % ********************************************************************
-% headlines
-% ********************************************************************
-\RequirePackage{fancyhdr}
-\pagestyle{fancy}
-
-\renewcommand{\headrulewidth}{0pt}
-\renewcommand{\footrulewidth}{0pt}
-
-\renewcommand{\chaptermark}[1]{\markboth{\spacedlowsmallcaps{#1}}{\spacedlowsmallcaps{#1}}}
-\renewcommand{\sectionmark}[1]{\markright{\textsc{\thesection}\enspace\spacedlowsmallcaps{#1}}}
-
-\fancyhead{}
-\fancyfoot{}
-\fancyhead[RO]{\small\rightmark}
-\fancyhead[LE]{\small\leftmark}
-\fancyfoot[LE,RO]{\thepage}
-
-\fancypagestyle{plain}{%
-    \fancyhead{}
-    \fancyfoot{}
-    \fancyfoot[LE,RO]{\thepage}
-}
-
-% ********************************************************************
 % layout of the chapter-, section-, subsection-, subsubsection-,
 % paragraph and description-headings
 % ********************************************************************
 \PassOptionsToPackage{explicit}{titlesec}
 \RequirePackage{titlesec}
+
 \ifthenelse{\boolean{ct@nochapters}}{\relax}{\titleclass{\chapter}{top}} % thanks to Javier Bezos of titlesec
 \def\ttl@addcontentsline#1#2{% this is from titlesec.sty
   \addcontentsline{toc}{#1}{\ifttl@toclabel\ttl@a\fi{#2}}% write titles as a group inside {}
@@ -372,6 +349,30 @@
 \titlespacing*{\subsection}{0pt}{0.5\baselineskip}{0.3\baselineskip}
 \titlespacing*{\subsubsection}{0pt}{0.3\baselineskip}{0.1\baselineskip}
 \titlespacing*{\paragraph}{0pt}{1\baselineskip}{1\baselineskip}
+
+% ********************************************************************
+% Headers and footers
+% ********************************************************************
+\RequirePackage{fancyhdr}
+\pagestyle{fancy}
+
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+
+\renewcommand{\chaptermark}[1]{\markboth{\spacedlowsmallcaps{#1}}{\spacedlowsmallcaps{#1}}}
+\renewcommand{\sectionmark}[1]{\markright{\textsc{\thesection}\enspace\spacedlowsmallcaps{#1}}}
+
+\fancyhead{}
+\fancyfoot{}
+\fancyhead[RO]{\small\rightmark}
+\fancyhead[LE]{\small\leftmark}
+\fancyfoot[LE,RO]{\thepage}
+
+\fancypagestyle{plain}{%
+    \fancyhead{}
+    \fancyfoot{}
+    \fancyfoot[LE,RO]{\thepage}
+}
 
 % ********************************************************************
 % layout of the TOC, LOF and LOT (LOL-workaround see next section)

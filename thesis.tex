@@ -115,7 +115,6 @@
     \hrule\relax
     \vspace*{.9\baselineskip}%
     \raggedright{\huge\spacedallcaps{\contentsname}}\par%
-    \markboth{\contentsname}{\contentsname}
     \vspace*{1.1\baselineskip}%
     \hrule\relax
     \vspace*{\baselineskip}%
@@ -182,7 +181,6 @@
     \begingroup
         \hypersetup{hidelinks}
         \printcontents[chapters]{}{1}{\setlength\parskip{0pt}}%
-        % \vspace*{0.6em}
         \hfill\pgfornament[width=6cm,color=CTsemi]{88}\hfill\hfill
     \endgroup
 }
@@ -264,21 +262,27 @@
 \makeatother
 
 \begin{document}
+    \pagenumbering{roman}
     \maketitle
 
     \begingroup
+        \addtocontents{toc}{\protect\thispagestyle{empty}}
+        \pagestyle{empty}
         \hypersetup{hidelinks}
         \tableofcontents
+        % Force a clear page so that the last page of toc use pagestyle{empty}
+        \clearpage
     \endgroup
 
-    \include{0-intro}
+    \pagestyle{fancy}
+    \input{0-intro}
     \subfile{1-context}
     \subfile{2-macroscopic}
     \subfile{3-molsim}
     \subfile{4-abinitio}
     \subfile{5-classical}
     \subfile{6-software}
-    \include{9-conclusion}
+    \input{9-conclusion}
 
     \addtocontents{toc}{\protect\contentsline{chapter}{\hfill\hfill%
                 \protect\pgfornament[width=6cm,color=CTsemi]{88}%
@@ -286,7 +290,7 @@
     \appendix
     \subfile{A-chemfiles}
 
-    \include{publist}
+    \input{publist}
 
     \printglobalbibliography
 

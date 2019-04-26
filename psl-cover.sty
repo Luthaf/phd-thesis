@@ -281,12 +281,11 @@
   \mbox{}
   \thispagestyle{empty}
   \clearpage
-  \setcounter{page}{1}
 }
 
 %% Back PSL cover
 \newcommand*{\pslbackcover}{
-  \pagestyle{empty}
+  \thispagestyle{empty}
   \cleardoublepage{}
   \ifodd\value{page}\hbox{}\newpage\fi
   \begin{pslfontenv}
