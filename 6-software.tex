@@ -55,8 +55,10 @@ library. A software library is a collection of functions and classes working
 together to provide a given functionality. One specificity of Domino is that it
 provides facilities to run both classical Monte Carlo, molecular dynamics and
 energy minimization simulations, where most other simulation software only offer
-either Monte Carlo or molecular dynamics as \emph{first-class citizen}. We also
-try to make it easy to use, and easy to extend, meaning it can be used as a
+either Monte Carlo or molecular dynamics as \emph{first-class citizen}. Notable
+exceptions that provide both Monte Carlo and molecular dynamics include
+RASPA\cite{Dubbeldam2015} and Sire\cite{SireMol} software. We also try
+to make Domino easy to use, and easy to extend, meaning it can be used as a
 basis for the development of new molecular simulations methods.
 
 These goals translate into some of the architectural choices: in particular, the
@@ -885,18 +887,19 @@ where $\alpha$ is the damping parameter. This expression for the forces presents
 a discontinuity at $r_{ij} = r_c$, which can introduce artifacts in molecular
 dynamics simulation as particles enter or leave the cutoff sphere.
 
-In 2006, \citeauthor{Fennell2006} proposed to \cite{Fennell2006} remove this
+In 2006, \citeauthor{Fennell2006}\cite{Fennell2006} proposed to remove this
 discontinuity by changing the potential to:
 \[V_{DSF}(r_{ij}) = q_i q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}} - \frac{\erfc(\alpha r_c)}{r_c} + (r_{ij} - r_c) \frac{\partial V_{DSP}(r_{ij})}{\partial r_{ij}}(r_c)\right].\]
 This approach gives us the \emph{damped shifted force} (DSF) formulation of Wolf
 potential:
 \[V_{DSF}(r_{ij}) = q_i q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}} - \frac{\erfc(\alpha r_c)}{r_c} + \left(\frac{\erfc(\alpha r_c)}{r_c^2} + \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r_c^2)}{r_c}\right) (r_{ij} - r_c)\right]\]
+\vskip-\baselineskip
 \[\vec f_{DSF}(\vec r_{ij}) = q_i q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}^2} + \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r_{ij}^2)}{r_{ij}} - \frac{\erfc(\alpha r_c)}{r_c^2} - \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r_c^2)}{r_c}\right] \frac{\vec r_{ij}}{r_{ij}}\]
 \citeauthor{Fennell2006} also compared the DSP and DFS approaches on a large set
 of systems, and concluded that the DSF approach is able to reproduce the forces
 computed by Ewald summation very well with a damping parameter $\alpha =
 \SI{0.2}{\AA^{-1}}$; while the DSP approach was able to reproduce energies very
-well with the same damping parameter. They suggest to use the DSP approach for
+well with the same damping parameter. They suggest using the DSP approach for
 Monte Carlo simulation, and the DSF approach for molecular dynamics.
 
 \subsection{Comparing Ewald and Wolf summations}

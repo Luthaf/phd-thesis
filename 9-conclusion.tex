@@ -1,3 +1,85 @@
 % !TEX root = thesis.tex
 
 \chapter*{General conclusions}
+
+The works presented in this thesis are related to the study of adsorption and
+intrusion in nanoporous flexible materials, deformation of these materials and
+the coupling between the two phenomenon. Confining a fluid inside a pores
+network has significant effects on its thermodynamics property, due to the
+competition between pore size and pore shape effects, and interface
+interactions. This competition generates specific new behaviors, such as new
+fluid phases and phases transitions, and is especially acute in nanoporous
+materials, where the typical of the pore and the range of the interactions are
+of the same order of magnitude. On the other hand, the presence of a confined
+fluid can also have strong effects on the solid, creating the opportunity for
+new phases to exists and shifting the balance between multiple meta-stable
+phases. This is particularly poignant in the case of \emph{flexible} nanoporous
+material, such as metal--organic frameworks.
+
+Because these materials are relatively recent, their flexibility have often been
+overlooked, and it was only in the recent years that the scientific community
+stared to take it into account. An example of such shift is presented in the
+second chapter of this manuscript, with the incorporation of the osmotic
+thermodynamic ensemble into the Ideal Adsorbed Solution Theory (IAST) for the
+study of co-adsorption of gases, leading to the creation of the Osmotic
+Framework Adsorbed Solution Theory (OFAST). In the aforementioned chapter, I
+demonstrate that IAST is by construction invalid for the treatment of
+co-adsorption when the adsorbing host is not inert during adsorption. In
+particular, I show that IAST can not be used for the prediction of co-adsorption
+of fluid mixtures frameworks presenting a gate-opening behavior, and that it
+predicts non-physical selectivity, up to two orders of magnitude higher than
+OFAST. Even when IAST is not explicitly used to compute selectivity in flexible
+framework, researchers should be cautious cautious when comparing
+single-component isotherms of different guests in presence of flexibility.
+Differences in step pressure of stepped isotherms can lead to claims of strong
+selectivity, when applying concepts that are valid only for rigid host matrices.
+
+We should also take care of not going too far the other way either, and
+attributing all behaviors to the flexibility of the material. In the third
+chapter of this document, I used \abinitio molecular dynamics simulation to
+explain the origin of a stepped isotherm for the adsorption of nitrogen in
+\ZIFCH3 and \ZIFCl, and its absence in the similar framework of \ZIFBr. I showed
+that while the framework does deform during adsorption for both \ZIFCH3 and
+\ZIFCl, the deformations do not change the accessible volume and pore size
+distribution of these materials. Instead, the increase in uptake in the isotherm
+is linked to a reorganization of the fluid confined in the pores, reorganization
+which does not happen in \ZIFBr because of the difference in pore size. It is
+thus fundamental to account for both flexibility and confinement effects when
+studying adsorption in soft porous crystals.
+
+The same is true of intrusion, adsorption's big brother. In my chapter five, I
+used classical molecular simulations to study the entry of water and aqueous
+electrolyte solution in \ZIF8, and imogolite nanotubes. I was able to show some
+of the effects confinement can have on water, such as a stronger spatial
+organization, and a slower dynamics. Interestingly, the presence of ions at high
+concentration can have the same effects on bulk water, structuring the hydrogen
+bonds network and slowing down dynamics. I could also shed some light on the
+impact of the ions on the overall intrusion behavior, showing that different
+ions have different barriers to entry through \ZIF8 windows. \fbox{TODO}
+
+
+=> Study both adsorption/intrusion and deformations at the same time!
+
+    => need new simulation methods, available in generic, easy to use, efficient software
+
+=> Force field parametrization with ML
+
+
+Overall, this PhD presents multiple molecular modeling methods that can be used
+for the study of adsorption and intrusion in flexible nanoporous materials: from
+\abinitio simulations to remove the need for force field parametrization, to
+classical simulations using molecular dynamics or Monte Carlo, to hybrid Monte
+Carlo for the joint simulation of open systems and collective behaviors, all the
+way to macroscopic methods, using classical thermodynamics.
+
+\newpage
+\begin{center}
+    \pgfornament[width=6cm,color=CTsemi]{88}
+\end{center}
+Perspectives:
+
+    => opinion perso sur les challenges à venir
+
+    => Advanced HMC (compressible, with bogus MD)
+
+    => force fields, machine learning, NN potentials
