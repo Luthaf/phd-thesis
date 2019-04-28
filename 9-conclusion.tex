@@ -1,38 +1,43 @@
 % !TEX root = thesis.tex
 
+% Remove some vspace around the chapter title
+\titlespacing*{\chapter}{0pt}{0pt}{0.8\baselineskip}
 \chapter*{General conclusions}
 
-The works presented in this thesis are related to the study of adsorption and
-intrusion in nanoporous flexible materials, deformation of these materials and
-the coupling between the two phenomenon. Confining a fluid inside a pores
+% Restore old spacing
+\titlespacing*{\chapter}{0pt}{1\baselineskip}{1.2\baselineskip}
+
+The work presented in this thesis is related to the study of adsorption and
+intrusion in nanoporous flexible materials, the deformation of these materials
+and the coupling between the two phenomena. Confining a fluid inside a pores
 network has significant effects on its thermodynamics property, due to the
 competition between pore size and pore shape effects, and interface
 interactions. This competition generates specific new behaviors, such as new
 fluid phases and phases transitions, and is especially acute in nanoporous
-materials, where the typical of the pore and the range of the interactions are
-of the same order of magnitude. On the other hand, the presence of a confined
-fluid can also have strong effects on the solid, creating the opportunity for
-new phases to exists and shifting the balance between multiple meta-stable
-phases. This is particularly poignant in the case of \emph{flexible} nanoporous
-material, such as metal--organic frameworks.
+materials, where the typical width of the pore and the range of the interactions
+are of the same order of magnitude. On the other hand, the presence of a
+confined fluid can also have strong effects on the solid, creating the
+opportunity for new phases to exists and shifting the balance between multiple
+meta-stable phases. This is particularly poignant in the case of \emph{flexible}
+nanoporous material, such as metal--organic frameworks.
 
-Because these materials are relatively recent, their flexibility have often been
+Because these materials are relatively recent, their flexibility has often been
 overlooked, and it was only in the recent years that the scientific community
-stared to take it into account. An example of such shift is presented in the
+started to take it into account. An example of such shift is presented in the
 second chapter of this manuscript, with the incorporation of the osmotic
 thermodynamic ensemble into the Ideal Adsorbed Solution Theory (IAST) for the
 study of co-adsorption of gases, leading to the creation of the Osmotic
 Framework Adsorbed Solution Theory (OFAST). In the aforementioned chapter, I
 demonstrate that IAST is by construction invalid for the treatment of
 co-adsorption when the adsorbing host is not inert during adsorption. In
-particular, I show that IAST can not be used for the prediction of co-adsorption
+particular, I show that IAST cannot be used for the prediction of co-adsorption
 of fluid mixtures frameworks presenting a gate-opening behavior, and that it
 predicts non-physical selectivity, up to two orders of magnitude higher than
 OFAST. Even when IAST is not explicitly used to compute selectivity in flexible
-framework, researchers should be cautious cautious when comparing
-single-component isotherms of different guests in presence of flexibility.
-Differences in step pressure of stepped isotherms can lead to claims of strong
-selectivity, when applying concepts that are valid only for rigid host matrices.
+frameworks, researchers should be careful when comparing single-component
+isotherms of different guests in presence of flexibility. Differences in step
+pressure of stepped isotherms can lead to claims of strong selectivity, when
+applying concepts that are valid only for rigid host matrices.
 
 We should also take care of not going too far the other way either, and
 attributing all behaviors to the flexibility of the material. In the third
@@ -47,39 +52,119 @@ which does not happen in \ZIFBr because of the difference in pore size. It is
 thus fundamental to account for both flexibility and confinement effects when
 studying adsorption in soft porous crystals.
 
-The same is true of intrusion, adsorption's big brother. In my chapter five, I
-used classical molecular simulations to study the entry of water and aqueous
-electrolyte solution in \ZIF8, and imogolite nanotubes. I was able to show some
-of the effects confinement can have on water, such as a stronger spatial
-organization, and a slower dynamics. Interestingly, the presence of ions at high
-concentration can have the same effects on bulk water, structuring the hydrogen
-bonds network and slowing down dynamics. I could also shed some light on the
-impact of the ions on the overall intrusion behavior, showing that different
-ions have different barriers to entry through \ZIF8 windows. \fbox{TODO}
+The same is true of intrusion, adsorption's big brother. In chapter five, I used
+classical molecular simulations to study the confinement under high-pressure of
+water and aqueous electrolyte solution in \ZIF8, and imogolite nanotubes. I
+observed confinement effects ranging from stronger spatial organization, changes
+in elastic properties, to water dynamics slowdown. Interestingly, the presence
+of ions at high concentration can have the same effects on bulk water,
+structuring the hydrogen bonds network and slowing down dynamics. The intrusion
+of aqueous solution in hydrophobic material is a promising way to store and
+dissipate mechanical energy. Adding electrolyte in the water at varying
+concentration allows tuning the behavior and even switching from energy storage
+to dissipation. I shed some light on the impact of the ions on the intrusion
+behavior using umbrella sampling simulations to extract the free energy profile
+of entry inside \ZIF8, showing that different ions have dissimilar barriers when
+traversing \ZIF8 windows.
 
+This need to simultaneously account for adsorption and deformations was a
+recurrent theme of all these studies. But current simulations methods are only
+able to address one dimension of the problem: molecular dynamics simulations can
+describe deformations, but modeling open systems and thus adsorption is not
+possible. Metropolis Monte Carlo simulations can be used for open systems, but
+have difficulties efficiently sampling collective deformations. Hybrid Monte
+Carlo is a possible answer to this dilemma, combining the efficiency of
+molecular dynamics with the versatility of Monte Carlo simulations. My last
+chapter presents the hybrid Monte Carlo simulation method and how to use it for
+direct simulations in the osmotic ensemble. Increasing the reach of such novel
+methods within the scientific community requires them to be readily available in
+generic, easy to use, and efficient software. I explored the design space for
+such software with the Domino project, described in the last chapter of this
+document.
 
-=> Study both adsorption/intrusion and deformations at the same time!
+There is another condition to fulfill before being able to widely use osmotic
+ensemble simulations for the study of adsorption and intrusion in soft porous
+crystals. We need to be able to predict the energy changes related to the
+flexibility of the frameworks and their interactions with fluids. On one hand,
+first-principle or \abinitio methods (such as the density functional theory)
+enable to accurately compute the energy of arbitrary atomistic systems. On the
+other hand, they require large amount of computational power, which prevents
+them from being routinely used on large systems. When faced with such large
+systems --- large in the number of atoms, the timescale of processes, or for
+high-throughput screening --- we often turn to classical force fields instead.
 
-    => need new simulation methods, available in generic, easy to use, efficient software
-
-=> Force field parametrization with ML
-
+Classical force fields are either accurate, \ie reproducing well the actual
+potential energy surface; or transferable, \ie usable with multiple different
+systems. Current transferable force fields are not well suited to describe the
+flexibility arising from coordination bonds, so we need to create new force
+fields for these systems. Historically, the parametrization of new force fields
+has been a rather long and tedious process. In recent years, new machine
+learning-based techniques for the consistent and fast derivation of accurate
+force fields have been devised. I presented one of these techniques in the
+fourth chapter of this document, and used it to derive force fields for \ZIF8
+and some of its derivatives from \abinitio data. Such automated methods are
+especially crucial for the study of metal--organic frameworks given the huge
+diversity of their structures. I hope that the availability of both accurate
+force fields and hybrid Monte Carlo simulations capable software will make it
+easier to use molecular simulations to engineer new materials tailored for
+specific applications.
 
 Overall, this PhD presents multiple molecular modeling methods that can be used
-for the study of adsorption and intrusion in flexible nanoporous materials: from
-\abinitio simulations to remove the need for force field parametrization, to
-classical simulations using molecular dynamics or Monte Carlo, to hybrid Monte
-Carlo for the joint simulation of open systems and collective behaviors, all the
-way to macroscopic methods, using classical thermodynamics.
+for the study of adsorption and intrusion in flexible nanoporous materials. From
+\abinitio simulations to remove the need for force field parametrization;
+classical simulations using molecular dynamics to describe flexibility; Monte
+Carlo and particularly Grand Canonical Monte Carlo for adsorption; free energy
+methods such a umbrella sampling; to hybrid Monte Carlo for the direct
+simulation of collective behaviors in open systems; all the way to macroscopic
+modeling methods, based on classical thermodynamics.
 
-\newpage
 \begin{center}
     \pgfornament[width=6cm,color=CTsemi]{88}
 \end{center}
-Perspectives:
 
-    => opinion perso sur les challenges à venir
+This work opens perspectives for improvements in various directions. Starting
+with molecular simulation methods, hybrid Monte Carlo seems like a very powerful
+technique, that can be used for a wide variety of systems outside of the problem
+of adsorption in soft porous crystals. First, hybrid Monte Carlo, being a
+Metropolis Monte Carlo method, will always converge to and sample the phase
+space distribution of the correct statistical thermodynamic ensemble. This is in
+opposition with molecular dynamics, which samples the micro-canonical ensemble
+by default, and relies on thermostats and barostats to sample other ensembles.
+These thermostats and especially barostats are not all equal, and only some
+algorithms are able to precisely generate the correct ensemble. At the same
+time, hybrid moves greatly improve the efficiency of Monte Carlo simulations by
+taking into account the local curvature of the potential energy surface.
 
-    => Advanced HMC (compressible, with bogus MD)
+Whether osmostats --- and the simulation of open systems --- are compatible with
+molecular dynamics is still an open research question, while they are routinely
+used in Grand Canonical and Gibbs ensemble Monte Carlo. Hybrid Monte Carlo could
+thus be used for simulations of open ensembles and dilute systems, such as
+constant pH simulations, description of the ionic environment of proteins, or
+the simulation of defects in crystalline materials. Thanks to the Metropolis
+Monte Carlo acceptance scheme, there is no need for the short molecular dynamics
+run used inside hybrid move to sample any actual thermodynamic ensemble or any
+physical Hamiltonian. This property could be exploited to create even more
+efficient Monte Carlo simulations, for example gradually inserting new molecules
+in a system while simultaneously relaxing its environment. Compressible
+generalized hybrid Monte Carlo is particularly promising, as it enables using a
+custom Hamiltonian tailored for the problem at hand.
 
-    => force fields, machine learning, NN potentials
+Another perspective for future work concerns classical force fields, and their
+ability to accurately reproduce potential energy surfaces. The traditional
+approach to force fields has been to decompose the energy as a sum of terms
+depending on simple scalar values with physical meaning: distances, bond length,
+bond angles, torsion dihedral angles, \etc. These scalar values are then
+combined with simple mathematical expressions, such as power or exponential
+functions. This approach prevents the potential energy surface from including
+multi-body effects, and accurately reproducing the shape of \abinitio potential
+energy surfaces used as references. Machine learning tools, in particular neural
+network and Gaussian processes, can improve both areas. First, neural-networks
+ability to reproduce arbitrary functions from $\mathds{R}^n$ to $\mathds{R}$ can
+reduce the differences between the potential energy surfaces shapes. For
+example, instead of imposing the Lennard-Jones functional form, neural networks
+can reproduce the actual function. Secondly, machine learning algorithms can be
+coupled with better descriptors of the atomic structure, accounting for
+many-body effects. In recent years, multiple independent scientific teams worked
+to design, train and evaluate such machine learning force fields and the
+associated descriptors. To my knowledge, they remain to be used for the
+simulation of nanoporous flexible materials.
