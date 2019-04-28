@@ -4,12 +4,13 @@ set tics nomirror
 OUTPUT = "../" . system("echo ". ARG0 . " | cut -d '.' -f1 " ) . ".tex"
 set output OUTPUT
 
-set xlabel "$\\phi$ (°)"
+set xlabel "$\\phi$ (°)" offset 0,1
 unset ytics
 set xrange [0:50]
 set key maxrow 99
 set yrange [0:0.022]
 
+set margin 2,1,2,0
 
 plot "data/licl-zif/water/dihedral.dat" w l lw 4 lc 1 t "0 mol/L", \
      "data/licl-zif/LiCl-1M/dihedral.dat" w l lw 4 lc 2 t"1 mol/L", \

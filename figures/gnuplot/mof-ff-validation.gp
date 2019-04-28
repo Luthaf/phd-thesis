@@ -1,4 +1,4 @@
-set terminal cairolatex pdf colortext size 13cm,10cm font ",9pt"
+set terminal cairolatex pdf colortext size 12cm,8cm font ",9pt"
 set tics nomirror
 
 OUTPUT = "../" . system("echo ". ARG0 . " | cut -d '.' -f1 " ) . ".tex"
@@ -8,7 +8,7 @@ set output OUTPUT
 # OUTPUT = system("echo ". ARG0 . " | cut -d '.' -f1 " ) . ".pdf"
 # set output OUTPUT
 
-set key at graph 0.98,0.4 samplen 0 spacing 1.7
+set key at graph 0.98,0.45 samplen 0 spacing 1.7
 
 set multiplot layout 2,2
     set label 1 "(a)" at graph 0.1,0.85
@@ -19,10 +19,9 @@ set multiplot layout 2,2
     set ytics 0.2
     set ylabel "\\footnotesize MOF-FF bond lengths ($\\AA$)" offset -1
     plot x w l lw 3 lc "grey" t"", \
-         "data/mof-ff/bonds-CH3.dat" u 2:3 w p lc "#324A79" pt 7 t "\\ZIFCH3", \
-         "data/mof-ff/bonds-Cl.dat"  u 2:3 w p lc "#6ca798" pt 9 t "\\ZIFCl", \
-         "data/mof-ff/bonds-Br.dat"  u 2:3 w p lc "#8B3129" pt 15 t "\\ZIFBr"
-
+        "data/mof-ff/bonds-Br.dat"  u 2:3 w p lc "#8B3129" pt 15 t "\\ZIFBr", \
+        "data/mof-ff/bonds-Cl.dat"  u 2:3 w p lc "#6ca798" pt 9 t "\\ZIFCl", \
+        "data/mof-ff/bonds-CH3.dat" u 2:3 w p lc "#324A79" pt 7 t "\\ZIFCH3"
 
     set label 1 "(b)"
     set xrange [100:140]

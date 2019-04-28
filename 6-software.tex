@@ -245,7 +245,6 @@ but slower L2 and L3 caches. Upon the first access, data is copied from RAM to
 the cache, and on subsequent read or write operations, the data from the cache
 is used. Later on, data is copied back to RAM. Typically latency for data access
 on caches and RAM are represented on figure~\ref{fig:computer-model}.
-\newpage
 
 Because the CPU can spend hundred of cycles waiting for data which is not yet in
 the caches, it is important to make sure data in the RAM is accessed in a linear
@@ -893,7 +892,6 @@ discontinuity by changing the potential to:
 This approach gives us the \emph{damped shifted force} (DSF) formulation of Wolf
 potential:
 \[V_{DSF}(r_{ij}) = q_i q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}} - \frac{\erfc(\alpha r_c)}{r_c} + \left(\frac{\erfc(\alpha r_c)}{r_c^2} + \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r_c^2)}{r_c}\right) (r_{ij} - r_c)\right]\]
-\vskip-\baselineskip
 \[\vec f_{DSF}(\vec r_{ij}) = q_i q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}^2} + \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r_{ij}^2)}{r_{ij}} - \frac{\erfc(\alpha r_c)}{r_c^2} - \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r_c^2)}{r_c}\right] \frac{\vec r_{ij}}{r_{ij}}\]
 \citeauthor{Fennell2006} also compared the DSP and DFS approaches on a large set
 of systems, and concluded that the DSF approach is able to reproduce the forces

@@ -239,26 +239,26 @@
 
 % DRAFT code, to be commented out/removed in final version
 \makeatletter
-    % Add a visual marker for overrfull boxes
-    \overfullrule=2em
-    % Output more data in log concerning underfull boxes
-    % \showboxbreadth=50 \showboxdepth=50
-    % Add the date/hour of compilation on each page
-    \ct@draftingtrue
+    % % Add a visual marker for overrfull boxes
+    % \overfullrule=2em
+    % % Output more data in log concerning underfull boxes
+    % % \showboxbreadth=50 \showboxdepth=50
+    % % Add the date/hour of compilation on each page
+    % \ct@draftingtrue
 
     % % Use a big red box for TODO items
     % \def\TODO{\colorbox{red}{TODO}}
 
-    % Put a big red square for undefined references
-    \def\@setref#1#2#3{%
-        \ifx#1\relax
-            \protect\G@refundefinedtrue
-            \nfss@text{\reset@font\bfseries\colorbox{red}{??}}%
-            \@latex@warning{Reference `#3' on page \thepage \space undefined}%
-        \else
-            \expandafter#2#1\null
-        \fi%
-    }
+    % % Put a big red square for undefined references
+    % \def\@setref#1#2#3{%
+    %     \ifx#1\relax
+    %         \protect\G@refundefinedtrue
+    %         \nfss@text{\reset@font\bfseries\colorbox{red}{??}}%
+    %         \@latex@warning{Reference `#3' on page \thepage \space undefined}%
+    %     \else
+    %         \expandafter#2#1\null
+    %     \fi%
+    % }
 \makeatother
 
 \begin{document}

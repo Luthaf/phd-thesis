@@ -172,14 +172,13 @@ during the simulation. Other than OpenBabel, only VMD molfile plugins (written
 in C and \cxx) are compatible with \cxx simulation software.
 
 I could not find an existing library that would cover all of my needs, which is
-why I started working on chemfiles. I hope to increase the number of options
-available to developers of chemical scientific software, and provide tools for
-users of these software improving interoperability. Chemfiles is open source,
-distributed under the BSD license at
-\url{https://github.com/chemfiles/chemfiles}. This license roughly means that
-anyone can download, use, modify and distribute the code --- even together with
-software released under different licenses --- if they provide attribution of
-the code to the original authors.
+why I started working on chemfiles. With this project, I hope to provide new
+options to developers of chemical scientific software, and tools for users of
+these software, improving interoperability. Chemfiles is open source, distributed
+under the BSD license at \url{https://github.com/chemfiles/chemfiles}. This
+license roughly means that anyone can download, use, modify and distribute the
+code --- even together with software released under different licenses ---
+provided that give attribution the original authors.
 
 \subsection{Some code statistics}
 
@@ -197,7 +196,6 @@ them all here again: Jonathan Fine from Purdue University (USA); Patricio Germá
 Barletta from Universidad Nacional de Quilmes (Argentina); Laura Scalfi and Elsa
 Perrin from École Normale Supérieure (France).
 
-\newpage
 \section{Architecture and functionalities}
 
 In this section, I will describe the general architecture of chemfiles, and then
@@ -408,6 +406,15 @@ respectively. \token{bonds}, \token{angles}, and \token{dihedrals} match pairs,
 triplets and quadruplets of atoms bonded together to form the corresponding
 connectivity element.
 
+\begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.7\textwidth]{figures/images/chemfiles-selection-ast}
+    \caption{Abstract syntax tree for the selection \texttt{name O and (x + y <
+    7 or index < 80)}. Nodes in green return a Boolean value, nodes in red a
+    character string and nodes in blue deal with numbers.}
+    \label{fig:chemfiles:selection-ast}
+\end{figure}
+
 The selections are built by assembling simple constraints with Boolean operators:
 \token{and}, \token{or} and \token{not}. They follow the usual interpretation of
 logic: \texttt{A and B} will be true only if both A and B are true, \texttt{A or
@@ -465,15 +472,6 @@ children to evaluate themselves and combining the results. AST in chemfiles deal
 with three types of values: Boolean nodes create or combine Boolean values,
 string nodes create character strings, and numeric nodes create or combine
 numbers.
-
-\begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.6\textwidth]{figures/images/chemfiles-selection-ast}
-    \caption{Abstract syntax tree for the selection \texttt{name O and (x + y <
-    7 or index < 80)}. Nodes in green return a Boolean value, nodes in red a
-    character string and nodes in blue deal with numbers.}
-    \label{fig:chemfiles:selection-ast}
-\end{figure}
 
 To get the list of atoms matching the selection, the AST is walked from top to
 bottom, evaluating individual components and combining them to build the full
