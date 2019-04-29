@@ -46,6 +46,7 @@
             \DeclareFieldFormat{labelnumberwidth}{#1}
             \nocite{*}
 
+            \addtocontents{toc}{\protect\setcounter{tocdepth}{1}}
             \chapter*{List of Publications}
             \startcontents[chapters]
             \section*{Publications related to this work}
@@ -59,3 +60,6 @@
 
     \boldname{}{}{}
 \endgroup
+
+% Reset TOC depth
+\addtocontents{toc}{\protect\setcounter{tocdepth}{2}}

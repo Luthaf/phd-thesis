@@ -27,7 +27,7 @@ Smit\cite{Frenkel2002}.
 
 \subsection{Maxwell-Boltzmann statistics}
 
-We will consider a molecular system containing $N$ individual atoms behaving as
+We will consider an atomistic system containing $N$ individual atoms behaving as
 classical particles with individual positions $\r_i$, identical masses $m$ and
 momentum $\p_i$. Supposing that these particles are in some container of fixed
 volume $V$, and at thermal equilibrium with a thermostat at temperature $T$,
@@ -73,12 +73,13 @@ kinetic energy term is a product of Gaussian integrals, and gives us the
 following expression for the partition function:
 \[Z = \frac{1}{N!} \prod_i^{3N} \sqrt{\frac{2\pi m}{\beta h^2}} \iiint_V e^{-\beta\, U(\r^N)} \ \d\r^N\]
 $\lambda = \sqrt{\beta h^2 / 2\pi m}$ is the de Broglie thermal wavelength for a
-particle with mass $m$, and is homogeneous to a distance. This gives the final
-expression for the partition function:
-\[Z = \frac{1}{N!\ \lambda^{3N}} \iiint_V e^{-\beta\, U(\r^N)} \ \d\r^N \label{eq:partition-function}\]
+particle with mass $m$, and is homogeneous to a distance. $\Lambda = \lambda^3$
+is thus homogeneous to a volume. This gives the final expression for the
+partition function:
+\[Z = \frac{1}{N!\ \Lambda^N} \iiint_V e^{-\beta\, U(\r^N)} \ \d\r^N \label{eq:partition-function}\]
 And the corresponding probability for the system to be in a given conformation
 without constrains on the kinetic energy:
-\[\mathcal{P}_i = \frac{1}{N!\ \lambda^{3N}\ Z}\ e^{-\beta\, U(\r^N)}\]
+\[\mathcal{P}_i = \frac{1}{N!\ \Lambda^N\ Z}\ e^{-\beta\, U(\r^N)}\]
 
 \subsubsection{Thermodynamic quantities from the partition function}
 
@@ -96,10 +97,10 @@ $\mathcal{P}$, using the relation:
 \[S = -k_B \iint_\Phi \mathcal{P} \ln \mathcal{P}, \]
 which reduces after some calculations to
 \[S = k_B \left[\ln Z - \frac{\beta}{Z} \frac{\partial Z}{\partial \beta} \right].\]
-The free energy definition $F = \mathcal{U} - TS$ the gives us:
+The free energy definition $F = \mathcal{U} - TS$ then gives us:
 \[F = - \frac 1 \beta \ln Z\]
 
-Knowing the free energy, we can use all the results from classical
+Knowing the free energy, we can use all the relations from classical
 thermodynamics to compute some other properties of the system:
 \[P = - \frac{\partial F}{\partial V} \qquad \qquad \mu = - \frac{\partial F}{\partial n}\]
 
@@ -107,9 +108,9 @@ thermodynamics to compute some other properties of the system:
 \subsubsection{Observables}
 
 The probability for the system to be in a given state gives us the missing link
-between microscopic and macroscopic properties of the system. We can express a
-macroscopic observable property $A$ that we can also compute or measure at a
-microscopic level using Maxwell-Boltzmann statistics:
+between microscopic and macroscopic properties of the system. We can express the
+value of a macroscopic observable property $A$ using Maxwell-Boltzmann
+statistics:
 \[A = \braket{A} = \iiint_\Phi \mathcal{P}_i \ A_i.\]
 The value of $A$ at a macroscopic level is the same value as the ensemble
 average $\braket{A}$, which depends on both the value of the property in a given
@@ -126,7 +127,7 @@ is useless unless we can compute the integrals over the whole phase space $\Phi$
 in~\eqref{eq:observable}. But computing this integral explicitly in all but the
 simplest cases will prove difficult, as the phase space is a $6N$ dimensional
 vector space, and values for $N$ range from a few hundred all the way up to
-Avogadro number. But in general, a lot of states in the phase space are not
+Avogadro number. But in general, multiple states in the phase space are not
 relevant when computing the integral, mainly because their energy is too high
 and their probability becomes negligible. So instead of computing the whole
 integral, we resort to only using a finite number of samples in the phase space,
@@ -143,7 +144,7 @@ Dynamics (MD). If we can get these algorithms to generate a set of states in
 the phase space according to the Maxwell-Boltzmann probability, with the same
 state appearing possibly more than once in the set, we can simplify the
 calculation of ensemble average of observables even further. For a set of $m$
-physically representative states indexed by $\alpha$, the average reads as:
+physically representative states indexed by $\alpha$, the average reads:
 \[\braket{A} \approx \frac 1 m \sum_\alpha^m A(\r_\alpha^N, \p_\alpha^N). \label{eq:observable:r-only}\]
 
 \newpage
@@ -159,8 +160,8 @@ the system, and in particular the associated thermodynamic potential.
 \subsubsection{Isothermal-isobaric ensemble} In the $NPT$ ensemble, the volume
 $V$ is a free variable, and the probability for the system to be in a given
 configuration is:
-\[ \mathcal{P}_{NPT} = \frac{1}{N!\ \lambda^{3N}\ \Delta} \kern1em e^{-\beta \left[U(\r^N) \ + \ PV\right]} \]
-\[ \Delta = \frac{1}{N!\ \lambda^{3N}} \int \d V \iiint_V \d\r^N \; e^{-\beta \left[U(\r^N) \ + \ PV\right]} \]
+\[ \mathcal{P}_{NPT} = \frac{1}{N!\ \Lambda^N\ \Delta} \kern1em e^{-\beta \left[U(\r^N) \ + \ PV\right]} \]
+\[ \Delta = \frac{1}{N!\ \Lambda^N} \int \d V \iiint_V \d\r^N \; e^{-\beta \left[U(\r^N) \ + \ PV\right]} \]
 
 And the free energy is given by:
 \[G = - \frac 1 \beta \ln \Delta.\]
@@ -170,8 +171,8 @@ And the free energy is given by:
 In the $\mu VT$ ensemble, the number of atoms $n_i$ can vary while the
 associated chemical potential $\mu_i$ is fixed. The probability for the system
 to be in a state is given by:
-\[ \mathcal{P}_{\mu VT} = \frac{1}{N!\ \lambda^{3N}\ \Theta} \kern1em e^{-\beta \left[U(\r^N) \ - \ \sum_i \mu_i n_i \right]} \label{eq:uVT-probability} \]
-\[ \Theta = \kern-2.5em \sum_{\substack{N=0 \\[0.5ex] \kern2.75em N=n_1+n_2+\dots}}^\infty \kern-2em \frac{1}{N!\ \lambda^{3N}} \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[U(\r^N) \ - \ \sum_i \mu_i n_i \right]} \]
+\[ \mathcal{P}_{\mu VT} = \frac{1}{N!\ \Lambda^N\ \Theta} \kern1em e^{-\beta \left[U(\r^N) \ - \ \sum_i \mu_i n_i \right]} \label{eq:uVT-probability} \]
+\[ \Theta = \kern-2.5em \sum_{\substack{N=0 \\[0.5ex] \kern2.75em N=n_1+n_2+\dots}}^\infty \kern-2em \frac{1}{N!\ \Lambda^N} \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[U(\r^N) \ - \ \sum_i \mu_i n_i \right]} \]
 
 \subsubsection{Osmotic ensemble}
 
@@ -179,8 +180,8 @@ In the osmotic ($N_\text{host} \ \mu \ PT$) ensemble, the number of atoms $n_i$
 of guest molecules and the volume $V$ can vary while the associated chemical
 potential and pressure are constants. The probability for the system to be in a
 state is given by:
-\[ \mathcal{P}_{\mu VT} = \frac{1}{N!\ \lambda^{3N}\ \zeta} \kern1em e^{-\beta \left[H(\r^N, \p^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \label{eq:probably:uvt}\]
-\[ \zeta = \kern-2.5em \sum_{\substack{\kern1.2em N=N_\text{host} \\[0.5ex] \kern2.6em N=n_1+n_2+\dots}}^\infty \kern-1em \frac{1}{N!\ \lambda^{3N}} \int \d V \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[U(\r^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
+\[ \mathcal{P}_{\mu VT} = \frac{1}{N!\ \Lambda^N\ \zeta} \kern1em e^{-\beta \left[H(\r^N, \p^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \label{eq:probably:uvt}\]
+\[ \zeta = \kern-2.5em \sum_{\substack{\kern1.2em N=N_\text{host} \\[0.5ex] \kern2.6em N=n_1+n_2+\dots}}^\infty \kern-1em \frac{1}{N!\ \Lambda^N} \int \d V \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[U(\r^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
 Here, $N$ is the total number of atoms in the system, counting both the fixed
 host atoms and the varying atoms of the guest. The $\sum_i \mu_i n_i$ sum only
 run on the guest species.
@@ -198,7 +199,7 @@ two main approaches used to do so in this section.
 The most generic way to compute the energy of a configuration of a system is to
 solve the Schrödinger equation for the $N$ electrons in the system evolving in
 the potential created by the $M$ nuclei; given here in atomic units:
-\[\left[-\frac 1 2 \sum_i^N \nabla^2_i - \sum_i^N \sum_j^M \frac{Z_j}{|\r_i - \r_j|} + \sum_i^N \sum_{j>i}^N \frac{1}{|\r_i - \r_j|} \right] \psi(r) = E \psi(r)\]
+\[\left[-\frac 1 2 \sum_i^N \nabla^2_i - \sum_i^N \sum_j^M \frac{Z_j}{|\r_i - \r_j|} + \sum_i^N \sum_{j>i}^N \frac{1}{|\r_i - \r_j|} \right] \psi(r) = E \psi(r).\]
 There is no analytic solution for this equation, and the high dimensionality of
 the solution space ($\approx 3 N$) make numeric resolution very difficult.
 Instead, we use approximated methods to solve the equation, such as Quantum
@@ -221,8 +222,8 @@ improvements in software used for DFT and in computing hardware, they are still
 many systems of interest that we cannot study with DFT. If the electronic
 density does not vary much across the subspace of phase space we are interested
 in --- \ie no bond creation or breakage; no charge transfer --- then using
-classical potentials or force fields can be a good approximation of the real
-energy.
+classical potentials or \emph{force fields} can be a good approximation of the
+real energy.
 
 \subsection{Classical force fields}
 \label{sec:classical-ff}
@@ -254,8 +255,8 @@ variables are illustrated in figure~\ref{fig:force-fields:molecular}.
     \centering
     \includegraphics[width=.6\textwidth]{figures/images/molecular-ff}
     \caption{Definition of the parameters used to compute the energy of a
-    molecular system with classical force field. (a) bond terms; (b) angle
-    terms; (c) dihedral angles; (d) improper dihedrals/out of plane distance.}
+    molecular system with classical force field. (a) bonds; (b) angles; (c)
+    dihedral angles; (d) improper dihedrals/out of plane distance.}
     \label{fig:force-fields:molecular}
 \end{figure}
 
@@ -270,14 +271,14 @@ well-known terms used in most force fields.
 If we choose to model atomic partial charges as point charges, we can directly
 use the expression for Coulombic interactions, as a sum over all pairs of
 charged atoms in the system:
-\[ V(r_{ij}) = \frac{q_i q_j}{4 \pi \epsilon_0 r_{ij}}\]
+\[ V(r_{ij}) = \frac{q_i q_j}{4 \pi \epsilon_0 r_{ij}}.\]
 
 It is also possible to use Gaussian charges distributions on each atom, where
 the charge density around an atom is defined by a width parameter $\alpha_i$:
-\[\rho_i = q_i \left(\frac{\alpha_i}{\sqrt\pi}\right)^3 e^{-\alpha_i^2 \ r_i^2}\]
+\[\rho_i = q_i \left(\frac{\alpha_i}{\sqrt\pi}\right)^3 e^{-\alpha_i^2 \ r_i^2}.\]
 In that case, the interaction between two atoms is given by --- using erf for
 the error function:
-\[ V(r_{ij}) = \frac{q_i q_j}{4 \pi \epsilon_0 r_{ij}}\ \text{erf}\left(\sqrt\frac{\alpha_i^2\alpha_j^2}{\alpha_i^2 + \alpha_j^2} \ r_{ij}\right)\]
+\[ V(r_{ij}) = \frac{q_i q_j}{4 \pi \epsilon_0 r_{ij}}\ \text{erf}\left(\sqrt\frac{\alpha_i^2\alpha_j^2}{\alpha_i^2 + \alpha_j^2} \ r_{ij}\right).\]
 
 I will discuss the issues that arise from using these type of potentials with
 periodic boundary conditions, and the possible way to fix them such as Ewald
@@ -286,9 +287,9 @@ summation in section~\ref{sec:electrostatic}.
 \textsc{Non-bonded pairs interactions}\\[0.1\baselineskip]
 As we have seen, we use non-bonded pairs interactions to reproduce both the
 Pauli repulsion between atoms at short distances, and the dispersion attractive
-interaction at long distances. It can be shown\cite{London1930} that the
+interaction at long distances. It has been shown\cite{London1930} that the
 dispersion interaction can be developed in the long distances approximation as:
-\[ V_\text{dispersion} = -\frac{C_6}{r^6} + \frac{C_8}{r^8} - \frac{C_{10}}{r^{10}} + \smallo\left(\frac{1}{r^{12}}\right) \]
+\[ V_\text{dispersion} = -\frac{C_6}{r^6} + \frac{C_8}{r^8} - \frac{C_{10}}{r^{10}} + \smallo\left(\frac{1}{r^{12}}\right)\ , \]
 where the $C_i$ coefficients have positive values. Most of the time, only the
 term in $1/r^6$ is used, as it will have the largest contribution to the
 resulting energy.
@@ -300,6 +301,10 @@ proportional to $1/r^{12}$. In the early day of molecular simulation, this
 allowed to save some computing time by squaring the already-computed $1/r^6$
 term.
 \[V_\text{Lennard-Jones}(r) = 4 \ \epsilon \left[\left(\frac{\sigma}{r}\right)^{12} - \left(\frac{\sigma}{r}\right)^6\right]\]
+Here, $\epsilon$ is the maximal strength of the interaction, and $\sigma$ the
+minima distance at which the interaction becomes repulsive, often representing
+the radius of spherical atoms.
+
 Another commonly used form is the Buckingham potential, using an exponential
 function for the repulsion:
 \[V_\text{Buckingham}(r) = A \ e^{-B r} - \frac{C}{r^6}\]
@@ -312,7 +317,7 @@ the energy of the bond/angle using the harmonic approximation:
 
 For dihedral angles, we often want to be able to reproduce the periodicity of
 the associated energy, which leads to the following definition of the energy:
-\[V_\text{torsion}(\phi) = \frac 12 E \left[1 + \cos(n \phi + \delta)\right] \]
+\[V_\text{torsion}(\phi) = \frac 12 E_0 \left[1 + \cos(n \phi + \delta)\right] \]
 
 \subsubsection{Force field parametrization}
 
@@ -327,8 +332,9 @@ the correct energy and physical properties of the system is called the
 parametrization of a force field. It usually involves a trade-off between
 accuracy --- \ie how well the force field can reproduce the potential energy
 surface --- and transferability. A force field is said to be transferable if we
-can use the same set of parameters for different systems. I will discuss it with
-more depth in the next chapter, section~\ref{sec:classical-ff-parametrize}.
+can use the same set of parameters for different systems. I will discuss
+parametrization of force field in more details in the next chapter,
+section~\ref{sec:classical-ff-parametrize}.
 
 \subsection{System size and periodic boundary conditions}
 \label{sec:pbc}
@@ -347,7 +353,7 @@ energy becomes an important part of the overall energy. The typical way to
 remove these surface effects while keeping the number of simulated atoms low is
 to use \emph{periodic boundary conditions}. The atoms are placed in a simulation
 box called the \emph{unit cell}, which is replicated \emph{ad infinitum} in all
-directions, as illustrated in figure~\ref{fig:pbc}.  The copies of the initial
+directions, as illustrated in figure~\ref{fig:pbc}. The copies of the initial
 box are called images of this box.
 
 \begin{figure}[b]
@@ -381,7 +387,7 @@ interact. The error $\epsilon$ that arise from the use of a cutoff radius
 $r_c$ depends on the potential $V(r)$ and the radial distribution function
 $g(r)$ of the current conformation:
 \[\epsilon(r_c) = \int_{r_c}^\infty r^2 V(r)\ g(r)\ \d r \]
-If the cutoff radius is large enough (usually \SI{10}{\AA} is enough), then
+If the cutoff radius is large enough (around \SI{10}{\AA} is usually enough), then
 $g(r) \simeq 1$ and we get a simpler estimation that does not depends on the
 system conformation:
 \[\epsilon(r_c) = \int_{r_c}^\infty r^2 V(r)\ \d r \]
@@ -398,8 +404,8 @@ only with neighbors from the central image or an image surrounding the central
 one. This restricts the number of images that has to be searched for neighbors
 inside the cutoff radius. To be able to enforce this minimum-image convention,
 the smallest inscribed sphere must have a radius bigger than the cutoff radius.
-For an orthorhombic simulation box, the smallest box side length must be at least
-twice the cutoff radius.
+For an orthorhombic simulation box, this means that the smallest box side length
+must be at least twice the cutoff radius.
 
 \newpage
 \section{Metropolis Monte Carlo}
@@ -415,7 +421,7 @@ the system gives us the value of this property at the macroscopic level:
 
 Metropolis Monte Carlo is an algorithm that enables us to generate new
 configurations following a given distribution, using only an initial
-configuration of the system. This means that we can directly sample the ensemble
+configuration of the system. This means that we can directly sample any ensemble
 of interest.
 
 \subsection{The basic algorithm}
@@ -439,16 +445,17 @@ and the procedure used to generate a new state.
 
 When using a Markov chain to explore and sample the phase space, we want it to
 be able to explore all the possible states in the phase space. In order to
-ensure this, we want the chain to be \emph{ergodic}, \ie that each state can be
-reached from any other state in a finite number of steps. This property
+ensure this, we want the chain to be \emph{ergodic}, meaning that each state can
+be reached from any other state in a finite number of steps. This property
 guarantees the existence of a \emph{stationary} equilibrium distribution of the
 generated states as the Markov chain grows, and that this distribution matches
 the probability to generate a new state from any given state. For us, this means
 that if we are able to create an ergodic Markov chain using the Boltzmann
 statistics to generate a new state, then the whole chain will follow the
-Boltzmann distribution. The same reasoning also works in other statistical
-ensembles, following their own distribution of probability.
+canonical ensemble distribution. The same reasoning also works in other
+statistical ensembles, following their own distribution of probability.
 
+\newpage
 \subsubsection{Micro-reversibility}
 
 The usual way to ensure we have an ergodic Markov chain is to impose that this
@@ -571,26 +578,26 @@ rate of the move by changing the amplitude of volume changes.
 
 \subsubsection{Grand Canonical ensemble: insertion and deletion}
 
-Simulations in the $\mu VT$ ensemble are called Grand Canonical Monte Carlo
-(GCMC) simulations. In this ensemble, the number of molecules is allowed to
-fluctuate in order to maintain the chemical potential constant. We need two
-moves to accomplish this, one where we select a molecule at random and remove
-it, and another one where a molecule is inserted from a fictitious reservoir at
-a random position and orientation (see figure~\ref{fig:mc:moves}, panels (d) and
-(e)). The acceptance probability is given as previously by the $\mathcal{P}_j /
-\mathcal{P}_i$ ratio; but this time the $N!\ \lambda^{3N}$ terms from
-equation~\eqref{eq:probably:uvt} do not cancel out. For the insertion of a new
-molecule we have:
-\[ \text{acc}(N \to N + 1) = \min\left[1, \frac{V}{\lambda^3 (N + 1)} \exp\left(\beta \mu - \beta \Delta U \right)\right]; \]
+Monte Carlo simulations in the $\mu VT$ ensemble are called Grand Canonical
+Monte Carlo (GCMC) simulations. In this ensemble, the number of molecules is
+allowed to fluctuate in order to maintain the chemical potential constant. We
+need two moves to accomplish this, one where we select a molecule at random and
+remove it, and another one where a molecule is inserted from a fictitious
+reservoir at a random position and orientation (see figure~\ref{fig:mc:moves},
+panels (d) and (e)). The acceptance probability is given as previously by the
+$\mathcal{P}_j / \mathcal{P}_i$ ratio; but this time the $N!\ \Lambda^N$ terms
+from equation~\eqref{eq:probably:uvt} do not cancel out. For the insertion of a
+new molecule we have:
+\[ \text{acc}(N \to N + 1) = \min\left[1, \frac{V}{\Lambda (N + 1)} \exp\left(\beta \mu - \beta \Delta U \right)\right]; \]
 and for the removal of a molecule,
-\[ \text{acc}(N \to N - 1) = \min\left[1, \frac{\lambda^3 N}{V} \exp\left(-\beta \mu - \beta \Delta U \right)\right]. \]
+\[ \text{acc}(N \to N - 1) = \min\left[1, \frac{\Lambda N}{V} \exp\left(-\beta \mu - \beta \Delta U \right)\right]. \]
 
 Unfortunately, the chemical potential $\mu$ is not easily known before starting
 a simulation and these expressions are hard to use. Instead, for chemical
 species in the gas phase we use the fugacity $f$ of the gas, defined as the
 pressure of an ideal gas with the same temperature and molar free enthalpy as
 the real gas. It is related to the chemical potential by $f = e^{\,\beta \mu} /
-\beta \lambda^3$.  Replacing in the equation above gives us the standard
+\beta \Lambda$. Replacing in the equation above gives us the standard
 acceptance probabilities for GCMC simulations in the gas phase:
 \begin{gather}
 \text{acc}(N \to N + 1) = \min\left[1, \frac{\beta V f}{N + 1} \exp\left(- \beta \Delta U \right)\right] \\
@@ -607,14 +614,14 @@ Monte Carlo simulations are very powerful, as they allow to directly sample the
 phase space of the ensemble of interest, and do not require that the moves used
 to generate a new trial configuration follow the laws of physics. This later
 property is used in some extensions of Monte Carlo simulations, where an atom
-nature is transformed as a Monte Carlo move, changing a sodium atom into a
+identity is transformed as a Monte Carlo move, changing a sodium atom into a
 potassium atom for example. This method --- called semi-grand canonical Monte
 Carlo\cite{Kofke1988} --- allows to sample the equilibrium distribution during
 chemical reactions or at an interface without explicitly representing the
 interface.
 
 They also have a few caveats, mainly it is not possible to sample the
-microcanonical  ensemble, as this would require generating trial configurations
+microcanonical ensemble, as this would require generating trial configurations
 with constant energy, and updating both the positions and velocities of the
 atoms. The main problem with Monte Carlo simulation is that they only deal with
 the conformations of the system, and do not contain any information on the
@@ -624,7 +631,7 @@ equation~\eqref{eq:observable}.
 
 \begin{figure}[b]
     \centering
-    \includegraphics[width=0.75\textwidth]{figures/images/mc-vs-md}
+    \includegraphics[width=0.78\textwidth]{figures/images/mc-vs-md}
     \caption{Representation of the way the potential energy surface is explored
     by molecular dynamics (red line) and Monte Carlo (colored circles)
     simulations.}
@@ -668,9 +675,9 @@ values for the time step fall between \SI{0.5}{fs} and \SI{2}{fs}.
 Time integration of positions and velocities follows the standard rules of
 classical mechanics, and in particular the conservation of mechanical energy.
 This means that by default, molecular dynamics trajectories evolve in the
-microcanonical  $NVE$ ensemble. There however is no \emph{a priori} guarantees
+microcanonical $NVE$ ensemble. There however is no \emph{a priori} guarantees
 that a molecular dynamics trajectory will generate new configurations following
-the microcanonical  distribution. We rely on the \emph{ergodic} hypothesis to
+the microcanonical distribution. We rely on the \emph{ergodic} hypothesis to
 assume that the trajectory does sample the whole $NVE$ ensemble. In the most
 intuitive form, this hypothesis is formulated as:
 
@@ -700,7 +707,7 @@ We want the integration scheme used for a molecular dynamics simulation to
 enforce the symmetry and conservation properties of a real mechanical system;
 namely the time reversal symmetry, conservation of energy, linear momentum,
 angular momentum and phase space volume. Conservation of phase space volume is a
-consequence of  Liouville's theorem concerning the phase space distribution
+consequence of Liouville's theorem concerning the phase space distribution
 $\rho(\r^N, \v^N)$:
 \[\frac{\d \rho}{\d t} = \frac{\partial \rho}{\partial t} + \sum_i \left(\frac{\partial \rho}{\partial \r_i} \frac{\d \r_i}{\d t} + \frac{\partial \rho}{\partial \v_i} \frac{\d \v_i}{\d t} \right) = 0.\]
 This means that if we consider a set of initial conditions inside a closed and
@@ -784,10 +791,10 @@ Similarly, going from $NVT$ to $NPT$ requires changes to the volume.
 \subsubsection{Thermostats}
 
 Algorithms that control the temperature by changing the energy of the system are
-called \emph{thermostating} algorithms, or \emph{thermostats} for short.  They
+called \emph{thermostating} algorithms, or \emph{thermostats} for short. They
 work by changing the kinetic energy of the system, or more generally by changing
 the velocities of the atoms. As illustrated in figure~\ref{fig:thermostats},
-for the same system,  different thermostats will produce different temperature
+for the same system, different thermostats will produce different temperature
 response.
 
 In the simplest (and crudest) approach, if we want to change the system
@@ -801,7 +808,7 @@ introduces many non-physical artifacts in the dynamics. One example of such
 non-physical effect is the so-called \emph{flying ice cube}; where all the
 thermal energy of the system is transferred into the global translation
 velocity, while removing all vibrational energy from the atoms, resulting in a
-simulation of flying frozen atoms.  Finally, the simulation does not sample the
+simulation of flying frozen atoms. Finally, the simulation does not sample the
 true $NVT$ ensemble, since the kinetic energy is not allowed to fluctuate around
 its equilibrium value.
 
@@ -814,7 +821,7 @@ temperature, and $\tau_T$ the relaxation time constant. The instantaneous
 temperature is computed from the system's kinetic energy $E_\text{kin} = \sum_i
 m_i \v_i^2(t) $ as
 \[T(t) = \frac{2 \ E_\text{kin}(t)}{n_f\ k_B},\]
-where $n_f$ is the number of degrees of freedom in the system, $3 * N$ for fully
+where $n_f$ is the number of degrees of freedom in the system, $3 N$ for fully
 flexible molecules. The Berendsen thermostat is implemented by rescaling the
 velocities at each time step by
 \[\alpha = \sqrt{1 + \frac{\delta t}{\tau_T} \left(\frac{T_0}{T(t)} - 1\right) }.\]
@@ -835,7 +842,7 @@ additional variable $s$ controlling the temperature of the system by changing
 the time scale of the extended system such that $\delta t' = s\, \delta t$. This
 new variable is coupled to the system by changing all the velocities to $\v' =
 s^{-1}\ \d \r / \d t$. It can be shown that sampling the extended system in the
-microcanonical  ensemble is equivalent to sampling the real system in the
+microcanonical ensemble is equivalent to sampling the real system in the
 canonical ensemble, including the fluctuations. The intensity of the coupling is
 can be tuned by changing the fictitious mass associated with $s$. The extended
 Lagrangian can be propagated through time with any existing time-reversible and
@@ -890,42 +897,42 @@ time to react to changes. In particular, every time the barostat changes the
 simulation cell, the thermostat must change the velocities to adapt the kinetic
 energy to the new potential energy. This means that the time step used for the
 barostat should be higher than the one used by the thermostat. In my
-simulations, I found that setting $\tau_P = 10 \times \tau_T = 1000 \times \Delta
-t$ works well in practice.
+simulations, I found that setting $\tau_P = 10 \times \tau_T = 1000 \times
+\delta t$ works well in practice.
 
 \subsubsection{Can osmostats exist? Grand canonical molecular dynamics}
 \label{sec:gcmd}
 
-As we have seen, it is possible to go from an ensemble to another by
-controlling the conjugated variables: change $E$ to control $T$, $V$ to control
-$P$. It is then natural to consider whether it is possible to control the
-chemical potential of a system to sample the grand canonical $\mu V T$
-potential. The obvious way to do so is to change the number of particles in the
-system. Multiple versions of such \emph{Grand Canonical Molecular Dynamics} have
-been presented over the years, either using an extended Hamiltonian
+As we have seen, it is possible to go from an ensemble to another by controlling
+the conjugated variables: change $E$ to control $T$, $V$ to control $P$. It is
+then natural to consider whether it is possible to control the chemical
+potential of a system to sample the grand canonical $\mu V T$ potential. The
+obvious way to do so is to change the number of particles in the system.
+Multiple versions of such \emph{Grand Canonical Molecular Dynamics} have been
+presented over the years, either using an extended Hamiltonian
 approach\cite{Cagin1991,Lo1995,Eslami2007}, or a mixture of Monte Carlo moves
-and molecular dynamics integration in the same
+and time integration in the same molecular dynamics
 trajectory\cite{Heffelfinger1994,Cracknell1995,Boinepalli2003}.
 
-The latter methods --- mixing Monte Carlo moves with molecular dynamics
-integration --- have not been proven, to my knowledge, to generate any specific
-statistical ensemble. While Monte Carlo simulations and molecular dynamics are
-proven to do so under certain hypotheses, we lack such mathematical proofs for
-the generic hybrid case. It is possible to mix molecular dynamics and Monte
-Carlo under the framework of Hybrid Monte Carlo simulations, which I will
-discuss in more details in chapter~\ref{sec:hmc}. The main idea here is to use
-short Molecular Dynamics simulations as a new Monte Carlo move to generate new
-configurations. Under some conditions on the molecular dynamics integrator, the
-resulting Markov chain is proven to be ergodic. In this case, the simulation is
-a Monte Carlo simulation, and not a molecular dynamics one: Molecular dynamics
-is only used as a mean to generate new configurations, and the underlying
-trajectory is thrown away. Because of this, the resulting simulation suffers
-from the same limitations as all Monte Carlo simulations, and in particular the
-absence of any dynamic information.
+The latter methods --- randomly inserting or removing particles within molecular
+dynamics integration --- have not been proven, to my knowledge, to generate any
+specific statistical ensemble. While Monte Carlo simulations and molecular
+dynamics can be made to work together so under certain hypotheses, we lack such
+mathematical proofs for the generic hybrid case. For example, it is possible to
+mix molecular dynamics and Monte Carlo under the framework of Hybrid Monte Carlo
+simulations, which I will discuss in more details in chapter~\ref{sec:hmc}. The
+main idea in hybrid Monte Carlo is to use short Molecular Dynamics simulations
+as a new Monte Carlo move to generate new configurations. Under some conditions
+on the molecular dynamics integrator, the resulting Markov chain is proven to be
+ergodic. In this case, the simulation is a Monte Carlo simulation, and not a
+molecular dynamics one: molecular dynamics is only used as a mean to generate
+new configurations, and the underlying trajectory is thrown away. Because of
+this, the resulting simulation suffers from the same limitations as all Monte
+Carlo simulations, and in particular the absence of any dynamic information.
 
 For the methods using an extended Hamiltonian approach, the general idea is to
 have one or more \emph{fractional} particles in the system, represented by a
-parameter $\lambda$ going from 0 to 1.  The interactions of this particle with
+parameter $\lambda$ going from 0 to 1. The interactions of this particle with
 the system are scaled down by $\lambda$, and the value of $\lambda$ evolves
 through time. When it reaches 1, the particle is converted to a full particle
 and a new one is inserted with a small $\lambda$, and when it reaches 0, the
@@ -957,7 +964,7 @@ the system.
 
 But these simulations also have a few limitations. As they are based on
 Hamiltonian dynamics, they can only sample ensembles with a constant number of
-particles.  At the same time, it is harder to ensure that the trajectory is
+particles. At the same time, it is harder to ensure that the trajectory is
 sampling the right ensemble, compared with Monte Carlo simulations where the
 ensemble is built directly into the moves and their probabilities. Generating
 the right average value --- for example when using a Berendsen thermostat --- is

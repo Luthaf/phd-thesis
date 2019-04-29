@@ -396,7 +396,7 @@ it is possible to directly sample rotations around all the bonds using
 configuration bias Monte Carlo based on Rosenbluth sampling (see
 reference~\cite{Frenkel2002} for more details on the algorithm), where the
 molecule is fully regrown from a starting atom, randomly choosing the
-orientation of the next backbone bond at each step.  This procedure is
+orientation of the next backbone bond at each step. This procedure is
 illustrated in figure~\ref{fig:cbmc}.
 
 \begin{figure}[ht]
@@ -512,7 +512,7 @@ The first step in the above demonstration comes from the mathematical identity
 \[e^{-\beta\mathcal{H}(\r, \v)} \min\kern-0.5ex\left(1, e^{-\beta \delta \mathcal{H}}\right) = e^{-\beta\mathcal{H}(\r', \v')} \min\kern-0.5ex\left(e^{\, \beta \delta \mathcal{H}}, 1\right). \]
 
 It is worth noting that even though the molecular dynamics simulation evolves in
-the microcanonical  $NVE$ ensemble, the overall HMC simulation is sampling the
+the microcanonical $NVE$ ensemble, the overall HMC simulation is sampling the
 canonical $NVT$ ensemble. This allows using HMC simulations as a rigorous way to
 sample the $NVT$ ensemble using molecular dynamics.
 
@@ -535,8 +535,8 @@ dynamics integrator now maps the initial position in phase space including the
 volume $V$ $(V, \r, \v)$ to a new position in phase space $(V', \r', \v')$. If
 the integrator is deterministic, the probability to generate a specific new
 state from the initial one, $\alpha\left[(V, \r) \to (V', \r')\right]$, is still
-the same as the probability to generate the initial  velocities
-$\mathcal{P}_T(\v)$.  Provided the integrator is time reversible and symplectic,
+the same as the probability to generate the initial velocities
+$\mathcal{P}_T(\v)$. Provided the integrator is time reversible and symplectic,
 the same demonstration as in equation~\eqref{eq:hmc-demonstration} applies by
 adapting the acceptance criterion to
 \[\text{acc}\left[(V, \r, \v) \to (V', \r', \v')\right] = \min\left(1, e^{-\beta \delta \mathcal{H} - \beta\ P \Delta V}\right)\]
@@ -924,7 +924,7 @@ Ewald simulation considered $\vec k$ vectors up to 10 translations in reciprocal
 space.
 
 The system contained 256 \ce{Na+} and 256 \ce{Cl-} atoms, placed on a
-face-centered cubic lattice, in a cubic simulation cell of \SI{22.56}{\AA}.  The
+face-centered cubic lattice, in a cubic simulation cell of \SI{22.56}{\AA}. The
 molten NaCl simulations were started from the same conformation, placed into a
 bigger unit cell of \SI{25.38}{\AA}. The atoms interacted through both
 electrostatic and Lennard-Jones potentials, using parameters from

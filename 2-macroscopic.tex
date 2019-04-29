@@ -6,16 +6,18 @@
 \chapter{Macroscopic studies}
 \label{sec:macroscopic}
 
+\vspace{2\baselineskip}
+
 A first way to approach the problem of coupled deformation and adsorption in
 porous materials is through the use of macroscopic or thermodynamic modeling
 methods. Such methods are based on classical thermodynamic principles and allow
-us to gain high-level understanding of the processes at play. In this section,
-I will introduce the concept of thermodynamic potential and thermodynamic
+us to gain high-level understanding of the processes at play. In this chapter, I
+will introduce the concept of thermodynamic potential and thermodynamic
 ensemble, that can be used together to predict the evolution of a system. In a
-second part, I will show how these potentials can be used to make predictions on
-the co-adsorption of multiple gases in the same porous framework, but that one
-needs to be careful to use the thermodynamic ensemble adapted to the problem at
-hand.
+second part, I will show how these thermodynamic potentials can be used to make
+predictions on the co-adsorption of multiple gases in the same porous framework,
+but that one needs to be careful to use the thermodynamic ensemble adapted to
+the problem at hand.
 
 \newpage
 \section{Classical thermodynamics}
@@ -49,7 +51,7 @@ considering infinitesimal changes in $\mathcal{U}$, $W$, and $Q$:
 If the system composition is not constant, \ie if it is undergoing chemical
 reactions or if the system is open and exchanges particles with an external
 reservoir, we need to add another term depending on the quantity of matter
-$\{n_i\}$ for each chemical specie in the system:
+$\{n_i\}$ for each chemical species in the system:
 \[\d \mathcal{U} = \delta Q + \delta W - \sum_i \mu_i \d n_i.\label{eq:first-principle}\]
 In this formulation, the $\mu_i$ are called the \emph{chemical potentials}; they
 represent the relative stability of the different chemical species in the
@@ -61,7 +63,7 @@ system. In this case,
 where $p_\text{ext}$ is the external pressure. If $p_\text{ext}$ is constant
 during the transformation, this can be written as $\delta W_\text{pressure} =
 -\d (PV)$, using $P$ as the constant value of the pressure. We can then define
-the enthalpy $H$ as $H = \mathcal{U} + PV$ ; which allow us to rewrite
+the \emph{enthalpy} $H$ as $H = \mathcal{U} + PV$ ; which allow us to rewrite
 equation~\eqref{eq:first-principle} as
 \[\d H = \delta Q + \delta W_\text{other} - \sum_i \mu_i \d n_i.\]
 Here, $\delta W_\text{other}$ is the work coming from all forces
@@ -74,14 +76,14 @@ evolution of a system.
 
 \vskip0.8ex
 \begin{quote}
-    There exist a function of state called entropy, noted $S$, which is an
-    increasing function of time for any transformation of an isolated system.
+    There exist a function of state called entropy, which is an increasing
+    function of time for any transformation of an isolated system.
 \end{quote}
 \vskip0.8ex
 
-The variation of entropy during a transformation of a closed system can be
-linked to the heat transfer between the system and its surroundings by the
-Clausius relation:
+The variation of entropy, noted $S$, during a transformation of a closed but non
+isolated system can be linked to the heat transfer between the system and its
+surroundings by the Clausius relation:
 \[\Delta S = \frac Q T + S_\text{created}. \label{eq:clausius}\]
 The $Q/T$ term is homogeneous to entropy and called the exchanged entropy,
 and is the entropy given to the system by its surroundings. $S_\text{created}$
@@ -99,19 +101,19 @@ If there is a function $\Phi$ such as $\d \Phi = \d \mathcal{U} + P \d V - \sum_
 n_i - T \d S$, then for any transformation of a closed system, $\d \Phi =
 -T\delta S_\text{created} \leq 0$. This means that $\Phi$ is a decreasing
 function of time, and it will be minimal in the equilibrium state. In this case,
-$\Phi$ is called the \emph{thermodynamic potential}.
+$\Phi$ is called a \emph{thermodynamic potential}.
 
-\subsection{Statistical ensembles}
+\subsection{Thermodynamic ensembles}
 
 A thermodynamic ensemble is defined by a set of thermodynamic state variable
 that obey some constraints. For example, the ensemble where the composition of
 the system is fixed, together with the volume and total energy is called the
-$NVE$ or microcanonical  ensemble. Other well-known ensembles present a fixed
+$NVE$ or microcanonical ensemble. Other well-known ensembles present a fixed
 pressure or temperature: the $NVT$ or canonical ensemble, and the $NPT$ or
 isobaric-isothermal ensemble.
 
 Each of these ensembles has an associated thermodynamic potential. For the
-microcanonical  ensemble, we start with equation~\eqref{eq:thermo-potentials}:
+microcanonical ensemble, we start with equation~\eqref{eq:thermo-potentials}:
 \[\d \Phi = \d \mathcal{U} + P \d V - \sum_i \mu_i \d n_i - T \d S.\]
 $\d \mathcal{U}$ and $\d V$ will be zero as the energy and volume is constant.
 Moreover as the system composition is fixed, $\d n_i = 0$. This gives
@@ -167,7 +169,10 @@ to the pressure of the adsorbed gases outside of the host. The thermodynamic
 ensemble suited for the study of adsorption in flexible materials is called the
 \emph{osmotic ensemble}, first introduced in 1994\cite{Mehta1994} for the study
 of fluid mixtures, and adapted to multi-components phase equilibrium in
-1998\cite{Escobedo1998}. Again, starting from equation~\eqref{eq:thermo-potentials}
+1998\cite{Escobedo1998}. In this ensemble, the pressure, temperature, number of
+atoms of the host phase $N_\text{host}$ are fixed, as well as the chemical
+potential of the adsorbed species. Again, starting from
+equation~\eqref{eq:thermo-potentials}
 \[\d \Phi = \d \mathcal{U} - \d (PV) - \d(TS) - V\d P + S\d T - \sum_i \mu_i \d n_i.\]
 As usual, $\d T$ and $\d P$ are null as the corresponding variable is fixed. In
 the sum over the $\mu_i n_i$ terms, only the adsorbed species quantities of
@@ -259,11 +264,6 @@ This theory has been developed in the group\cite{Coudert2010,Ortiz2011}, and
 takes into account the coupling between adsorption and deformations in flexible
 porous materials.
 
-% For example \citeauthor{Nijem2012} \cite{Nijem2012} reported
-% that \emph{"[their] work unveils unexpected hydrocarbon selectivity in a
-% flexible metal-organic framework (MOF), based on differences in their gate
-% opening pressure."}
-
 In this section, I will compare the results of IAST and OFAST on two sets of
 adsorption data from the published literature on gate-opening materials, and
 show that the IAST method gives unrealistic results: it does not reproduce the
@@ -307,7 +307,7 @@ model analytically.
 \subsection{IAST and flexible frameworks}
 
 The original derivation of the IAST equations\cite{Myers1965} by
-\citeauthor{Myers1965} highlights three hypotheses on the co-adsorption process,
+\citeauthor{Myers1965} highlights three hypotheses on the co-adsorption process
 on which the model is built:
 \begin{description}
     \item[(H1)] The adsorbing framework is inert from a thermodynamic point of view;
@@ -317,9 +317,9 @@ on which the model is built:
 \end{description}
 
 While the meaning of the last assumption \textbf{(H3)} has been diversely
-interpreted by different authors, Myers\cite{Myers1965} originally meant and
+interpreted by different authors, Myers originally meant\cite{Myers1965} and
 later confirmed\cite{Myers2014} it to qualify the method by which the adsorption
-isotherms are measured. There is, however, consensus on the fact that absolute
+isotherms are measured. There is consensus on the fact that absolute
 adsorption should be used in IAST calculations --- as opposed to excess or net
 adsorption\cite{Brandani2016}. This assumption thus applies equally to both
 rigid and flexible adsorbents. However, the first two hypotheses are not valid
@@ -350,37 +350,37 @@ in flexible nanoporous frameworks.
 \end{figure}
 
 Aside from the mathematical treatment and thermodynamic hypotheses, we can show
-in a qualitative way why it is not possible, in flexible host frameworks, to
-use the single-component isotherm directly to predict multi-components
-adsorption. We address here a common misconception, due to an invalid graphical
+in a qualitative way why it is not possible, in flexible host frameworks, to use
+the single-component isotherm directly to predict multi-components adsorption.
+We address here a common misconception, due to an invalid graphical
 interpretation of the isotherms. Figure~\ref{fig:open-close-selectivity} depicts
 the equilibrium adsorption isotherms for two different guests in a material
-presenting a gate-opening behavior. The gate-opening is an adsorption-induced
-structural transition from a nonporous to a porous phase of the host, leading to
-a step in the single-component adsorption isotherm. gate-opening occurs at two
-different pressures for the two adsorbates, due to the specific host--guest
+presenting a gate-opening behavior. Gate-opening is an adsorption-induced
+structural transition from a non-porous to a porous phase of the host, leading
+to a step in the single-component adsorption isotherm. Gate-opening occurs at
+two different pressures for the two adsorbates, due to the specific host--guest
 interactions of the two gases (characterized notably by the enthalpy of
 adsorption and saturation uptake). In the pressure range in-between the
 transition pressures (in gray in figure~\ref{fig:open-close-selectivity}), the
-uptake of one species is close to zero --- \emph{in the single-component
-isotherm} --- and the uptake of the other species is close to its maximum value.
-If these isotherms were encountered for a rigid host material, the selectivity
-would be extremely high in this range, with one guest adsorbing but not the
-other.
+uptake of one species is close to zero in the single-component isotherm and the
+uptake of the other species is close to its maximum value. If these isotherms
+were encountered for a rigid host material, the adsorption selectivity would be
+extremely high in this range, with one guest adsorbing but not the other.
 
 Yet, the step in the isotherms here is not simply linked to host--guest
-interactions but indeed due to a change in the host structure. In particular,
-upon adsorption of a gas mixture in this gate-opening framework, a phase
-transition will occur at a given pressure. Before this transition, the structure
-will be contracted and show no (or little) adsorption for either guest, and thus
-no usable selectivity. After the transition, \emph{both species} will adsorb
-into the open pore framework. The selectivity is then governed --- at least
-qualitatively --- by the respective saturation uptakes of the two fluids
-($\Delta n$ in the figure). While the difference in adsorbed quantities in the
-intermediate pressure range visually suggests great selectivity, it is not
-possible for one component to adsorb inside the close phase framework while at
-the same time the other component adsorbs inside the open phase of the framework.
-The framework is either in one phase or in the other, at any given time.
+interactions but instead to a change in the host structure. In particular, upon
+adsorption of a gas mixture in this gate-opening framework, a phase transition
+of the host structure will occur at a given pressure. Before this transition,
+the structure will be contracted and show no (or little) adsorption for either
+guest, and thus no usable selectivity. After the transition, \emph{both species}
+will adsorb into the open pore framework. The selectivity is then governed ---
+at least qualitatively --- by the respective saturation uptakes of the two
+fluids ($\Delta n$ in figure~\ref{fig:open-close-selectivity}). While the
+difference in adsorbed quantities in the intermediate pressure range visually
+suggests great selectivity, it is not possible for one component to adsorb
+inside the close phase framework while at the same time the other component
+adsorbs inside the open phase of the framework. The framework is either in one
+phase or in the other, at any given time.
 
 \begin{figure}[htp]
     \centering
@@ -388,7 +388,7 @@ The framework is either in one phase or in the other, at any given time.
     \caption{Generation of the total isotherm in gate-opening materials by the
     combination of two single-phase isotherms: an \emph{open} pores isotherm,
     and an \emph{closed} pores isotherm. The transition between the two host
-    phases occurs at $P_\text{trans}$.}
+    phases occurs at $P_\text{\rmfamily trans}$.}
     \label{fig:open-close-isotherms}
 \end{figure}
 
@@ -460,7 +460,7 @@ in figure~\ref{fig:ofast:ortiz}.
     \label{fig:ofast:ortiz}
 \end{figure}
 
-In practice, the use of OFAST follows the following steps. First, the host
+In practice, the use of OFAST takes the following steps. First, the host
 phases of interest are identified and the single-component adsorption isotherms
 $n_{\alpha,i}(T, p)$ for these are obtained: this can be achieved from a fit of
 experimental isotherms (see figure~\ref{fig:open-close-isotherms}) or from
@@ -682,11 +682,11 @@ From the \ce{C3H8} and \ce{C4H10} isotherms, I computed the free energy
 difference between the nonporous and microporous phases, which I find to be
 $\Delta F = -30.0 \pm \SI{0.1}{kJ/mol}$. The details are in
 table~\ref{table:rpm3-zn:fit}. I did not use the \ce{C2H6} isotherms for this
-purpose, as it has only limited data at high loading (for pressures above 1 bar),
-which increases somewhat the uncertainty of the fit. I was still able to fit the
-\ce{C2H6} isotherm with a Langmuir model and use it to compute co-adsorption
-data, as the free energy difference of the two host phases do not depend on the
-gas.
+purpose, as it has only limited data at high loading (for pressures above 1
+bar), which somewhat increases the uncertainty of the fit. I was still able to
+fit the \ce{C2H6} isotherm with a Langmuir model and use it to compute
+co-adsorption data, as the free energy difference between the two host phases do
+not depend on the gas.
 
 \begin{figure}[htp]
     \centering
@@ -736,31 +736,9 @@ selectivity showing a continuous evolution. Even the trends displayed by this
 evolution are in poor agreement and make no physical sense, featuring
 non-monotonic evolution as a function of pressure and composition.
 
-%  Even their
-% high-pressure limit is often far off from reality, as seen in the case of
-% \ce{C3H8}/\ce{C2H6}.
-
 \FloatBarrier
 \newpage
 \section*{Conclusions}
-
-% Several published studies of fluid mixture co-adsorption in flexible nanoporous
-% material use the Ideal Adsorbed Solution Theory (IAST) method to predict the
-% co-adsorption behavior based on single-component adsorption isotherms. This is an
-% invalid application of IAST, which is not adapted to flexible frameworks, as its
-% very first hypothesis is that the framework is inert during adsorption --- as
-% clearly stated in the derivation of the method in the seminal IAST
-% paper\cite{Myers1965}. However, the IAST method can be adapted for frameworks
-% presenting phase transitions induced by adsorption by using the osmotic
-% thermodynamic ensemble. This extension of IAST to flexible materials is called
-% Osmotic Framework Adsorbed Solution Theory (OFAST)\cite{Coudert2010}. It allows
-% the prediction of phases transitions upon co-adsorption, as well as the details
-% of the multi-component co-adsorption isotherms, and is available in commercial
-% software\cite{VanAssche2016}. Moreover, the use of OFAST with data at various
-% temperatures allows one to produce multi-dimensional {temperature, pressure,
-% mixture composition} phase diagrams for the flexible host\cite{Ortiz2011}.
-% Finally, while OFAST itself relies on the IAST to describe adsorption in each
-% phase of the host material,
 
 In this chapter, I presented and compared the existing IAST and OFAST
 macroscopic models for the prediction of co-adsorption of fluid mixtures in two

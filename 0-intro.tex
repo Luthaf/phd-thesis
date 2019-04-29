@@ -1,72 +1,80 @@
 % !TEX root = thesis.tex
 
-\chapter*{Main introduction}
+\chapter*{General introduction}
 \pagenumbering{arabic}
 
 Nanoporous materials are material presenting nanometric cavities in their
-structure. These cavities (or pores) and the associated high specific surface
-area underlies crucial industrial applications, in particular for fluid
-separation and storage, water purification, and heterogeneous catalysis. Two
-classes of crystalline nanoporous material that particularly stand out today are
-zeolites and metal--organic frameworks. Zeolites are natural and artificial
-porous aluminosilicate known since 1756 and artificially synthesized since the
-1940s. They enjoy a wide range of applications, in particular in the oil
-industry as catalysts and in laundry detergents as softeners. Since the 2000s, a
-new family of hybrid organic--inorganic crystalline nanoporous materials called
-metal--organic frameworks emerged and sparked interest in the scientific
+structure. These cavities (called \emph{pores}) and the associated high specific
+surface area are the foundation for crucial industrial applications, in
+particular in the domains of fluid separation and storage, water purification,
+and heterogeneous catalysis. Two classes of crystalline nanoporous materials
+that particularly stand out today are zeolites and metal--organic frameworks.
+Zeolites are natural and artificial porous aluminosilicate known since 1756 and
+artificially synthesized since the 1940s. They are currently highly used at the
+industrial level, in diverse applications including as catalysts in the oil
+industry and water softeners in laundry detergents. Since the 2000s, a new
+family of hybrid organic--inorganic crystalline nanoporous materials called
+metal--organic frameworks have emerged and sparked interest in the scientific
 community. These new materials are based on metallic clusters, linked together
 by organic linkers. This composition offers them immense structural and chemical
-diversity and tunability: it is possible to engineer a new material with
-specific pore size, shape, and chemistry by using different linkers and metals.
-The relatively weak coordination bonds between the metals cations and organic
-linkers create intrinsic structural flexibility in metal--organic frameworks,
-which can be either local or extended to the whole material. Some of these
-metal--organic frameworks --- grouped together under the soft porous crystal
-appellation --- exhibit large scale structural transformations under external
-stimuli such as temperature, pressure, adsorption or even light exposure.
+diversity makes them tuneable: it is possible to engineer new materials with
+specific pore sizes, shapes, and chemistry by using different combinations of
+linkers and metals. The relatively weak coordination bonds between the metals
+cations and organic linkers create intrinsic structural flexibility in
+metal--organic frameworks, which can be either local or extended to the whole
+material. Some of these metal--organic frameworks --- grouped together under the
+name \emph{"soft porous crystal"} --- exhibit large scale structural
+transformations under external stimuli such as temperature, pressure, adsorption
+or even exposure to light.
 
-Most if not all application of nanoporous materials are related to the entry of
-another chemical species inside the material's pores. When the fluid is in the
-gaseous state, the process is called adsorption, while for liquids it is called
-intrusion. Both adsorption and intrusion have an effect on the physical and
-chemical properties of the fluid confined in the pores. The opposite is also
+Most if not all applications of nanoporous materials are related to the entry of
+other chemical species (from the liquid or gas phase) inside the material's
+pores. When the external fluid is in the gaseous state, the process is called
+adsorption, while for liquids it is called intrusion. Both adsorption and
+intrusion have an effect on the physical and chemical properties of the fluid
+confined in the nanopores. Confined fluids are usually organized more regularly,
+taking some aspect of a solid phase while remaining mobile. The opposite is also
 true: the presence of the fluid inside the pores can modify the properties and
-state of the surrounding material. Flexible materials are especially affected
+behavior of the surrounding material. Flexible materials are especially impacted
 and can undergo adsorption-induced phase transitions, resulting in macroscopic
 phenomena like gate opening, breathing or negative gas adsorption. The coupling
-between adsorption or intrusion and the deformations of flexible nanoporous
-material is difficult to study, because it involves equilibrium between confined
-and bulk fluids, as well as equilibrium between the different states of the
-material.
+between adsorption or intrusion and changes in the structure of flexible
+nanoporous materials is difficult to study, because it involves the equilibrium
+between confined and bulk fluids, as well as equilibrium between different
+phases of the material.
 
+\newpage
 I have been interested during my PhD in the molecular simulation of fluid
-adsorption in flexible nanoporous materials. Molecular simulation tools can
-speed up the development of new materials tailored to specific applications by
-predicting the properties of materials before they are synthesized, lowering the
-cost of screening thousands of material. Which property can be studied, and the
-reliability of the corresponding precision depends on the techniques used to
-model the systems of interest. Over the course of my PhD, I used multiple
-techniques at multiple scales to look at adsorption and intrusion in flexible
-porous materials, and the effects on both the confined fluid and the materials.
-I used macroscopic models based on classical thermodynamics for the study of
-co-adsorption of gases, classical molecular dynamics and Monte Carlo for the
-intrusion of water and aqueous solutions in both rigid and flexible materials,
-and \abinitio molecular dynamics simulations to investigate the molecular
-organization of gases inside pores.
+adsorption and intrusion in flexible nanoporous materials. Molecular simulation
+tools can speed up the development of new materials tailored to specific
+applications by predicting the properties of materials before they are
+synthesized, lowering the cost of screening thousands of materials. Which
+property can be studied, and the reliability of the corresponding prediction
+depend on the techniques used to model the systems of interest. Over the course
+of my PhD, I used multiple techniques at different time and length scales to
+look at adsorption and intrusion in flexible porous materials, and the effects
+on both the confined fluid and the materials. I used macroscopic models based on
+classical thermodynamics for the study of co-adsorption of gases, umbrella
+sampling simulations to extract free energy profiles during water intrusion,
+classical molecular dynamics and Monte Carlo for the intrusion of water and
+aqueous solutions in both rigid and flexible materials, and \abinitio molecular
+dynamics simulations to investigate the molecular organization of gases inside
+pores.
 
 Unfortunately, current molecular simulations methods only allow looking at the
 coupling between adsorption and deformations from a single point of view.
-Molecular dynamics simulations can be used to describe deformations, but are
-unable to simulate open systems, in particular the adsorption of particles in
-chemical equilibrium with a reservoir. Monte Carlo simulation, on the other
-hand, can describe such open systems and thus the adsorption phenomenon, but are
-very inefficient for the study of collective deformations. I have thus been
-interested in the Hybrid Monte Carlo simulation method, which can give us the
-best of both Monte Carlo and molecular dynamics simulations. I also approached
-molecular simulation in general and Hybrid Monte Carlo in particular from the
-point of view of their implementation in molecular simulation software, studying
-various simulations techniques, their links to statistical thermodynamics and
-efficient implementation strategy.
+Molecular dynamics simulations can be used to describe deformations of a
+supramolecular framework, but are unable to simulate open systems, in particular
+the adsorption of particles in chemical equilibrium with a reservoir. Monte
+Carlo simulation, on the other hand, can describe such open systems and thus the
+adsorption phenomenon, but are very inefficient for the study of collective
+deformations. I have thus taken interest in (and worked on) the Hybrid Monte
+Carlo simulation method, which can give us the best of both Monte Carlo and
+molecular dynamics simulations. I also approached molecular simulation in
+general and Hybrid Monte Carlo in particular from the point of view of their
+implementation in molecular simulation software, studying various simulations
+techniques, their links to statistical thermodynamics and efficient
+implementation strategy.
 
 \begin{center}
     \pgfornament[width=6cm,color=CTsemi]{88}
@@ -77,26 +85,32 @@ intrusion in flexible nanoporous materials, and is divided into six chapters. I
 start by presenting nanoporous materials, in particular zeolites, metal--organic
 frameworks and zeolitic imidazolate frameworks. I introduce the main
 characteristics at the origin of their huge structural diversity. I also
-describe the phenomena of adsorption and intrusion, how they relate one to the
-other, and what effects they can have both on nanoporous solids and on confined
-fluids. In a second chapter, I recall the basics of classical thermodynamics,
-and then demonstrate how to use classical thermodynamics with the OFAST theory
-to study co-adsorption in flexible nanoporous materials. My third chapter
-establishes statistical thermodynamics and the molecular simulations methods we
-can use to study chemical systems: molecular dynamics and Metropolis Monte
-Carlo. I also briefly discuss different techniques used to model the
-interactions between molecules, such as \abinitio methods and classical
-force-fields. In chapter four, I derive the fundamental equations of density
-functional theory from the Schrödinger equation. I used density functional
-theory to study the adsorption of nitrogen in \ZIF8, showing that the confined
-fluid undergoes a reorganization linked to framework changes as the pressure
-increases. The fifth chapter contains classical molecular dynamics studies of
-the adsorption and intrusion of water in nanoporous solids. I studied intrusion
-of electrolyte aqueous solutions in \ZIF8, and its impact on the fluid
-structure, dynamics, and thermodynamics. I also looked at the confinement of
-water in aluminosilicate nanotubes, and the corresponding impacts on structure
-and dynamics. The last chapter exposes my work on the implementation of
-molecular simulation software, and in particular the Hybrid Monte Carlo
-simulation method, which is particularly suited to the study of adsorption in
-flexible nanoporous materials. Finally, I give my conclusions on this work, and
-identify some perspectives and challenges for future work.
+describe the phenomena of adsorption and intrusion, how they relate to one
+another, and what effects they can have both on nanoporous solids and on
+confined fluids. In a second chapter, I review the classical thermodynamic
+models of adsorption and co-adsorption, and then demonstrate how to use
+classical thermodynamics with the OFAST theory to study co-adsorption in
+flexible nanoporous materials. My third chapter establishes statistical
+thermodynamics and the molecular simulations methods we can use to study
+chemical systems: molecular dynamics and Metropolis Monte Carlo. I also briefly
+discuss different techniques used to model the interactions between molecules,
+such as \abinitio methods and classical force-fields. In chapter four, I present
+the basis for density functional theory calculations, which I have used to study
+the adsorption of nitrogen in \ZIF8, showing that the confined fluid undergoes a
+reorganization linked to framework changes as the pressure increases. The fifth
+chapter contains classical molecular dynamics studies of the adsorption and
+intrusion of water in nanoporous solids. I studied intrusion of electrolyte
+aqueous solutions in \ZIF8, and its impact on the fluid structure, dynamics, and
+thermodynamics. I also looked at the confinement of water in aluminosilicate
+nanotubes, and the corresponding impacts on structure and dynamics. The last
+chapter describes my work on the implementation of molecular simulation
+software, and in particular the Hybrid Monte Carlo simulation method, which is
+particularly suited to the study of adsorption in flexible nanoporous materials.
+Finally, I present some conclusion from my PhD project, and identify some
+perspectives and challenges for future work.
+
+\vfill
+\begin{center}
+    \pgfornament[width=6cm,color=CTsemi]{75}
+\end{center}
+\vfill\vfill

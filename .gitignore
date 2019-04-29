@@ -1,5 +1,6 @@
 build/
 *.synctex.gz
+*.log
 1-context.pdf
 2-macroscopic.pdf
 3-molsim.pdf
@@ -9,4 +10,5 @@ build/
 A-chemfiles.pdf
 Z-resume-fr.pdf
 thesis.pdf
+tmp.pdf
 archive.pdf

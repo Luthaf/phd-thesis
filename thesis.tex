@@ -42,10 +42,30 @@
 
 \usepackage[outputdir=build]{minted}
 
-% Max compression level for PDF 1.5
-\pdfminorversion=5
-\pdfcompresslevel=9
-\pdfobjcompresslevel=3
+\usepackage[
+    pdfusetitle,
+    % pdfauthor={Guillaume Fraux},
+    pdftitle={Molecular simulation of fluid adsorption in flexible nanoporous materials at multiple scales},
+    pdfsubject={PhD thesis},
+    pdfkeywords={molecular simulation, flexible porous materials, intrusion, adsorption, multi-scale simulations},
+    hyperfootnotes=false,
+]{hyperref}
+
+\hypersetup{
+    colorlinks=true,
+    linktoc=all,
+    breaklinks=true,
+    urlcolor=CTurl,
+    % linkcolor=CTlink,
+    linkcolor=black,
+    citecolor=CTcitation
+}
+
+% % Use this for the printed version, removing color from links
+% \hypersetup{hidelinks}
+
+% Create PDF version 1.4
+\pdfminorversion=4
 
 % Automagically transform "foobar" to ``foobar''
 \MakeOuterQuote{"}

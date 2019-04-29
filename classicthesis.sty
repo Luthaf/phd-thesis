@@ -398,12 +398,3 @@
         \renewcommand{\PrelimWords}{\relax}
         \renewcommand{\PrelimText}{\footnotesize[\,\today\ at \thistime\,]}
 }{\relax}
-
-% ********************************************************************
-% hyperreferences, pdf outline
-% ********************************************************************
-\PassOptionsToPackage{hyperfootnotes=false,breaklinks=true}{hyperref}
-\RequirePackage{hyperref}
-\pdfstringdefDisableCommands{\let\thepart=\relax} % no part numbers (i, ii, iii) in PDF outline   IVO
-%\pdfstringdefDisableCommands{\renewcommand{\thepart}{\Roman{part}}} %%%IVO bring back Part numbers in PDF outline
-\hypersetup{colorlinks=true,linktoc=all,breaklinks=true,urlcolor=CTurl,linkcolor=CTlink,citecolor=CTcitation}
