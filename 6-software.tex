@@ -24,9 +24,9 @@ relies on a sum of pairwise terms.
 \section{Domino: extensible molecular simulations library}
 
 Domino is a \cxx library designed for classical atomistic molecular simulations.
-In this section, I will present its design, the code base and my contributions to
-it, as well as some of the goals and software architecture choices made to reach
-these goals.
+In this section, I will present its design, the code base and my contributions
+to it, as well as some of the project goals and software architecture choices
+made to reach these goals.
 
 Domino is written in \cxx, a computer programming language created in 1983 by
 Bjarne Stroustrup as an extension of the C language. \cxx mainly adds
@@ -36,17 +36,16 @@ implement complex algorithms while retaining the ability to manage memory
 allocations, locality, and layout. These two last points are what allows \cxx to
 run faster than \emph{managed} languages, where the users don't have explicit
 control over memory management. Using \cxx does not necessarily makes software
-faster, but it enables developers to optimize the code more than other languages.
-Domino uses the \cxx11 version of \cxx standard, which brought major changes to
-\cxx, creating a subset of the language which is easier to use correctly and
-more expressive.
+faster, but it enables developers to optimize the code more than other
+languages. Domino uses the \cxx11 version of \cxx standard, which brought major
+changes to the language, making it easier to use correctly and more expressive.
 
 In this section, I will assume some basic programming, \cxx and object-oriented
 knowledge from the readers. There are a lot of great online resources on all of
-these subjects, as well as books such as \emph{"\cxx Primer"} by Stanley B.
-Lippman, Josée Lajoie, and Barbara E. Moo; or \emph{"Effective Modern \cxx"} by
-Scott Meyers. Concerning the algorithms I implemented, I found the book by
-Frenkel and Smit\cite{Frenkel2002} to be a great help.
+these subjects, as well as books such as \emph{\cxx Primer}\cite{Lippman2012},
+or \emph{Effective Modern \cxx}\cite{Meyers2014}. Concerning the algorithms I
+implemented, I found the book by Frenkel and Smit\cite{Frenkel2002} to be a
+great help.
 
 \subsection{Goals and architecture}
 
@@ -57,14 +56,13 @@ provides facilities to run both classical Monte Carlo, molecular dynamics and
 energy minimization simulations, where most other simulation software only offer
 either Monte Carlo or molecular dynamics as \emph{first-class citizen}. Notable
 exceptions that provide both Monte Carlo and molecular dynamics include
-RASPA\cite{Dubbeldam2015} and Sire\cite{SireMol} software. We also try
-to make Domino easy to use, and easy to extend, meaning it can be used as a
-basis for the development of new molecular simulations methods.
-
-These goals translate into some of the architectural choices: in particular, the
-code needs to be simple to understand in order to be simple to extend. This means
-I restricted myself to a simple subset of \cxx, not using complex template-based
-meta-programming or deep class hierarchies.
+RASPA\cite{Dubbeldam2015} and Sire\cite{SireMol} software. We also try to make
+Domino easy to use, and easy to extend, meaning it can be used as a basis for
+the development of new molecular simulations methods. These goals translate into
+some of the architectural choices: in particular, the code needs to be simple to
+understand in order to be simple to extend. This means I restricted myself to a
+simple subset of \cxx, not using complex template-based meta-programming or deep
+class hierarchies.
 
 The behavior and capabilities of Domino can be extended using two different
 mechanisms. Classes that provide central behavior, such as potentials or
@@ -79,6 +77,7 @@ the corresponding required functions: \texttt{energy} and \texttt{force}. Other
 extensible parts of Domino include Monte Carlo moves, molecular dynamics
 thermostat and integrators, and simulation propagators.
 
+\newpage
 \begin{listing}[ht]
     \begin{minted}[autogobble, fontsize=\small]{c++}
     /// Abstract base class for all energy and forces computations. All
@@ -247,8 +246,8 @@ is used. Later on, data is copied back to RAM. Typically latency for data access
 on caches and RAM are represented on figure~\ref{fig:computer-model}.
 
 Because the CPU can spend hundred of cycles waiting for data which is not yet in
-the caches, it is important to make sure data in the RAM is accessed in a linear
-fashion. When some data is explicit fetched from the RAM, another mechanism
+the caches, it is important to make sure data in the RAM is accessed in a predictible
+way. When some data is explicit fetched from the RAM, another mechanism
 called \emph{pre-fetching} kicks in, fetching additional data close to the one
 requested and storing it in the cache. If the code accesses data in a linear
 way, the next data fetch will be faster, as everything required is already in
@@ -269,7 +268,7 @@ by using a domain decomposition algorithm, but this kind of parallelism is less
 trivial to integrate efficiently with Monte Carlo. To both allow GCMC
 simulations and future implementation of distributed memory parallelism for
 molecular dynamics, the storage of atoms (and the associated properties) uses
-dynamic allocation in growable containers. At the same time, atoms from the same
+dynamic allocation in growable containers. Furthermore, atoms from the same
 molecules are kept contiguous in memory, improving memory locality when
 computing intra-molecular interactions and allowing the implementation of domain
 decomposition.
@@ -296,15 +295,16 @@ energy and the forces for molecular dynamics.
     \label{fig:mc-cache}
 \end{figure}
 
-At the same time, most of the Monte Carlo moves only update the positions of a
-few atoms. This means that most of the energy components do not change before
-and after the move. Instead of recomputing all the energy components when
-evaluating the energy difference $\Delta U$ in the Metropolis criterion, Domino
-uses a cache for the energies, storing the energy associated with a pair in a
-bi-dimensional array, and only updating the energies associated with the
-modified pairs. This strategy is illustrated in figure~\ref{fig:mc-cache}. This
-can result in multiple orders of magnitude of improvement when compared to a
-full energy evaluation.
+Another possible improvement to the speed of simulations comes from the fact
+that most Monte Carlo moves only update the positions of a few atoms. This
+means that most of the energy components do not change before and after the
+move. Instead of recomputing all the energy components when evaluating the
+energy difference $\Delta U$ in the Metropolis criterion, Domino uses a cache
+for the energies, storing the energy associated with a pair in a bi-dimensional
+array, and only updating the energies associated with the modified pairs. This
+strategy is illustrated in figure~\ref{fig:mc-cache}. This can result in
+multiple orders of magnitude of improvement when compared to a full energy
+evaluation.
 
 \newpage
 \subsubsection{Computation of the stress tensor and pressure}
@@ -335,10 +335,10 @@ For a given potential energy surface $U(\r)$, this equation gives the definition
 for the \emph{virial pressure}:
 \[ P = \frac{n_f k_B T}{3 V} + \frac{1}{3 V} \left[\sum_i \r_i \cdot \vec f_i - 3 V \frac{\partial U}{\partial V} \right], \label{eq:virial:full}\]
 where $V$ is the simulation volume, $T$ the instantaneous simulation
-temperature, $n_f$ the number of degrees of freedom, $r_i$ is the position of
-atom $i$ and $f_i$ the force acting on it. Unfortunately, the sum is not trivial
+temperature, $n_f$ the number of degrees of freedom, $\r_i$ is the position of
+atom $i$ and $\vec f_i$ the force acting on it. Unfortunately, the sum is not trivial
 to compute in presence of periodic boundary conditions, as there are multiple
-equivalent values for $r_i$. Instead, we typically use in molecular simulation
+equivalent values for $\r_i$. Instead, we typically use in molecular simulation
 software origin-independent formulations. For fully flexible molecules and
 potentials without explicit dependency on the volume, it is possible to rewrite
 equation~\eqref{eq:virial:full} so that is only depends on pairs distances and
@@ -353,8 +353,10 @@ where $\otimes$ denotes the tensorial product: $(\r \otimes \vec
 f)_{\alpha\beta} = r_\alpha \times f_\beta$. The pressure is simply the trace of
 the stress tensor: $P = \text{Tr}(\underline{\sigma})$.
 
-For rigid molecules, equation~\eqref{eq:virial:full} reduces to a different
-expression:
+For rigid molecules, the above expression is impossible to use, as we don't know
+the forces acting between atoms inside the same molecule. Instead, we can use
+the fact that molecules are rigid to reformulate equation~\eqref{eq:virial:full}
+into a different expression:
 \[ \underline{\sigma} = \frac{n_f k_B T}{3V} \mathds{1} + \frac{1}{3 V} \sum_a\sum_{b>a}\sum_{i\in a}\sum_{j\in b} \r_{ij} \otimes \vec f_{ij} \frac{\r_{ab} \cdot \r_{ij}}{||r_{ij}||^2}. \label{eq:virial:molecular} \]
 Here, the sums over $a$ and $b$ run over different molecules, and the sums over
 $i$ and $j$ run over the atoms in the molecules. In both cases, if the potential
@@ -376,7 +378,7 @@ freedom.
 \emph{Hybrid Monte Carlo}, also called \emph{Hamiltonian Monte Carlo} (HMC) is
 an improvement on standard Metropolis Monte Carlo that allows simulating
 complex systems more efficiently. Considering a Monte Carlo simulation in the
-$NVT$ ensemble, the usual way to generate new conformation for the Markov chain
+$NVT$ ensemble, the usual way to generate new conformation in the Markov chain
 is to randomly pick and translate (and additionally rotate for rigid molecules)
 a particle in the system. The amplitude of the translation is limited by the
 acceptance rate of the move: while higher amplitudes allow sampling the phase
@@ -417,19 +419,19 @@ it for even the simplest branched molecules.
 
 Flexible nanoporous materials add another level of difficulty for efficient
 Monte Carlo simulations. Some of them display collective behavior linked to
-global deformations of the simulation cell, such as breathing in MIL-53 or some
-cases of gate-opening. Here, the volume of the simulation cell changes as the
-linkers rotate and move, thus needing Monte Carlo moves able to sample both the
-collective rotation of linkers and the changes in the unit cell shape and
-volume. It is possible to use molecular dynamics instead of Monte Carlo to
-explore the response of the material to external stress, as molecular
-dynamics simulations are very efficient when sampling collective behaviors. But
-when the stress is created by adsorbed molecules in a variable number (for
-simulations with fixed chemical potential), we need to use grand canonical Monte
-Carlo (see section~\ref{sec:gcmd}). Hybrid Monte Carlo is a technique that can
-bridge the gap between traditional Monte Carlo and molecular dynamics, bringing
-the ability to sample such collective motions to a Monte Carlo
-simulation\cite{Rogge2019}.
+global deformations of the simulation cell, such as breathing or gate-opening.
+Here, the volume of the simulation cell changes as the linkers rotate and move,
+thus needing Monte Carlo moves able to sample both the collective rotation of
+linkers and the changes in the unit cell shape and volume. It is possible to use
+molecular dynamics instead of Monte Carlo to explore the response of the
+material to external stress, as molecular dynamics simulations are very
+efficient when sampling collective behaviors. But when the stress is created by
+adsorbed molecules in a variable number (for simulations with fixed chemical
+potential), we need to use grand canonical Monte Carlo (molecular dynamics is
+not suited for simulations in the grand canonical ensemble, see
+section~\ref{sec:gcmd}). Hybrid Monte Carlo is a technique that can bridge the
+gap between traditional Monte Carlo and molecular dynamics, bringing the ability
+to sample such collective motions to a Monte Carlo simulation\cite{Rogge2019}.
 
 In addition to being able to improve the sampling efficiency of Monte Carlo
 simulations, Hybrid Monte Carlo can bring the power of non-physical moves in
@@ -475,7 +477,6 @@ the final one $(\r', \v')$:
                       & (\r, \v)        & \longmapsto     & \psi_{\delta t}(\r, \v) \equiv (\r', \v')
 \end{array}\]
 
-\newpage
 Since the usual Monte Carlo scheme does not use (or propagate) the atomic
 velocities, we need to generate new velocities before starting the molecular
 dynamics simulation. We choose to generate them randomly according to the the
@@ -590,7 +591,7 @@ Developing such force field will require additional efforts, especially
 considering the variability of structures of hybrid metal--organic materials,
 and the inherent complexity of describing coordination bonds. Force field
 parametrization methods based on machine learning --- such as the one I
-presented in chapter~\ref{sec:classical-ff-parametrize} --- could be very
+presented in section~\ref{sec:classical-ff-parametrize} --- could be very
 valuable for this endeavor.
 
 % et tu peux faire un lien avec les travaux de Johannes et les données ab initio
@@ -707,7 +708,7 @@ zero. This allows to speed up the calculation of energies in the simulations by
 ignoring contributions between atoms that are too far apart. The error
 $\epsilon$ arising from the use of a cutoff radius can be quantified --- using
 $V(r)$ for the pair potential and $g(r)$ for the radial distribution function:
-\[\epsilon = \int_{r_c}^\infty r^2 V(r) g(r)\ \d r. \]
+\[\epsilon = \int_{r_c}^\infty r^2 \ V(r) \ g(r)\ \d r. \]
 Assuming isotropic density, and for a cutoff radius big enough so that $g(r)
 \simeq 1$, we can compute this value --- also called \emph{long-range} or
 \emph{tail} correction --- and use it to correct after the fact the energy and
@@ -718,7 +719,8 @@ than $1/r^3$, which is not the case for the electrostatic potential. In the
 following, I will be describing two methods one can use to compute the
 electrostatic interactions accurately in classical molecular simulations: Ewald
 summation and Wolf summation. I implemented both in the Domino project, and I
-will give some software tricks I used to speed up their implementations.
+will give some software implementation techniques I used to speed up energy and
+forces computations.
 
 \subsection{Ewald summation}
 
@@ -747,7 +749,7 @@ very smooth, and can be prolonged to a finite value on $r = 0$.
 
 In practice, a damping parameter $\alpha$ is used to tune the distance at which
 $\erfc\,(\alpha r) / r$ becomes dominant over $\erf\,(\alpha r) / r$. The
-potential to be computed is finally given by:
+potential to be computed is given by:
 \[ V(r) = q_i q_j \left[\frac{\erfc(\alpha r)}{r} + \frac{\erf(\alpha r)}{r} \right].\]
 The total energy of the system is a sum over all possible pairs, and can be
 decomposed as a short-range contribution $U_\text{short}$ (containing the
@@ -808,7 +810,7 @@ excluded. For the long-range term, we only want to remove interaction between
 atoms in the same molecule and in the same simulation box image. Instead of
 changing the sum over the $\vec k$ vectors, we explicitly remove the
 corresponding contribution --- leading to the molecular correction term in
-equation~\ref{eq:ewald}.
+equation~\eqref{eq:ewald}.
 
 Following the same procedure, one can compute the force $\vec f_i$ acting on a
 given atom at position $\r_i$, and the stress tensor contribution from
@@ -893,12 +895,12 @@ This approach gives us the \emph{damped shifted force} (DSF) formulation of Wolf
 potential:
 \[V_{DSF}(r_{ij}) = q_i q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}} - \frac{\erfc(\alpha r_c)}{r_c} + \left(\frac{\erfc(\alpha r_c)}{r_c^2} + \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r_c^2)}{r_c}\right) (r_{ij} - r_c)\right]\]
 \[\vec f_{DSF}(\vec r_{ij}) = q_i q_j \left[\frac{\erfc(\alpha r_{ij})}{r_{ij}^2} + \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r_{ij}^2)}{r_{ij}} - \frac{\erfc(\alpha r_c)}{r_c^2} - \frac{2\alpha}{\sqrt{\pi}} \frac{\exp(-\alpha^2 r_c^2)}{r_c}\right] \frac{\vec r_{ij}}{r_{ij}}\]
-\citeauthor{Fennell2006} also compared the DSP and DFS approaches on a large set
+\citeauthor{Fennell2006} also compared the these approaches on a large set
 of systems, and concluded that the DSF approach is able to reproduce the forces
 computed by Ewald summation very well with a damping parameter $\alpha =
-\SI{0.2}{\AA^{-1}}$; while the DSP approach was able to reproduce energies very
-well with the same damping parameter. They suggest using the DSP approach for
-Monte Carlo simulation, and the DSF approach for molecular dynamics.
+\SI{0.2}{\AA^{-1}}$; while the DSP approach was able to reproduce energies using
+the same damping parameter. They suggest using the DSP approach for Monte Carlo
+simulation, and the DSF approach for molecular dynamics.
 
 \subsection{Comparing Ewald and Wolf summations}
 
@@ -933,7 +935,8 @@ pressure and potential energy, which are presented in
 table~\ref{tab:ewald-vs-wolf}.
 
 \begin{table}[ht]
-    \caption{Energy and pressure ($\pm$ the standard deviation) for the set of
+    \def\mr#1#2{\multirow{#1}{*}{#2}}
+    \caption{Energy and pressure ($\pm$ standard deviation) for multiple
     simulations comparing Ewald and Wolf on crystalline and molten NaCl. MC
     denotes Monte Carlo simulations, and MD molecular dynamics.}
     \label{tab:ewald-vs-wolf}
@@ -941,19 +944,19 @@ table~\ref{tab:ewald-vs-wolf}.
         \toprule
         Software & System  & Potential & Simulation & Energy (\si{kJ/mol}) & Pressure (bar) \\
         \midrule
-        LAMMPS   & Crystal &    Ewald  &    MD      & -203419 $\pm$ 45  & 13494 $\pm$ 302  \\
-        LAMMPS   & Crystal &    Wolf   &    MD      & -203428 $\pm$ 45  & 13724 $\pm$ 297  \\
-        LAMMPS   & Molten  &    Ewald  &    MD      & -182283 $\pm$ 345 & 15971 $\pm$ 1812 \\
-        LAMMPS   & Molten  &    Wolf   &    MD      & -182424 $\pm$ 355 & 17977 $\pm$ 1770 \\
+        \mr{4}{LAMMPS} & \mr{2}{Crystal} &    Ewald  &    MD      & -203419 $\pm$ 45  & 13494 $\pm$ 302  \\
+                       &                 &    Wolf   &    MD      & -203428 $\pm$ 45  & 13724 $\pm$ 297  \\
+                       & \mr{2}{Molten}  &    Ewald  &    MD      & -182283 $\pm$ 345 & 15971 $\pm$ 1812 \\
+                       &                 &    Wolf   &    MD      & -182424 $\pm$ 355 & 17977 $\pm$ 1770 \\
         \midrule
-        Domino   & Crystal &    Ewald  &    MD      & -203470 $\pm$ 53 & 13431 $\pm$ 229 \\
-        Domino   & Crystal &    Ewald  &    MC      & -203511 $\pm$ 62 & 13064 $\pm$ 383 \\
-        Domino   & Crystal &    Wolf   &    MD      & -86714 $\pm$ 69 & 13909 $\pm$ 355 \\
-        Domino   & Crystal &    Wolf   &    MC      & -86723 $\pm$ 69 & 13658 $\pm$ 455 \\
-        Domino   & Molten  &    Ewald  &    MD      & -182310 $\pm$ 278 & 15527 $\pm$ 1676 \\
-        Domino   & Molten  &    Ewald  &    MC      & -182818 $\pm$ 367 & 15090 $\pm$ 1620 \\
-        Domino   & Molten  &    Wolf   &    MD      & -65803 $\pm$ 306 & 18440 $\pm$ 1306 \\
-        Domino   & Molten  &    Wolf   &    MC      & -65785 $\pm$ 359 & 17686 $\pm$ 2054 \\
+        \mr{8}{Domino} & \mr{4}{Crystal} &    Ewald  &    MD      & -203470 $\pm$ 53 & 13431 $\pm$ 229 \\
+                       &                 &    Ewald  &    MC      & -203511 $\pm$ 62 & 13064 $\pm$ 383 \\
+                       &                 &    Wolf   &    MD      & -86714 $\pm$ 69 & 13909 $\pm$ 355 \\
+                       &                 &    Wolf   &    MC      & -86723 $\pm$ 69 & 13658 $\pm$ 455 \\
+                       & \mr{4}{Molten}  &    Ewald  &    MD      & -182310 $\pm$ 278 & 15527 $\pm$ 1676 \\
+                       &                 &    Ewald  &    MC      & -182818 $\pm$ 367 & 15090 $\pm$ 1620 \\
+                       &                 &    Wolf   &    MD      & -65803 $\pm$ 306 & 18440 $\pm$ 1306 \\
+                       &                 &    Wolf   &    MC      & -65785 $\pm$ 359 & 17686 $\pm$ 2054 \\
         \bottomrule
     \end{tabular}
 \end{table}
@@ -968,15 +971,15 @@ This does not mean that my implementation is incorrect, as energies are only
 defined up to an additive constant, but the origin of this difference should be
 investigated further.
 
-\begin{figure}[t]
+\begin{figure}[b]
     \centering
     \input{figures/ewald-vs-wolf}
     \caption{Radial distribution function for three pairs (from left to right
     \ce{Na-Na}, \ce{Na-Cl}, and \ce{Cl-Cl}) on two system: a solid NaCl crystal
-    at \SI{300}{K} on top, and melted NaCl at \SI{2000}{K} on bottom. They are
-    presented for two different softwares (LAMMPS and Domino), two different
-    electrostatic summation (Ewald and Wolf) and two simulation methods (Monte
-    Carlo or MC and molecular dynamics or MD).}
+    at \SI{300}{K} on top, and melted NaCl at \SI{2000}{K} on bottom.}
+    % They are presented for two different softwares (LAMMPS and Domino), two
+    % different electrostatic summation (Ewald and Wolf) and two simulation
+    % methods (Monte Carlo or MC and molecular dynamics or MD).}
     \label{fig:ewald-vs-wolf:rdf}
 \end{figure}
 

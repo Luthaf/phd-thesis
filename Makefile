@@ -21,4 +21,4 @@ archive: thesis.pdf
 .PHONY: clean .FORCE
 
 clean:
-	rm -rf build *.{pdf,synctex.gz}
+	rm -rf build *.{pdf,synctex.gz} metadata.log

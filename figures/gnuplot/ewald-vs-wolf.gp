@@ -1,4 +1,4 @@
-set terminal cairolatex pdf colortext size 13.4cm,10cm font ",10pt"
+set terminal cairolatex pdf colortext size 13.4cm,9cm font ",10pt"
 set tics nomirror
 
 OUTPUT = "../" . system("echo ". ARG0 . " | cut -d '.' -f1 " ) . ".tex"
@@ -7,6 +7,7 @@ set output OUTPUT
 set margin 5,0,3,3
 set key at screen 0.86,0.53 maxrows 3
 set xtics 2
+set xrange [0:10]
 
 set multiplot
     set size 0.31,0.5
@@ -15,12 +16,20 @@ set multiplot
     set ytics 3
     set ylabel "g(r)"
     set title "Na - Na"
-    plot "data/ewald-vs-wolf/domino-ewald-crystal-md-rdf-Na-Na.dat" w l lw 2 lc 3 t "\\footnotesize Domino -- Ewald -- MD", \
-         "data/ewald-vs-wolf/domino-ewald-crystal-mc-rdf-Na-Na.dat" w l lw 2 lc 6 t "\\footnotesize Domino -- Ewald -- MC", \
-         "data/ewald-vs-wolf/lammps-ewald-crystal-md-rdf-Na-Na.dat" w l lw 2 lc "#611a99" t "\\footnotesize LAMMPS -- Ewald -- MD", \
-         "data/ewald-vs-wolf/domino-wolf-crystal-md-rdf-Na-Na.dat"  w l lw 2 lc "#1adb6d" t "\\footnotesize Domino -- Wolf -- MD", \
-         "data/ewald-vs-wolf/domino-wolf-crystal-mc-rdf-Na-Na.dat"  w l lw 2 lc 2 t "\\footnotesize Domino -- Wolf -- MC", \
-         "data/ewald-vs-wolf/lammps-wolf-crystal-md-rdf-Na-Na.dat"  w l lw 2 lc "#0d5b2e" t "\\footnotesize LAMMPS -- Wolf -- MD"
+    plot "data/ewald-vs-wolf/domino-ewald-crystal-md-rdf-Na-Na.dat" w l lw 2 lc 3 t "", \
+         "data/ewald-vs-wolf/domino-ewald-crystal-mc-rdf-Na-Na.dat" w l lw 2 lc 6 t "", \
+         "data/ewald-vs-wolf/lammps-ewald-crystal-md-rdf-Na-Na.dat" w l lw 2 lc "#611a99" t "", \
+         "data/ewald-vs-wolf/domino-wolf-crystal-md-rdf-Na-Na.dat"  w l lw 2 lc "#1adb6d" t "", \
+         "data/ewald-vs-wolf/domino-wolf-crystal-mc-rdf-Na-Na.dat"  w l lw 2 lc 2 t "", \
+         "data/ewald-vs-wolf/lammps-wolf-crystal-md-rdf-Na-Na.dat"  w l lw 2 lc "#0d5b2e" t ""
+
+    # False plot for key labels
+    plot NaN w l lw 8 lc 3 t "\\footnotesize Domino -- Ewald -- MD", \
+         NaN w l lw 8 lc 6 t "\\footnotesize Domino -- Ewald -- MC", \
+         NaN w l lw 8 lc "#611a99" t "\\footnotesize LAMMPS -- Ewald -- MD", \
+         NaN w l lw 8 lc "#1adb6d" t "\\footnotesize Domino -- Wolf -- MD", \
+         NaN w l lw 8 lc 2 t "\\footnotesize Domino -- Wolf -- MC", \
+         NaN w l lw 8 lc "#0d5b2e" t "\\footnotesize LAMMPS -- Wolf -- MD"
 
     unset ylabel
     set origin (1/3.+0.01),0.5

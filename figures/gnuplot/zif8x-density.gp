@@ -10,11 +10,12 @@ set xrange [-8.5:8.5]
 set yrange [-8.5:8.5]
 unset xtics
 unset ytics
-unset border
+# unset border
 
 set margin 0.5,0.5,0.5,1.5
 
 DELTA = 0.0375
+set palette defined (0 "white", 0.3 "blue", 0.8 "cyan")
 
 set multiplot layout 3,4
     set title "\\small 10 \\ce{N2} $\\in$ \\ZIFCH3" offset 0,-0.7

@@ -10,17 +10,17 @@ As discussed in the previous chapter, to be able to compute the properties of a
 system using statistical physics, we need to be able to compute the total energy
 of this system in every possible configuration. It is possible to do so by
 considering the quantum nature of the electrons, and solving the Schrödinger
-equation for this system. We can still consider the atomic nuclei as classical
+equation for this system. We can still model the atomic nuclei as classical
 particles, as this is usually sufficient for the description of the system.
-Solving the Schrödinger equation presents the advantage that no additional
-hypotheses have to be made about the system, and the functional form of the
-interaction potential $U(\r^N)$.
+Solving the Schrödinger equation to compute the energy of the system
+presents the advantage that no additional hypotheses have to be made about the
+system, and the functional form of the interaction potential $U(\r)$.
 
 In this chapter, I will first introduce the Density Functional Theory (DFT)
 approach used to solve the Schrödinger equation. I will then explain how I used
-it to run \abinitio molecular dynamics to study deformations of \ZIF8 under
+it to run \abinitio molecular dynamics to study deformations of \ZIF8 during
 \ce{N2} adsorption. Finally, I will discuss how we can use DFT simulations to
-parametrize a classical force field, allowing us to study bigger systems on
+parametrize classical force fields, allowing us to study bigger systems on
 longer timescales at the cost of some accuracy.
 
 \newpage
@@ -29,37 +29,36 @@ longer timescales at the cost of some accuracy.
 
 \subsection{The Schrödinger equation}
 
-In the quantum chemistry, the state of a system is represented by a
-complex-valued function of positions and time $\Psi(\r, t)$ called the
-\emph{wave function}. The Schrödinger equation\cite{Schrodinger1926} describes
-the time evolution of this function given the Hamiltonian $\hat{\mathcal{H}}$ of
-the system:
-\[\hat{\mathcal{H}} \Psi(\r, t) = i\hbar \frac{\partial}{\partial t} \Psi(\r, t),\label{eq:time-schrodinger}\]
-where $i$ is the imaginary number, and $\hbar$ the reduced Plank's constant. The
-quantum Hamiltonian operator $\hat{\mathcal{H}}$ can be expressed as a sum of
-quantum kinetic energy and potential energy operators:
-\[\hat{\mathcal{H}} = \sum_i \frac{- \hbar^2}{2m_i} \nabla_i^2 + V(\r)\]
+In quantum chemistry, the state of a system is represented by a complex-valued
+function of positions and time $\Psi(\r, t)$ called the \emph{wave function}.
+The Schrödinger equation describes the time evolution of this wave function
+given the Hamiltonian $\hat{\mathcal{H}}$ of the system\cite{Schrodinger1926}:
+\[\hat{\mathcal{H}} \Psi(\r, t) = j\hbar \frac{\partial}{\partial t} \Psi(\r, t),\label{eq:time-schrodinger}\]
+where $j$ is the imaginary number ($j^2 = -1$), and $\hbar$ the reduced Plank's
+constant. The quantum Hamiltonian operator $\hat{\mathcal{H}}$ can be expressed
+as a sum of quantum kinetic energy and potential energy operators:
+\[\hat{\mathcal{H}} = \sum_i \frac{- \hbar^2}{2m_i} \nabla_i^2 + U(\r)\]
 where the $m$ are the masses of the particles in the system, $\nabla$ is the
-differential nabla operator, and $V(\r)$ is the potential energy of the system.
+differential nabla operator, and $U(\r)$ is the potential energy of the system.
 When the potential energy does not explicitly depend on time, we can look for
 solution with separated variables of the form:
 \[\Psi(\r, t) = \psi(\r) \times y(t).\]
 Replacing in equation~\eqref{eq:time-schrodinger}, and separating the spatial
 and time quantities, we get
-\[- \sum \frac{\hbar^2}{2m} \frac{1}{\psi(\r)} \nabla^2 \psi(\r) + V(\r) = i\hbar \frac{1}{y(t)} \frac{\d y(t)}{\d t}.\]
+\[- \sum \frac{\hbar^2}{2m} \frac{1}{\psi(\r)} \nabla^2 \psi(\r) + U(\r) = j\hbar \frac{1}{y(t)} \frac{\d y(t)}{\d t}.\]
 For this equation to stand for all $t$ and all $r$, there must exist a constant
 value $E$ such that:
-\[i\hbar \frac{1}{y(t)} \frac{\d y(t)}{\d t} \quad = \quad E \quad = \quad - \sum \frac{\hbar^2}{2m} \frac{1}{\psi(\r)} \nabla^2 \psi(\r) + V(\r) \]
+\[j\hbar \frac{1}{y(t)} \frac{\d y(t)}{\d t} \quad = \quad E \quad = \quad - \sum \frac{\hbar^2}{2m} \frac{1}{\psi(\r)} \nabla^2 \psi(\r) + U(\r) \]
 
 Putting everything together, any solution of the general
 equation~\eqref{eq:time-schrodinger} can be written as a (potential infinite)
 linear combination of special solutions:
-\[\Psi(\r, t) = \sum_i c_i \ \psi_i(\r) \ e^{-i E_i t / \hbar},\]
+\[\Psi(\r, t) = \sum_i^\infty c_i \ \psi_i(\r) \ e^{-j \ E_i \, t \, / \hbar},\]
 with $c_i$ being the complex coefficients of the combination; and the $(E_i\ ;\
 \psi_i)$ pairs are solutions of the \emph{time-independent} Schrödinger equation:
 \[\hat{\mathcal{H}} \psi(\r) = E \psi(\r).\label{eq:schrodinger}\]
 $\Psi$ is called a \emph{wave function} because its time dependence has a
-wave-like form, and because it propagates through space and time. Solving
+wave-like form, and it propagates through space and time. Solving
 equation~\eqref{eq:schrodinger} gives us stationary states $(E_i\ ;\ \psi_i)$,
 where $E_i$ is the energy of the state; and $\psi_i$ is the wave function of the
 state. Although there is no easy interpretation of the complex valued function
@@ -76,25 +75,26 @@ lightweight than the nuclei (an electron is roughly 2000 times lighter than a
 proton), it is customary to work under the Born-Oppenheimer
 approximation\cite{Born1927}. In this approximation, the degrees of freedom of
 electrons and nuclei are decoupled, and the electrons move much faster than the
-nuclei; reacting instantly to changes in the nuclei's positions. This
+nuclei, reacting instantly to changes in the nuclei's positions. This
 effectively means that at a given point in time, the electrons evolve in the
 constant electrostatic potential generated by the fixed nuclei. The
 corresponding Hamiltonian (using atomic units, \ie $e^2 / 4\pi\epsilon_0 = 1$;
 $\hbar = 1$; and $m_\text{electron} = 1$) is:
-\[\hat{\mathcal{H}} = \left[-\frac 1 2 \sum_i^N \nabla^2_i - \sum_i^N \sum_j^M \frac{Z_j}{|\r_i - \vec R_j|} + \sum_i^N \sum_{j>i}^N \frac{1}{|\r_i - \r_j|} \right]\]
+\[\hat{\mathcal{H}} = \left[-\frac 1 2 \sum_i^N \nabla^2_i - \sum_i^N \sum_j^M \frac{Z_j}{|\r_i - \vec R_j|} + \sum_i^N \sum_{j>i}^N \frac{1}{|\r_i - \r_j|} \right].\]
 We can rewrite this by defining the potential an electron feels due to the
 presence of all the nuclei $V_\text{ext}(r) = -\sum_{j} Z_j / |\r - \vec R_j|$,
 and the electron-electron interaction potential $U(r_i, r_j) = 1 / |\r_i -
 \r_j|$:
-\[\hat{\mathcal{H}} = \left[-\frac 12\sum_{i=1}^N \nabla^2_i + \sum_{i=1}^N V_\text{ext}(\r_i) + \sum_{i=1}^N \sum_{j>i}^N U(\r_i, \r_j)\right] \]
-\[\hat{\mathcal{H}} = \hat T + \hat V_\text{ext} + \hat V_{ee} \label{eq:electronic-hamiltonian}\]
+\[\hat{\mathcal{H}} = \left[-\frac 12\sum_{i=1}^N \nabla^2_i + \sum_{i=1}^N V_\text{ext}(\r_i) + \sum_{i=1}^N \sum_{j>i}^N U(\r_i, \r_j)\right], \]
+\[\hat{\mathcal{H}} = \hat T + \hat V_\text{ext} + \hat V_{ee}. \label{eq:electronic-hamiltonian}\]
 The three terms in the Hamiltonian are the kinetic energy $\hat T$, the total
 external potential $\hat V_\text{ext}$, and the electron-electron interaction
 potential $\hat V_{ee}$. This electron-electron interaction makes the state of
-any electron depend on the state of all other electrons; and the wave function
-depends on $3N$ coupled variables. Looking directly for analytic or numerical
-solutions of the Schrödinger equation is hard because the search space is huge:
-even for small systems, they are already thousands of electrons interacting.
+any electron depend on the state of all other electrons; thus making the wave
+function depends on $3N$ coupled variables. Looking directly for analytic or
+numerical solutions of the Schrödinger equation is hard because the search space
+is huge: even for small systems, they are already thousands of electrons
+interacting.
 
 The Density Functional Theory (DFT) is a strategy to solve the Schrödinger
 equation without having to explicitly determine the wave function $\psi$. It is
@@ -128,10 +128,10 @@ where the potential terms can be expressed as integrals of the one and two
 electrons density:
 \[ V_\text{ext}[n] = \int V_\text{ext}(\r) \ n(\r) \ \d \r;\]
 \[ V_{ee}[n] = \iint \frac{n_2(\r_1, \r_2)}{|\r_1 - \r_2|} \ \d \r_1 \d \r_2.\]
-Where the two electrons density $n_2(\r_1, \r_2)$ is the probability for an
+Here, the two electrons density $n_2(\r_1, \r_2)$ is the probability for an
 electron to be in a small neighboring of $\r_1$, while another electron is in a
 small neighboring of $\r_2$:
-\[n_2(\r_1, \r_2) = N \iiint |\psi(\r_1, \r_2, \vec x_3, \cdots, \vec x_N)|^2 \ \d \vec x_3 \cdots\d \vec x_N\]
+\[n_2(\r_1, \r_2) = N \iiint |\psi(\r_1, \r_2, \vec x_3, \cdots, \vec x_N)|^2 \ \d \vec x_3 \cdots\d \vec x_N.\]
 
 While we can compute and minimize $V_\text{ext}[n]$ given the positions of the
 nuclei, the two other terms $T[n]$ and $V_{ee}[n]$ are harder to evaluate.
@@ -142,10 +142,10 @@ potential, such as the density arising from these electrons is the same as the
 one we look for. The new system of non-interacting electrons is described by a
 new set of independent orbitals $\phi_i$, such as the total electronic density
 of the system is
-\[n(\r) = \sum_i^N \left| \phi_i(\r) \right|^2\]
+\[n(\r) = \sum_i^N \left| \phi_i(\r) \right|^2.\]
 
 For these non interacting electrons, the kinetic energy $T_s[n]$ is known:
-\[T_s[n] = \sum_i^N \int \phi_i^*(\r) \left( -\frac 12 \nabla^2 \right) \phi_i(\r) \d \r\]
+\[T_s[n] = \sum_i^N \int \phi_i^*(\r) \left( -\frac 12 \nabla^2 \right) \phi_i(\r) \ \d\r.\]
 We also know that most of the $V_{ee}[n]$ term can be approximated as a
 classical classical Coulombic interaction --- the so called \emph{Hartree
 energy} --- which we can compute directly from the electronic density:
@@ -157,7 +157,7 @@ contribution $E_{xc}[n]$.
 \[E_{xc}[n] = (T[n] - T_s[n]) + (V_{ee}[n] - V_H[n]).\]
 The form of this contribution is generally unknown, and it describes the quantum
 nature of electrons that are able to interact with themselves. The
-exchange-correlation name comes from the two different physical terms that it
+"exchange-correlation" name comes from the two different physical terms that it
 encompasses. The exchange energy is a quantum-only effect due to the fact that
 electrons are not distinguishable, and that exchanging two of them should change
 the sign of the wave function. This exchange effect is sometimes called Pauli
@@ -172,8 +172,8 @@ solving a set of differential equations called the Kohn-Sham equations:
 These are non-linear equations, as both $V_H[n]$ and $E_{xc}[n]$ depends on the
 $\phi_i$ through $n(\r)$. The usual algorithm to solve them is a self-consistent
 iterative algorithm. We start by making an initial guess for the Kohn-Sham
-orbitals $\phi_i^0$, for example using a linear combination of atomic orbitals.
-Using this initial guess, we can
+orbitals $\phi_i^0$, using for example a linear combination of atomic orbitals.
+Using this initial guess, we can:
 \begin{enumerate}
     \item calculate the corresponding electron density at step $\alpha$, $n^{\,\alpha}(\r)$;
     \item calculate all the terms in the left hand side of equation~\eqref{eq:kohn-sham}:
@@ -184,36 +184,36 @@ Using this initial guess, we can
 
 If the new energy $E^{\,\alpha+1}$ and density $n^{\,\alpha+1}(\r)$ are the same
 as the energy $E^{\,\alpha}$ and density $n^{\,\alpha}(\r)$ in the previous
-step; then we have found the fixed point of the Kohn-Shame equation, and the
+step, then we have found the fixed point of the Kohn-Sham equation, and the
 converged density is the solution of the Schrödinger equation. Else, we go back
 to step 1 using the new Kohn-Sham orbitals as the initial guess. This cycle is
-called the Self-Consistent Field method, as we iteratively solve the equations
-until the solution is self-consistent.
+called the \emph{Self-Consistent Field} (SCF) method, as we iteratively solve
+the equations until the solution is self-consistent.
 
-The ground state energy $E^{\,\alpha + 1}$ and electronic density $n^{\,\alpha +
-1}(\r)$ will be the values minimizing the energy functional from
-equation~\eqref{eq:energy-functional}. The Kohn-Sham energies
-$\{\,\epsilon_i\,\}$ on the other hand have no physical meaning. They are only
-the solution of equation~\eqref{eq:kohn-sham} for a system of non-interacting
-electrons that happens to have the same electronic density as the real system of
-interest.
+When a solution is found, the ground state energy $E^{\,\alpha + 1}$ and
+electronic density $n^{\,\alpha + 1}(\r)$ will be the values minimizing the
+energy functional from equation~\eqref{eq:energy-functional}. The Kohn-Sham
+energies $\{\,\epsilon_i\,\}$ on the other hand have no physical meaning. They
+are only the solution of equation~\eqref{eq:kohn-sham} for a system of
+non-interacting electrons that happens to have the same electronic density as
+the real system of interest.
 
 \subsection{Exchange, correlation, and dispersion}
 
 A good approximation for the exchange-correlation functional is required to
 solve the Kohn-Sham equations. There are a number of approaches routinely used
 in theoretical chemistry, usually classified along the so-called Perdew's
-ladder\cite{Perdew2001} from less precise and cheaper to compute to more
-precise and expensive to compute. Going up the ladder, we encounter in this
-order Local Density Approximation (LDA) where the exchange-correlation
-functional only depends on the local density; Generalized Gradient Approximation
-(GGA), where the functional also depends on the local gradient of the density,
-meta-GGA functionals incorporating the second derivative of the density (the
-Laplacian of the density), or hybrid functionals. Hybrid functionals mix
-exchange expressions from LDA or GGA with exact exchange term coming from other
-methods for solving the Schrödinger equation, such as Hartree-Fock methods.
+ladder\cite{Perdew2001} from less precise and cheaper to compute to more precise
+and expensive to compute. Going up the ladder, we encounter Local Density
+Approximation (LDA) where the exchange-correlation functional only depends on
+the local density; Generalized Gradient Approximation (GGA), where the
+functional also depends on the local gradient of the density, meta-GGA
+functionals incorporating the second derivative of the density (the Laplacian of
+the density), or hybrid functionals. Hybrid functionals mix exchange expressions
+from LDA or GGA with exact exchange term coming from other methods for solving
+the Schrödinger equation, such as Hartree-Fock methods.
 
-Generally, the exchange-correlation functional only depends on the local
+Generally, we use exchange-correlation functionals that only depend on the local
 density, and maybe some of its derivatives. This means that DFT calculations
 will have trouble reproducing non-electrostatic long-range correlation effects,
 such as the dispersion interaction. Fortunately, we have a simple analytic
@@ -221,17 +221,18 @@ formulation for these interactions, which Grimme and coworkers\cite{Grimme2006,
 Grimme2010} proposed to include when computing the total energy. This empirical
 correction is added to the energy obtained by DFT, and does not directly modify
 the electronic density.
-\[E_\text{tot} = E_\text{DFT} + E_\text{disp}; \]
+\[E_\text{tot} = E_\text{DFT} + E_\text{disp} \]
 
-I used the DFT-D3 version of this correction, with zero damping\cite{Grimme2010}
-and only the two body term. The correction to the energy is expressed as:
+In my PhD, I used the DFT-D3 version of this correction\cite{Grimme2010}, with
+zero damping and only the two-body term. The correction to the energy is
+expressed as:
 \[E_\text{disp} = - \sum_i^M\sum_{j>i}^M\left[\frac{C_6^{ij}}{R_{ij}^{\,6}} \ f_6^{ij}(R_{ij}) + \frac{C_8^{ij}}{R_{ij}^{\,8}} \ f_8^{ij}(R_{ij})\right],\]
 where the sum is over all the pairs of atoms, $R_{ij}$ is the distance between
 the atoms, the $C_6^{ij}$ are parameters tabulated for each element pairs and
 $f_n^{ij}$ is a damping function.
 \[f_n^{ij}(R) =
 \begin{dcases}
-    \frac{s_n}{1 + 6 \left(\frac{R}{\sigma_n \sqrt{C_8^{ij} / C_6^{ij}}}\right)^{-\alpha_n}} &\text{for } R < R_c \\
+    \frac{s_n}{1 + 6 \left(R\ /\ \sigma_n \sqrt{C_8^{ij} / C_6^{ij}}\right)^{-\alpha_n}} &\text{for } R < R_c \\
     0 &\text{for } R \geq R_c \\
 \end{dcases}\]
 In this expression, $s_n$ and $\sigma_n$ are parameters specifically adapted to
@@ -257,17 +258,16 @@ forces, and a stricter convergence criterion in the SCF cycles.
 \section{Adsorption of \ce{N2} in \ZIF8 and its derivatives}
 \label{sec:zif8x}
 
-In this section, I will show an example of how the use of AIMD enables a precise
-description of the adsorbed phase in flexible porous materials. The
-corresponding study has been published in
-\citejournal{Chaplais2018}\cite{Chaplais2018}.
+In this section, I will show an example of how the use of \abinitio molecular
+dynamics enables a precise description of the adsorbed phase in flexible porous
+materials. This study has been published in \citejournal{Chaplais2018}\cite{Chaplais2018}.
 
 \subsection{\ZIF8 and its cousins}
 
 The flexible porous material used in this study is \ZIF8. It is a representative
 of the Zeolitic Imidazolate Framework (ZIF) family of MOFs, with a sodalite
 (SOD) topology, methyl-imidazolate linkers, and zinc metallic centers. The
-topology of \ZIF8 is represented in figure~\ref{fig:zif8-ch3:structure}.
+structure of \ZIF8 is represented in figure~\ref{fig:zif8-ch3:structure}.
 
 \begin{figure}[ht]
     \centering
@@ -279,7 +279,7 @@ topology of \ZIF8 is represented in figure~\ref{fig:zif8-ch3:structure}.
     along the 001 axis); and on the right the front-most opening is the 6-member
     ring window (the structure is represented along the 111 axis). The atomic
     color code is green for zinc, blue for nitrogen, gray for carbon and white
-    for hydrogen. The red line connects the atoms of the \emph{swing}
+    for hydrogen. The red line connects the atoms of the "swing"
     \ce{Zn-Zn-Zn-X} dihedral angle.}
     \label{fig:zif8-ch3:structure}
 \end{figure}
@@ -299,7 +299,7 @@ the geometric window size tries to go through the window, the linkers will
 rotate, effectively increasing the apparent window size. In particular, it has
 been shown that we need to account for the flexibility of the structure to be
 able to properly reproduce experimental diffusion coefficients of small
-hydrocarbons\cite{Verploegh2015}.
+hydrocarbons\cite{Verploegh2015} when using molecular simulation.
 
 Moreover, there is evidence of a structural transition occurring in \ZIF8 upon
 loading, from an ambient pressure or AP phase to a high pressure or HP phase.
@@ -315,7 +315,7 @@ HP structure.
 
 The AP and HP phases have the same space group ($I\bar{4}3m$), and mainly differ
 by the orientation of the linkers around the 4 and 6-member windows. This
-orientation is defined by the dihedral angle \ce{Zn-Zn-C-CH3}, also called the
+orientation is defined by the dihedral angle \ce{Zn-Zn-Zn-CH3}, also called the
 \emph{swing angle}; which goes from an average value of 7° in the AP phase to an
 average value of 35° in the HP phase.\cite{FairenJimenez2011} This angle is
 represented in figure~\ref{fig:zif8-ch3:structure}. A recent, more detailed
@@ -331,10 +331,11 @@ in the AP structure only, instead we also need to account for the HP phase.
 
 \subsubsection{Nitrogen adsorption isotherms in \ZIF8, \ZIFCl, and \ZIFBr}
 
-Two analogs to \ZIF8 using chloro- and bromo-substituted imidazolate linkers
-instead of the original methyl-imidazolate in \ZIF8 have first synthesized by
-\citeauthor{Li2009}\cite{Li2009}. These two new materials that we will call
-\ZIFCl and \ZIFBr are represented in figure~\ref{fig:zif8x:structures}.
+Two new materials analogs to \ZIF8 have been synthesized recently by
+\citeauthor{Li2009}\cite{Li2009} using chloro- and bromo-substituted imidazolate
+linkers instead of the original methyl-imidazolate in \ZIF8. These new
+materials, that we will call \ZIFCl and \ZIFBr, are represented in
+figure~\ref{fig:zif8x:structures}.
 
 \begin{figure}[ht]
     \centering
@@ -385,16 +386,17 @@ a single kind of micropores.
 \label{sec:zif8x:methods}
 
 In order to gain better understanding of the relation between the structure
-changes and the adsorbed molecules, I used molecular dynamics (MD) simulations.
-To describe fully the flexibility of the frameworks without any assumption, I
-favored \abinitio MD over force field-based MD --- as there are currently no
-force fields available for the \ZIF8 variants studied here, and existing force
-fields for \ZIFCH3 have questionable accuracy. For each framework (\ZIFCH3,
-\ZIFCl, \ZIFBr), I ran five simulations corresponding to different numbers of
-nitrogen molecules inside the porous space, going from an empty framework ($N = 0$)
-to the fully loaded host material. The maximal loading was determined from the
-experimental isotherms to be close to $N = 50$ molecules per unit cell for
-\ZIFCH3 and \ZIFCl and $N = 40$ molecules per unit cell for \ZIFBr.
+changes and the adsorbed molecules, I used molecular dynamics simulations. To
+describe fully the flexibility of the frameworks without any assumption, I
+favored \abinitio molecular dynamics over force field-based molecular dynamics
+--- as there are currently no force fields available for the \ZIF8 variants
+studied here, and existing force fields for \ZIFCH3 have questionable accuracy.
+For each framework --- \ZIFCH3, \ZIFCl, \ZIFBr --- I ran five simulations
+corresponding to different numbers of nitrogen molecules $N$ inside the porous
+space, going from an empty framework ($N = 0$) to the fully loaded host
+material. The maximal loading was determined from the experimental isotherms to
+be close to $N = 50$ molecules per unit cell for \ZIFCH3 and \ZIFCl and $N = 40$
+molecules per unit cell for \ZIFBr.
 
 To create the starting configurations, I started from the energy-minimized
 configuration of the empty frameworks, and randomly placed the selected number
@@ -412,13 +414,13 @@ constant at 77 K with a CSVR thermostat, using a thermostat time constant of
 to \SI{17}{ps} to the system to reach equilibrium.
 
 We used constant volume ($NVT$) simulations instead of constant pressure ($NPT$)
-simulations because $NPT$ AIMD simulations require a higher computation time to
-correctly converge the calculation of forces. In general, when global
-deformations are expected in the system, one should use $NPT$ simulation. In
-this case, I was able to use $NVT$ simulations because the volume change between
-the different phases of \ZIFCH3 is very small. The low-pressure phase unit cell
-volume is \SI{4900.5}{\AA^3}, while the high-pressure phase volume is
-\SI{4974.8}{\AA^3}, the difference is less than 2\%.
+simulations because $NPT$ molecular dynamics simulations require a higher
+computation time to correctly converge the calculation of forces. In general,
+when global deformations are expected in the system, one should use $NPT$
+simulation. In this case, I was able to use $NVT$ simulations because the volume
+change between the different phases of \ZIFCH3 is very small. The low-pressure
+phase unit cell volume is \SI{4900.5}{\AA^3}, while the high-pressure phase
+volume is \SI{4974.8}{\AA^3}, making the difference less than 2\%.
 
 \subsection{Deformation under adsorption}
 \label{sec:zif8x:swing}
@@ -449,16 +451,16 @@ Gaussian-like.
 
 These results are consistent with the already published ones for
 \ZIFCH3\cite{Coudert2017}, but using a different functional (PBE here instead of
-BLYP in ref~\cite{Coudert2017}). Interestingly, the two other frameworks behave
+BLYP in reference~\cite{Coudert2017}). Interestingly, the two other frameworks behave
 differently. For \ZIFCl, almost no change is noticed in the distribution profile
 upon adsorption until the highest value of loading (\ie, $N = 50$). In this
 case, the distribution shifts and the profile is no longer of Gaussian type, but
 instead looks like the sum of two Gaussian distribution, one centered around
-25°, and the other one around 10°. It indicates that some of the linkers do not
-rotate (swing) even at high loading. This non-zero value of the distribution at
+25°, and the other one around 10°. This indicates that some of the linkers do not
+rotate (swing) even at high loading. The non-zero value of the distribution at
 $\phi = 0\text{°}$ contrasts with the case of \ZIFCH3. Finally, for \ZIFBr, no
 significant change occurs for the dihedral angle distribution as the loading
-increases.
+increases, meaning that the linkers do not rotate.
 
 \begin{figure}[t]
     \centering
@@ -484,10 +486,10 @@ isotherms step is that the swinging motion could lead to an increase of the
 accessible porous volume in the structure, thereby increasing nitrogen uptake.
 In order to check whether this is or not the case, I computed the pore size
 distribution (see figure~\ref{fig:zif8x:pores-sizes}) and the accessible porous
-volume (see figure~\ref{fig:zif8x:porous-volume}) from the MD trajectories using
+volume (see figure~\ref{fig:zif8x:porous-volume}) from the trajectories using
 Zeo++\cite{Willems2012} version 0.3. In order to compute these values, I first
 emptied the structure of all the nitrogen molecules, and then computed the pores
-sizes distribution and accessible volume using the remaining frameworks. The
+sizes distribution and accessible volume of the remaining frameworks. The
 algorithm used by Zeo++ starts by computing the Voronoï decomposition of the
 framework, which provides a representation of the void space in the structure.
 Then, it uses Monte Carlo sampling of the Voronoï network to extract the volume
@@ -526,7 +528,11 @@ reordering or repacking in the cavity, thereby leading to an increase in
 adsorbed molecules in the same total pore volume as well as the swing of the
 linkers aiming to accommodate the new packing. This has already been proposed by
 \citeauthor{Ania2012}\cite{Ania2012}, but the intermediate adsorption regime was
-not probed or interpreted.
+not probed or interpreted.In order to visualize this packing, I have projected
+the positions of all adsorbed nitrogen atoms in the $xy$ plane and created a
+density map of the adsorbed phase. This density map is shown
+figure~\ref{fig:zif8x:density} both at various loadings and for the three
+frameworks.
 
 \begin{figure}[t]
     \centering
@@ -537,12 +543,7 @@ not probed or interpreted.
     \label{fig:zif8x:rdf}
 \end{figure}
 
-In order to visualize this packing, I have projected the positions of all
-adsorbed nitrogen atoms in the $xy$ plane and created a density map of the
-adsorbed phase. This density map is shown figure~\ref{fig:zif8x:density} both at
-various loadings and for the three frameworks.
-
-For \ZIFCH3, two different molecular packings are encountered according to the
+For \ZIFCH3, two different molecular packing are encountered according to the
 loading. With 10 or 25 molecules in the unit cell, the density maps show clear
 delimited positions on a cubic-like arrangement, whereas with 40 and 50
 molecules, they show a tetragonal-like arrangement of the molecules. This
@@ -572,7 +573,7 @@ sorption isotherm does not display the S-shaped adsorption step.
 This repacking of nitrogen molecules is also visible on the radial distribution
 of nitrogen atoms (not to be confused with the pairs radial distribution
 function $g(r)$) in figure~\ref{fig:zif8x:rdf}. The radial distribution counts
-how many nitrogen atoms are at a given distance of the center of the sodalite
+how many nitrogen atoms are at a given distance from the center of the sodalite
 cage. On the graphs for the \ZIF8 framework, we can see the change from the
 initial packing at $N = 10$ and $N = 25$ with a main peak at \SI{5}{\AA} and a
 secondary peak at \SI{1}{\AA}; the final packing at $N = 50$ with three well
@@ -605,9 +606,9 @@ changes to a tetragonal-like arrangement and the linkers rotate to accommodate
 for this repacking. In \ZIFBr, the nitrogen molecules do not repack and the
 linkers do not rotate.
 
-Given that the change in functional group from methyl to chloro and bromo, does
+Given that the change in functional group from methyl to chloro and bromo does
 not significantly impact partial atomic charges or the strength of the \ce{Zn-N}
-coordination bond; the origin of the different sorption features between the
+coordination bond, the origin of the different sorption features between the
 three \ZIF8 derivatives does not come from a difference in flexibility or
 stiffness of the linkers rotation. This is confirmed by the dihedral angles
 distribution in figure~\ref{fig:zif8x:dihedrals}, where all the Gaussian
@@ -627,16 +628,17 @@ assumptions; and because there was no available force field for the studied
 materials. During my PhD, I have also started a collaboration with Johannes
 Dürholt and Rochus Schmid from the Ruhr Universität in Bochum, Germany to
 parametrize a classical force field for \ZIFCH3, \ZIFCl, and \ZIFBr using data
-from the \abinitio simulations presented above.
+from the \abinitio simulations presented above. The corresponding work is
+published in \citejournal{Duerholt2019}\cite{Duerholt2019}.
 
 \subsection{Fitting a force field}
 
 Classical force fields are fully defined by two things: (1) the choice of
 functional forms used to represent the different terms (\emph{e.g.} using
-Lennard-Jones, Buckingham or another form for non-bonded pair interactions); (2)
-the atom-dependent parameters used in these functional forms (like the
+Lennard-Jones, Buckingham or another form for non-bonded pair interactions), and
+(2) the atom-dependent parameters used in these functional forms (like the
 $\epsilon$ and $\sigma$ parameters for Lennard-Jones). See
-chapter~\ref{sec:classical-ff} for a more complete description of force fields
+section~\ref{sec:classical-ff} for a more complete description of force fields
 and their use in computational chemistry. The process of optimizing the
 parameters of a force-field is called the parametrization of the force field.
 The idea is to use some reference data, either from experimental properties or
@@ -644,12 +646,10 @@ The idea is to use some reference data, either from experimental properties or
 data in the best possible way. Both static properties such as crystalline
 structure from X-ray diffraction, and dynamic ones such as vibrations
 frequencies as given by infrared spectroscopy can be used as reference data when
-fitting a force field.
-
-The force field created can then be evaluated by checking how well it can
-reproduce physical properties that were not used for creating it --- for example
-the melting point, or solvation energy. A good force field will be able to
-reproduce most properties of a system reasonably well.
+fitting a force field. The created force field can then be evaluated by checking
+how well it can reproduce physical properties that were not used for creating it
+--- for example the melting point, or solvation energy. A good force field will
+be able to reproduce most properties of a system reasonably well.
 
 Historically, optimizing the parameters of a force-field has most often been a
 manual and ad hoc process. First, we would start by setting the parameters to an
@@ -681,10 +681,10 @@ multiple molecular systems with roughly the same accuracy everywhere. The
 Universal Force Field\cite{Rappe1992} (UFF) and the AMBER family\cite{Wang2004}
 of force fields for bio-molecules are well-known examples of such generic force
 fields. Instead of defining a force field for a whole molecule, they are based
-on \emph{fragments}. For example methanoic acid \ce{HCO2H} would contain
+on \emph{fragments}. For example methanoic acid \ce{HCOOH} would contain
 \ce{C-H}, \ce{C-O}, \ce{C=O}, and \ce{O-H} bond fragments; as well as
 \ce{H-C=O}, \ce{O-C=O}, \ce{C-O-H} angles and \ce{O=C-O-H} dihedral angle. The
-same fragments would also be used in ethanoic acid \ce{CH3CO2H}, or any other
+same fragments would also be used in ethanoic acid \ce{CH3COOH}, or any other
 carboxylic acid.
 
 Existing generic force fields are not always optimal for simulating MOFs, mainly
@@ -731,7 +731,7 @@ atom-centered spherical Gaussians, while the dispersion interaction is modeled
 with a Buckingham potential, using the tabulated parameters for
 MM3\cite{Allinger1994}. The remaining intra-molecular parameters are optimized
 in order to make sure the overall potential reproduces the reference data. The
-score function used for optimization is defined for a parameter set $P$ as:
+score function $Z$ used for optimization is defined for a parameter set $P$ as:
 \[
 \begin{aligned}
     Z(P) &= \alpha_\text{bonds} \sum_\text{bonds} w_i \ \left[r_i\,(P) - r_i^{ref}\right]^2 \\
@@ -768,7 +768,6 @@ always possible depending on the MOF topology. Interested readers should refer t
 the corresponding article\cite{Duerholt2019} for more information and the force
 field parameters.
 
-\newpage
 \subsection{Validating the generated force-fields}
 
 After generating the force field, we ran multiple classical simulations to
