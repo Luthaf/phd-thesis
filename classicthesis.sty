@@ -315,14 +315,14 @@
     {\relax}
     {}
     {0pt}%
-    {\titlerule\vspace*{.9\baselineskip}\raggedright\huge\spacedallcaps{#1}\addcontentsline{toc}{chapter}{#1}\markboth{#1}{#1}}
+    {\titlerule\vspace*{.9\baselineskip}\raggedright\huge\spacedallcaps{#1}\addcontentsline{toc}{chapter}{#1}\chaptermark{#1}}
     [\normalsize\vspace*{.8\baselineskip}\titlerule\vskip1em]%
 
 % sections
 \titleformat{\section}
     {\Large\scshape\raggedright}{\textsc{\MakeTextLowercase{\thesection}}}{1em}{#1}
 \titleformat{name=\section, numberless}
-    {\Large\scshape\raggedright}{}{0pt}{#1\addcontentsline{toc}{section}{#1}}
+    {\Large\scshape\raggedright}{}{0pt}{#1\addcontentsline{toc}{section}{#1}\markright{\spacedlowsmallcaps{#1}}}
 
 % subsections
 \titleformat{\subsection}

@@ -282,6 +282,9 @@
 		"metadata",
 		"chemfiles'",
 		"tentatives",
-		"tunability"
+		"tunability",
+		"nanoporeux",
+		"aluminosilicate",
+		"!MOF"
 	]
 }

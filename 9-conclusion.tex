@@ -26,7 +26,7 @@ Framework Adsorbed Solution Theory (OFAST). In the aforementioned chapter, I
 demonstrate that IAST is by construction invalid for the treatment of
 co-adsorption when the adsorbing host is not inert during adsorption. In
 particular, I show that IAST cannot be used for the prediction of co-adsorption
-of fluid mixtures frameworks presenting a gate-opening behavior, and that it
+of fluid mixtures in frameworks presenting a gate-opening behavior, and that it
 predicts non-physical selectivity, up to two orders of magnitude higher than
 OFAST. Even when IAST is not explicitly used to compute selectivity in flexible
 frameworks, researchers should be careful when comparing single-component
@@ -49,10 +49,10 @@ studying adsorption in soft porous crystals.
 
 The same is true of intrusion, adsorption's big brother. In chapter five, I used
 classical molecular simulations to study the confinement under high-pressure of
-water and aqueous electrolyte solution in \ZIF8, and imogolite nanotubes. I
+water and aqueous electrolyte solutions in \ZIF8, and imogolite nanotubes. I
 observed confinement effects ranging from stronger spatial organization, changes
 in elastic properties, to water dynamics slowdown. Interestingly, the presence
-of ions at high concentration can have the same effects on bulk water,
+of ions at high concentrations can have the same effects on bulk water,
 structuring the hydrogen bonds network and slowing down dynamics. The intrusion
 of aqueous solution in hydrophobic material is a promising way to store and
 dissipate mechanical energy. Adding electrolyte in the water at varying
@@ -121,8 +121,8 @@ modeling methods, based on classical thermodynamics.
     \pgfornament[width=6cm,color=CTsemi]{88}
 \end{center}
 
-This work opens perspectives for improvements in various directions. Starting
-with molecular simulation methods, hybrid Monte Carlo seems like a very powerful
+This work opens perspectives for improvements in various directions. Concerning
+molecular simulation methods, hybrid Monte Carlo seems like a very powerful
 technique, that can be used for a wide variety of systems outside of the problem
 of adsorption in soft porous crystals. First, hybrid Monte Carlo, being a
 Metropolis Monte Carlo method, will always converge to and sample the phase
@@ -134,19 +134,21 @@ algorithms are able to precisely generate the correct ensemble. At the same
 time, hybrid moves greatly improve the efficiency of Monte Carlo simulations by
 taking into account the local curvature of the potential energy surface.
 
-Whether osmostats --- and the simulation of open systems --- are compatible with
-molecular dynamics is still an open research question, while they are routinely
-used in Grand Canonical and Gibbs ensemble Monte Carlo. Hybrid Monte Carlo could
-thus be used for simulations of open ensembles and dilute systems, such as
-constant pH simulations, description of the ionic environment of proteins, or
-the simulation of defects in crystalline materials. Thanks to the Metropolis
-Monte Carlo acceptance scheme, there is no need for the short molecular dynamics
-run used inside hybrid move to sample any actual thermodynamic ensemble or any
-physical Hamiltonian. This property could be exploited to create even more
-efficient Monte Carlo simulations, for example gradually inserting new molecules
-in a system while simultaneously relaxing its environment. Compressible
-generalized hybrid Monte Carlo is particularly promising, as it enables using a
-custom Hamiltonian tailored for the problem at hand.
+Whether the simulation of open systems is compatible with molecular dynamics is
+still an open research question. On the opposite, such simulations are routinely
+performed using Grand Canonical and Gibbs ensemble Monte Carlo. Hybrid Monte
+Carlo could thus be used for simulations of open ensembles and dilute systems,
+such as constant pH simulations, description of the ionic environment of
+proteins, or the simulation of defects in crystalline materials, improving
+efficiency compared to standard Monte Carlo, and giving access to such open
+systems to molecular dynamics users. Thanks to the Metropolis Monte Carlo
+acceptance scheme, there is no need for the short molecular dynamics run used
+inside hybrid move to sample any actual thermodynamic ensemble or any physical
+Hamiltonian. This property could be exploited to create even more efficient
+Monte Carlo simulations, for example gradually inserting new molecules in a
+system while simultaneously relaxing its environment. Compressible generalized
+hybrid Monte Carlo is particularly promising, as it enables using a custom
+Hamiltonian tailored for the problem at hand.
 
 Another perspective for future work concerns classical force fields, and their
 ability to accurately reproduce potential energy surfaces. The traditional
@@ -168,8 +170,8 @@ to design, train and evaluate such machine learning force fields and the
 associated descriptors. To my knowledge, they remain to be used for the
 simulation of nanoporous flexible materials.
 
-% \vfill
-% \begin{center}
-%     \pgfornament[width=6cm,color=CTsemi]{75}
-% \end{center}
-% \vfill\vfill
+\vfill
+\begin{center}
+    \pgfornament[width=6cm,color=CTsemi]{75}
+\end{center}
+\vfill\vfill
