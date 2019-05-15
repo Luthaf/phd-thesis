@@ -285,6 +285,12 @@
 		"tunability",
 		"nanoporeux",
 		"aluminosilicate",
-		"!MOF"
+		"!MOF",
+		"co-adsorption",
+		"microporeux",
+		"mésoporeux",
+		"macroporeux",
+		"aluminosilicates",
+		"!MOF-"
 	]
 }
