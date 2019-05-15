@@ -9,7 +9,7 @@ archive: thesis.pdf
 	# with font metadata
 	pdftk $< dump_data_utf8 > metadata.log
 	# Compress the pdf file (all images at 300dpi and device independent color profile)
-	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer  \
+	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.7 -dPDFSETTINGS=/printer  \
 	   -dUseCIEColor -dNOPAUSE -dQUIET -dBATCH -dProcessDSCComments=false \
 	   -sOutputFile=tmp.pdf $<
 	pdftk tmp.pdf update_info_utf8 metadata.log output $@.pdf
