@@ -248,10 +248,10 @@ functionality with more details in section~\ref{sec:chemfiles:selections}.
 \subsection{Files and formats}
 \label{sec:chemfiles:formats}
 
-As mentioned above, chemfiles' trajectory does read or write frames by itself.
-Instead, it uses a subclass of the \texttt{Format} pure virtual abstract base
-class. Each supported format is a specialization of this base class,
-implementing at least one of three operations: read the next step of the
+As mentioned above, chemfiles' trajectory class does not read or write frames by
+itself. Instead, it uses a subclass of the \texttt{Format} pure virtual
+abstract base class. Each supported format is a specialization of this base
+class, implementing at least one of three operations: read the next step of the
 trajectory, read an arbitrary step of the trajectory, or write a single frame to
 the trajectory. Implemented formats as of the 0.9 version of chemfiles are
 listed in table~\ref{tab:chemfiles:formats}.
@@ -350,7 +350,7 @@ it allows users of chemfiles working with a specific format to still access all
 the data defined in the format.
 
 Adding new attributes to atoms, frames or residues for every possible property
-would not tractable. As most metadata are only defined by one or two
+would not be tractable. As most metadata are only defined by one or two
 formats, adding a new data member in the classes would be a waste of memory. It
 would also increase the complexity of the code, as implementing a new format
 would require adding new data members not only to the core \cxx classes, but

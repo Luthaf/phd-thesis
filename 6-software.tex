@@ -52,7 +52,7 @@ great help.
 The main goal of Domino is to be an extensible classical molecular simulation
 library. A software library is a collection of functions and classes working
 together to provide a given functionality. One specificity of Domino is that it
-provides facilities to run both classical Monte Carlo, molecular dynamics and
+provides facilities to run either classical Monte Carlo, molecular dynamics or
 energy minimization simulations, where most other simulation software only offer
 either Monte Carlo or molecular dynamics as \emph{first-class citizen}. Notable
 exceptions that provide both Monte Carlo and molecular dynamics include
@@ -122,10 +122,10 @@ thermostat and integrators, and simulation propagators.
     \label{code:potential}
 \end{listing}
 
-The other way it is possible to extend Domino is by adding directly adding code
-before, inside or after the simulation loop. As a library, Domino does not
-impose a structure on the simulation program. It is thus possible to customize
-the simulation flow, adding \emph{on-the-fly} analysis, or merging multiple
+It is also possible to extend Domino by directly adding code before, inside or
+after the main simulation loop. As is it a library, Domino does not impose a
+structure on the simulation program. It is thus possible to customize the
+simulation flow, adding \emph{on-the-fly} analysis, or merging multiple
 molecular dynamics simulation into a parallel tempering one. See the source code
 listing~\ref{code:simulation-example} for a simple example of constant pressure
 Monte Carlo simulation, showing how a simple simulation can be created by
@@ -415,7 +415,7 @@ The main issue with configuration bias Monte Carlo is that it requires
 knowledge of all the separated intra-molecular interaction terms to be able to
 generate the position of the next atom while maintaining detailed balance; and
 not only the global energy change as for simpler moves. It is also harder to use
-it for even the simplest branched molecules.
+even with the simplest branched molecules.
 
 Flexible nanoporous materials add another level of difficulty for efficient
 Monte Carlo simulations. Some of them display collective behavior linked to
@@ -724,7 +724,7 @@ forces computations.
 Ewald summation was proposed by Paul Peter Ewald in 1921\cite{Ewald1921}. The
 core idea is to decompose the electrostatic potential using the identity:
 \[ \frac{1}{r} = \frac{f(r)}{r} + \frac{1 - f(r)}{r}. \]
-By choosing the right $f(r)$, one can create decompose $1/r$ potential into a
+By choosing the right $f(r)$, one can decompose $1/r$ potential into a
 short-range, rapidly converging potential that can be computed with a cutoff
 radius; and a long-range, smooth potential that will be computed in Fourier
 space. While I am focusing here on electrostatic interaction, the Ewald

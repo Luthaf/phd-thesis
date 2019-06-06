@@ -6,7 +6,7 @@ set output OUTPUT
 
 set key above height 0 maxrow 1 font ",4pt"
 set xrange [0:80]
-set xtics 20 format "\\small $10^{%T}$"
+set xtics 20 format "\\small %g"
 set yrange [0:3]
 set ytics 1 format "\\small %g"
 
