@@ -52,7 +52,7 @@ If the system composition is not constant, \ie if it is undergoing chemical
 reactions or if the system is open and exchanges particles with an external
 reservoir, we need to add another term depending on the quantity of matter
 $\{n_i\}$ for each chemical species in the system:
-\[\d \mathcal{U} = \delta Q + \delta W - \sum_i \mu_i \d n_i.\label{eq:first-principle}\]
+\[\d \mathcal{U} = \delta Q + \delta W + \sum_i \mu_i \d n_i.\label{eq:first-principle}\]
 In this formulation, the $\mu_i$ are called the \emph{chemical potentials}; they
 represent the relative stability of the different chemical species in the
 system.
@@ -65,7 +65,7 @@ during the transformation, this can be written as $\delta W_\text{pressure} =
 -\d (PV)$, using $P$ as the constant value of the pressure. We can then define
 the \emph{enthalpy} $H$ as $H = \mathcal{U} + PV$ ; which allow us to rewrite
 equation~\eqref{eq:first-principle} as
-\[\d H = \delta Q + \delta W_\text{other} - \sum_i \mu_i \d n_i.\]
+\[\d H = \delta Q + \delta W_\text{other} + \sum_i \mu_i \d n_i.\]
 Here, $\delta W_\text{other}$ is the work coming from all forces
 \emph{excluding} pressure forces.
 
@@ -94,8 +94,8 @@ transformation is said to be \emph{reversible}.
 Using the relations~\eqref{eq:first-principle} and~\eqref{eq:clausius}; and
 considering that only the pressure forces act on the system, we can extract an
 evolution principle for any transformation:
-\[T \d S = \delta Q + \d S_\text{created}\]
-\[T \d S = (\d \mathcal{U} - \delta W - \sum_i \mu_i \d n_i) + \d S_\text{created}\]
+\[T \d S = \delta Q + T \delta S_\text{created}\]
+\[T \d S = (\d \mathcal{U} - \delta W - \sum_i \mu_i \d n_i) + T \delta S_\text{created}\]
 \[\d \mathcal{U} + P \d V - \sum_i \mu_i \d n_i - T \d S = -T\delta S_\text{created}.\label{eq:thermo-potentials}\]
 If there is a function $\Phi$ such as $\d \Phi = \d \mathcal{U} + P \d V - \sum_i \mu_i
 n_i - T \d S$, then for any transformation of a closed system, $\d \Phi =

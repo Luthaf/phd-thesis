@@ -172,7 +172,7 @@ In the $\mu VT$ ensemble, the number of atoms $n_i$ can vary while the
 associated chemical potential $\mu_i$ is fixed. The probability for the system
 to be in a state is given by:
 \[ \mathcal{P}_{\mu VT} = \frac{1}{N!\ \Lambda^N\ \Theta} \kern1em e^{-\beta \left[U(\r^N) \ - \ \sum_i \mu_i n_i \right]} \label{eq:uVT-probability} \]
-\[ \Theta = \kern-2.5em \sum_{\substack{N=0 \\[0.5ex] \kern2.75em N=n_1+n_2+\dots}}^\infty \kern-2em \frac{1}{N!\ \Lambda^N} \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[U(\r^N) \ - \ \sum_i \mu_i n_i \right]} \]
+\[ \Theta = \kern-2.5em \sum_{\substack{N=0 \\[0.5ex] \kern2.75em N=n_1+n_2+\dots}}^\infty \kern-2em \frac{1}{N!\ \Lambda^N} \iiint_V \d\r^N \; e^{-\beta \left[U(\r^N) \ - \ \sum_i \mu_i n_i \right]} \]
 
 \subsubsection{Osmotic ensemble}
 
@@ -180,8 +180,8 @@ In the osmotic ($N_\text{host} \ \mu \ PT$) ensemble, the number of atoms $n_i$
 of guest molecules and the volume $V$ can vary while the associated chemical
 potential and pressure are constants. The probability for the system to be in a
 state is given by:
-\[ \mathcal{P}_{\mu VT} = \frac{1}{N!\ \Lambda^N\ \zeta} \kern1em e^{-\beta \left[H(\r^N, \p^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \label{eq:probably:uvt}\]
-\[ \zeta = \kern-2.5em \sum_{\substack{\kern1.2em N=N_\text{host} \\[0.5ex] \kern2.6em N=n_1+n_2+\dots}}^\infty \kern-1em \frac{1}{N!\ \Lambda^N} \int \d V \iiint_V \d\r^N \d\p^N \; e^{-\beta \left[U(\r^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
+\[ \mathcal{P}_{\mu VT} = \frac{1}{N!\ \Lambda^N\ \zeta} \kern1em e^{-\beta \left[U(\r^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \label{eq:probably:uvt}\]
+\[ \zeta = \kern-2.5em \sum_{\substack{\kern1.2em N=N_\text{host} \\[0.5ex] \kern2.6em N=n_1+n_2+\dots}}^\infty \kern-1em \frac{1}{N!\ \Lambda^N} \int \d V \iiint_V \d\r^N \; e^{-\beta \left[U(\r^N) \ + \ PV \ - \ \sum_i \mu_i n_i \right]} \]
 Here, $N$ is the total number of atoms in the system, counting both the fixed
 host atoms and the varying atoms of the guest. The $\sum_i \mu_i n_i$ sum only
 run on the guest species.
