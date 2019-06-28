@@ -349,15 +349,6 @@ table~\ref{table:licl-zif:hbonds} and figure~\ref{fig:licl-zif:hbonds:fit:pressu
     \label{fig:licl-zif:hbonds:fit:pressure}
 \end{figure}
 
-% \begin{figure}[ht]
-%     \centering
-%     \input{figures/licl-zif-hbonds-fit}
-%     \caption{Variations of the time constant and weights of the bi-exponential
-%     hydrogen bonds autocorrelation decay at \SI{0}{GPa} in bulk and confined
-%     liquid as function of the LiCl concentration.}
-%     \label{fig:licl-zif:hbonds:fit}
-% \end{figure}
-
 \newpage
 This geometric definition of hydrogen bonds has a minor drawback: small
 fluctuations of the atomic positions, near the cut-off values, can be mistaken
@@ -399,15 +390,6 @@ dynamics.
         \bottomrule
     \end{tabular}
 \end{table}
-
-% \begin{figure}[ht]
-%     \centering
-%     \input{figures/licl-zif-rotcf-fit-pressure}
-%     \caption{Variations of the time constant and weights of the bi-exponential
-%     rotational autocorrelation decay as function of the pressure in bulk
-%     (blue shades) and confined (red shades) liquids.}
-%     \label{fig:licl-zif:rotcf:fit:pressure}
-% \end{figure}
 
 First, we can see on figure~\ref{fig:licl-zif:hbonds:fit:pressure} that the
 pressure has a relatively small influence on the hydrogen bonds dynamics.
@@ -967,73 +949,6 @@ potential to describe the system's interactions. In addition to these
 non-bonding interactions, CLAY-FF includes a harmonic bond term for hydroxyl
 bonds (\ce{O-H} stretching); and a \ce{M-O-H} harmonic bending potential.
 
-% \section{Results and discussion}
-%
-% \subsection{Validation of the force field}
-%
-% The CLAY-FF force field has been used in the literature for classical molecular
-% simulations of imogolite nanotubes,\cite{Konduri2008,
-% Zang2010, gonzalez2016} owing to the similarities
-% between clays and imogolite. Here, we set out to check its validity in the
-% description of both neat imogolite nanotubes as well as water-filled tubes. As a
-% reference, we compared it to trajectories obtained from first-principles
-% molecular dynamics, where the evaluation of interatomic forces is done at the
-% DFT level. We found that the structure of the nanotube itself is relatively
-% rigid, and dictated by equilibrium Si---O and Al---O bond lengths, so that the
-% skeleton (aluminum Al, silicon Si, and bridging oxygens O$_{\text{br}}$) is well
-% reproduced with the CLAY-FF potential (in both variants).
-%
-% \begin{figure}[ht]
-% 	\centering
-% 	% \includegraphics[width=0.5\textwidth]{angles}\hfill
-% 	% \includegraphics[width=0.5\textwidth]{density_hint}
-% 	\caption{Left: angle distributions for \ce{Si-O_{int}-H_{int}} angles (top) and \ce{Al-O_{ext}-H_{ext}} angles (bottom) for DFT (red line), CLAY-FF (dark blue line) and extended-CLAY-FF (sky blue line) simulations. Right: density of the internal hydrogen atoms, \ce{H_{int}}, along the nanotube axis $z$ for an empty nanotube (solid lines) and a fully hydrated nanotube (dashed lines). Data from DFT are shown in red, data from CLAY-FF in dark blue, and from extended-CLAY-FF in sky blue.}
-%     \label{fig:imogolite:ff-angles}
-% \end{figure}
-%
-% Secondly, we focus on the description of the internal and outer surface groups. We
-% plot in figure~\ref{fig:imogolite:ff-angles} the calculated distributions of
-% \ce{Si-O_{int}-H_{int}} angles for silanol groups inside the tube, and
-% \ce{Al-O_{ext}-H_{ext}} angles for AlOH groups on the outer surface. There are
-% clear discrepancies between CLAY-FF results and reference first principles data:
-% average \ce{M-O-H} angles are much larger, and their distribution broader. For
-% CLAY-FF, angles go all the way up to 180{\textdegree} and, for AlOH, down below
-% 90{\textdegree}; this contrasts with the clearly Gaussian distributions obtained
-% by DFT, and centered at 115{\textdegree} and 117{\textdegree}, for SiOH and AlOH
-% respectively.
-%
-% In contrast, augmenting the CLAY-FF force field with the additional \ce{M-O-H}
-% bending term (the "extended CLAY-FF") leads to a clear improvement of the
-% imogolite description. The distributions of both SiOH and AlOH angles are closer
-% to those obtained from first-principles MD, although the match is not perfect
-% --- as could be expected for a generic force field without \emph{ad hoc}
-% reparameterization. The average value of the SiOH angle with extended CLAY-FF is
-% 122{\textdegree}, which is 7{\textdegree} larger than the reference data. The
-% same is true of the outer AlOH groups.
-%
-% These discrepancies in imogolite structure strongly affect water--imogolite
-% interactions, and from here water adsorption, structure and dynamics. To further
-% assess the necessity of using the extended CLAY-FF instead of CLAY-FF, we
-% performed simulations of fully hydrated nanotubes, and compared them against
-% data from first-principles MD. On the right panel of figure~\ref{fig:imogolite:ff-angles}, we
-% show the density profiles along the nanotube axis $z$ for the internal
-% hydrogens. First, we observe that in the empty nanotube, the density
-% distributions are all around $z=0$ (the plane in which are located the silicon
-% atoms). This allows hydrogen-bonding with other silanol groups in the same $z=0$
-% plane. Secondly, upon hydration, there is a clear move of the SiOH hydrogen
-% atoms toward symmetric positions at $\pm \SI{0.75}{\AA}$, due to hydrogen bonding
-% with the water molecules --- a detailed analysis of this hydrated structure will
-% be given below. This change in the H localization, which we observe in the
-% first-principles MD, is well reproduced by the extended CLAY-FF force field.
-% However, it is markedly different in regular CLAY-FF, where we see a unique broad
-% population with two bumps. Thus the distribution of internal hydrogen atoms,
-% fundamental for adsorption studies and the description of hydrated imogolites,
-% is best described by the extended CLAY-FF model. This aspect has been
-% recently studied by \citeauthor{pouvreau2017}\cite{pouvreau2017} that similarly
-% showed the necessity of a M--O--H bending term to properly describe basal and
-% edge surfaces of gibbsite and brucite. From here on, we will use exclusively
-% the extended CLAY-FF force field.
-
 \subsection{Water adsorption}
 
 In order to characterize water adsorption in the gas phase and obtain physically
@@ -1145,10 +1060,6 @@ hydrogen bond, because the \ce{O_{int}-H_{int}$\cdots$O_{int}} distance is
 large. In the hydrated tube, the hydrogen atoms' most common position is shifted
 out of that silanol ring plane (see figure~\ref{fig:imogolite:density:rz}).
 
-% This is reflected by a change in the \ce{O_{br}-Si-O_{int}-H_{int}} dihedral
-% angle (see figure~S3), which goes from 0{\textdegree} to 60{\textdegree}; where
-% \ce{O_{br}} is the oxygen atom bridging the aluminum to the silicon.
-
 \begin{figure}[p]
 	\centering
 	\includegraphics[width=0.7\textwidth]{figures/images/imogolite-hbonds-sites}
@@ -1222,16 +1133,6 @@ groups (case C).
     the imogolite internal surface.}
     \label{fig:imogolite:hbonds:surface}
 \end{figure}
-
-% In this section, we quantified the hydrogen-bond network and dynamics with a set
-% of geometric criteria, that are commonly used in the literature for hydrogen
-% bonds in water. We consider a hydrogen bond {D---H$\cdots$A} to be present
-% between donor atom D and acceptor atom A if, and only if, the D$\cdots$A
-% distance is less than \SI{3.5}{\AA} and the $\widehat{\text{HDA}}$ angle is less
-% than 30{\textdegree}.\cite{Luzar_hydrogen-bond_1996} We performed hydrogen bond
-% analysis on the hydrated and empty nanotubes, and differentiated the types of
-% hydrogen bonds according to the donor and acceptor groups. Water hydroxyls and
-% silanols can both be donor and acceptor.
 
 The average number of hydrogen bonds formed during the trajectory is presented
 in table~\ref{tab:imogolite:hbonds:count}. The change in silanol--silanol
