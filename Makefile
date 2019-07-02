@@ -4,7 +4,9 @@ all: thesis.pdf
 	latexmk -pdf -output-directory=build -silent -shell-escape -synctex=1 $<
 	cp build/$*.{pdf,synctex.gz} .
 
-archive: thesis.pdf
+archive: phd-fraux.pdf
+
+phd-fraux.pdf: thesis.pdf
 	# Use pdftk to save and restore PDF metadata, as ghostscript override them
 	# with font metadata
 	pdftk $< dump_data_utf8 > metadata.log
@@ -12,7 +14,7 @@ archive: thesis.pdf
 	gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.7 -dPDFSETTINGS=/printer  \
 	   -dUseCIEColor -dNOPAUSE -dQUIET -dBATCH -dProcessDSCComments=false \
 	   -sOutputFile=tmp.pdf $<
-	pdftk tmp.pdf update_info_utf8 metadata.log output $@.pdf
+	pdftk tmp.pdf update_info_utf8 metadata.log output $@
 	rm -f tmp.pdf
 
 # Force recompilation of pdf everytime, latexmk uses its own algorithm to
