@@ -1,12 +1,16 @@
-all: thesis.pdf
+all: web
 
 %.pdf: %.tex .FORCE
 	latexmk -pdf -output-directory=build -silent -shell-escape -synctex=1 $<
 	cp build/$*.{pdf,synctex.gz} .
 
-archive: phd-fraux.pdf
+archive: phd-fraux.archive.pdf
+print: phd-fraux.print.pdf
+web: phd-fraux.web.pdf
 
-phd-fraux.pdf: thesis.pdf
+everything: archive print web
+
+phd-fraux.%.pdf: A-%.pdf
 	# Use pdftk to save and restore PDF metadata, as ghostscript override them
 	# with font metadata
 	pdftk $< dump_data_utf8 > metadata.log
@@ -20,7 +24,11 @@ phd-fraux.pdf: thesis.pdf
 # Force recompilation of pdf everytime, latexmk uses its own algorithm to
 # determine wheter it needs to recompile
 .FORCE:
-.PHONY: clean .FORCE
+
+# Keep "temporary files"
+.SECONDARY:
+
+.PHONY: clean .FORCE .SECONDARY
 
 clean:
 	rm -rf build *.{pdf,synctex.gz} metadata.log
